@@ -24,7 +24,7 @@ public class RunApi {
 			event.setSourceUrl("https://www.sample.com/orders/parts");
 			event.setSeverity("SUCCESS");
 			//event.setSeverityNo(4);
-			event.setType("RECEIVE");
+			//event.setType("RECEIVE");
 			event.setTypeNo(4);
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
@@ -53,9 +53,7 @@ public class RunApi {
 			Map<String, String> queryParams = new HashMap<String, String>();
 			Map<String, String> headerParams = new HashMap<String, String>();
 			Map<String, String> formParams = new HashMap<String, String>();
-			
-			//headerParams.put("token", "abc12345");
-			//headerParams.put("token", "SqGGT2gMfDnifN65nwVXJUi0emJpNmti");
+		
 			headerParams.put("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
 			
 			ApiClient apiClient = new ApiClient();

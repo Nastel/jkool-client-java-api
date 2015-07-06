@@ -44,7 +44,7 @@ public class ApiClient {
   private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
   private boolean debugging = false;
   //private String basePath = "http://data.jkoolcloud.com:6580/jKool/jKool_Service/rest";
-  private String basePath = "http://11.0.0.40:6580/jKool/jKool_Service/rest";
+  private String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
 
   private Map<String, Authentication> authentications;
 

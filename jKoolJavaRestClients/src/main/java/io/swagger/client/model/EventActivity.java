@@ -360,25 +360,6 @@ public class EventActivity {
 		this.snapshots = snapshots;
 	}
 
-	@ApiModelProperty(value = "")
-	@JsonProperty("msg-text")
-	public String getMsg() {
-		return msgText;
-	}
-
-	public void setMsg(String msg) {
-		this.msgText = msg;
-	}
-
-	@ApiModelProperty(value = "")
-	@JsonProperty("msg-size")
-	public Integer getMsgCount() {
-		return msgSize;
-	}
-
-	public void setMsgCount(Integer msgCount) {
-		this.msgSize = msgCount;
-	}
 
 	@ApiModelProperty(value = "")
 	@JsonProperty("encoding")
@@ -418,16 +399,6 @@ public class EventActivity {
 
 	public void setResource(String resource) {
 		this.resource = resource;
-	}
-
-	@ApiModelProperty(value = "")
-	@JsonProperty("mime-type")
-	public String getMimeType() {
-		return msgMimeType;
-	}
-
-	public void setMimeType(String mimeType) {
-		this.msgMimeType = mimeType;
 	}
 	
 	@ApiModelProperty(value = "")

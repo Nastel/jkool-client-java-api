@@ -37,26 +37,27 @@ public class RunApi {
 			event.setEndTimeUsec(todaysDate);
 			event.setElapsedTimeUsec(593);
 			event.setSnapCount(0);
-			event.setMsg("AMAZON ProductId=28372373, Title: Crash Proof: Author: Robert Prechter Jr.");
-			event.setMsgCount(74);
+			event.setMsgText("AMAZON ProductId=28372373, Title: Crash Proof: Author: Robert Prechter Jr.");
+			event.setMsgSize(74);
 			event.setCharset("windows-1252");
 			event.setEncoding("none");
 			event.setResource("order/parts");
-			event.setMimeType("text/plain");
+			event.setMsgMimeType("text/plain");
 			event.setCorrId("OrderId:123@1434115730580806@1");
 			
 			Map<String, String> queryParams = new HashMap<String, String>();
 			Map<String, String> headerParams = new HashMap<String, String>();
 			Map<String, String> formParams = new HashMap<String, String>();
 			
-			headerParams.put("token", "abc12345");
+			//headerParams.put("token", "abc12345");
+			headerParams.put("token", "SqGGT2gMfDnifN65nwVXJUi0emJpNmti");
 			
 			ApiClient apiClient = new ApiClient();
 			apiClient.invokeAPI(apiClient.getBasePath(), "POST", queryParams, event, headerParams, null, "application/json",  "application/json",  null);
 		}
 		catch (Exception e)
 		{
-			
+			System.out.println("Error: " + e);
 		}
 	}
 

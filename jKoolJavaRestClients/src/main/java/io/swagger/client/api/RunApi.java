@@ -24,8 +24,8 @@ public class RunApi {
 			event.setSourceUrl("https://www.sample.com/orders/parts");
 			event.setSeverity("SUCCESS");
 			//event.setSeverityNo(4);
-			//event.setType("RECEIVE");
-			event.setTypeNo(4);
+			event.setType("EVENT");
+			//event.setTypeNo(4);
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
 			event.setOperation("ReceiveOrder");

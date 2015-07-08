@@ -475,7 +475,7 @@ public class EventActivity {
 	}
 	
 	@ApiModelProperty(value = "")
-	@JsonProperty("parent-track-id")
+	@JsonProperty("parent-id")
 	public String getParentTrackId() {
 		return parentTrackId;
 	}

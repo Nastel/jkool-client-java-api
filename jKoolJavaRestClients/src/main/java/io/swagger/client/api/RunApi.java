@@ -4,14 +4,20 @@ import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.JsonUtil;
 import io.swagger.client.model.EventActivity;
+import io.swagger.client.model.Property;
+import io.swagger.client.model.Snapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.ClientResponse;
+
+import java.util.UUID;
 
 public class RunApi {
 	
@@ -26,11 +32,47 @@ public class RunApi {
 			Client client = Client.create();
 			ClientResponse response = null;
 			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
+			String todaysDate = (new Date()).getTime() + "000";
 			
+			Property property1 = new Property();
+			property1.setName("property1");
+			property1.setType("String");
+			property1.setValue("value1");
 			
+			Property property2 = new Property();
+			property2.setName("property2");
+			property2.setType("String");
+			property2.setValue("value2");
+			
+			List<Property> properties = new ArrayList<Property>();
+			properties.add(property1);
+			properties.add(property2);
+			
+			// Post a snapshot
+			Snapshot snapshot = new Snapshot();
+			snapshot.setCategory("CathysCategory");
+			snapshot.setCount(2);
+			snapshot.setFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			snapshot.setName("CathysSnapshot");
+			snapshot.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshot.setSeverity("SUCCESS");
+			snapshot.setSourcdFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			snapshot.setSource("CathysSource");
+			snapshot.setSourceInfo("CathysSourceInfo");
+			snapshot.setSourceUrl("CathysUrl");
+			snapshot.setTimeUsec(todaysDate);
+			String snapshotUuid = UUID.randomUUID().toString();
+			snapshot.setTrackId(snapshotUuid);
+			snapshot.setType("SNAPSHOT");
+			snapshot.setProperties(properties);
+			
+			builder = client.resource(basePath).accept("application/json");
+			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
+			response = builder.type("application/json").post(ClientResponse.class, serialize(snapshot));
+			
+			// Post an Event
 			EventActivity event = new EventActivity();
 			event.setCompCode("SUCCESS");
-			//event.setCompCodeNo(0);
 			event.setIdCount("3");
 			event.setTrackingId("3175921a-1107-11e3-b8b0-600292390f04");
 			event.setPid(5455); 
@@ -39,14 +81,11 @@ public class RunApi {
 			event.setSourceInfo("Cathy3's source");
 			event.setSourceUrl("https://www.sample.com/orders/parts");
 			event.setSeverity("SUCCESS");
-			//event.setSeverityNo(4);
 			event.setType("EVENT");
-			//event.setTypeNo(4);
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
 			event.setOperation("ReceiveOrder");
 			event.setUser("Cathy111");
-			String todaysDate = (new Date()).getTime() + "000";
 			event.setTimeUsec(todaysDate);
 			event.setStartTimeUsec(todaysDate);
 			event.setEndTimeUsec(todaysDate);
@@ -65,22 +104,17 @@ public class RunApi {
 			event.setMsgAge(9999);
 			event.setSource("CathysSource");
 			event.setParentTrackId("3175921a-1107-11e3-b8b0-600292390999");
+			List<Snapshot> snapshots = new ArrayList<Snapshot>();
+			snapshots.add(snapshot);
 			
-			//Map<String, String> queryParams = new HashMap<String, String>();
-			//Map<String, String> headerParams = new HashMap<String, String>();
-			//Map<String, String> formParams = new HashMap<String, String>();
 		
-			//headerParams.put("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
-			
-			//ApiClient apiClient = new ApiClient();
-			//apiClient.invokeAPI(apiClient.getBasePath(), "POST", queryParams, event, headerParams, null, "application/json",  "application/json",  null);
 			builder = client.resource(basePath).accept("application/json");
 			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(event));
 			
+			// Post an activity
 			EventActivity activity = new EventActivity();
 			activity.setCompCode("SUCCESS");
-			//event.setCompCodeNo(0);
 			activity.setIdCount("3");
 			activity.setTrackingId("3175921a-1107-11e3-b8b0-600292390999");
 			activity.setPid(5455); 
@@ -89,10 +123,7 @@ public class RunApi {
 			activity.setSourceInfo("Cathy3's source");
 			activity.setSourceUrl("https://www.sample.com/orders/parts");
 			activity.setSeverity("SUCCESS");
-			//activity.setSeverityNo(4);
 			activity.setType("ACTIVITY");
-			//activity.setTypeNo(4);
-			//activity.setParentTrackId("12345");
 			activity.setReasonCode(0);
 			activity.setLocation("New York, NY");
 			activity.setOperation("ReceiveOrderActivity");
@@ -110,15 +141,12 @@ public class RunApi {
 			activity.setWaitTimeUsec("CathysWait");
 			activity.setStatus("END");
 			activity.setSource("CathysSource");
-			
-			//queryParams = new HashMap<String, String>();
-			//headerParams = new HashMap<String, String>();
-			//formParams = new HashMap<String, String>();
-					
-			//apiClient.invokeAPI(apiClient.getBasePath(), "POST", queryParams, activity, headerParams, null, "application/json",  "application/json",  null);
+	
 			builder = client.resource(basePath).accept("application/json");
 			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
+			
+
 			
 			
 			

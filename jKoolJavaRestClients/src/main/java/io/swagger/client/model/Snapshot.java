@@ -14,7 +14,7 @@ public class Snapshot  {
   private String fqn = null;
   private String category = null;
   private String name = null;
-  private String count = null;
+  private Integer count = null;
   private String timeUsec = null;
   private String severity = null;
   private String severityNo = null;
@@ -79,10 +79,10 @@ public class Snapshot  {
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("count")
-  public String getCount() {
+  public Integer getCount() {
     return count;
   }
-  public void setCount(String count) {
+  public void setCount(Integer count) {
     this.count = count;
   }
 

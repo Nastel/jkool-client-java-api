@@ -1,6 +1,5 @@
 package io.swagger.client.api;
 
-import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.JsonUtil;
 import io.swagger.client.model.EventActivity;
@@ -9,15 +8,12 @@ import io.swagger.client.model.Snapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.ClientResponse;
-
-import java.util.UUID;
+import com.sun.jersey.api.client.WebResource.Builder;
 
 public class RunApi {
 	
@@ -50,16 +46,16 @@ public class RunApi {
 			
 			// Post a snapshot
 			Snapshot snapshot = new Snapshot();
-			snapshot.setCategory("CathysCategory");
+			snapshot.setCategory("TestCategory");
 			snapshot.setCount(2);
 			snapshot.setFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			snapshot.setName("CathysSnapshot");
+			snapshot.setName("TestSnapshot");
 			snapshot.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
 			snapshot.setSeverity("SUCCESS");
 			snapshot.setSourcdFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			snapshot.setSource("CathysSource");
-			snapshot.setSourceInfo("CathysSourceInfo");
-			snapshot.setSourceUrl("CathysUrl");
+			snapshot.setSource("TestSource");
+			snapshot.setSourceInfo("TestSourceInfo");
+			snapshot.setSourceUrl("TestUrl");
 			snapshot.setTimeUsec(todaysDate);
 			String snapshotUuid = UUID.randomUUID().toString();
 			snapshot.setTrackId(snapshotUuid);
@@ -67,7 +63,7 @@ public class RunApi {
 			snapshot.setProperties(properties);
 			
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
+			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(snapshot));
 			
 			// Post an Event
@@ -98,18 +94,18 @@ public class RunApi {
 			event.setResource("order/parts");
 			event.setMsgMimeType("text/plain");
 			event.setCorrId("OrderId:123@1434115730580807@1");
-			event.setMsgTag("CathysMsg");
-			event.setException("CathysException");
-			event.setWaitTimeUsec("CathysWait");
+			event.setMsgTag("TestMsg");
+			event.setException("TestException");
+			event.setWaitTimeUsec("TestWait");
 			event.setMsgAge(9999);
-			event.setSource("CathysSource");
+			event.setSource("TestSource");
 			event.setParentTrackId("3175921a-1107-11e3-b8b0-600292390999");
 			List<Snapshot> snapshots = new ArrayList<Snapshot>();
 			snapshots.add(snapshot);
 			
 		
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
+			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(event));
 			
 			// Post an activity
@@ -127,7 +123,7 @@ public class RunApi {
 			activity.setReasonCode(0);
 			activity.setLocation("New York, NY");
 			activity.setOperation("ReceiveOrderActivity");
-			activity.setUser("Cathy111");
+			activity.setUser("TestUser");
 			activity.setTimeUsec(todaysDate);
 			activity.setStartTimeUsec(todaysDate);
 			activity.setEndTimeUsec(todaysDate);
@@ -137,18 +133,14 @@ public class RunApi {
 			activity.setEncoding("none");
 			activity.setResource("order/parts");
 			activity.setCorrId("OrderId:123@1434115730580999@1");
-			activity.setException("CathysException999");
-			activity.setWaitTimeUsec("CathysWait");
+			activity.setException("TestException");
+			activity.setWaitTimeUsec("TestWait");
 			activity.setStatus("END");
-			activity.setSource("CathysSource");
+			activity.setSource("TestSource");
 	
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "2xLE44s5NICfXhVqNhzrkRQrb46tyHhM");
+			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
-			
-
-			
-			
 			
 		}
 		catch (Exception e)

@@ -107,6 +107,7 @@ public class Wizard {
 				{
 					st = new StringTokenizer(sCurrentLine,",");
 					int i = 0;
+					line = new HashMap<String, String>();
 					while (st.hasMoreTokens())
 					{
 						line.put((String)fieldNames.get(i), st.nextToken());
@@ -141,11 +142,9 @@ public class Wizard {
 			  EventActivity activity = massagedData.get(line.get("ATrId"));
 			  if (activity.getEvents().get(line.get("ETrId")) == null)
 			  {
-				  activity.setEvents(new HashMap<String, EventActivity>());
+				  activity.getEvents().put((String)line.get("ETrId"), new EventActivity());
 			  }
 			  EventActivity event = activity.getEvents().get((String)line.get("ETrId"));
-			  if (event == null)
-				  event = new EventActivity();
 			  Iterator iKeyset = line.keySet().iterator();
 			  while (iKeyset.hasNext())
 			  {
@@ -180,7 +179,7 @@ public class Wizard {
 					  String snapshotUuid = UUID.randomUUID().toString();
 					  snapshot.setTrackId(snapshotUuid);
 					  snapshot.setType("SNAPSHOT");
-					  snapshots.put(snapshotName, snapshot);
+					  event.getSnapshots().put(snapshotName, snapshot);
 				  }
 				  else if (key.indexOf("/string/") == 0)
 				  {

@@ -10,9 +10,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -24,6 +27,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 public class Wizard {
 	
 	//private static String todaysDate = (new Date()).getTime() + "000";
+	public static final Set<String> JKOOL_FIELDS = new HashSet<String>(Arrays.asList("status","source","sourceInfo","sourceUrl"));
 	
 	public static void main(String[] args) {
 		try
@@ -149,9 +153,9 @@ public class Wizard {
 			  while (iKeyset.hasNext())
 			  {
 				  String key = (String)iKeyset.next();
-				  if (key.equals("status") && line.get("ATrId") == null && line.get("ETrId") != null) // make generic for all pre-defined jKool fields
+				  if (JKOOL_FIELDS.contains(key)&& line.get("ETrId") != null) // make generic for all pre-defined jKool fields
 				  {
-					  event.setSourceFqn((String)line.get("status"));
+					  event.setStatus((String)line.get(key));
 				  }
 				  else if (key.indexOf("/string/") > 0) // this is a snapshot property
 				  {
@@ -181,7 +185,7 @@ public class Wizard {
 					  snapshot.setType("SNAPSHOT");
 					  event.getSnapshots().put(snapshotName, snapshot);
 				  }
-				  else if (key.indexOf("/string/") == 0)
+				  else if ((!JKOOL_FIELDS.contains(key)) && key.indexOf("p-string/") > -1)
 				  {
 					  Property property = new Property();
 					  property.setName((String)line.get(key));

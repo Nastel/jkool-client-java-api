@@ -10,11 +10,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -25,8 +23,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 @SuppressWarnings("rawtypes")
 public class Wizard {
 	
-	
-	private static String todaysDate = (new Date()).getTime() + "000";
+	//private static String todaysDate = (new Date()).getTime() + "000";
 	
 	public static void main(String[] args) {
 		try
@@ -91,7 +88,7 @@ public class Wizard {
 
 			BufferedReader br = null;
 			HashMap<String, String> line = new HashMap<String, String>();
-			List lines = new ArrayList();
+			List<HashMap<String, String>> lines = new ArrayList<HashMap<String, String>>();
 			List<String> fieldNames = new ArrayList<String>();
 
 			try {
@@ -142,13 +139,12 @@ public class Wizard {
 			  if (massagedData.get(line.get("ATrId")) == null)
 				  massagedData.put((String)line.get("ATrId"), new EventActivity());
 			  EventActivity activity = massagedData.get(line.get("ATrId"));
-			  if (activity.getEvents().contains(line.get("ETrId")))
+			  if (activity.getEvents().get(line.get("ETrId")) == null)
 			  {
-				  activity.getEvents().add(new EventActivity());
+				  activity.setEvents(new HashMap<String, EventActivity>());
 			  }
-			  EventActivity event = activity.get((String)line.get("ETrId"));
+			  EventActivity event = activity.getEvents().get((String)line.get("ETrId"));
 			  Iterator iKeyset = line.keySet().iterator();
-			  String oldSnapshotName = null;
 			  while (iKeyset.hasNext())
 			  {
 				  String key = (String)line.get(iKeyset.next());
@@ -161,25 +157,27 @@ public class Wizard {
 					  String snapshotName = ((String)line.get(key)).substring(0, ((String)line.get(key)).indexOf("/string/"));
 					  String propertyName = ((String)line.get(key)).substring(((String)line.get(key)).indexOf("/string/"), ((String)line.get(key)).length());
 					  if (event.getSnapshots() == null)
-						  event.setSnapshots(new ArrayList());
-					  List snapshots = event.getSnapshots();
+						  event.setSnapshots(new HashMap<String, Snapshot>());
+					  HashMap<String, Snapshot> snapshots = event.getSnapshots();
 					  
 					  Property property = new Property();
 					  property.setName(propertyName);
 				      property.setValue((String)line.get(key));
 				      property.setType("string");
-				      if (snapshotName.equals(oldSnapshotName))
-				    	  snapshot.getProperties().add(property);
+				      if (snapshots.get(snapshotName) != null)
+				      {
+				    	  snapshot = snapshots.get(snapshotName);
+				    	  snapshot.setProperties(new HashMap<String, Property>());
+				      }
 				      else
 				      {
 				    	  snapshot = new Snapshot();
-				    	  snapshot.getProperties().add(property);
-				    	  snapshot.setParentId(event.getTrackingId());
-						  String snapshotUuid = UUID.randomUUID().toString();
-						  snapshot.setTrackId(snapshotUuid);
-						  snapshot.setType("SNAPSHOT");
 				      }
-				      oldSnapshotName = snapshotName;
+				      snapshot.getProperties().put(propertyName, property);
+				      snapshot.setParentId(event.getTrackingId());
+					  String snapshotUuid = UUID.randomUUID().toString();
+					  snapshot.setTrackId(snapshotUuid);
+					  snapshot.setType("SNAPSHOT");
 				  }
 				  else if (((String)line.get(key)).indexOf("//s") == 0)
 				  {

@@ -8,6 +8,7 @@ import io.swagger.client.model.Snapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,9 +41,9 @@ public class RunApi {
 			property2.setType("String");
 			property2.setValue("value2");
 			
-			List<Property> properties = new ArrayList<Property>();
-			properties.add(property1);
-			properties.add(property2);
+			HashMap<String, Property> properties = new HashMap<String,Property>();
+			properties.put("property1",property1);
+			properties.put("property2",property2);
 			
 			// Post a snapshot
 			Snapshot snapshot = new Snapshot();

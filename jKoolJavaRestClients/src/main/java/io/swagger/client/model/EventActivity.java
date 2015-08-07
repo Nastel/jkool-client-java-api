@@ -46,9 +46,9 @@ public class EventActivity {
 	private String msgTag = null;
 	private String parentTrackId = null;
 	private String waitTimeUsec = null;
-	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	private HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
 	private List<Property> properties = new ArrayList<Property>();
-	private List<EventActivity> events = new ArrayList<EventActivity>();
+	private HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
 
 	/**
    **/
@@ -354,11 +354,11 @@ public class EventActivity {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("snapshots")
-	public List<Snapshot> getSnapshots() {
+	public HashMap<String, Snapshot> getSnapshots() {
 		return snapshots;
 	}
 
-	public void setSnapshots(List<Snapshot> snapshots) {
+	public void setSnapshots(HashMap<String, Snapshot> snapshots) {
 		this.snapshots = snapshots;
 	}
 
@@ -504,11 +504,11 @@ public class EventActivity {
 	
 	
 
-	public List<EventActivity> getEvents() {
+	public HashMap<String, EventActivity> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<EventActivity> events) {
+	public void setEvents(HashMap<String, EventActivity> events) {
 		this.events = events;
 	}
 

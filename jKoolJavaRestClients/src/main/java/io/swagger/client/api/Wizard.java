@@ -144,18 +144,20 @@ public class Wizard {
 				  activity.setEvents(new HashMap<String, EventActivity>());
 			  }
 			  EventActivity event = activity.getEvents().get((String)line.get("ETrId"));
+			  if (event == null)
+				  event = new EventActivity();
 			  Iterator iKeyset = line.keySet().iterator();
 			  while (iKeyset.hasNext())
 			  {
-				  String key = (String)line.get(iKeyset.next());
-				  if (key.equals("sourceFQN") && line.get("ATrId") == null && line.get("ETrId") != null) // make generic for all pre-defined jKool fields
+				  String key = (String)iKeyset.next();
+				  if (key.equals("status") && line.get("ATrId") == null && line.get("ETrId") != null) // make generic for all pre-defined jKool fields
 				  {
-					  event.setSourceFqn((String)line.get("sourceFQN"));
+					  event.setSourceFqn((String)line.get("status"));
 				  }
-				  else if (((String)line.get(key)).indexOf("/string/") > 0) // this is a snapshot property
+				  else if (key.indexOf("/string/") > 0) // this is a snapshot property
 				  {
-					  String snapshotName = ((String)line.get(key)).substring(0, ((String)line.get(key)).indexOf("/string/"));
-					  String propertyName = ((String)line.get(key)).substring(((String)line.get(key)).indexOf("/string/"), ((String)line.get(key)).length());
+					  String snapshotName = key.substring(0, key.indexOf("/string/"));
+					  String propertyName = key.substring(key.indexOf("/string/") + 8, key.length());
 					  if (event.getSnapshots() == null)
 						  event.setSnapshots(new HashMap<String, Snapshot>());
 					  HashMap<String, Snapshot> snapshots = event.getSnapshots();
@@ -167,7 +169,7 @@ public class Wizard {
 				      if (snapshots.get(snapshotName) != null)
 				      {
 				    	  snapshot = snapshots.get(snapshotName);
-				    	  snapshot.setProperties(new HashMap<String, Property>());
+				    	  snapshot.getProperties().put(propertyName, property);
 				      }
 				      else
 				      {
@@ -178,8 +180,9 @@ public class Wizard {
 					  String snapshotUuid = UUID.randomUUID().toString();
 					  snapshot.setTrackId(snapshotUuid);
 					  snapshot.setType("SNAPSHOT");
+					  snapshots.put(snapshotName, snapshot);
 				  }
-				  else if (((String)line.get(key)).indexOf("//s") == 0)
+				  else if (key.indexOf("/string/") == 0)
 				  {
 					  Property property = new Property();
 					  property.setName((String)line.get(key));
@@ -187,7 +190,11 @@ public class Wizard {
 				      property.setType("string");
 				      event.getProperties().add(property);
 				  }
+				  activity.getEvents().put((String)line.get("ETrId"), event);
+				  massagedData.put((String)line.get("ATrId"), activity);
+				  
 			  }
+
 		  }
 		  return massagedData;
 	  }

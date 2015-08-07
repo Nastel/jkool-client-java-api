@@ -47,6 +47,8 @@ public class EventActivity {
 	private String parentTrackId = null;
 	private String waitTimeUsec = null;
 	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	private List<Property> properties = new ArrayList<Property>();
+	private List<EventActivity> events = new ArrayList<EventActivity>();
 
 	/**
    **/
@@ -488,6 +490,26 @@ public class EventActivity {
 	@JsonProperty("waitTimeUsec")
 	public String getWaitTimeUsec() {
 		return waitTimeUsec;
+	}
+	
+	
+
+	public List<Property> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
+	}
+	
+	
+
+	public List<EventActivity> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<EventActivity> events) {
+		this.events = events;
 	}
 
 	public void setWaitTimeUsec(String waitTimeUsec) {

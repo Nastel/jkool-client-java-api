@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 @SuppressWarnings("rawtypes")
 public class Wizard {
 	
-	//private static String todaysDate = (new Date()).getTime() + "000";
+	private static String todaysDate = (new Date()).getTime() + "000";
 	public static final Set<String> JKOOL_FIELDS = new HashSet<String>(Arrays.asList("status","source","sourceInfo","sourceUrl"));
 	
 	public static void main(String[] args) {
@@ -39,30 +40,52 @@ public class Wizard {
 			Builder builder;
 			Client client = Client.create();
 			ClientResponse response = null;
-			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
-			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", args[0]);
+			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";		
 		
-			Iterator iKeys = massagedData.keySet().iterator();
-			while (iKeys.hasNext())
+			Iterator iActivityKeys = massagedData.keySet().iterator();
+			// Loop on activities
+			while (iActivityKeys.hasNext())
 			{
-				String key = (String)iKeys.next();
-				EventActivity activity = (EventActivity)massagedData.get(key);
+				String activityKey = (String)iActivityKeys.next();
+				EventActivity activity = (EventActivity)massagedData.get(activityKey);
+				Iterator iEventKeys = activity.getEvents().keySet().iterator();
+				// Loop on events
 				for (int i = 0; i < activity.getEvents().size(); i++)
 				{
-					EventActivity event = (EventActivity)activity.getEvents().get(i);
+					EventActivity event = (EventActivity)activity.getEvents().get(iEventKeys.next());
+					// Loop on snapshots
+					Iterator iSnapshotKeys = event.getSnapshots().keySet().iterator();
+					ArrayList listOfSnapshots = new ArrayList();
 					for (int j=0; j < event.getSnapshots().size(); j++)
 					{
-						Snapshot snapshot = event.getSnapshots().get(j);
+						Snapshot snapshot = event.getSnapshots().get(iSnapshotKeys.next());
 						snapshot.setCount(snapshot.getProperties().size());
+						snapshot.setTimeUsec(todaysDate);
+						snapshot.setType("SNAPSHOT");
+						String snapshotUuid = UUID.randomUUID().toString();
+						snapshot.setTrackId(snapshotUuid);
 						snapshot.setFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
-						builder.type("application/json").post(ClientResponse.class, serialize(snapshot));
+						HashMap snapshotMap = new HashMap();
+						snapshotMap.put(snapshot.getName(),snapshot);
+						listOfSnapshots.add(snapshot);
+					//	builder = client.resource(basePath).accept("application/json");
+					//	builder = builder.header("token", args[0]);
+					//	builder.type("application/json").post(ClientResponse.class, serialize(listOfSnapshots));
 					}
+					event.setTimeUsec(todaysDate);
+					event.setSnapshotList(listOfSnapshots);
+					event.setType("EVENT");
 					event.setSnapCount(event.getSnapshots().size());
 					event.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
+					builder = client.resource(basePath).accept("application/json");
+					builder = builder.header("token", args[0]);
 					builder.type("application/json").post(ClientResponse.class, serialize(event));
 				}
+				activity.setTimeUsec(todaysDate);
+				activity.setType("ACTIVITY");
 				activity.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
+				builder = client.resource(basePath).accept("application/json");
+				builder = builder.header("token", args[0]);
 				builder.type("application/json").post(ClientResponse.class, serialize(activity));
 			}
 			
@@ -87,6 +110,8 @@ public class Wizard {
 	      throw new ApiException(500, e.getMessage());
 	    }
 	  }
+	  
+	  
 	  
 	  public static List readFile(String fileName) {
 
@@ -140,24 +165,39 @@ public class Wizard {
 		  HashMap<String, EventActivity> massagedData = new HashMap<String, EventActivity>();
 		  for(int cnt=0;cnt< lines.size(); cnt++)
 		  {
+			  // Read the line
 			  HashMap line = (HashMap)lines.get(cnt);
+			  // Get or create the activity.
 			  if (massagedData.get(line.get("ATrId")) == null)
 				  massagedData.put((String)line.get("ATrId"), new EventActivity());
+			  // Get or create the event.
 			  EventActivity activity = massagedData.get(line.get("ATrId"));
+			  activity.setActivityName((String)line.get("ATrId"));
+			  String activityUuid = UUID.randomUUID().toString();
+			  activity.setTrackingId(activityUuid);
 			  if (activity.getEvents().get(line.get("ETrId")) == null)
 			  {
 				  activity.getEvents().put((String)line.get("ETrId"), new EventActivity());
 			  }
 			  EventActivity event = activity.getEvents().get((String)line.get("ETrId"));
+			  //event.setTrackingId((String)line.get("ETrId"));
+			  event.setParentTrackId(activityUuid);
+			  event.setEventName((String)line.get("ETrId"));
+			  String eventUuid = UUID.randomUUID().toString();
+			  event.setTrackingId(eventUuid);
+			  
 			  Iterator iKeyset = line.keySet().iterator();
+			  // Loop through each field of the line.
 			  while (iKeyset.hasNext())
 			  {
 				  String key = (String)iKeyset.next();
+				  // predefined jKool fields
 				  if (JKOOL_FIELDS.contains(key)&& line.get("ETrId") != null) // make generic for all pre-defined jKool fields
 				  {
 					  event.setStatus((String)line.get(key));
 				  }
-				  else if (key.indexOf("/string/") > 0) // this is a snapshot property
+				  // snapshot property
+				  else if (key.indexOf("/string/") > 0) 
 				  {
 					  String snapshotName = key.substring(0, key.indexOf("/string/"));
 					  String propertyName = key.substring(key.indexOf("/string/") + 8, key.length());
@@ -172,19 +212,23 @@ public class Wizard {
 				      if (snapshots.get(snapshotName) != null)
 				      {
 				    	  snapshot = snapshots.get(snapshotName);
-				    	  snapshot.getProperties().put(propertyName, property);
+				    	  //snapshot.getProperties().put(propertyName, property);
 				      }
 				      else
 				      {
 				    	  snapshot = new Snapshot();
+				    	  snapshot.setProperties(new ArrayList<HashMap>());
 				      }
-				      snapshot.getProperties().put(propertyName, property);
+				      snapshot.getProperties().add(property);
 				      snapshot.setParentId(event.getTrackingId());
 					  String snapshotUuid = UUID.randomUUID().toString();
 					  snapshot.setTrackId(snapshotUuid);
 					  snapshot.setType("SNAPSHOT");
+					  snapshot.setName(snapshotName);
+					  snapshot.setParentId(eventUuid);
 					  event.getSnapshots().put(snapshotName, snapshot);
 				  }
+				  // event property
 				  else if ((!JKOOL_FIELDS.contains(key)) && key.indexOf("p-string/") > -1)
 				  {
 					  Property property = new Property();

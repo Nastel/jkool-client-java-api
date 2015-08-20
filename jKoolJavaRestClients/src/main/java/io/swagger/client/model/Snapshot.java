@@ -20,7 +20,8 @@ public class Snapshot  {
   private String severityNo = null;
   private String type = null;
   private String typeNo = null;
-  private HashMap<String, Property> properties = new HashMap<String, Property>() ;
+  //private HashMap<String, Property> properties; 
+  private List properties;
   private String trackId = null;
   private String source = null;
   private String sourcdFqn = null;
@@ -151,10 +152,12 @@ public class Snapshot  {
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("properties")
-  public HashMap<String, Property> getProperties() {
+ // public HashMap<String, Property> getProperties() {
+  public List getProperties() {
     return properties;
   }
-  public void setProperties(HashMap<String, Property> properties) {
+  //public void setProperties(HashMap<String, Property> properties) {
+  public void setProperties(List properties) {
     this.properties = properties;
   }
 

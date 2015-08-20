@@ -25,7 +25,6 @@ public class EventActivity {
 	private Integer compCodeNo = null;
 	private Integer reasonCode = null;
 	private String location = null;
-	private String operation = null;
 	private String user = null;
 	private String timeUsec = null;
 	private String startTimeUsec = null;
@@ -46,8 +45,11 @@ public class EventActivity {
 	private String msgTag = null;
 	private String parentTrackId = null;
 	private String waitTimeUsec = null;
+	private String eventName = null;
+	private String activityName = null;
 	private HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
 	private List<Property> properties = new ArrayList<Property>();
+	private List<Snapshot> snapshotList = new ArrayList<Snapshot>();
 	private HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
 
 	/**
@@ -242,17 +244,6 @@ public class EventActivity {
 		this.location = location;
 	}
 
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("operation")
-	public String getOperation() {
-		return operation;
-	}
-
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
 
 	/**
    **/
@@ -350,10 +341,6 @@ public class EventActivity {
 		this.idSet = idSet;
 	}
 
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("snapshots")
 	public HashMap<String, Snapshot> getSnapshots() {
 		return snapshots;
 	}
@@ -515,6 +502,45 @@ public class EventActivity {
 	public void setWaitTimeUsec(String waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
 	}
+	
+	
+	
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("operation")
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+	
+	
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("ActivityName")
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
+	
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("snapshots")
+	public List<Snapshot> getSnapshotList() {
+		return snapshotList;
+	}
+
+	public void setSnapshotList(List<Snapshot> snapshotList) {
+		this.snapshotList = snapshotList;
+	}
 
 	@Override
 	public String toString() {
@@ -537,7 +563,7 @@ public class EventActivity {
 		sb.append("  compCodeNo: ").append(compCodeNo).append("\n");
 		sb.append("  reasonCode: ").append(reasonCode).append("\n");
 		sb.append("  location: ").append(location).append("\n");
-		sb.append("  operation: ").append(operation).append("\n");
+		sb.append("  operation: ").append(eventName).append("\n");
 		sb.append("  user: ").append(user).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 		sb.append("  startTimeUsec: ").append(startTimeUsec).append("\n");

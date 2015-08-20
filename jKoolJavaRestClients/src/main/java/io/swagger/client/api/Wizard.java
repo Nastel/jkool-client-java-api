@@ -9,6 +9,8 @@ import io.swagger.client.model.Snapshot;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -27,8 +30,11 @@ import com.sun.jersey.api.client.WebResource.Builder;
 @SuppressWarnings("rawtypes")
 public class Wizard {
 	
-	private static String todaysDate = (new Date()).getTime() + "000";
+
 	public static final Set<String> JKOOL_FIELDS = new HashSet<String>(Arrays.asList("status","source","sourceInfo","sourceUrl"));
+	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+	
 	
 	public static void main(String[] args) {
 		try
@@ -60,29 +66,28 @@ public class Wizard {
 					{
 						Snapshot snapshot = event.getSnapshots().get(iSnapshotKeys.next());
 						snapshot.setCount(snapshot.getProperties().size());
-						snapshot.setTimeUsec(todaysDate);
 						snapshot.setType("SNAPSHOT");
 						String snapshotUuid = UUID.randomUUID().toString();
 						snapshot.setTrackId(snapshotUuid);
 						snapshot.setFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
-						HashMap snapshotMap = new HashMap();
-						snapshotMap.put(snapshot.getName(),snapshot);
 						listOfSnapshots.add(snapshot);
 					//	builder = client.resource(basePath).accept("application/json");
 					//	builder = builder.header("token", args[0]);
 					//	builder.type("application/json").post(ClientResponse.class, serialize(listOfSnapshots));
 					}
-					event.setTimeUsec(todaysDate);
 					event.setSnapshotList(listOfSnapshots);
 					event.setType("EVENT");
-					event.setSnapCount(event.getSnapshots().size());
+					event.setSnapCount(event.getSnapshotList().size());
 					event.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 					builder = client.resource(basePath).accept("application/json");
 					builder = builder.header("token", args[0]);
 					builder.type("application/json").post(ClientResponse.class, serialize(event));
 				}
-				activity.setTimeUsec(todaysDate);
 				activity.setType("ACTIVITY");
+				activity.setEvents(null);
+				activity.setSnapshots(null);
+				activity.setSnapCount(0);
+				activity.setStatus("END");
 				activity.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 				builder = client.resource(basePath).accept("application/json");
 				builder = builder.header("token", args[0]);
@@ -162,17 +167,32 @@ public class Wizard {
 	  public static HashMap massageData(ArrayList lines)
 	  {
 		  Snapshot snapshot = null;
+		  String todaysDate = null;
 		  HashMap<String, EventActivity> massagedData = new HashMap<String, EventActivity>();
 		  for(int cnt=0;cnt< lines.size(); cnt++)
 		  {
 			  // Read the line
 			  HashMap line = (HashMap)lines.get(cnt);
+			  
+			  // Get the date
+			  try
+			  {
+				  Date date = format.parse((String)line.get("Time"));
+				  todaysDate = date.getTime() + "000";
+			  }
+			  catch (Exception e)
+			  {
+				  
+			  }
+			  
+			  
 			  // Get or create the activity.
 			  if (massagedData.get(line.get("ATrId")) == null)
 				  massagedData.put((String)line.get("ATrId"), new EventActivity());
 			  // Get or create the event.
 			  EventActivity activity = massagedData.get(line.get("ATrId"));
-			  activity.setActivityName((String)line.get("ATrId"));
+			  activity.setEventName((String)line.get("ATrId"));
+			  activity.setTimeUsec(todaysDate);
 			  String activityUuid = UUID.randomUUID().toString();
 			  activity.setTrackingId(activityUuid);
 			  if (activity.getEvents().get(line.get("ETrId")) == null)
@@ -183,6 +203,7 @@ public class Wizard {
 			  //event.setTrackingId((String)line.get("ETrId"));
 			  event.setParentTrackId(activityUuid);
 			  event.setEventName((String)line.get("ETrId"));
+			  event.setTimeUsec(todaysDate);
 			  String eventUuid = UUID.randomUUID().toString();
 			  event.setTrackingId(eventUuid);
 			  
@@ -220,12 +241,12 @@ public class Wizard {
 				    	  snapshot.setProperties(new ArrayList<HashMap>());
 				      }
 				      snapshot.getProperties().add(property);
-				      snapshot.setParentId(event.getTrackingId());
 					  String snapshotUuid = UUID.randomUUID().toString();
 					  snapshot.setTrackId(snapshotUuid);
 					  snapshot.setType("SNAPSHOT");
 					  snapshot.setName(snapshotName);
 					  snapshot.setParentId(eventUuid);
+					  snapshot.setTimeUsec(todaysDate);
 					  event.getSnapshots().put(snapshotName, snapshot);
 				  }
 				  // event property

@@ -9,6 +9,7 @@ import io.swagger.client.model.Snapshot;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ import java.util.UUID;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.org.apache.bcel.internal.generic.Type;
 
 @SuppressWarnings("rawtypes")
 public class Wizard {
 	
 
-	public static final Set<String> JKOOL_FIELDS = new HashSet<String>(Arrays.asList("status","source","sourceInfo","sourceUrl"));
+	public static final Set<String> JKOOL_FIELDS = new HashSet<String>(Arrays.asList("status","source","sourceInfo","sourceUrl","severity","severityNo","type","typeNo","pid","tid","compCode","compCodeNo","reasonCode","location","user","timeUsec","startTimeUsec","endTimeUsec","elapsedTimeUsec","idCount","snapCount","idSet","msgText","msgSize","msgEncoding","msgCharset","corrId","resource","msgMimeType","msgAge","Exception","msgTag","parentTrackId","waitTimeUsec"));
+	
 	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
 	
@@ -59,6 +62,7 @@ public class Wizard {
 				for (int i = 0; i < activity.getEvents().size(); i++)
 				{
 					EventActivity event = (EventActivity)activity.getEvents().get(iEventKeys.next());
+					
 					// Loop on snapshots
 					Iterator iSnapshotKeys = event.getSnapshots().keySet().iterator();
 					ArrayList listOfSnapshots = new ArrayList();
@@ -66,28 +70,19 @@ public class Wizard {
 					{
 						Snapshot snapshot = event.getSnapshots().get(iSnapshotKeys.next());
 						snapshot.setCount(snapshot.getProperties().size());
-						snapshot.setType("SNAPSHOT");
-						String snapshotUuid = UUID.randomUUID().toString();
-						snapshot.setTrackId(snapshotUuid);
 						snapshot.setFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 						listOfSnapshots.add(snapshot);
-					//	builder = client.resource(basePath).accept("application/json");
-					//	builder = builder.header("token", args[0]);
-					//	builder.type("application/json").post(ClientResponse.class, serialize(listOfSnapshots));
 					}
 					event.setSnapshotList(listOfSnapshots);
-					event.setType("EVENT");
 					event.setSnapCount(event.getSnapshotList().size());
 					event.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 					builder = client.resource(basePath).accept("application/json");
 					builder = builder.header("token", args[0]);
 					builder.type("application/json").post(ClientResponse.class, serialize(event));
 				}
-				activity.setType("ACTIVITY");
 				activity.setEvents(null);
 				activity.setSnapshots(null);
 				activity.setSnapCount(0);
-				activity.setStatus("END");
 				activity.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 				builder = client.resource(basePath).accept("application/json");
 				builder = builder.header("token", args[0]);
@@ -179,43 +174,48 @@ public class Wizard {
 			  {
 				  Date date = format.parse((String)line.get("Time"));
 				  todaysDate = date.getTime() + "000";
-			  }
-			  catch (Exception e)
-			  {
-				  
-			  }
-			  
-			  
-			  // Get or create the activity.
+			
+
+			  // Get/Create the activity and set fields on it.
 			  if (massagedData.get(line.get("ATrId")) == null)
 				  massagedData.put((String)line.get("ATrId"), new EventActivity());
-			  // Get or create the event.
 			  EventActivity activity = massagedData.get(line.get("ATrId"));
 			  activity.setEventName((String)line.get("ATrId"));
+			  activity.setType("ACTIVITY");
+			  activity.setStatus("END");
 			  activity.setTimeUsec(todaysDate);
 			  String activityUuid = UUID.randomUUID().toString();
 			  activity.setTrackingId(activityUuid);
+			  
+			  // Get/Create the event and set fields on it.
 			  if (activity.getEvents().get(line.get("ETrId")) == null)
 			  {
 				  activity.getEvents().put((String)line.get("ETrId"), new EventActivity());
 			  }
 			  EventActivity event = activity.getEvents().get((String)line.get("ETrId"));
-			  //event.setTrackingId((String)line.get("ETrId"));
+			  event.setType("EVENT");
 			  event.setParentTrackId(activityUuid);
 			  event.setEventName((String)line.get("ETrId"));
 			  event.setTimeUsec(todaysDate);
 			  String eventUuid = UUID.randomUUID().toString();
 			  event.setTrackingId(eventUuid);
 			  
-			  Iterator iKeyset = line.keySet().iterator();
 			  // Loop through each field of the line.
+			  Iterator iKeyset = line.keySet().iterator();
 			  while (iKeyset.hasNext())
 			  {
 				  String key = (String)iKeyset.next();
-				  // predefined jKool fields
+				  // predefined jKool fields (uses reflection to set)
 				  if (JKOOL_FIELDS.contains(key)&& line.get("ETrId") != null) // make generic for all pre-defined jKool fields
 				  {
-					  event.setStatus((String)line.get(key));
+					  //event.setStatus((String)line.get(key));
+					  Class  aClass = EventActivity.class;
+					  Field field = aClass.getField(key);
+					  String fieldType = field.getType().getName();
+					  if (fieldType.equals("java.lang.String"))
+						  field.set(event, (String)line.get(key));
+					  else if (fieldType.equals("java.lang.Integer"))
+						  field.set(event,(Integer)line.get(key));
 				  }
 				  // snapshot property
 				  else if (key.indexOf("/string/") > 0) 
@@ -233,20 +233,19 @@ public class Wizard {
 				      if (snapshots.get(snapshotName) != null)
 				      {
 				    	  snapshot = snapshots.get(snapshotName);
-				    	  //snapshot.getProperties().put(propertyName, property);
 				      }
 				      else
 				      {
 				    	  snapshot = new Snapshot();
 				    	  snapshot.setProperties(new ArrayList<HashMap>());
+				    	  String snapshotUuid = UUID.randomUUID().toString();
+						  snapshot.setTrackId(snapshotUuid);
+						  snapshot.setType("SNAPSHOT");
+						  snapshot.setTimeUsec(todaysDate);
+						  snapshot.setName(snapshotName);
+						  snapshot.setParentId(eventUuid);
 				      }
 				      snapshot.getProperties().add(property);
-					  String snapshotUuid = UUID.randomUUID().toString();
-					  snapshot.setTrackId(snapshotUuid);
-					  snapshot.setType("SNAPSHOT");
-					  snapshot.setName(snapshotName);
-					  snapshot.setParentId(eventUuid);
-					  snapshot.setTimeUsec(todaysDate);
 					  event.getSnapshots().put(snapshotName, snapshot);
 				  }
 				  // event property
@@ -258,12 +257,16 @@ public class Wizard {
 				      property.setType("string");
 				      event.getProperties().add(property);
 				  }
-				  activity.getEvents().put((String)line.get("ETrId"), event);
-				  massagedData.put((String)line.get("ATrId"), activity);
-				  
 			  }
+			  activity.getEvents().put((String)line.get("ETrId"), event);
+			  massagedData.put((String)line.get("ATrId"), activity);
 
 		  }
+
+		  catch (Exception e)
+		  {
+			  e.printStackTrace();
+		  }}
 		  return massagedData;
 	  }
 

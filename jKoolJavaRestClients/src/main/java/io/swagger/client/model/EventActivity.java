@@ -15,7 +15,7 @@ public class EventActivity {
 	private String sourceInfo = null;
 	private String sourceUrl = null;
 	private String status = null;
-	private String severity = null;
+	public String severity = null;
 	private Integer severityNo = null;
 	private String type = null;
 	private Integer typeNo = null;

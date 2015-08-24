@@ -9,48 +9,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @ApiModel(description = "")
 public class EventActivity {
 
-	private String trackingId = null;
-	private String source = null;
-	private String sourceFqn = null;
-	private String sourceInfo = null;
-	private String sourceUrl = null;
-	private String status = null;
+	public String trackingId = null;
+	public String source = null;
+	public String sourceFqn = null;
+	public String sourceInfo = null;
+	public String sourceUrl = null;
+	public String status = null;
 	public String severity = null;
-	private Integer severityNo = null;
-	private String type = null;
-	private Integer typeNo = null;
-	private Integer pid = null;
-	private Integer tid = null;
-	private String compCode = null;
-	private Integer compCodeNo = null;
-	private Integer reasonCode = null;
-	private String location = null;
-	private String user = null;
-	private String timeUsec = null;
-	private String startTimeUsec = null;
-	private String endTimeUsec = null;
-	private Integer elapsedTimeUsec = null;
-	private String idCount = null;
-	private Integer snapCount = null;
-	private String idSet = null;
-	private String msgText = null;
-	private Integer msgSize = 0;
-	private String msgEncoding = null;
-	private String msgCharset = null;
-	private String corrId = null;
-	private String resource = null;
-	private String msgMimeType = null;
-	private Integer msgAge = null;
-	private String Exception = null;
-	private String msgTag = null;
-	private String parentTrackId = null;
-	private String waitTimeUsec = null;
-	private String eventName = null;
-	private String activityName = null;
-	//private HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
-	private List<Property> properties = new ArrayList<Property>();
-	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
-	private HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
+	public Integer severityNo = null;
+	public String type = null;
+	public Integer typeNo = null;
+	public Integer pid = null;
+	public Integer tid = null;
+	public String compCode = null;
+	public Integer compCodeNo = null;
+	public Integer reasonCode = null;
+	public String location = null;
+	public String user = null;
+	public String timeUsec = null;
+	public String startTimeUsec = null;
+	public String endTimeUsec = null;
+	public Integer elapsedTimeUsec = null;
+	public String idCount = null;
+	public Integer snapCount = null;
+	public String idSet = null;
+	public String msgText = null;
+	public Integer msgSize = 0;
+	public String msgEncoding = null;
+	public String msgCharset = null;
+	public String corrId = null;
+	public String resource = null;
+	public String msgMimeType = null;
+	public Integer msgAge = null;
+	public String exception = null;
+	public String msgTag = null;
+	public String parentTrackId = null;
+	public String waitTimeUsec = null;
+	public String eventName = null;
+	public String activityName = null;
+	//public HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
+	public List<Property> properties = new ArrayList<Property>();
+	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	public HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
 
 	/**
    **/
@@ -451,11 +451,11 @@ public class EventActivity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("exception")
 	public String getException() {
-		return Exception;
+		return exception;
 	}
 
 	public void setException(String exception) {
-		Exception = exception;
+		exception = exception;
 	}
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-tag")

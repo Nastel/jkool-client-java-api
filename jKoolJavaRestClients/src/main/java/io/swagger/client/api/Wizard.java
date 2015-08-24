@@ -32,7 +32,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 public class Wizard {
 	
 
-	public static final Set<String> JKOOL_EVENT_FIELDS = new HashSet<String>(Arrays.asList("source","sourceInfo","sourceUrl","severity","severityNo","type","typeNo","pid","tid","compCode","compCodeNo","reasonCode","location","user","timeUsec","startTimeUsec","endTimeUsec","elapsedTimeUsec","idCount","snapCount","idSet","msgText","msgSize","msgEncoding","msgCharset","corrId","resource","msgMimeType","msgAge","Exception","msgTag","parentTrackId","waitTimeUsec"));
+	public static final Set<String> JKOOL_EVENT_FIELDS = new HashSet<String>(Arrays.asList("source","sourceInfo","sourceUrl","severity","type","typeNo","pid","tid","comCode","reasoCode","location","user","timeUsec","startTimeUsec","endTime-Usec","idCount","snapCount","idSet","msgText","msgSize","msgEncoding","msgCharset","corrid","resource","msgMimeType","msgAge","exception","msgTag","waitTimeUsec"));
 	//public static final Set<String> JKOOL_ACTIVITY_FIELDS = new HashSet<String>(Arrays.asList("source","sourceInfo","sourceUrl","severity","severityNo","type","typeNo","pid","tid","compCode","compCodeNo","reasonCode","location","user","timeUsec","startTimeUsec","endTimeUsec","elapsedTimeUsec","idCount","snapCount","idSet","idCount","idSet","status","corrId","resource","msgMimeType","msgAge","Exception","msgTag","parentTrackId","waitTimeUsec"));
 	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
@@ -217,7 +217,7 @@ public class Wizard {
 						  if (fieldType.equals("java.lang.String"))
 							  field.set(event, (String)line.get(key));
 						  else if (fieldType.equals("java.lang.Integer"))
-							  field.set(event,(Integer)line.get(key));
+							  field.set(event,Integer.parseInt((line.get(key).equals("")) ? "0" : (String)line.get(key)));
 					  }
 					  // All else are snapshot properties
 					  else if (! key.endsWith("ETrId"))

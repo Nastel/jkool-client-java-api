@@ -120,13 +120,15 @@ public class Wizard {
 
 				while ((sCurrentLine = br.readLine()) != null) 
 				{
-					st = new StringTokenizer(sCurrentLine,",");
-					int i = 0;
+					//st = new StringTokenizer(sCurrentLine,",");
+					String[] vals = sCurrentLine.split(",", -1);
+					//int i = 0;
 					line = new HashMap<String, String>();
-					while (st.hasMoreTokens())
+					//while (st.hasMoreTokens())
+					for (int i=0; i < vals.length; i++)
 					{
-						line.put((String)fieldNames.get(i), st.nextToken());
-						i++;
+						//line.put((String)fieldNames.get(i), st.nextToken());
+						line.put((String)fieldNames.get(i), vals[i]);
 					}
 					lines.add(line);
 				}

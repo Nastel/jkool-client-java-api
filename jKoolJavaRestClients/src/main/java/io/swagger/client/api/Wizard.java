@@ -27,7 +27,6 @@ import java.util.UUID;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.org.apache.bcel.internal.generic.Type;
 
 @SuppressWarnings("rawtypes")
 public class Wizard {
@@ -41,8 +40,7 @@ public class Wizard {
 	
 	public static void main(String[] args) {
 		try
-		{
-			
+		{		
 			ArrayList data = (ArrayList)readFile("C:\\Users\\cbernardone\\git\\jKoolRestClients\\jKoolJavaRestClients\\src\\resources\\weather.csv");
 			HashMap massagedData = massageData(data);
 			
@@ -51,21 +49,18 @@ public class Wizard {
 			ClientResponse response = null;
 			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";		
 
-			EventActivity activity = (EventActivity)massagedData.get("activity");
+			EventActivity activity = (EventActivity)massagedData.get("activity"); // One activity per file.
 			Iterator iEventKeys = activity.getEvents().keySet().iterator();
 			// Loop on events
 			for (int i = 0; i < activity.getEvents().size(); i++)
 			{
-				List listOfSnapshots = new ArrayList<Snapshot>();
 				EventActivity event = (EventActivity)activity.getEvents().get(iEventKeys.next());
-				Snapshot snapshot = event.getSnapshots().get("snapshot");
+				Snapshot snapshot = event.getSnapshots().get(0); // One snapshot per event
 				if (snapshot.getProperties().size() > 0)
 				{
 					snapshot.setCount(snapshot.getProperties().size());
 					snapshot.setFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
-					listOfSnapshots.add(snapshot);				
-					event.setSnapshotList(listOfSnapshots);
-					event.setSnapCount(event.getSnapshotList().size());
+					event.setSnapCount(event.getSnapshots().size());
 					event.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 				}
 				builder = client.resource(basePath).accept("application/json");
@@ -103,7 +98,7 @@ public class Wizard {
 	  }
 	  
 	  
-	  
+	  // Read the .csv file.
 	  public static List readFile(String fileName) {
 
 			BufferedReader br = null;
@@ -149,7 +144,7 @@ public class Wizard {
 			}
 
 		}
-
+	  
 	  public static HashMap massageData(ArrayList lines)
 	  {
 		  Snapshot snapshot = null;
@@ -158,6 +153,7 @@ public class Wizard {
 		  String activityUuid = null;
 		  HashMap<String, Object> massagedData = new HashMap<String, Object>();
 		  EventActivity activity = null;
+		  
 		  // Create the activity and set fields on it.
 		  activity = new EventActivity();
 		  activity.setEventName("activity");
@@ -172,7 +168,8 @@ public class Wizard {
 		  for(int cnt=0;cnt< lines.size(); cnt++)
 		  {
 			  EventActivity event = null;
-			  HashMap<String, Snapshot> snapshots = null;
+			  //HashMap<String, Snapshot> snapshots = null;
+			  List<Snapshot> snapshots = new ArrayList<Snapshot>();
 			  
 			  // Read the line
 			  HashMap line = (HashMap)lines.get(cnt);
@@ -180,61 +177,60 @@ public class Wizard {
 			  
 			  try
 			  {
-			  // Get the date
-			  Date date = format.parse((String)line.get("Time"));
-			  todaysDate = date.getTime() + "000";
-
-			  // Get/Create the event and set fields on it.
-			  event = new EventActivity();
-			  event.setType("EVENT");
-			  event.setParentTrackId(activityUuid);
-			  event.setEventName((String)line.get("ETrId"));
-			  event.setTimeUsec(todaysDate);
-			  eventUuid = UUID.randomUUID().toString();
-			  event.setTrackingId(eventUuid);
-			  snapshots = new HashMap<String, Snapshot>();
-			  event.setSnapshots(snapshots);
-			  
-			  // Create the snapshot for the event
-		      snapshot = new Snapshot();
-		      snapshot.setProperties(new ArrayList<HashMap>());
-		      String snapshotUuid = UUID.randomUUID().toString();
-			  snapshot.setTrackId(snapshotUuid);
-			  snapshot.setType("SNAPSHOT");
-			  snapshot.setTimeUsec(todaysDate);
-			  snapshot.setName("snapshot");
-			  snapshot.setParentId(eventUuid);
-			   
-			  // Loop through each field of the line.
-			  Iterator iKeyset = line.keySet().iterator();
-			  while (iKeyset.hasNext())
-			  {
-				  String key = (String)iKeyset.next();
-				  // predefined jKool event fields (uses reflection to set)
-				  if (JKOOL_EVENT_FIELDS.contains(key)&& line.get("ETrId") != null) 
+				  // Get the date
+				  Date date = format.parse((String)line.get("Time"));
+				  todaysDate = date.getTime() + "000";
+	
+				  // Get/Create the event and set fields on it.
+				  event = new EventActivity();
+				  event.setType("EVENT");
+				  event.setParentTrackId(activityUuid);
+				  event.setEventName((String)line.get("ETrId"));
+				  event.setTimeUsec(todaysDate);
+				  eventUuid = UUID.randomUUID().toString();
+				  event.setTrackingId(eventUuid);
+				  event.setSnapshots(snapshots);
+				  
+				  // Create the snapshot for the event
+			      snapshot = new Snapshot();
+			      snapshot.setProperties(new ArrayList<HashMap>());
+			      String snapshotUuid = UUID.randomUUID().toString();
+				  snapshot.setTrackId(snapshotUuid);
+				  snapshot.setType("SNAPSHOT");
+				  snapshot.setTimeUsec(todaysDate);
+				  snapshot.setName("snapshot");
+				  snapshot.setParentId(eventUuid);
+				   
+				  // Loop through each field of the line.
+				  Iterator iKeyset = line.keySet().iterator();
+				  while (iKeyset.hasNext())
 				  {
-					  Class  aClass = EventActivity.class;
-					  Field field = aClass.getField(key);
-					  String fieldType = field.getType().getName();
-					  if (fieldType.equals("java.lang.String"))
-						  field.set(event, (String)line.get(key));
-					  else if (fieldType.equals("java.lang.Integer"))
-						  field.set(event,(Integer)line.get(key));
+					  String key = (String)iKeyset.next();
+					  // Predefined jKool event fields (uses reflection to set)
+					  if (JKOOL_EVENT_FIELDS.contains(key)&& line.get("ETrId") != null) 
+					  {
+						  Class  aClass = EventActivity.class;
+						  Field field = aClass.getField(key);
+						  String fieldType = field.getType().getName();
+						  if (fieldType.equals("java.lang.String"))
+							  field.set(event, (String)line.get(key));
+						  else if (fieldType.equals("java.lang.Integer"))
+							  field.set(event,(Integer)line.get(key));
+					  }
+					  // All else are snapshot properties
+					  else if (! key.endsWith("ETrId"))
+					  {
+						  Property property = new Property();
+						  property.setName(key);
+					      property.setValue((String)line.get(key));
+					      property.setType("string"); // Use logic here.
+					      snapshot.getProperties().add(property);
+					  }
 				  }
-				  // snapshot properties
-				  else if (! key.endsWith("ETrId"))
-				  {
-					  Property property = new Property();
-					  property.setName(key);
-				      property.setValue((String)line.get(key));
-				      property.setType("string"); // Use logic here.
-				      snapshot.getProperties().add(property);
-				  }
-			  }
-
-			  event.getSnapshots().put("snapshot", snapshot);
-			  activity.setTimeUsec(todaysDate);
-			  activity.getEvents().put((String)line.get("ETrId"), event);
+	
+				  event.getSnapshots().add(snapshot);
+				  activity.setTimeUsec(todaysDate);
+				  activity.getEvents().put((String)line.get("ETrId"), event);
 		  }
 
 		  catch (Exception e)

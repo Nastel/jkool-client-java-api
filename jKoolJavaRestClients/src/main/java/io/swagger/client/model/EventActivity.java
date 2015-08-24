@@ -47,9 +47,9 @@ public class EventActivity {
 	private String waitTimeUsec = null;
 	private String eventName = null;
 	private String activityName = null;
-	private HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
+	//private HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
 	private List<Property> properties = new ArrayList<Property>();
-	private List<Snapshot> snapshotList = new ArrayList<Snapshot>();
+	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
 	private HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
 
 	/**
@@ -341,11 +341,15 @@ public class EventActivity {
 		this.idSet = idSet;
 	}
 
-	public HashMap<String, Snapshot> getSnapshots() {
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("snapshots")
+	public List<Snapshot> getSnapshots() {
 		return snapshots;
 	}
 
-	public void setSnapshots(HashMap<String, Snapshot> snapshots) {
+	public void setSnapshots(List<Snapshot> snapshots) {
 		this.snapshots = snapshots;
 	}
 
@@ -530,17 +534,7 @@ public class EventActivity {
 		this.activityName = activityName;
 	}
 	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("snapshots")
-	public List<Snapshot> getSnapshotList() {
-		return snapshotList;
-	}
 
-	public void setSnapshotList(List<Snapshot> snapshotList) {
-		this.snapshotList = snapshotList;
-	}
 
 	@Override
 	public String toString() {

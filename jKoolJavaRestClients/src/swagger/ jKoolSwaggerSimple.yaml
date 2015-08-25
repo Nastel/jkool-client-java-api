@@ -28,9 +28,13 @@ paths:
         - application/json
       responses:
         '200':
-          description: jKool response
+          description: jKool response if an event was streamed
           schema:
             $ref: '#/definitions/event'
+        '201':
+          description : jKool response if an activity was streamed            
+          schema:
+            $ref: '#/definitions/activity'
         default:
           description: unexpected error
           schema:
@@ -187,6 +191,26 @@ definitions:
        value:
         type: string
         description: Value of custom field.
+  activity:
+    required:
+      - tracking-id
+      - operation
+      - time-usec
+      - status
+    properties:
+      tracking-id:
+        type: string
+        description: The unique identifier of this activity.
+      operation:
+        type: string
+        description: The name of this activity.
+      time-usec:
+        type: string
+        format: date-time
+        description: Time this activity is reported.
+      status:
+        type: string
+        description: The status of this activity. Please see documentation for details.
   errorModel:
     required:
       - code

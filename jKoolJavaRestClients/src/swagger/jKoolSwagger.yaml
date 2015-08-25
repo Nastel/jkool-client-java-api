@@ -51,6 +51,7 @@ definitions:
         type: string
       wait-time-used:
         type: integer
+        format: int32
       source:
         type: string
       source-fqn:
@@ -63,6 +64,7 @@ definitions:
         type: string
       severity:
         type: integer
+        format: int32
       severity-no:
         type: string
       type:
@@ -108,21 +110,23 @@ definitions:
         format: int32
       id-set:
         type: string
-      msg-text
+      msg-text:
         type: string
-      msg-size
-        type: int32
-      msg-encoding
+      msg-size:
+        type: integer
+        format: int32
+      msg-encoding:
         type: string
-      msg-char-set
+      msg-char-set:
         type: string
-      msg-mime-type
+      msg-mime-type:
         type: string
-      msg-age
-        type: int32
-      msg-tag
+      msg-age:
+        type: integer
+        format: int32
+      msg-tag:
         type: string
-      parent-tracking-id
+      parent-tracking-id:
         type: string
       snapshots:
         type: array
@@ -176,10 +180,10 @@ definitions:
       - name
       - type
       - value
-     properties:
-       name:
+    properties:
+      name:
         type: string
-       type:
+      type:
         type: string
       value:
         type: string

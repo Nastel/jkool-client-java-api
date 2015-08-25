@@ -44,34 +44,36 @@ definitions:
     properties:
       tracking-id:
         type: string
-        description: Identifies the data being exchanged (this identifier can be shared among events if they are operating on the same data).
+        description: Identifies the data being exchanged. This identifier can be shared among events if they are operating on the same data.
       corr-id:
         type: string
-        description : An identifier of another event that this event correlates to.
+        description: An identifier of another event that this event correlates to.
       exception:
         type: string
         description: Reason for a failed event.
       resource:
         type: string
-        description: A resource the event acted upon (i.e. - a queue, a file).
+        description: A resource the event acted upon. i.e. a queue or file.
       wait-time-used:
         type: integer
-        description: If a blocking operation how long event is waiting for the data to appear.
+        format: int32
+        description: If a blocking operation, how long the event was waiting for the data to appear.
       source-fqn:
         type: string
-        description: Identifies where the event came from. Must be in the following format: APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3]  Where APPL is the Application the event came from SERVER is the server the event came from and NETADDR is the network (IP) address the event came from. The order of these field is important, it implies containment (application belongs on this server which is on this IP address, etc).
+        description: Identifies where the event came from. Must be in a special format. Please see documentation.
       source-info:
         type: string
         description: Description of the source-fqn.
       source-url:
         type: string
-        description: URL that sourced this event (if the event came from a browser)
+        description: URL that sourced this event. For example, if the event came from a browser.
       severity:
         type: integer
-        description: Severity of this event. Defaults to SUCCESS if not filled in.  Other values can be:  ....
+        format: int32
+        description: Severity of the event. Defaults to SUCCESS. Please see documentation for valid entries.
       type:
         type: string
-        description: Type of record. Must be be one of the following: EVENT, SEND, RECEIVE, ....
+        description: Type of record. Please see documentation for valid entries.
       pid:
         type: integer
         format: int32
@@ -82,14 +84,14 @@ definitions:
         description: Thread identifier.
       comp-code:
         type: string
-        description: Completion code. Must be one of the following: 
+        description: Completion code.
       reason-code:
         type: integer
         format: int32
         description: Numeric reason for the event.
       location:
         type: string
-        description: Location of the event. This can be a Geo-location, file number, etc.
+        description: Location of the event. This can be a Geo Location, file number, etc.
       operation:
         type: string
         description: Name of the event.
@@ -109,6 +111,7 @@ definitions:
         format: date-time
         description: Time the event completed.
       elapsed-time-use:
+        type: integer
         format: int32
         description: Elapsed time between when the event began and when it ended.
       snap-count:
@@ -132,9 +135,9 @@ definitions:
         type: string
         description: Message mime type.
       msg-age:
-        type : integer
+        type: integer
         format: int32
-        description: Message age (how long message was waiting to be processed). Pertains to JMS or other types of messaging.
+        description: Message age how long message was waiting to be processed. Pertains to JMS or other types of messaging.
       msg-tag:
         type: string
         description: Message search label.
@@ -153,7 +156,7 @@ definitions:
     properties:
       name:
         type: string
-        description: Name of the category of custom fields category.
+        description: Name of the category of custom fields.
       count:
         type: integer
         format: int32

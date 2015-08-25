@@ -1,0 +1,216 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: jKool API
+  description: jKool API
+  termsOfService: 'https://www.jkoolcloud.com/company/terms-conditions/'
+  contact:
+    name: Charley Rich
+    email: crich@jkoolcloud.com
+    url: www.jkoolcloud.com
+  license:
+    name: jKool
+    url: 'https://www.jkoolcloud.com/company/privacy-policy/'
+host: 'data.jkoolcloud.com:6580'
+basePath: /jKool
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /JKool_Service:
+    post:
+      description: Creates a event
+      operationId: postData
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: jKool response
+          schema:
+            $ref: '#/definitions/event'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+definitions:
+  event:
+    required:
+      - source-fqn
+      - tracking-id
+      - time-usec
+    properties:
+      tracking-id:
+        type: string
+        description: Unique identifier.
+      corr-id:
+        type: string
+        description : Unique identifier of another event that this event correlates to.
+      exception:
+        type: string
+        description: Reason for a failed event.
+      resource:
+        type: string
+      wait-time-used:
+        type: integer
+      source:
+        type: string
+        description : Source of the event.
+      source-fqn:
+        type: string
+      source-info:
+        type: string
+      source-url:
+        type: string
+        description: URL that sourced this event.
+      status:
+        type: string
+        description: Status of this event. 
+      severity:
+        type: integer
+        description: Severity of this event.
+      type:
+        type: string
+        description: Type of record. Must be ... "EVENT"
+      pid:
+        type: integer
+        format: int32
+        description: Process identifier.
+      tid:
+        type: integer
+        format: int32
+        description: Thread identifier.
+      comp-code:
+        type: string
+        description: Company code.
+      reason-code:
+        type: integer
+        format: int32
+        description: Reason for the event.
+      location:
+        type: string
+        description: Location of the event
+      operation:
+        type: string
+        description: Name of the event.
+      user:
+        type: string
+        description: User that caused the event.
+      time-usec:
+        type: string
+        format: date-time
+        description: Time this event occurred.
+      start-time-usec:
+        type: string
+        format: date-time
+        description: Time the event began.
+      end-time-usec:
+        type: string
+        format: date-time
+        description: Time the event completed.
+      elapsed-time-use:
+        format: int32
+        description: Elapsed time between when the event began and when it ended.
+      id-count:
+        type: string
+        description: ???
+      snap-count:
+        type: integer
+        format: int32
+        description: Number of snapshots in the event.
+      id-set:
+        type: string
+        description: ???
+      msg-text:
+        type: string
+        description: Event message.
+      msg-size:
+        type: integer
+        format: int32
+        description: Message size.
+      msg-encoding:
+        type: string
+        description: Message encoding.
+      msg-char-set:
+        type: string
+        description: Message character set.
+      msg-mime-type:
+        type: string
+        description: Message mime type.
+      msg-age:
+        type : integer
+        format: int32
+        description: Message age.
+      msg-tag:
+        type: string
+        description: Message tag.
+      parent-tracking-id:
+        type: string
+        description: Unique identifier of the parent event or parent activity.
+      snapshots:
+        type: array
+        items:
+         $ref: '#/definitions/snapshot'
+        description: List of custom field categories for this event. 
+  snapshot:
+    required:
+      - name
+      - time-usec
+    properties:
+      parent-id:
+        type: string
+        description: Unique identifier of the parent event.
+      name:
+        type: string
+        description: Name of the list of custom fields category.
+      count:
+        type: integer
+        format: int32
+        description: Number of properties (custom fields) in this category of custom fields.
+      time-usec:
+        type: string
+        format: date-time
+        description: Time this category of fields occurred.
+      type:
+        type: string
+      track-id:
+        type: string
+        description: Unique identifier for this list category of custom fields.
+      source-fqn:
+        type: string
+        description: Source of the custom fields.
+      properties:
+        type: array
+        description: The custom fields that belong to this category of fields.
+        items:
+          $ref: '#/definitions/property'
+  property:
+    required:
+      - name
+      - type
+      - value
+    properties:
+       name:
+        type: string
+        description: Name of the custom field.
+       type:
+        type: string
+        description: Type of custom field.
+       value:
+        type: string
+        description: Value of custom field.
+       value-type:
+        type: string
+        description: ???
+  errorModel:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

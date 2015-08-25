@@ -195,7 +195,7 @@ public class Wizard {
 				  
 				  // Create the snapshot for the event
 			      snapshot = new Snapshot();
-			      snapshot.setProperties(new ArrayList<HashMap>());
+			      snapshot.setProperties(new ArrayList<Property>());
 			      String snapshotUuid = UUID.randomUUID().toString();
 				  snapshot.setTrackId(snapshotUuid);
 				  snapshot.setType("SNAPSHOT");

@@ -35,10 +35,16 @@ public class RunApi2 {
 			activity.setEventName("August Week 2 Weather");
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
+			activity.setType("ACTIVITY");
+			activity.setEvents(null);
+			activity.setSnapshots(null);
+			activity.setSnapCount(0);
+			activity.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+	
 	
 			builder = client.resource(basePath).accept("application/json");
 			// This is the token that was assigned to you when you purchased jKool.
-			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
+			builder = builder.header("token", "cathystoken ");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
 			
 			// Create some custom fields
@@ -52,9 +58,9 @@ public class RunApi2 {
 			propertyTempLow.setType("String");
 			propertyTempLow.setValue("83");
 			
-			HashMap<String, Property> propertiesTemp = new HashMap<String,Property>();
-			propertiesTemp.put("tempHigh",propertyTempHigh);
-			propertiesTemp.put("tempLow",propertyTempLow);
+			List<Property> propertiesTemp = new ArrayList<Property>();
+			propertiesTemp.add(propertyTempHigh);
+			propertiesTemp.add(propertyTempLow);
 			
 			Property propertyHumidityMax = new Property();
 			propertyHumidityMax.setName("HumidityMax");
@@ -66,9 +72,9 @@ public class RunApi2 {
 			propertyHumidityMin.setType("String");
 			propertyHumidityMin.setValue("74");
 			
-			HashMap<String, Property> propertiesHumidity = new HashMap<String,Property>();
-			propertiesHumidity.put("humidityMax",propertyHumidityMax);
-			propertiesHumidity.put("humidityMin",propertyHumidityMin);
+			List<Property> propertiesHumidity = new ArrayList<Property>();
+			propertiesHumidity.add(propertyHumidityMax);
+			propertiesHumidity.add(propertyHumidityMin);
 			
 			Property propertySeaLevelMax = new Property();
 			propertySeaLevelMax.setName("SeaLevelMax");
@@ -80,31 +86,40 @@ public class RunApi2 {
 			propertySeaLevelMin.setType("String");
 			propertySeaLevelMin.setValue("29");
 			
-			HashMap<String, Property> propertiesSeaLevel = new HashMap<String,Property>();
-			propertiesSeaLevel.put("seaLevelMax",propertySeaLevelMax);
-			propertiesSeaLevel.put("seaLevelMin",propertySeaLevelMin);
+			List<Property> propertiesSeaLevel = new ArrayList<Property>();
+			propertiesSeaLevel.add(propertySeaLevelMax);
+			propertiesSeaLevel.add(propertySeaLevelMin);
 			
 			// Attach the custom fields to snapshots 
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setCount(2);
 			snapshotTemp.setName("Temperature");
+			snapshotTemp.setType("SNAPSHOT");
 			snapshotTemp.setTimeUsec(todaysDate);
-			snapshotTemp.getProperties().add(propertiesTemp);
+			snapshotTemp.setTrackId(UUID.randomUUID().toString());
+			snapshotTemp.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotTemp.setProperties(propertiesTemp);
 			
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
 			snapshotHumidity.setCount(2);
 			snapshotHumidity.setName("Humidity");
+			snapshotHumidity.setType("SNAPSHOT");
 			snapshotHumidity.setTimeUsec(todaysDate);
-			snapshotHumidity.getProperties().add(propertiesHumidity);
+			snapshotHumidity.setTrackId(UUID.randomUUID().toString());
+			snapshotHumidity.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotHumidity.setProperties(propertiesHumidity);
 			
 			Snapshot snapshotSeaLevel = new Snapshot();
 			snapshotSeaLevel.setCategory("Sea");
 			snapshotSeaLevel.setCount(2);
 			snapshotSeaLevel.setName("SeaLevel");
+			snapshotSeaLevel.setType("SNAPSHOT");
 			snapshotSeaLevel.setTimeUsec(todaysDate);
-			snapshotSeaLevel.getProperties().add(propertiesSeaLevel);
+			snapshotSeaLevel.setTrackId(UUID.randomUUID().toString());
+			snapshotSeaLevel.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotSeaLevel.setProperties(propertiesSeaLevel);
 
 			// Create the Event
 			// Attach it's snapshots
@@ -146,11 +161,16 @@ public class RunApi2 {
 			snapshots.add(snapshotTemp);
 			snapshots.add(snapshotHumidity);
 			snapshots.add(snapshotSeaLevel);
+			event.setSnapshots(snapshots);
 		
 			// Post the event.
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
+			builder = builder.header("token", "cathystoken");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(event));
+			
+			// **********************************************************************************
+			// And continue to do the same for all of the days in the second week of August!! :)
+			// **********************************************************************************
 			
 		}
 		catch (Exception e)

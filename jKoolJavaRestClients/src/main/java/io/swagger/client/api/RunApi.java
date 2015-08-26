@@ -2,7 +2,8 @@ package io.swagger.client.api;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.JsonUtil;
-import io.swagger.client.model.EventActivity;
+import io.swagger.client.model.Activity;
+import io.swagger.client.model.Event;
 import io.swagger.client.model.Property;
 import io.swagger.client.model.Snapshot;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.sun.jersey.api.client.Client;
@@ -18,77 +20,128 @@ import com.sun.jersey.api.client.WebResource.Builder;
 
 public class RunApi {
 	
-	
-	
-	
 	public static void main(String[] args) {
 		try
 		{
-			
 			Builder builder;
 			Client client = Client.create();
 			ClientResponse response = null;
 			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
 			String todaysDate = (new Date()).getTime() + "000";
 			
-			Property property1 = new Property();
-			property1.setName("property1");
-			property1.setType("String");
-			property1.setValue("value1");
-			
-			Property property2 = new Property();
-			property2.setName("property2");
-			property2.setType("String");
-			property2.setValue("value2");
-			
-			HashMap<String, Property> properties = new HashMap<String,Property>();
-			properties.put("property1",property1);
-			properties.put("property2",property2);
-			
-			// Post a snapshot
-			Snapshot snapshot = new Snapshot();
-			snapshot.setCategory("TestCategory");
-			snapshot.setCount(2);
-			snapshot.setFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			snapshot.setName("TestSnapshot");
-			snapshot.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
-			snapshot.setSeverity("SUCCESS");
-			snapshot.setSourcdFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			snapshot.setSource("TestSource");
-			snapshot.setSourceInfo("TestSourceInfo");
-			snapshot.setSourceUrl("TestUrl");
-			snapshot.setTimeUsec(todaysDate);
-			String snapshotUuid = UUID.randomUUID().toString();
-			snapshot.setTrackId(snapshotUuid);
-			snapshot.setType("SNAPSHOT");
-			snapshot.setProperties(properties);
-			
+			// Post the activity
+			Activity activity = new Activity();
+			String activityUuid = UUID.randomUUID().toString();
+			activity.setTrackingId(activityUuid);
+			activity.setEventName("August Week 2 Weather");
+			activity.setTimeUsec(todaysDate);
+			activity.setStatus("END");
+			activity.setType("ACTIVITY");
+			activity.setSourceFqn("APPL=WeatherApp#SERVER=localhost#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+	
+	
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
-			response = builder.type("application/json").post(ClientResponse.class, serialize(snapshot));
+			// This is the token that was assigned to you when you purchased jKool.
+			builder = builder.header("token", "cathystoken ");
+			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
 			
-			// Post an Event
-			EventActivity event = new EventActivity();
+			// Create some custom fields
+			Property propertyTempHigh = new Property();
+			propertyTempHigh.setName("TempHigh");
+			propertyTempHigh.setType("String");
+			propertyTempHigh.setValue("95");
+			
+			Property propertyTempLow = new Property();
+			propertyTempLow.setName("TempLow");
+			propertyTempLow.setType("String");
+			propertyTempLow.setValue("83");
+			
+			List<Property> propertiesTemp = new ArrayList<Property>();
+			propertiesTemp.add(propertyTempHigh);
+			propertiesTemp.add(propertyTempLow);
+			
+			Property propertyHumidityMax = new Property();
+			propertyHumidityMax.setName("HumidityMax");
+			propertyHumidityMax.setType("String");
+			propertyHumidityMax.setValue("95");
+			
+			Property propertyHumidityMin = new Property();
+			propertyHumidityMin.setName("HumidityMin");
+			propertyHumidityMin.setType("String");
+			propertyHumidityMin.setValue("74");
+			
+			List<Property> propertiesHumidity = new ArrayList<Property>();
+			propertiesHumidity.add(propertyHumidityMax);
+			propertiesHumidity.add(propertyHumidityMin);
+			
+			Property propertySeaLevelMax = new Property();
+			propertySeaLevelMax.setName("SeaLevelMax");
+			propertySeaLevelMax.setType("String");
+			propertySeaLevelMax.setValue("31");
+			
+			Property propertySeaLevelMin = new Property();
+			propertySeaLevelMin.setName("SealevelMin");
+			propertySeaLevelMin.setType("String");
+			propertySeaLevelMin.setValue("29");
+			
+			List<Property> propertiesSeaLevel = new ArrayList<Property>();
+			propertiesSeaLevel.add(propertySeaLevelMax);
+			propertiesSeaLevel.add(propertySeaLevelMin);
+			
+			// Attach the custom fields to snapshots 
+			Snapshot snapshotTemp = new Snapshot();
+			snapshotTemp.setCategory("Land");
+			snapshotTemp.setCount(2);
+			snapshotTemp.setName("Temperature");
+			snapshotTemp.setType("SNAPSHOT");
+			snapshotTemp.setTimeUsec(todaysDate);
+			snapshotTemp.setTrackId(UUID.randomUUID().toString());
+			snapshotTemp.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotTemp.setProperties(propertiesTemp);
+			
+			Snapshot snapshotHumidity = new Snapshot();
+			snapshotHumidity.setCategory("Land");
+			snapshotHumidity.setCount(2);
+			snapshotHumidity.setName("Humidity");
+			snapshotHumidity.setType("SNAPSHOT");
+			snapshotHumidity.setTimeUsec(todaysDate);
+			snapshotHumidity.setTrackId(UUID.randomUUID().toString());
+			snapshotHumidity.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotHumidity.setProperties(propertiesHumidity);
+			
+			Snapshot snapshotSeaLevel = new Snapshot();
+			snapshotSeaLevel.setCategory("Sea");
+			snapshotSeaLevel.setCount(2);
+			snapshotSeaLevel.setName("SeaLevel");
+			snapshotSeaLevel.setType("SNAPSHOT");
+			snapshotSeaLevel.setTimeUsec(todaysDate);
+			snapshotSeaLevel.setTrackId(UUID.randomUUID().toString());
+			snapshotSeaLevel.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
+			snapshotSeaLevel.setProperties(propertiesSeaLevel);
+
+			// Create the Event
+			// Attach it's snapshots
+			// Attach the event to its parent activity 
+			Event event = new Event();
 			event.setCompCode("SUCCESS");
-			event.setIdCount("3");
 			event.setTrackingId("3175921a-1107-11e3-b8b0-600292390f04");
 			event.setPid(5455); 
 			event.setTid(3);
 			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			event.setSourceInfo("Cathy3's source");
-			event.setSourceUrl("https://www.sample.com/orders/parts");
+			event.setSourceInfo("Weather Website");
+			event.setSourceUrl("http://www.wunderground.com");
 			event.setSeverity("SUCCESS");
 			event.setType("EVENT");
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
-			event.setOperation("ReceiveOrder");
-			event.setUser("Cathy111");
+			event.setEventName("August 9 Weather");
+			event.setUser("jsmith");
 			event.setTimeUsec(todaysDate);
 			event.setStartTimeUsec(todaysDate);
 			event.setEndTimeUsec(todaysDate);
-			event.setElapsedTimeUsec(593);
-			event.setSnapCount(0);
-			event.setMsgText("AMAZON ProductId=28372373, Title: Crash Proof: Author: Robert Prechter Jr.");
+			event.setElapsedTimeUsec(0);
+			event.setSnapCount(1);
+			event.setMsgText("This event contains weather information for August 9th.");
 			event.setMsgSize(74);
 			event.setCharset("windows-1252");
 			event.setEncoding("none");
@@ -96,52 +149,26 @@ public class RunApi {
 			event.setMsgMimeType("text/plain");
 			event.setCorrId("OrderId:123@1434115730580807@1");
 			event.setMsgTag("TestMsg");
-			event.setException("TestException");
+			event.setException("None");
 			event.setWaitTimeUsec("TestWait");
-			event.setMsgAge(9999);
-			event.setSource("TestSource");
-			event.setParentTrackId("3175921a-1107-11e3-b8b0-600292390999");
-			List<Snapshot> snapshots = new ArrayList<Snapshot>();
-			snapshots.add(snapshot);
-			
+			event.setMsgAge(0);
+			// This attaches the event to the activity.
+			event.setParentTrackId(activityUuid); 
+			// This attaches its snapshots
+			List<Snapshot> snapshots = new ArrayList<Snapshot>(); 
+			snapshots.add(snapshotTemp);
+			snapshots.add(snapshotHumidity);
+			snapshots.add(snapshotSeaLevel);
+			event.setSnapshots(snapshots);
 		
+			// Post the event.
 			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
+			builder = builder.header("token", "cathystoken");
 			response = builder.type("application/json").post(ClientResponse.class, serialize(event));
 			
-			// Post an activity
-			EventActivity activity = new EventActivity();
-			activity.setCompCode("SUCCESS");
-			activity.setIdCount("3");
-			activity.setTrackingId("3175921a-1107-11e3-b8b0-600292390999");
-			activity.setPid(5455); 
-			activity.setTid(3);
-			activity.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			activity.setSourceInfo("Cathy3's source");
-			activity.setSourceUrl("https://www.sample.com/orders/parts");
-			activity.setSeverity("SUCCESS");
-			activity.setType("ACTIVITY");
-			activity.setReasonCode(0);
-			activity.setLocation("New York, NY");
-			activity.setOperation("ReceiveOrderActivity");
-			activity.setUser("TestUser");
-			activity.setTimeUsec(todaysDate);
-			activity.setStartTimeUsec(todaysDate);
-			activity.setEndTimeUsec(todaysDate);
-			activity.setElapsedTimeUsec(593);
-			activity.setSnapCount(0);
-			activity.setCharset("windows-1252");
-			activity.setEncoding("none");
-			activity.setResource("order/parts");
-			activity.setCorrId("OrderId:123@1434115730580999@1");
-			activity.setException("TestException");
-			activity.setWaitTimeUsec("TestWait");
-			activity.setStatus("END");
-			activity.setSource("TestSource");
-	
-			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "a7b89207-6669-49e4-b05a-2b7eed3173ec");
-			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
+			// **********************************************************************************
+			// And continue to do the same for all of the days in the second week of August!! :)
+			// **********************************************************************************
 			
 		}
 		catch (Exception e)

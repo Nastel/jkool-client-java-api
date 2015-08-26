@@ -7,7 +7,7 @@ import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ApiModel(description = "")
-public class EventActivity {
+public class Event {
 
 	public String trackingId = null;
 	public String source = null;
@@ -50,7 +50,7 @@ public class EventActivity {
 	//public HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
 	public List<Property> properties = new ArrayList<Property>();
 	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
-	public HashMap<String, EventActivity> events = new HashMap<String, EventActivity>();
+	public HashMap<String, Event> events = new HashMap<String, Event>();
 
 	/**
    **/
@@ -495,11 +495,11 @@ public class EventActivity {
 	
 	
 
-	public HashMap<String, EventActivity> getEvents() {
+	public HashMap<String, Event> getEvents() {
 		return events;
 	}
 
-	public void setEvents(HashMap<String, EventActivity> events) {
+	public void setEvents(HashMap<String, Event> events) {
 		this.events = events;
 	}
 

@@ -2,7 +2,8 @@ package io.swagger.client.api;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.JsonUtil;
-import io.swagger.client.model.EventActivity;
+import io.swagger.client.model.Activity;
+import io.swagger.client.model.Event;
 import io.swagger.client.model.Property;
 import io.swagger.client.model.Snapshot;
 
@@ -49,12 +50,13 @@ public class Wizard {
 			ClientResponse response = null;
 			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";		
 
-			EventActivity activity = (EventActivity)massagedData.get("activity"); // One activity per file.
-			Iterator iEventKeys = activity.getEvents().keySet().iterator();
+			Activity activity = (Activity)massagedData.get("activity"); // One activity per file.
+			List<Event> events = (ArrayList<Event>)massagedData.get("events");
+			
 			// Loop on events
-			for (int i = 0; i < activity.getEvents().size(); i++)
+			for (int i = 0; i < events.size(); i++)
 			{
-				EventActivity event = (EventActivity)activity.getEvents().get(iEventKeys.next());
+				Event event = events.get(i);
 				Snapshot snapshot = event.getSnapshots().get(0); // One snapshot per event
 				if (snapshot.getProperties().size() > 0)
 				{
@@ -67,9 +69,7 @@ public class Wizard {
 				builder = builder.header("token", args[0]);
 				builder.type("application/json").post(ClientResponse.class, serialize(event));
 			}
-			activity.setEvents(null);
-			activity.setSnapshots(null);
-			activity.setSnapCount(0);
+
 			activity.setSourceFqn("APPL=" + args[1] + "#SERVER=" + args[2] + "#NETADDR=" + args[3] + "#DATACENTER=" + args[4] + "#GEOADDR=" + args[5]);
 			builder = client.resource(basePath).accept("application/json");
 			builder = builder.header("token", args[0]);
@@ -154,22 +154,23 @@ public class Wizard {
 		  String eventUuid = null;
 		  String activityUuid = null;
 		  HashMap<String, Object> massagedData = new HashMap<String, Object>();
-		  EventActivity activity = null;
+		  List<Event> events = new ArrayList<Event>();
+		  Activity activity = null;
 		  
 		  // Create the activity and set fields on it.
-		  activity = new EventActivity();
+		  activity = new Activity();
 		  activity.setEventName("activity");
 		  activity.setType("ACTIVITY");
 		  activity.setStatus("END");
-		  activity.setEvents(new HashMap<String, EventActivity>());
+	//	  activity.setEvents(new HashMap<String, Event>());
 		  activity.setTimeUsec(todaysDate);
 		  activityUuid = UUID.randomUUID().toString();
 		  activity.setTrackingId(activityUuid);
-		  massagedData.put("activity", new EventActivity());
+		  massagedData.put("activity", new Event());
 		  
 		  for(int cnt=0;cnt< lines.size(); cnt++)
 		  {
-			  EventActivity event = null;
+			  Event event = null;
 			  //HashMap<String, Snapshot> snapshots = null;
 			  List<Snapshot> snapshots = new ArrayList<Snapshot>();
 			  
@@ -184,7 +185,7 @@ public class Wizard {
 				  todaysDate = date.getTime() + "000";
 	
 				  // Get/Create the event and set fields on it.
-				  event = new EventActivity();
+				  event = new Event();
 				  event.setType("EVENT");
 				  event.setParentTrackId(activityUuid);
 				  event.setEventName((String)line.get("ETrId"));
@@ -211,7 +212,7 @@ public class Wizard {
 					  // Predefined jKool event fields (uses reflection to set)
 					  if (JKOOL_EVENT_FIELDS.contains(key)&& line.get("ETrId") != null) 
 					  {
-						  Class  aClass = EventActivity.class;
+						  Class  aClass = Event.class;
 						  Field field = aClass.getField(key);
 						  String fieldType = field.getType().getName();
 						  if (fieldType.equals("java.lang.String"))
@@ -232,7 +233,7 @@ public class Wizard {
 	
 				  event.getSnapshots().add(snapshot);
 				  activity.setTimeUsec(todaysDate);
-				  activity.getEvents().put((String)line.get("ETrId"), event);
+				  events.add(event);
 		  }
 
 		  catch (Exception e)
@@ -241,6 +242,7 @@ public class Wizard {
 		  }
 		  }
 		  massagedData.put("activity", activity);
+		  massagedData.put("events", events);
 		  return massagedData;
 	  }
 

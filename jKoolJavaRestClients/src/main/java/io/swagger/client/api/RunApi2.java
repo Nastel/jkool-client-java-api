@@ -39,7 +39,7 @@ public class RunApi2 {
 			activity.setEvents(null);
 			activity.setSnapshots(null);
 			activity.setSnapCount(0);
-			activity.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			activity.setSourceFqn("APPL=WeatherApp#SERVER=localhost#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
 	
 	
 			builder = client.resource(basePath).accept("application/json");

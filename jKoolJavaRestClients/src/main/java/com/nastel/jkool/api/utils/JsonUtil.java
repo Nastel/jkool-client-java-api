@@ -1,4 +1,4 @@
-package io.swagger.client;
+package com.nastel.jkool.api.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

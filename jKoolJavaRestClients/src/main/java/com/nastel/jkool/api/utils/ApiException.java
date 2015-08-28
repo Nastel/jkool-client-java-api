@@ -1,4 +1,4 @@
-package io.swagger.client;
+package com.nastel.jkool.api.utils;
 
 import java.util.Map;
 import java.util.List;

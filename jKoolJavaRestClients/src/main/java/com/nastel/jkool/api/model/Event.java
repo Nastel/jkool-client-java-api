@@ -1,10 +1,11 @@
-package io.swagger.client.model;
+package com.nastel.jkool.api.model;
 
 import java.util.*;
-import io.swagger.client.model.Snapshot;
 
 import io.swagger.annotations.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nastel.jkool.api.model.Snapshot;
 
 @ApiModel(description = "")
 public class Event {

@@ -1,4 +1,4 @@
-package io.swagger.client.model;
+package com.nastel.jkool.api.model;
 
 
 

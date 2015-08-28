@@ -1,11 +1,4 @@
-package io.swagger.client.api;
-
-import io.swagger.client.ApiException;
-import io.swagger.client.JsonUtil;
-import io.swagger.client.model.Activity;
-import io.swagger.client.model.Event;
-import io.swagger.client.model.Property;
-import io.swagger.client.model.Snapshot;
+package com.nastel.jkool.api;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.nastel.jkool.api.model.Activity;
+import com.nastel.jkool.api.model.Event;
+import com.nastel.jkool.api.model.Property;
+import com.nastel.jkool.api.model.Snapshot;
+import com.nastel.jkool.api.utils.ApiException;
+import com.nastel.jkool.api.utils.JsonUtil;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;

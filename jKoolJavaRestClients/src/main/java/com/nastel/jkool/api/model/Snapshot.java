@@ -12,21 +12,14 @@ import com.nastel.jkool.api.model.Property;
 public class Snapshot  {
   
   private String parentId = null;
-  private String fqn = null;
   private String category = null;
   private String name = null;
   private Integer count = null;
   private String timeUsec = null;
-  private String severity = null;
-  private String severityNo = null;
   private String type = null;
   private String typeNo = null;
   private List<Property> properties;
   private String trackId = null;
-  private String source = null;
-  private String sourcdFqn = null;
-  private String sourceInfo = null;
-  private String sourceUrl = null;
   
   /**
    **/
@@ -39,19 +32,6 @@ public class Snapshot  {
     this.parentId = parentId;
   }
 
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("fqn")
-  public String getFqn() {
-    return fqn;
-  }
-  public void setFqn(String fqn) {
-    this.fqn = fqn;
-  }
-
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -98,31 +78,6 @@ public class Snapshot  {
   public void setTimeUsec(String timeUsec) {
     this.timeUsec = timeUsec;
   }
-
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("severity")
-  public String getSeverity() {
-    return severity;
-  }
-  public void setSeverity(String severity) {
-    this.severity = severity;
-  }
-
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("severity-no")
-  public String getSeverityNo() {
-    return severityNo;
-  }
-  public void setSeverityNo(String severityNo) {
-    this.severityNo = severityNo;
-  }
-
   
   /**
    **/
@@ -134,29 +89,14 @@ public class Snapshot  {
   public void setType(String type) {
     this.type = type;
   }
-
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("type-no")
-  public String getTypeNo() {
-    return typeNo;
-  }
-  public void setTypeNo(String typeNo) {
-    this.typeNo = typeNo;
-  }
-
   
   /**
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("properties")
- // public HashMap<String, Property> getProperties() {
   public List<Property> getProperties() {
     return properties;
   }
-  //public void setProperties(HashMap<String, Property> properties) {
   public void setProperties(List<Property> properties) {
     this.properties = properties;
   }
@@ -172,65 +112,18 @@ public class Snapshot  {
 	public void setTrackId(String trackId) {
 		this.trackId = trackId;
 	}
-	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("source")
-	public String getSource() {
-		return source;
-	}
-	public void setSource(String source) {
-		this.source = source;
-	}
-	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("source-fqn")
-	public String getSourcdFqn() {
-		return sourcdFqn;
-	}
-	public void setSourcdFqn(String sourcdFqn) {
-		this.sourcdFqn = sourcdFqn;
-	}
-	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("source-info")
-	public String getSourceInfo() {
-		return sourceInfo;
-	}
-	public void setSourceInfo(String sourceInfo) {
-		this.sourceInfo = sourceInfo;
-	}
-	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("sourceUrl")	
-	public String getSourceUrl() {
-		return sourceUrl;
-	}
-	public void setSourceUrl(String sourceUrl) {
-		this.sourceUrl = sourceUrl;
-	}
+
 @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class Snapshot {\n");
     
     sb.append("  parentId: ").append(parentId).append("\n");
-    sb.append("  fqn: ").append(fqn).append("\n");
     sb.append("  category: ").append(category).append("\n");
     sb.append("  name: ").append(name).append("\n");
     sb.append("  count: ").append(count).append("\n");
     sb.append("  timeUsec: ").append(timeUsec).append("\n");
-    sb.append("  severity: ").append(severity).append("\n");
-    sb.append("  severityNo: ").append(severityNo).append("\n");
     sb.append("  type: ").append(type).append("\n");
-    sb.append("  typeNo: ").append(typeNo).append("\n");
     sb.append("  properties: ").append(properties).append("\n");
     sb.append("}\n");
     return sb.toString();

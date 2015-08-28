@@ -13,7 +13,7 @@ public class Activity {
 	public String status = null;
 	public String type = null;
 	public String timeUsec = null;
-	public String eventName = null;
+	public String activityName = null;
 
 	/**
    **/
@@ -79,12 +79,12 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("operation")
-	public String getEventName() {
-		return eventName;
+	public String getActivityName() {
+		return activityName;
 	}
 
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Activity {
 		sb.append("  sourceFqn: ").append(sourceFqn).append("\n");
 		sb.append("  status: ").append(status).append("\n");
 		sb.append("  type: ").append(type).append("\n");
-		sb.append("  operation: ").append(eventName).append("\n");
+		sb.append("  operation: ").append(activityName).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 
 		sb.append("}\n");

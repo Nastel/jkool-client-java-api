@@ -22,7 +22,7 @@ produces:
 paths:
   /JKool_Service:
     post:
-      description: Creates a event
+      description: Creates an event
       operationId: postData
       produces:
         - application/json
@@ -161,6 +161,15 @@ definitions:
       name:
         type: string
         description: Name of the category of custom fields.
+      type:
+        type: string
+        description: Must be SNAPSHOT.
+      track-id:
+        type: string
+        description: Unique identifier for the snapshot.
+      parent-id:
+        type: string
+        description: The unique identifier of the snapshots parent event.
       count:
         type: integer
         format: int32
@@ -201,6 +210,9 @@ definitions:
       tracking-id:
         type: string
         description: The unique identifier of this activity.
+      type:
+        type: string
+        description: Must be ACTIVITY.
       operation:
         type: string
         description: The name of this activity.
@@ -211,6 +223,9 @@ definitions:
       status:
         type: string
         description: The status of this activity. Please see documentation for details.
+      source-fqn:
+        type: string
+        description: Identifies where the activity came from. Must be in a special format. Please see documentation.
   errorModel:
     required:
       - code

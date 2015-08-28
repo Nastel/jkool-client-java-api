@@ -11,19 +11,14 @@ import com.nastel.jkool.api.model.Snapshot;
 public class Event {
 
 	public String trackingId = null;
-	public String source = null;
 	public String sourceFqn = null;
 	public String sourceInfo = null;
 	public String sourceUrl = null;
-	public String status = null;
 	public String severity = null;
-	public Integer severityNo = null;
 	public String type = null;
-	public Integer typeNo = null;
 	public Integer pid = null;
 	public Integer tid = null;
 	public String compCode = null;
-	public Integer compCodeNo = null;
 	public Integer reasonCode = null;
 	public String location = null;
 	public String user = null;
@@ -31,9 +26,7 @@ public class Event {
 	public String startTimeUsec = null;
 	public String endTimeUsec = null;
 	public Integer elapsedTimeUsec = null;
-	public String idCount = null;
 	public Integer snapCount = null;
-	public String idSet = null;
 	public String msgText = null;
 	public Integer msgSize = 0;
 	public String msgEncoding = null;
@@ -47,11 +40,7 @@ public class Event {
 	public String parentTrackId = null;
 	public String waitTimeUsec = null;
 	public String eventName = null;
-	public String activityName = null;
-	//public HashMap<String, Snapshot> snapshots = new HashMap<String, Snapshot>();
-	public List<Property> properties = new ArrayList<Property>();
 	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
-	public HashMap<String, Event> events = new HashMap<String, Event>();
 
 	/**
    **/
@@ -63,18 +52,6 @@ public class Event {
 
 	public void setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("source")
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
 	}
 
 	/**
@@ -116,18 +93,6 @@ public class Event {
 	/**
    **/
 	@ApiModelProperty(value = "")
-	@JsonProperty("status")
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
 	public String getSeverity() {
 		return severity;
@@ -140,18 +105,6 @@ public class Event {
 	/**
    **/
 	@ApiModelProperty(value = "")
-	@JsonProperty("severity-no")
-	public Integer getSeverityNo() {
-		return severityNo;
-	}
-
-	public void setSeverityNo(Integer severityNo) {
-		this.severityNo = severityNo;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public String getType() {
 		return type;
@@ -159,18 +112,6 @@ public class Event {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("type-no")
-	public Integer getTypeNo() {
-		return typeNo;
-	}
-
-	public void setTypeNo(Integer typeNo) {
-		this.typeNo = typeNo;
 	}
 
 	/**
@@ -212,22 +153,11 @@ public class Event {
 	/**
    **/
 	@ApiModelProperty(value = "")
-	@JsonProperty("comp-code-no")
-	public Integer getCompCodeNo() {
-		return compCodeNo;
-	}
-
-	public void setCompCodeNo(Integer compCodeNo) {
-		this.compCodeNo = compCodeNo;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
 	@JsonProperty("reason-code")
 	public Integer getReasonCode() {
 		return reasonCode;
 	}
+	
 
 	public void setReasonCode(Integer reasonCode) {
 		this.reasonCode = reasonCode;
@@ -309,18 +239,6 @@ public class Event {
 	/**
    **/
 	@ApiModelProperty(value = "")
-	@JsonProperty("id-count")
-	public String getIdCount() {
-		return idCount;
-	}
-
-	public void setIdCount(String idCount) {
-		this.idCount = idCount;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
 	@JsonProperty("snap-count")
 	public Integer getSnapCount() {
 		return snapCount;
@@ -328,18 +246,6 @@ public class Event {
 
 	public void setSnapCount(Integer snapCount) {
 		this.snapCount = snapCount;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("id-set")
-	public String getIdSet() {
-		return idSet;
-	}
-
-	public void setIdSet(String idSet) {
-		this.idSet = idSet;
 	}
 
 	/**
@@ -484,31 +390,10 @@ public class Event {
 		return waitTimeUsec;
 	}
 	
-	
-
-	public List<Property> getProperties() {
-		return properties;
-	}
-
-	public void setProperties(List<Property> properties) {
-		this.properties = properties;
-	}
-	
-	
-
-	public HashMap<String, Event> getEvents() {
-		return events;
-	}
-
-	public void setEvents(HashMap<String, Event> events) {
-		this.events = events;
-	}
 
 	public void setWaitTimeUsec(String waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
 	}
-	
-	
 	
 	/**
 	 **/
@@ -522,19 +407,6 @@ public class Event {
 		this.eventName = eventName;
 	}
 	
-	
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("ActivityName")
-	public String getActivityName() {
-		return activityName;
-	}
-
-	public void setActivityName(String activityName) {
-		this.activityName = activityName;
-	}
-	
 
 
 	@Override
@@ -543,19 +415,14 @@ public class Event {
 		sb.append("class Event {\n");
 
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  source: ").append(source).append("\n");
 		sb.append("  sourceFqn: ").append(sourceFqn).append("\n");
 		sb.append("  sourceInfo: ").append(sourceInfo).append("\n");
 		sb.append("  sourceUrl: ").append(sourceUrl).append("\n");
-		sb.append("  status: ").append(status).append("\n");
 		sb.append("  severity: ").append(severity).append("\n");
-		sb.append("  severityNo: ").append(severityNo).append("\n");
 		sb.append("  type: ").append(type).append("\n");
-		sb.append("  typeNo: ").append(typeNo).append("\n");
 		sb.append("  pid: ").append(pid).append("\n");
 		sb.append("  tid: ").append(tid).append("\n");
 		sb.append("  compCode: ").append(compCode).append("\n");
-		sb.append("  compCodeNo: ").append(compCodeNo).append("\n");
 		sb.append("  reasonCode: ").append(reasonCode).append("\n");
 		sb.append("  location: ").append(location).append("\n");
 		sb.append("  operation: ").append(eventName).append("\n");
@@ -564,9 +431,7 @@ public class Event {
 		sb.append("  startTimeUsec: ").append(startTimeUsec).append("\n");
 		sb.append("  endTimeUsec: ").append(endTimeUsec).append("\n");
 		sb.append("  elapsedTimeUsec: ").append(elapsedTimeUsec).append("\n");
-		sb.append("  idCount: ").append(idCount).append("\n");
 		sb.append("  snapCount: ").append(snapCount).append("\n");
-		sb.append("  idSet: ").append(idSet).append("\n");
 		sb.append("  snapshots: ").append(snapshots).append("\n");
 		sb.append("}\n");
 		return sb.toString();

@@ -32,7 +32,7 @@ public class RunApi {
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setEventName("August Week 2 Weather");
+			activity.setActivityName("August Week 2 Weather");
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
 			activity.setType("ACTIVITY");

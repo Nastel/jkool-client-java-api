@@ -202,6 +202,7 @@ definitions:
     required:
       - name
       - time-usec
+    type: object
     properties:
       name:
         type: string
@@ -224,6 +225,7 @@ definitions:
         format: date-time
         description: Time this category of fields occurred.
       category:
+        type: string
         description: A "super"-category. A higher grouping of snapshots.  Multiple snapshots can belong to the same super-category.
       properties:
         type: array
@@ -235,6 +237,7 @@ definitions:
       - name
       - type
       - value
+    type: object
     properties:
        name:
         type: string

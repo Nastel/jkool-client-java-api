@@ -33,6 +33,11 @@ paths:
         in: body
         schema:
           $ref: '#/definitions/event'
+      - name: token
+        in: header
+        description: token to be passed as a header
+        required: true
+        type: string
       responses:
         '200':
           description: Event streamed properly.
@@ -59,12 +64,17 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: event
+      - name: activity
         description: the activity
         required: true
         in: body
         schema:
           $ref: '#/definitions/activity'
+      - name: token
+        in: header
+        description: token to be passed as a header
+        required: true
+        type: string
       responses:
         '200':
           description: Event streamed properly.

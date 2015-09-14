@@ -17,7 +17,6 @@ public class Snapshot  {
   private Integer count = null;
   private String timeUsec = null;
   private String type = null;
-  private String typeNo = null;
   private List<Property> properties;
   private String trackId = null;
   

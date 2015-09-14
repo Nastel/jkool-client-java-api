@@ -12,7 +12,6 @@ public class Event {
 
 	public String trackingId = null;
 	public String sourceFqn = null;
-	public String sourceInfo = null;
 	public String sourceUrl = null;
 	public String severity = null;
 	public String type = null;
@@ -64,18 +63,6 @@ public class Event {
 
 	public void setSourceFqn(String sourceFqn) {
 		this.sourceFqn = sourceFqn;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("source-info")
-	public String getSourceInfo() {
-		return sourceInfo;
-	}
-
-	public void setSourceInfo(String sourceInfo) {
-		this.sourceInfo = sourceInfo;
 	}
 
 	/**
@@ -362,8 +349,9 @@ public class Event {
 	}
 
 	public void setException(String exception) {
-		exception = exception;
+		this.exception = exception;
 	}
+	
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-tag")
 	public String getMsgTag() {
@@ -416,7 +404,6 @@ public class Event {
 
 		sb.append("  trackingId: ").append(trackingId).append("\n");
 		sb.append("  sourceFqn: ").append(sourceFqn).append("\n");
-		sb.append("  sourceInfo: ").append(sourceInfo).append("\n");
 		sb.append("  sourceUrl: ").append(sourceUrl).append("\n");
 		sb.append("  severity: ").append(severity).append("\n");
 		sb.append("  type: ").append(type).append("\n");

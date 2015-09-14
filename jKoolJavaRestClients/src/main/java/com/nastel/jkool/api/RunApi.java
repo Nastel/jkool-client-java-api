@@ -2,9 +2,7 @@ package com.nastel.jkool.api;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.nastel.jkool.api.model.Activity;
@@ -13,36 +11,37 @@ import com.nastel.jkool.api.model.Property;
 import com.nastel.jkool.api.model.Snapshot;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource.Builder;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 public class RunApi {
 	
 	public static void main(String[] args) {
 		try
 		{
-			Builder builder;
-			Client client = Client.create();
-			ClientResponse response = null;
+
 			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
+			Client client = ClientBuilder.newClient();
+			WebTarget target = client.target(basePath);
+			Response response = null;
 			String todaysDate = (new Date()).getTime() + "000";
 			
 			// Post the activity
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 2 Weather");
+			activity.setActivityName("August Week 2 Weather 999");
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
 			activity.setType("ACTIVITY");
 			activity.setSourceFqn("APPL=WeatherApp#SERVER=localhost#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
 	
-	
-			builder = client.resource(basePath).accept("application/json");
-			// This is the token that was assigned to you when you purchased jKool.
-			builder = builder.header("token", "cathystoken ");
-			response = builder.type("application/json").post(ClientResponse.class, serialize(activity));
+			// Stream the activity (token is the token that was assigned to you when you purchased jKool.
+			response = target.path("activity").request().header("token", "cathystoken").post(Entity.entity(serialize(activity), "application/json"));
+			response.close();
 			
 			// Create some custom fields
 			Property propertyTempHigh = new Property();
@@ -91,31 +90,28 @@ public class RunApi {
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setCount(2);
-			snapshotTemp.setName("Temperature");
+			snapshotTemp.setName("Temperature 999");
 			snapshotTemp.setType("SNAPSHOT");
 			snapshotTemp.setTimeUsec(todaysDate);
 			snapshotTemp.setTrackId(UUID.randomUUID().toString());
-			snapshotTemp.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
 			snapshotTemp.setProperties(propertiesTemp);
 			
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
 			snapshotHumidity.setCount(2);
-			snapshotHumidity.setName("Humidity");
+			snapshotHumidity.setName("Humidity 999");
 			snapshotHumidity.setType("SNAPSHOT");
 			snapshotHumidity.setTimeUsec(todaysDate);
 			snapshotHumidity.setTrackId(UUID.randomUUID().toString());
-			snapshotHumidity.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
 			snapshotHumidity.setProperties(propertiesHumidity);
 			
 			Snapshot snapshotSeaLevel = new Snapshot();
 			snapshotSeaLevel.setCategory("Sea");
 			snapshotSeaLevel.setCount(2);
-			snapshotSeaLevel.setName("SeaLevel");
+			snapshotSeaLevel.setName("SeaLevel 999");
 			snapshotSeaLevel.setType("SNAPSHOT");
 			snapshotSeaLevel.setTimeUsec(todaysDate);
 			snapshotSeaLevel.setTrackId(UUID.randomUUID().toString());
-			snapshotSeaLevel.setParentId("3175921a-1107-11e3-b8b0-600292390f04");
 			snapshotSeaLevel.setProperties(propertiesSeaLevel);
 
 			// Create the Event
@@ -123,18 +119,19 @@ public class RunApi {
 			// Attach the event to its parent activity 
 			Event event = new Event();
 			event.setCompCode("SUCCESS");
-			event.setTrackingId("3175921a-1107-11e3-b8b0-600292390f04");
+			String eventUuid = UUID.randomUUID().toString();
+			//event.setTrackingId(eventUuid);
+			event.setTrackingId("3175921a-1107-11e3-b8b0-777776665544");
 			event.setPid(5455); 
 			event.setTid(3);
 			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-			event.setSourceInfo("Weather Website");
 			event.setSourceUrl("http://www.wunderground.com");
 			event.setSeverity("SUCCESS");
 			event.setType("EVENT");
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
-			event.setEventName("August 9 Weather");
-			event.setUser("jsmith");
+			event.setEventName("August 31 Weather 999");
+			event.setUser("cbernardone");
 			event.setTimeUsec(todaysDate);
 			event.setStartTimeUsec(todaysDate);
 			event.setEndTimeUsec(todaysDate);
@@ -153,17 +150,19 @@ public class RunApi {
 			event.setMsgAge(0);
 			// This attaches the event to the activity.
 			event.setParentTrackId(activityUuid); 
-			// This attaches its snapshots
+			// This attaches the event to its snapshots.
 			List<Snapshot> snapshots = new ArrayList<Snapshot>(); 
 			snapshots.add(snapshotTemp);
 			snapshots.add(snapshotHumidity);
 			snapshots.add(snapshotSeaLevel);
 			event.setSnapshots(snapshots);
+			snapshotHumidity.setParentId(eventUuid);
+			snapshotTemp.setParentId(eventUuid);
+			snapshotSeaLevel.setParentId(eventUuid);
 		
-			// Post the event.
-			builder = client.resource(basePath).accept("application/json");
-			builder = builder.header("token", "cathystoken");
-			response = builder.type("application/json").post(ClientResponse.class, serialize(event));
+			// Stream the event (token is the token that was assigned to you when you purchased jKool.
+			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response.close();	
 			
 			// **********************************************************************************
 			// And continue to do the same for all of the days in the second week of August!! :)

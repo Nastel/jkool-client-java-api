@@ -119,10 +119,7 @@ definitions:
         description: If a blocking operation, how long the event was waiting for the data to appear.
       source-fqn:
         type: string
-        description: Identifies where the event came from. Must be in a special format. Please see documentation.
-      source-info:
-        type: string
-        description: Description of the source-fqn.
+        description: Identifies very specifically where the event came from. Must be in a special format. Please see documentation.
       source-url:
         type: string
         description: URL that sourced this event. For example, if the event came from a browser.

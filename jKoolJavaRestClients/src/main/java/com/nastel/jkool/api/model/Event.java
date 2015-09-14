@@ -37,7 +37,7 @@ public class Event {
 	public String exception = null;
 	public String msgTag = null;
 	public String parentTrackId = null;
-	public String waitTimeUsec = null;
+	public Integer waitTimeUsec = null;
 	public String eventName = null;
 	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
@@ -306,24 +306,7 @@ public class Event {
 	public void setMsgSize(Integer msgSize) {
 		this.msgSize = msgSize;
 	}
-	@ApiModelProperty(value = "")
-	@JsonProperty("msg-encoding")
-	public String getMsgEncoding() {
-		return msgEncoding;
-	}
 
-	public void setMsgEncoding(String msgEncoding) {
-		this.msgEncoding = msgEncoding;
-	}
-	@ApiModelProperty(value = "")
-	@JsonProperty("msg-charset")
-	public String getMsgCharset() {
-		return msgCharset;
-	}
-
-	public void setMsgCharset(String msgCharset) {
-		this.msgCharset = msgCharset;
-	}
 	@ApiModelProperty(value = "")
 	@JsonProperty("mime-type")
 	public String getMsgMimeType() {
@@ -374,12 +357,12 @@ public class Event {
 	
 	@ApiModelProperty(value = "")
 	@JsonProperty("waitTimeUsec")
-	public String getWaitTimeUsec() {
+	public Integer getWaitTimeUsec() {
 		return waitTimeUsec;
 	}
 	
 
-	public void setWaitTimeUsec(String waitTimeUsec) {
+	public void setWaitTimeUsec(Integer waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
 	}
 	

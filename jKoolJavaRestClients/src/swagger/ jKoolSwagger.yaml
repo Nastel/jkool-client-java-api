@@ -124,8 +124,7 @@ definitions:
         type: string
         description: URL that sourced this event. For example, if the event came from a browser.
       severity:
-        type: integer
-        format: int32
+        type: string
         description: Severity of the event. Defaults to SUCCESS. Please see documentation for valid entries.
       type:
         type: string
@@ -166,7 +165,7 @@ definitions:
         type: string
         format: date-time
         description: Time the event completed.
-      elapsed-time-use:
+      elapsed-time-usec:
         type: integer
         format: int32
         description: Elapsed time between when the event began and when it ended.
@@ -181,13 +180,13 @@ definitions:
         type: integer
         format: int32
         description: Message size.
-      msg-encoding:
+      encoding:
         type: string
         description: Message encoding.
-      msg-char-set:
+      charset:
         type: string
         description: Message character set.
-      msg-mime-type:
+      mime-type:
         type: string
         description: Message mime type.
       msg-age:

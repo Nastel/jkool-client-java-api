@@ -146,7 +146,7 @@ public class RunApi {
 			event.setCorrId("OrderId:123@1434115730580807@1");
 			event.setMsgTag("TestMsg");
 			event.setException("None");
-			event.setWaitTimeUsec("TestWait");
+			event.setWaitTimeUsec(5);
 			event.setMsgAge(0);
 			// This attaches the event to the activity.
 			event.setParentTrackId(activityUuid); 

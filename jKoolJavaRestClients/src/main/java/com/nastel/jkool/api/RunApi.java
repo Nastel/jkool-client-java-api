@@ -23,7 +23,7 @@ public class RunApi {
 		try
 		{
 
-			String basePath = "http://11.0.0.40:6580/jKool/JKool_Service/rest";
+			String basePath = "http://data.jkoolcloud.com:6580/jKool/JKool_Service/rest";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
@@ -33,14 +33,13 @@ public class RunApi {
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 2 Weather 999");
+			activity.setActivityName("August Week 2 Weather");
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
-			activity.setType("ACTIVITY");
 			activity.setSourceFqn("APPL=WeatherApp#SERVER=localhost#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
 	
 			// Stream the activity (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "cathystoken").post(Entity.entity(serialize(activity), "application/json"));
+			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
 			response.close();
 			
 			// Create some custom fields
@@ -90,7 +89,7 @@ public class RunApi {
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setCount(2);
-			snapshotTemp.setName("Temperature 999");
+			snapshotTemp.setName("Temperature");
 			snapshotTemp.setType("SNAPSHOT");
 			snapshotTemp.setTimeUsec(todaysDate);
 			snapshotTemp.setTrackId(UUID.randomUUID().toString());
@@ -99,7 +98,7 @@ public class RunApi {
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
 			snapshotHumidity.setCount(2);
-			snapshotHumidity.setName("Humidity 999");
+			snapshotHumidity.setName("Humidity");
 			snapshotHumidity.setType("SNAPSHOT");
 			snapshotHumidity.setTimeUsec(todaysDate);
 			snapshotHumidity.setTrackId(UUID.randomUUID().toString());
@@ -108,7 +107,7 @@ public class RunApi {
 			Snapshot snapshotSeaLevel = new Snapshot();
 			snapshotSeaLevel.setCategory("Sea");
 			snapshotSeaLevel.setCount(2);
-			snapshotSeaLevel.setName("SeaLevel 999");
+			snapshotSeaLevel.setName("SeaLevel");
 			snapshotSeaLevel.setType("SNAPSHOT");
 			snapshotSeaLevel.setTimeUsec(todaysDate);
 			snapshotSeaLevel.setTrackId(UUID.randomUUID().toString());
@@ -120,17 +119,15 @@ public class RunApi {
 			Event event = new Event();
 			event.setCompCode("SUCCESS");
 			String eventUuid = UUID.randomUUID().toString();
-			//event.setTrackingId(eventUuid);
-			event.setTrackingId("3175921a-1107-11e3-b8b0-777776665544");
+			event.setTrackingId(eventUuid);
 			event.setPid(5455); 
 			event.setTid(3);
 			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
 			event.setSourceUrl("http://www.wunderground.com");
 			event.setSeverity("SUCCESS");
-			event.setType("EVENT");
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
-			event.setEventName("August 31 Weather 999");
+			event.setEventName("August 31 Weather");
 			event.setUser("cbernardone");
 			event.setTimeUsec(todaysDate);
 			event.setStartTimeUsec(todaysDate);

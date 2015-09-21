@@ -1,5 +1,5 @@
 package com.nastel.jkool.api.model;
-
+ 
 import java.util.*;
 
 import io.swagger.annotations.*;

@@ -1,5 +1,5 @@
 package com.nastel.jkool.api.model;
-
+ 
 
 import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.JsonProperty;

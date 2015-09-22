@@ -143,6 +143,7 @@ definitions:
       reason-code:
         type: integer
         format: int32
+        default: 0
         description: Numeric reason for the event.
       location:
         type: string

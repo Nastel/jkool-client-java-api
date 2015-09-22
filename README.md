@@ -43,9 +43,9 @@ To use this helper code please do the following:
 			event.setEndTimeUsec(todaysDate);
 			...
 ```
-* Invoke the post request on the client object sending the objects over as request entities.  For example, please see the following in RunApi.java:
+* Invoke the post request on the client object sending the objects over as request entities. As part of this request, put your token in the header.  For example, please see the following in RunApi.java:
 ```java
-			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 ```
 

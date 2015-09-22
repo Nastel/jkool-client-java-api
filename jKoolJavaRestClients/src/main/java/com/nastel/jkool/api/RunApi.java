@@ -174,7 +174,7 @@ public class RunApi {
 			snapshotSeaLevel.setParentId(eventUuid);
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 			// **********************************************************************************

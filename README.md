@@ -18,10 +18,36 @@ This helper code is extremely simple.  Please be advised that jKool will handle 
 
 ###Using this helper code
 To use this helper code please do the following:
-* Create a Client object. This helper code is using RestEasy to do this.
+* Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in RunApi.java:
+```java
+			String basePath = "http://data.jkoolcloud.com:6580/jKool/JKool_Service/rest";
+			Client client = ClientBuilder.newClient();
+			WebTarget target = client.target(basePath);
+```
 * Import the provided jKool objects residing in the "model" directory into your code.
-* Populate these jKool objects with your data. A very simple example of doing this is in the RunApi.java class contained in the "api" directory.
-* As seen in RunApi, invoke the post request on the client object sending the objects over as request entities.
+* Populate these jKool objects with your data. For example, please see the following in RunApi.java:
+```java
+			Event event = new Event();
+			event.setCompCode("SUCCESS");
+			String eventUuid = UUID.randomUUID().toString();
+			event.setTrackingId(eventUuid);
+			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			event.setSourceUrl("http://www.wunderground.com");
+			event.setSeverity("SUCCESS");
+			event.setReasonCode(0);
+			event.setLocation("New York, NY");
+			event.setEventName("August 31 Weather");
+			event.setUser("testuser");
+			event.setTimeUsec(todaysDate);
+			event.setStartTimeUsec(todaysDate);
+			event.setEndTimeUsec(todaysDate);
+			...
+```
+* Invoke the post request on the client object sending the objects over as request entities.  For example, please see the following in RunApi.java:
+```java
+			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response.close();	
+```
 
 That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
 

@@ -144,7 +144,7 @@ public class RunApi {
 			event.setReasonCode(0);
 			event.setLocation("New York, NY");
 			event.setEventName("August 31 Weather");
-			event.setUser("cbernardone");
+			event.setUser("testuser");
 			event.setTimeUsec(todaysDate);
 			event.setStartTimeUsec(todaysDate);
 			event.setEndTimeUsec(todaysDate);

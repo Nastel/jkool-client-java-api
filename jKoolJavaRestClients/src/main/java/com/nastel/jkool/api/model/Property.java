@@ -16,6 +16,7 @@ package com.nastel.jkool.api.model;
  * limitations under the License.
  */
 import io.swagger.annotations.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -26,9 +27,22 @@ public class Property  {
   private String type = null;
   private String value = null;
   private String valueType = null;
+  
+  
 
   
-  /**
+  public Property() {
+
+}
+  
+public Property(String name, String type, String value, String valueType) {
+	super();
+	this.name = name;
+	this.type = type;
+	this.value = value;
+	this.valueType = valueType;
+}
+/**
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("name")

@@ -12,7 +12,7 @@ info:
     name: jKool
     url: 'https://www.jkoolcloud.com/company/privacy-policy/'
 host: 'data.jkoolcloud.com:6580'
-basePath: /jKool/JKool_Service
+basePath: /JESL
 schemes:
   - http
 consumes:

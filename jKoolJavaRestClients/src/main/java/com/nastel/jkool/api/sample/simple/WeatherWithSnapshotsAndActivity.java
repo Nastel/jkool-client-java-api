@@ -1,4 +1,4 @@
-package com.nastel.jkool.api;
+package com.nastel.jkool.api.sample.simple;
 
 /*
  * Copyright 2014-2015 JKOOL, LLC.
@@ -16,6 +16,7 @@ package com.nastel.jkool.api;
  * limitations under the License.
  */
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,37 +28,45 @@ import com.nastel.jkool.api.model.Property;
 import com.nastel.jkool.api.model.Snapshot;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class RunApi {
+/**************************************************************************************************************************
+ * This example code uses the same data as the Weather example code.  However it demonstrates how to make use of Activities 
+ * and Snapshots.  Activities are used to group events. Snapshots are used to categorize custom fields.  It is the intent of 
+ * this code to give you a clear understanding of how to use activities and snapshots and to help you identify the use 
+ * cases they apply to. 
+ * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
+ * ***********************************************************************************************************************/
+
+public class WeatherWithSnapshotsAndActivity {
 	
 	public static void main(String[] args) {
 		try
 		{
 
-			String basePath = "http://data.jkoolcloud.com:6580/jKool/JKool_Service/rest";
+			String basePath = "http://data.jkoolcloud.com:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
 			String todaysDate = (new Date()).getTime() + "000";
 			
-			// Post the activity
+			// Create the activity that the events will be attached to
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 2 Weather");
+			activity.setActivityName("August Week 3 Weather");
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
-			activity.setSourceFqn("APPL=WeatherApp#SERVER=localhost#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
-	
-			// Stream the activity (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
-			response.close();
-			
+			activity.setAppl("WebOrders");
+			activity.setServer("WebServer100");
+			activity.setNetAddr("11.0.0.2");
+			activity.setDataCenter("DC1");
+			activity.setGeoAddr("New York, NY");			
 			// Create some custom fields
 			Property propertyTempHigh = new Property();
 			propertyTempHigh.setName("TempHigh");
@@ -101,23 +110,22 @@ public class RunApi {
 			propertiesSeaLevel.add(propertySeaLevelMax);
 			propertiesSeaLevel.add(propertySeaLevelMin);
 			
-			// Attach the custom fields to snapshots 
+			// Attach the custom fields to snapshots (snapshots categorize custom fields)
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setCount(2);
 			snapshotTemp.setName("Temperature");
 			snapshotTemp.setType("SNAPSHOT");
 			snapshotTemp.setTimeUsec(todaysDate);
-			snapshotTemp.setTrackId(UUID.randomUUID().toString());
 			snapshotTemp.setProperties(propertiesTemp);
 			
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
-			snapshotHumidity.setCount(2);
+			//snapshotHumidity.setCount(2);
 			snapshotHumidity.setName("Humidity");
 			snapshotHumidity.setType("SNAPSHOT");
 			snapshotHumidity.setTimeUsec(todaysDate);
-			snapshotHumidity.setTrackId(UUID.randomUUID().toString());
+			//snapshotHumidity.setTrackId(UUID.randomUUID().toString());
 			snapshotHumidity.setProperties(propertiesHumidity);
 			
 			Snapshot snapshotSeaLevel = new Snapshot();
@@ -126,61 +134,57 @@ public class RunApi {
 			snapshotSeaLevel.setName("SeaLevel");
 			snapshotSeaLevel.setType("SNAPSHOT");
 			snapshotSeaLevel.setTimeUsec(todaysDate);
-			snapshotSeaLevel.setTrackId(UUID.randomUUID().toString());
 			snapshotSeaLevel.setProperties(propertiesSeaLevel);
 
 			// Create the Event
 			// Attach it's snapshots
 			// Attach the event to its parent activity 
 			Event event = new Event();
-			event.setCompCode("SUCCESS");
 			String eventUuid = UUID.randomUUID().toString();
 			event.setTrackingId(eventUuid);
-			event.setPid(5455); 
-			event.setTid(3);
-			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			event.setAppl("WebOrders");
+			event.setServer("WebServer100");
+			event.setNetAddr("11.0.0.2");
+			event.setDataCenter("DC1");
+			event.setGeoAddr("New York, NY");			
 			event.setSourceUrl("http://www.wunderground.com");
-			event.setSeverity("SUCCESS");
-			event.setReasonCode(0);
 			event.setLocation("New York, NY");
 			event.setEventName("August 31 Weather");
-			event.setUser("testuser");
 			event.setTimeUsec(todaysDate);
-			event.setStartTimeUsec(todaysDate);
-			event.setEndTimeUsec(todaysDate);
-			event.setElapsedTimeUsec(0);
-			event.setSnapCount(1);
-			event.setMsgText("This event contains weather information for August 9th.");
+			event.setMsgText("This event contains weather information for August 22th.");
 			event.setMsgSize(74);
-			event.setCharset("windows-1252");
-			event.setEncoding("none");
-			event.setResource("order/parts");
-			event.setMsgMimeType("text/plain");
-			event.setCorrId("OrderId:123@1434115730580807@1");
-			event.setMsgTag("TestMsg");
-			event.setException("None");
-			event.setWaitTimeUsec(5);
-			event.setMsgAge(0);
 			// This attaches the event to the activity.
 			event.setParentTrackId(activityUuid); 
+			
 			// This attaches the event to its snapshots.
+			snapshotHumidity.setParentId(eventUuid);
+			snapshotTemp.setParentId(eventUuid);
+			snapshotSeaLevel.setParentId(eventUuid);
 			List<Snapshot> snapshots = new ArrayList<Snapshot>(); 
 			snapshots.add(snapshotTemp);
 			snapshots.add(snapshotHumidity);
 			snapshots.add(snapshotSeaLevel);
 			event.setSnapshots(snapshots);
-			snapshotHumidity.setParentId(eventUuid);
-			snapshotTemp.setParentId(eventUuid);
-			snapshotSeaLevel.setParentId(eventUuid);
+
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
 			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 			// **********************************************************************************
-			// And continue to do the same for all of the days in the second week of August!! :)
+			// And continue creating events for all of the days in the third week of August. 
 			// **********************************************************************************
 			
+			// ......
+			
+			// Stream the activity after all events for that activity have been streamed. 
+			// (token is the token that was assigned to you when you purchased jKool.
+			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
+			response.close();
+			
+			// **********************************************************************************
+			// Ditto the above to do the third week of August 
+			// **********************************************************************************
 		}
 		catch (Exception e)
 		{

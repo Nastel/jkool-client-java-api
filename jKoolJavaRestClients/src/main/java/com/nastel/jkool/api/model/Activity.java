@@ -17,17 +17,42 @@ package com.nastel.jkool.api.model;
  */
  
 import io.swagger.annotations.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ApiModel(description = "")
 public class Activity {
 
-	public String trackingId = null;
-	public String sourceFqn = null;
-	public String status = null;
-	public String type = null;
-	public String timeUsec = null;
-	public String activityName = null;
+	private String trackingId = null;
+	private String status = null;
+	private String type = null;
+	private String timeUsec = null;
+	private String activityName = null;
+	private String appl = null;
+	private String server = null;
+	private String netAddr = null;
+	private String dataCenter = null;
+	private String geoAddr = null;
+	
+	
+
+	public Activity() {
+	}
+
+	public Activity(String trackingId, String status,
+			String type, String timeUsec, String activityName, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
+		super();
+		this.trackingId = trackingId;
+		this.status = status;
+		this.type = type;
+		this.timeUsec = timeUsec;
+		this.activityName = activityName;
+		this.appl = appl;
+		this.server = server;
+		this.netAddr = netAddr;
+		this.dataCenter = dataCenter;
+		this.geoAddr = geoAddr;
+	}
 
 	/**
    **/
@@ -46,12 +71,10 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
-		return sourceFqn;
+		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR=" + geoAddr;
 	}
+	
 
-	public void setSourceFqn(String sourceFqn) {
-		this.sourceFqn = sourceFqn;
-	}
 
 	/**
    **/
@@ -101,12 +124,53 @@ public class Activity {
 		this.activityName = activityName;
 	}
 
+	
+	
+	public String getAppl() {
+		return appl;
+	}
+
+	public void setAppl(String appl) {
+		this.appl = appl;
+	}
+
+	public String getServer() {
+		return server;
+	}
+
+	public void setServer(String server) {
+		this.server = server;
+	}
+
+	public String getNetAddr() {
+		return netAddr;
+	}
+
+	public void setNetAddr(String netAddr) {
+		this.netAddr = netAddr;
+	}
+
+	public String getDataCenter() {
+		return dataCenter;
+	}
+
+	public void setDataCenter(String dataCenter) {
+		this.dataCenter = dataCenter;
+	}
+
+	public String getGeoAddr() {
+		return geoAddr;
+	}
+
+	public void setGeoAddr(String geoAddr) {
+		this.geoAddr = geoAddr;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Event {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  sourceFqn: ").append(sourceFqn).append("\n");
 		sb.append("  status: ").append(status).append("\n");
 		sb.append("  type: ").append(type).append("\n");
 		sb.append("  operation: ").append(activityName).append("\n");

@@ -25,13 +25,12 @@ import com.nastel.jkool.api.model.Snapshot;
 public class Event {
 
 	public String trackingId = null;
-	public String sourceFqn = null;
 	public String sourceUrl = null;
-	public String severity = null;
-	public String type = null;
+	public Severities severity = null;
+	public EventTypes type = null;
 	public Integer pid = null;
 	public Integer tid = null;
-	public String compCode = null;
+	public CompCodes compCode = null;
 	public Integer reasonCode = null;
 	public String location = null;
 	public String user = null;
@@ -39,12 +38,11 @@ public class Event {
 	public String startTimeUsec = null;
 	public String endTimeUsec = null;
 	public Integer elapsedTimeUsec = null;
-	public Integer snapCount = null;
 	public String msgText = null;
 	public Integer msgSize = 0;
 	public String msgEncoding = null;
 	public String msgCharset = null;
-	public String corrId = null;
+	public List<String> corrId = null;
 	public String resource = null;
 	public String msgMimeType = null;
 	public Integer msgAge = null;
@@ -53,7 +51,64 @@ public class Event {
 	public String parentTrackId = null;
 	public Integer waitTimeUsec = null;
 	public String eventName = null;
+	private List<Property> properties = null;;
 	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	String appl = null;
+	String server = null;
+	String netAddr = null;
+	String dataCenter = null;
+	String geoAddr = null;
+	
+	
+
+	public Event() {
+
+	}
+
+	public Event(String trackingId, String sourceUrl,
+			Severities severity, EventTypes type, Integer pid, Integer tid,
+			CompCodes compCode, Integer reasonCode, String location, String user,
+			String timeUsec, String startTimeUsec, String endTimeUsec,
+			Integer elapsedTimeUsec, String msgText,
+			Integer msgSize, String msgEncoding, String msgCharset,
+			List<String> corrId, String resource, String msgMimeType, Integer msgAge,
+			String exception, String msgTag, String parentTrackId,
+			Integer waitTimeUsec, String eventName, List<Snapshot> snapshots, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
+		super();
+		this.trackingId = trackingId;
+		this.sourceUrl = sourceUrl;
+		this.severity = severity;
+		this.type = type;
+		this.pid = pid;
+		this.tid = tid;
+		this.compCode = compCode;
+		this.reasonCode = reasonCode;
+		this.location = location;
+		this.user = user;
+		this.timeUsec = timeUsec;
+		this.startTimeUsec = startTimeUsec;
+		this.endTimeUsec = endTimeUsec;
+		this.elapsedTimeUsec = elapsedTimeUsec;
+		this.msgText = msgText;
+		this.msgSize = msgSize;
+		this.msgEncoding = msgEncoding;
+		this.msgCharset = msgCharset;
+		this.corrId = corrId;
+		this.resource = resource;
+		this.msgMimeType = msgMimeType;
+		this.msgAge = msgAge;
+		this.exception = exception;
+		this.msgTag = msgTag;
+		this.parentTrackId = parentTrackId;
+		this.waitTimeUsec = waitTimeUsec;
+		this.eventName = eventName;
+		this.snapshots = snapshots;
+		this.appl = appl;
+		this.geoAddr = geoAddr;
+		this.server = server;
+		this.netAddr = netAddr;
+		this.dataCenter = dataCenter;
+	}
 
 	/**
    **/
@@ -72,12 +127,10 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
-		return sourceFqn;
+		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR=" + geoAddr;
 	}
+	
 
-	public void setSourceFqn(String sourceFqn) {
-		this.sourceFqn = sourceFqn;
-	}
 
 	/**
    **/
@@ -95,11 +148,11 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
-	public String getSeverity() {
+	public Severities getSeverity() {
 		return severity;
 	}
 
-	public void setSeverity(String severity) {
+	public void setSeverity(Severities severity) {
 		this.severity = severity;
 	}
 
@@ -107,11 +160,11 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
-	public String getType() {
+	public EventTypes getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(EventTypes type) {
 		this.type = type;
 	}
 
@@ -143,11 +196,11 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("comp-code")
-	public String getCompCode() {
+	public CompCodes getCompCode() {
 		return compCode;
 	}
 
-	public void setCompCode(String compCode) {
+	public void setCompCode(CompCodes compCode) {
 		this.compCode = compCode;
 	}
 
@@ -238,18 +291,6 @@ public class Event {
 	}
 
 	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("snap-count")
-	public Integer getSnapCount() {
-		return snapCount;
-	}
-
-	public void setSnapCount(Integer snapCount) {
-		this.snapCount = snapCount;
-	}
-
-	/**
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("snapshots")
@@ -284,11 +325,11 @@ public class Event {
 
 	@ApiModelProperty(value = "")
 	@JsonProperty("corrid")
-	public String getCorrId() {
+	public List<String> getCorrId() {
 		return corrId;
 	}
 
-	public void setCorrId(String corrId) {
+	public void setCorrId(List<String> corrId) {
 		this.corrId = corrId;
 	}
 
@@ -392,7 +433,75 @@ public class Event {
 		this.eventName = eventName;
 	}
 	
+	 /**
+	   **/
+	  @ApiModelProperty(value = "")
+	  @JsonProperty("properties")
+	  public List<Property> getProperties() {
+	    return properties;
+	  }
+	  public void setProperties(List<Property> properties) {
+	    this.properties = properties;
+	  }
+	  
+	  
 
+
+	public String getMsgEncoding() {
+		return msgEncoding;
+	}
+
+	public void setMsgEncoding(String msgEncoding) {
+		this.msgEncoding = msgEncoding;
+	}
+
+	public String getMsgCharset() {
+		return msgCharset;
+	}
+
+	public void setMsgCharset(String msgCharset) {
+		this.msgCharset = msgCharset;
+	}
+
+	public String getAppl() {
+		return appl;
+	}
+
+	public void setAppl(String appl) {
+		this.appl = appl;
+	}
+
+	public String getServer() {
+		return server;
+	}
+
+	public void setServer(String server) {
+		this.server = server;
+	}
+
+	public String getNetAddr() {
+		return netAddr;
+	}
+
+	public void setNetAddr(String netAddr) {
+		this.netAddr = netAddr;
+	}
+
+	public String getDataCenter() {
+		return dataCenter;
+	}
+
+	public void setDataCenter(String dataCenter) {
+		this.dataCenter = dataCenter;
+	}
+
+	public String getGeoAddr() {
+		return geoAddr;
+	}
+
+	public void setGeoAddr(String geoAddr) {
+		this.geoAddr = geoAddr;
+	}
 
 	@Override
 	public String toString() {
@@ -400,7 +509,6 @@ public class Event {
 		sb.append("class Event {\n");
 
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  sourceFqn: ").append(sourceFqn).append("\n");
 		sb.append("  sourceUrl: ").append(sourceUrl).append("\n");
 		sb.append("  severity: ").append(severity).append("\n");
 		sb.append("  type: ").append(type).append("\n");
@@ -415,7 +523,6 @@ public class Event {
 		sb.append("  startTimeUsec: ").append(startTimeUsec).append("\n");
 		sb.append("  endTimeUsec: ").append(endTimeUsec).append("\n");
 		sb.append("  elapsedTimeUsec: ").append(elapsedTimeUsec).append("\n");
-		sb.append("  snapCount: ").append(snapCount).append("\n");
 		sb.append("  snapshots: ").append(snapshots).append("\n");
 		sb.append("}\n");
 		return sb.toString();

@@ -32,9 +32,22 @@ public class Snapshot  {
   private String timeUsec = null;
   private String type = null;
   private List<Property> properties;
-  private String trackId = null;
   
-  /**
+  public Snapshot() {
+
+}
+public Snapshot(String parentId, String category, String name, Integer count,
+		String timeUsec, String type, List<Property> properties, String trackId) {
+	super();
+	this.parentId = parentId;
+	this.category = category;
+	this.name = name;
+	this.count = count;
+	this.timeUsec = timeUsec;
+	this.type = type;
+	this.properties = properties;
+}
+/**
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("parent-id")
@@ -114,17 +127,6 @@ public class Snapshot  {
     this.properties = properties;
   }
 
-  
-	/**
-	 **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("track-id")
-    public String getTrackId() {
-    	return trackId;
-	}
-	public void setTrackId(String trackId) {
-		this.trackId = trackId;
-	}
 
 @Override
   public String toString()  {

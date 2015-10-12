@@ -126,9 +126,6 @@ definitions:
       severity:
         type: string
         description: Severity of the event. Defaults to SUCCESS. Please see documentation for valid entries.
-      type:
-        type: string
-        description: Type of record. Please see documentation for valid entries.
       pid:
         type: integer
         format: int32
@@ -170,10 +167,6 @@ definitions:
         type: integer
         format: int32
         description: Elapsed time between when the event began and when it ended.
-      snap-count:
-        type: integer
-        format: int32
-        description: Number of snapshots in the event.
       msg-text:
         type: string
         description: Event message.
@@ -217,16 +210,9 @@ definitions:
       type:
         type: string
         description: Must be SNAPSHOT.
-      track-id:
-        type: string
-        description: Unique identifier for the snapshot.
       parent-id:
         type: string
         description: The unique identifier of the snapshots parent event.
-      count:
-        type: integer
-        format: int32
-        description: Number of properties (custom fields) in this category of custom fields.
       time-usec:
         type: string
         format: date-time
@@ -265,9 +251,6 @@ definitions:
       tracking-id:
         type: string
         description: The unique identifier of this activity.
-      type:
-        type: string
-        description: Must be ACTIVITY.
       operation:
         type: string
         description: The name of this activity.

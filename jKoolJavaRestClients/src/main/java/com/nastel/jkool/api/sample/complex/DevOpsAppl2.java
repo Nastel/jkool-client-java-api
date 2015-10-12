@@ -93,11 +93,12 @@ public class DevOpsAppl2 {
 	                0,                                     // waitTimeUsec
 	                "ValidateAndVerifyOrder",              // eventName
 	                null,                                  // snapshots (none in this example)
-	                "WebOrders",                            // application
-	    			"WebServer100",                         // server
-	    			"11.0.0.2",                             // network address
-	    			"DC1",                                  // data center
-	    			"New York, NY");                        // geo address
+	    			"WebOrders",						   // appl name (comprises source-fqn)
+	    			"WebServer100",	                       // server (comprises source-fqn)
+	    			"11.0.0.2",                            // network address (comprises source-fqn)
+	    			"DC1",								   // data center (comprises source-fqn)
+	    			"New York, NY");                       // geo location (comprises source-fqn)
+		
 		
 			// Stream the event 
 			// (token is the token that was assigned to you when you purchased jKool).
@@ -137,11 +138,12 @@ public class DevOpsAppl2 {
 	                0,                                      // waitTimeUsec
 	                "Credit2",                               // eventName
 	                null,                                   // snapshots (none in this example)
-	                "WebOrders",                            // application
-	    			"WebServer100",                         // server
-	    			"11.0.0.2",                             // network address
-	    			"DC1",                                  // data center
-	    			"New York, NY");                        // geo address
+	    			"WebOrders",						   // appl name (comprises source-fqn)
+	    			"WebServer100",	                       // server (comprises source-fqn)
+	    			"11.0.0.2",                            // network address (comprises source-fqn)
+	    			"DC1",								   // data center (comprises source-fqn)
+	    			"New York, NY");                       // geo location (comprises source-fqn)
+		
 
 					// Stream the event 
 			        // (token is the token that was assigned to you when you purchased jKool.

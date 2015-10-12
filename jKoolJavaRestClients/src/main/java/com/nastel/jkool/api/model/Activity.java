@@ -25,7 +25,6 @@ public class Activity {
 
 	private String trackingId = null;
 	private String status = null;
-	private String type = null;
 	private String timeUsec = null;
 	private String activityName = null;
 	private String appl = null;
@@ -40,11 +39,10 @@ public class Activity {
 	}
 
 	public Activity(String trackingId, String status,
-			String type, String timeUsec, String activityName, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
+			String timeUsec, String activityName, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
 		super();
 		this.trackingId = trackingId;
 		this.status = status;
-		this.type = type;
 		this.timeUsec = timeUsec;
 		this.activityName = activityName;
 		this.appl = appl;
@@ -86,18 +84,6 @@ public class Activity {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	/**
-   **/
-	@ApiModelProperty(value = "")
-	@JsonProperty("type")
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	/**
@@ -171,8 +157,7 @@ public class Activity {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Event {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  status: ").append(status).append("\n");
-		sb.append("  type: ").append(type).append("\n");
+		sb.append("  status: ").append(status).append("\n");;
 		sb.append("  operation: ").append(activityName).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 

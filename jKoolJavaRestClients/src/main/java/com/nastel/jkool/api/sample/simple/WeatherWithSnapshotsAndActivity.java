@@ -59,7 +59,7 @@ public class WeatherWithSnapshotsAndActivity {
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Weather");
+			activity.setActivityName("August Week 3 Weather");  // also referred to as "operation"
 			activity.setTimeUsec(todaysDate);
 			activity.setStatus("END");
 			activity.setAppl("WebOrders");
@@ -113,7 +113,6 @@ public class WeatherWithSnapshotsAndActivity {
 			// Attach the custom fields to snapshots (snapshots categorize custom fields)
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
-			snapshotTemp.setCount(2);
 			snapshotTemp.setName("Temperature");
 			snapshotTemp.setType("SNAPSHOT");
 			snapshotTemp.setTimeUsec(todaysDate);
@@ -121,16 +120,13 @@ public class WeatherWithSnapshotsAndActivity {
 			
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
-			//snapshotHumidity.setCount(2);
 			snapshotHumidity.setName("Humidity");
 			snapshotHumidity.setType("SNAPSHOT");
 			snapshotHumidity.setTimeUsec(todaysDate);
-			//snapshotHumidity.setTrackId(UUID.randomUUID().toString());
 			snapshotHumidity.setProperties(propertiesHumidity);
 			
 			Snapshot snapshotSeaLevel = new Snapshot();
 			snapshotSeaLevel.setCategory("Sea");
-			snapshotSeaLevel.setCount(2);
 			snapshotSeaLevel.setName("SeaLevel");
 			snapshotSeaLevel.setType("SNAPSHOT");
 			snapshotSeaLevel.setTimeUsec(todaysDate);
@@ -149,7 +145,7 @@ public class WeatherWithSnapshotsAndActivity {
 			event.setGeoAddr("New York, NY");			
 			event.setSourceUrl("http://www.wunderground.com");
 			event.setLocation("New York, NY");
-			event.setEventName("August 31 Weather");
+			event.setEventName("August 22 Weather");
 			event.setTimeUsec(todaysDate);
 			event.setMsgText("This event contains weather information for August 22th.");
 			event.setMsgSize(74);

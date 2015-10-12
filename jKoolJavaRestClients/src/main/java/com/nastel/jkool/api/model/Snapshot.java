@@ -28,7 +28,6 @@ public class Snapshot  {
   private String parentId = null;
   private String category = null;
   private String name = null;
-  private Integer count = null;
   private String timeUsec = null;
   private String type = null;
   private List<Property> properties;
@@ -36,13 +35,12 @@ public class Snapshot  {
   public Snapshot() {
 
 }
-public Snapshot(String parentId, String category, String name, Integer count,
-		String timeUsec, String type, List<Property> properties, String trackId) {
+public Snapshot(String parentId, String category, String name, 
+		String timeUsec, String type, List<Property> properties) {
 	super();
 	this.parentId = parentId;
 	this.category = category;
 	this.name = name;
-	this.count = count;
 	this.timeUsec = timeUsec;
 	this.type = type;
 	this.properties = properties;
@@ -79,18 +77,6 @@ public Snapshot(String parentId, String category, String name, Integer count,
   }
   public void setName(String name) {
     this.name = name;
-  }
-
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("count")
-  public Integer getCount() {
-    return count;
-  }
-  public void setCount(Integer count) {
-    this.count = count;
   }
 
   
@@ -136,7 +122,6 @@ public Snapshot(String parentId, String category, String name, Integer count,
     sb.append("  parentId: ").append(parentId).append("\n");
     sb.append("  category: ").append(category).append("\n");
     sb.append("  name: ").append(name).append("\n");
-    sb.append("  count: ").append(count).append("\n");
     sb.append("  timeUsec: ").append(timeUsec).append("\n");
     sb.append("  type: ").append(type).append("\n");
     sb.append("  properties: ").append(properties).append("\n");

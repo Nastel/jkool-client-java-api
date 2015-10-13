@@ -39,8 +39,6 @@ paths:
         required: true
         type: string
       responses:
-        '200':
-          description: Event streamed properly.
         '202':
           description : Event accepted.    
         '400':

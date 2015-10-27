@@ -14,7 +14,7 @@ There are four types of data that can be streamed into jKool. They are:
 This repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ###Important note
-This helper code is extremely simple.  Please be advised that jKool will handle the most simple of use cases to the most complex use cases. For example, it is built with the ability to correlate events and track transactions among multiple applications.  This can be used for complex system analysis, for instance - to monitor system performance. For details on complex streaming, please see our full documentation at https://www.jkoolcloud.com/wiki/index.php/Main_Page.
+This helper code is extremely simple.  Please be advised that jKool will handle the most simple of use cases to the most complex use cases. For example, it is built with the ability to correlate events and track transactions among multiple applications.  This can be used for complex system analysis, for instance - to monitor system performance. We will be providing user documentation shortly that will explain in detail how to take advantage of complex jKool streaming and analysis.
 
 ###Using this helper code
 To use this helper code please do the following:

@@ -31,7 +31,10 @@ To use this helper code please do the following:
 			event.setCompCode("SUCCESS");
 			String eventUuid = UUID.randomUUID().toString();
 			event.setTrackingId(eventUuid);
-			event.setSourceFqn("APPL=WebOrders#SERVER=WebServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=New York, NY");
+			event.setServer("WebServer100");
+			event.setNetAddr("11.0.0.2");
+			event.setDataCenter("DC1");
+			event.setGeoAddr("New York, NY");
 			event.setSourceUrl("http://www.wunderground.com");
 			event.setSeverity("SUCCESS");
 			event.setReasonCode(0);

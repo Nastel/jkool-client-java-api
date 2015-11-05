@@ -1,5 +1,5 @@
 package com.nastel.jkool.api.model;
 
 public enum Severities {
-	SUCCESS
+	NONE, TRACE, DEBUG, INFO, SUCCESS, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT
 }

@@ -1,4 +1,4 @@
-package com.nastel.jkool.api.sample.complex;
+package com.nastel.jkool.api.sample.devops;
 
 /*
  * Copyright 2014-2015 JKOOL, LLC.
@@ -32,18 +32,16 @@ import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
 
 /**************************************************************************************************************************
- * In this example, we will demonstrate a more complex use of jKool. This example will demonstrate two advanced aspects
+ * In this example, we will demonstrate a DevOps use of jKool. This example will demonstrate two advanced aspects
  * of jKool: 
- * 1) How to make use of the many fields jKool uses to store DevOps data.  
+ * 1) How to make use of the many pre-defined fields jKool uses to store DevOps data.  
  * 2) Correlating events - in this example, instead of grouping events via the activity, we will rely on jKool to deduce 
- *    associations via the correlator id.  Part of the correlation will be the automatic creation of activities to group the 
- *    event.
+ *    associations via the correlator id's.  
  * 
  * In this example we are portraying three messaging queues residing in three different data center locations throughout the United States.  
- * As messages are passed from one data center to the next associations within the data are maintained via the 
- * "correlator id".
+ * As messages are passed from one data center to the next data center, associations within the data are maintained via the 
+ * "correlator id's".
  * 
- * Although this example does not demonstrate it, snapshots could be added. 
  * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
  * ***********************************************************************************************************************/
 
@@ -55,7 +53,8 @@ public class DevOpsAppl1 {
 		{
 
 			// Setup connection to jKool
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			//String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			String basePath = "http://localhost:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
@@ -77,12 +76,12 @@ public class DevOpsAppl1 {
 	                "1444318021796264",                    // startTimeUsec
 	                "1444318021796724",                    // endTimeUsec
 	                460,                                   // elapsedTimeUsec
-	                "AMAZON ProductId=28372373 Title: Crash Proof: Author: Robert Prechter Jr.", 
+	                "ProductId=28372373 Title: Crash Proof: Author: Robert Prechter Jr.", 
 	                                                       // msgText
 	                74,                                    // msgSize
 	                "none",                                // msgEncoding
 	                "windows-1252",                        // msgCharset
-	                Arrays.asList("OrderId:123@1444318021796223@1"),      
+	                Arrays.asList("CorrId:123"),      
 	                                                       // Correlator Id.
 	                "order/parts",                         // resource
 	                "text/plain",                          //msgMimeType
@@ -94,14 +93,14 @@ public class DevOpsAppl1 {
 	                "ReceiveOrder",                        // eventName
 	                null,                                  // snapshots (none in this example)
 	    			"WebOrders",						   // appl name (comprises source-fqn)
-	    			"WebServer100",	                       // server (comprises source-fqn)
+	    			"WebServerNY",	                       // server (comprises source-fqn)
 	    			"11.0.0.2",                            // network address (comprises source-fqn)
-	    			"DC1",								   // data center (comprises source-fqn)
+	    			"DCNY",								   // data center (comprises source-fqn)
 	    			"New York, NY");                       // geo location (comprises source-fqn)
 		
 			// Stream the event 
 			// (token is the token that was assigned to you when you purchased jKool).
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 			// Create the next event which is a message sent event representing a message sent from a hypothetical 
@@ -122,31 +121,30 @@ public class DevOpsAppl1 {
 	                "1444318021796724",                     // startTimeUsec
 	                "1444318021797547",                     // endTimeUsec
 	                823,                                    // elapsedTimeUsec
-	                "Verify ProductId=28372373",            // msgText
+	                "Order Processed ProductId=28372373",   // msgText
 	                73,                                     // msgSize
 	                "none",                                 // msgEncoding
 	                "windows-1252",                         // msgCharset
-	                Arrays.asList("OrderId:123@1444318021796223@1"),       
-	                                                        // Correlator Id.
-	                "VALIDATE.ORDERS.QUEUE",                // resource
+	                Arrays.asList("CorrId:123"),            // Correlator Id.
+	                "PROCESS.ORDERS.QUEUE",                 // resource
 	                "text/plain",                           // msgMimeType
 	                0,                                      // msgAge
 	                null,                                   // exception
 	                null,                                   // msgTag
 	                null,                                   // parentTrackId (jKool will compute this)
 	                0,                                      // waitTimeUsec
-	                "ValidateOrder1",                        // eventName
+	                "ProcessOrder",                         // eventName
 	                null,                                   // snapshots (none in this example)
 	    			"WebOrders",						   // appl name (comprises source-fqn)
-	    			"WebServer100",	                       // server (comprises source-fqn)
+	    			"WebServerNY",	                       // server (comprises source-fqn)
 	    			"11.0.0.2",                            // network address (comprises source-fqn)
-	    			"DC1",								   // data center (comprises source-fqn)
+	    			"DCNY",								   // data center (comprises source-fqn)
 	    			"New York, NY");                       // geo location (comprises source-fqn)
 	
 
 					// Stream the event 
 			        // (token is the token that was assigned to you when you purchased jKool.
-					response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
+					response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
 					response.close();
 			
 		}

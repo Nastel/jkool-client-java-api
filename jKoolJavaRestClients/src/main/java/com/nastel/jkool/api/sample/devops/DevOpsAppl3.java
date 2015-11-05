@@ -1,4 +1,4 @@
-package com.nastel.jkool.api.sample.complex;
+package com.nastel.jkool.api.sample.devops;
 
 /*
  * Copyright 2014-2015 JKOOL, LLC.
@@ -32,7 +32,7 @@ import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
 
 /**************************************************************************************************************************
- * In this example, we will demonstrate a more complex use of jKool. This example will demonstrate two advanced aspects
+ * In this example, we will demonstrate a DevOps use of jKool. This example will demonstrate two advanced aspects
  * of jKool: 
  * 1) How to make use of the many fields jKool uses to store DevOps data.  
  * 2) Correlating events - in this example, instead of grouping events via the activity, we will rely on jKool to deduce 
@@ -55,7 +55,8 @@ public class DevOpsAppl3 {
 		{
 
 			// Setup connection to jKool
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			//String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			String basePath = "http://localhost:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
@@ -72,7 +73,7 @@ public class DevOpsAppl3 {
 	                64,                                    // tid (thread id)
 	                CompCodes.SUCCESS,                     // compCode (completion code)
 	                0,                                     // reasonCode
-	                "Paris, France",                       // location
+	                "Charlotte, NC",                       // location
 	                "system",                              // user
 	                "1444318021840858",                    // timeUsec 
 	                "1444318021942074",                    // startTimeUsec
@@ -84,25 +85,25 @@ public class DevOpsAppl3 {
 	                "windows-1252",                        // msgCharset
 	                Arrays.asList("OrderId:123@1444318021796223@1"),      
 	                                                       // Correlator Id.
-	                "CREDIT.ORDERS.QUEUE",                 // resource
+	                "SHIPPING.ORDERS.QUEUE",                 // resource
 	                "text/plain",                          // msgMimeType
 	                0,                                     // msgAge
 	                null,                                  // exception
 	                null,                                  // msgTag
 	                null,                                  // parentTrackId (jKool will compute this)
 	                0,                                     // waitTimeUsec
-	                "ValidateAndVerifyOrder3",              // eventName
+	                "ReceiveAndProcessShipping",           // eventName
 	                null,                                  // snapshots (none in this example)
-	    			"WebOrders",						   // appl name (comprises source-fqn)
-	    			"WebServer100",	                       // server (comprises source-fqn)
+	    			"WebShipping",						   // appl name (comprises source-fqn)
+	    			"WebServerNC",	                       // server (comprises source-fqn)
 	    			"11.0.0.2",                            // network address (comprises source-fqn)
-	    			"DC1",								   // data center (comprises source-fqn)
-	    			"New York, NY");                       // geo location (comprises source-fqn)
+	    			"DCNC",								   // data center (comprises source-fqn)
+	    			"Charlotte, NC");                       // geo location (comprises source-fqn)
 		
 		
 			// Stream the event 
 			// (token is the token that was assigned to you when you purchased jKool).
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 		}

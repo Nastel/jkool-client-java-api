@@ -17,6 +17,7 @@ package com.nastel.jkool.api.sample.simple;
  */
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,38 +37,42 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * This example code uses the same data as the Weather example code.  However it demonstrates how to make use of Activities 
- * and Snapshots.  Activities are used to group events. Snapshots are used to categorize custom fields.  It is the intent of 
- * this code to give you a clear understanding of how to use activities and snapshots and to help you identify the use 
- * cases they apply to. 
+ * This example code uses the same data as the Movie example code.  However it demonstrates how to make use of Snapshots.  
+ * In this example, snapshots are being used to capture the weather at the time the movie was playing.  
+ * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
  * ***********************************************************************************************************************/
 
-public class WeatherWithSnapshotsAndActivity {
+public class MoviesWithWeatherSnapshotsAndActivity {
 	
 	public static void main(String[] args) {
 		try
 		{
 
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			String basePath = "http://localhost:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
-			String todaysDate = (new Date()).getTime() + "000";
+			//String todaysDate = (new Date()).getTime() + "000";
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+			String movieDate = (formatter.parse("03-Aug-2015")).getTime() + "000";
+			String endOfWeekDate = (formatter.parse("09-Aug-2015")).getTime() + "000";;
 			
+
 			// Create the activity that the events will be attached to
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Weather");  // also referred to as "operation"
-			activity.setTimeUsec(todaysDate);
+			activity.setActivityName("August Week 3 Moviesss");  // also referred to as "operation"
+			activity.setTimeUsec(endOfWeekDate);
 			activity.setStatus("END");
-			activity.setAppl("WebOrders");
+			activity.setAppl("WebMovies");
 			activity.setServer("WebServer100");
 			activity.setNetAddr("11.0.0.2");
-			activity.setDataCenter("DC1");
-			activity.setGeoAddr("New York, NY");			
-			// Create some custom fields
+			activity.setDataCenter("DCNY");
+			activity.setGeoAddr("New York, NY");	
+			
+			// Create some snapshot custom fields
 			Property propertyTempHigh = new Property();
 			propertyTempHigh.setName("TempHigh");
 			propertyTempHigh.setType("String");
@@ -115,25 +120,53 @@ public class WeatherWithSnapshotsAndActivity {
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setName("Temperature");
 			snapshotTemp.setType("SNAPSHOT");
-			snapshotTemp.setTimeUsec(todaysDate);
+			snapshotTemp.setTimeUsec(movieDate);
 			snapshotTemp.setProperties(propertiesTemp);
 			
 			Snapshot snapshotHumidity = new Snapshot();
 			snapshotHumidity.setCategory("Land");
 			snapshotHumidity.setName("Humidity");
 			snapshotHumidity.setType("SNAPSHOT");
-			snapshotHumidity.setTimeUsec(todaysDate);
+			snapshotHumidity.setTimeUsec(movieDate);
 			snapshotHumidity.setProperties(propertiesHumidity);
 			
 			Snapshot snapshotSeaLevel = new Snapshot();
 			snapshotSeaLevel.setCategory("Sea");
 			snapshotSeaLevel.setName("SeaLevel");
 			snapshotSeaLevel.setType("SNAPSHOT");
-			snapshotSeaLevel.setTimeUsec(todaysDate);
+			snapshotSeaLevel.setTimeUsec(movieDate);
 			snapshotSeaLevel.setProperties(propertiesSeaLevel);
+			
+			//Create some event custom fields
+			Property propertyName = new Property();
+			propertyName.setName("MovieName");
+			propertyName.setType("String");
+			propertyName.setValue("Casablanca");
+			
+			Property propertyPrice = new Property();
+			propertyPrice.setName("MoviePrice");
+			propertyPrice.setType("Double");
+			propertyPrice.setValue("10.50");
+			
+			Property propertyGenre = new Property();
+			propertyGenre.setName("MovieGenre");
+			propertyGenre.setType("String");
+			propertyGenre.setValue("Drama");
+			
+			Property propertyTime = new Property();
+			propertyTime.setName("MovieTime");
+			propertyTime.setType("String");
+			propertyTime.setValue("August 3, 2015 at 1PM");
+			
+			List<Property> propertiesMovie = new ArrayList<Property>();
+			propertiesMovie.add(propertyGenre);
+			propertiesMovie.add(propertyPrice);
+			propertiesMovie.add(propertyName);
+			propertiesMovie.add(propertyTime);
 
 			// Create the Event
 			// Attach it's snapshots
+			// Attach it's properties
 			// Attach the event to its parent activity 
 			Event event = new Event();
 			String eventUuid = UUID.randomUUID().toString();
@@ -143,16 +176,19 @@ public class WeatherWithSnapshotsAndActivity {
 			event.setNetAddr("11.0.0.2");
 			event.setDataCenter("DC1");
 			event.setGeoAddr("New York, NY");			
-			event.setSourceUrl("http://www.wunderground.com");
+			event.setSourceUrl("http://www.movies.com");
 			event.setLocation("New York, NY");
-			event.setEventName("August 22 Weather");
-			event.setTimeUsec(todaysDate);
-			event.setMsgText("This event contains weather information for August 22th.");
-			event.setMsgSize(74);
+			event.setEventName("Cassablanca playing August 3rd at 1PM");
+			event.setTimeUsec(movieDate);
+			event.setMsgText(null);
+			event.setMsgSize(0);
 			// This attaches the event to the activity.
 			event.setParentTrackId(activityUuid); 
 			
-			// This attaches the event to its snapshots.
+			// Attach the event's properties
+			event.setProperties(propertiesMovie);
+			
+			// This attaches the snapshots to the event.
 			snapshotHumidity.setParentId(eventUuid);
 			snapshotTemp.setParentId(eventUuid);
 			snapshotSeaLevel.setParentId(eventUuid);
@@ -164,23 +200,20 @@ public class WeatherWithSnapshotsAndActivity {
 
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
-			// **********************************************************************************
-			// And continue creating events for all of the days in the third week of August. 
-			// **********************************************************************************
+			// **************************************************************************************
+			// And continue creating events for all of the movies playing in the third week of August. 
+			// **************************************************************************************
 			
 			// ......
 			
-			// Stream the activity after all events for that activity have been streamed. 
+			// Stream the activity. 
 			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
+			response = target.path("activity").request().header("token", "cathystoken").post(Entity.entity(serialize(activity), "application/json"));
 			response.close();
-			
-			// **********************************************************************************
-			// Ditto the above to do the third week of August 
-			// **********************************************************************************
+
 		}
 		catch (Exception e)
 		{

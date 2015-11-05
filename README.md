@@ -6,9 +6,11 @@ This jKool Java Rest Client contains Java helper classes that will help you to g
 ###How to Stream data into jKool
 There are four types of data that can be streamed into jKool. They are:
 * Events: The main piece of data. Events contain pre-defined jKool fields and can also contain your own custom fields (as snapshots and properties, explained below)
-* Activities: A way of organizing events into groupings (categories)
-* Snapshots: A way of organizing custom fields into groupings (categories)
-* Properties: Your custom fields.
+* Activities: A way of organizing events into groupings.
+* Snapshots: A way of representing custom data at a "point in time".
+* Properties: Your custom data.
+
+(Very detailed Data Model Documentation is soon to come)
 
 ###Field level documentation
 This repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
@@ -18,6 +20,7 @@ This helper code is extremely simple.  Please be advised that jKool will handle 
 
 ###Using this helper code
 To use this helper code please do the following:
+* Import the required libraries residing inthe "libs" directory into your code.
 * Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in any of the sample code:
 ```java
 			String basePath = "http://data.jkoolcloud.com:6580/JESL";

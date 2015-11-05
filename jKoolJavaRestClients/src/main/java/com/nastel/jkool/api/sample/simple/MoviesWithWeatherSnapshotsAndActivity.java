@@ -49,7 +49,7 @@ public class MoviesWithWeatherSnapshotsAndActivity {
 		try
 		{
 
-			String basePath = "http://localhost:6580/JESL";
+			String basePath = "http://data.jkoolcloud.com:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
@@ -200,7 +200,7 @@ public class MoviesWithWeatherSnapshotsAndActivity {
 
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 			// **************************************************************************************
@@ -211,7 +211,7 @@ public class MoviesWithWeatherSnapshotsAndActivity {
 			
 			// Stream the activity. 
 			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "cathystoken").post(Entity.entity(serialize(activity), "application/json"));
+			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
 			response.close();
 
 		}

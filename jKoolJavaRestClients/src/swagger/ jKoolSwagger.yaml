@@ -123,7 +123,7 @@ definitions:
         description: URL that sourced this event. For example, if the event came from a browser.
       severity:
         type: string
-        description: Severity of the event. Defaults to SUCCESS. Please see documentation for valid entries.
+        description: Severity of the event. Defaults to SUCCESS. Valid values are - NONE, TRACE, DEBUG, INFO, SUCCESS, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT.
       pid:
         type: integer
         format: int32
@@ -134,7 +134,7 @@ definitions:
         description: Thread identifier.
       comp-code:
         type: string
-        description: Completion code.
+        description: Completion code.  Valid values are - SUCCESS, WARNING, ERROR.
       reason-code:
         type: integer
         format: int32
@@ -204,7 +204,7 @@ definitions:
     properties:
       name:
         type: string
-        description: Name of the category of custom fields.
+        description: Name of the snapshot.
       type:
         type: string
         description: Must be SNAPSHOT.
@@ -214,13 +214,13 @@ definitions:
       time-usec:
         type: string
         format: date-time
-        description: Time this category of fields occurred.
+        description: Time the snapshot occurred.
       category:
         type: string
         description: A "super"-category. A higher grouping of snapshots.  Multiple snapshots can belong to the same super-category.
       properties:
         type: array
-        description: The custom fields that belong to this category of fields.
+        description: The list of properties associated with this snapshot.
         items:
           $ref: '#/definitions/property'
   property:
@@ -258,7 +258,7 @@ definitions:
         description: Time this activity is reported.
       status:
         type: string
-        description: The status of this activity. Please see documentation for details.
+        description: The status of this activity. Valid values are - UNKNOWN, END, EXCEPTION.
       source-fqn:
         type: string
         description: Identifies where the activity came from. Must be in a special format. Please see documentation.

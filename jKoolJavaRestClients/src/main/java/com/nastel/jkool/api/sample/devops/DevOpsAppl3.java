@@ -55,15 +55,14 @@ public class DevOpsAppl3 {
 		{
 
 			// Setup connection to jKool
-			//String basePath = "http://data.jkoolcloud.com:6580/JESL";
-			String basePath = "http://localhost:6580/JESL";
+			String basePath = "http://data.jkoolcloud.com:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
 
 			// Create the first event which is a message received event representing a message received in a hypothetical 
 			// messaging queue residing in New York.
-			Event event = new Event("05d537d2-6dd1-11e5-9767-600292390f02", 
+			Event event = new Event("05d537d2-6dd1-11e5-9767-600292390333", 
 					                                       // trackingId
 	                                                       // sourceFqn
 	                "https://www.sample.com/orders/parts", // sourceUrl
@@ -103,7 +102,7 @@ public class DevOpsAppl3 {
 		
 			// Stream the event 
 			// (token is the token that was assigned to you when you purchased jKool).
-			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 		}

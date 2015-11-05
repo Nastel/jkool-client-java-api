@@ -48,7 +48,7 @@ public class MoviesWithActivity {
 		try
 		{
 
-			String basePath = "http://localhost:6580/JESL";
+			String basePath = "http://data.jkoolcloud.com:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
@@ -112,7 +112,7 @@ public class MoviesWithActivity {
 
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("event").request().header("token", "cathystoken").post(Entity.entity(serialize(event), "application/json"));
+			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
 			// **************************************************************************************
@@ -121,14 +121,11 @@ public class MoviesWithActivity {
 			
 			// ......
 			
-			// Stream the activity after all events for that activity have been streamed. 
+			// Stream the activity 
 			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "cathystoken").post(Entity.entity(serialize(activity), "application/json"));
+			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
 			response.close();
-			
-			// **********************************************************************************
-			// Ditto the above to do the third week of August 
-			// **********************************************************************************
+
 		}
 		catch (Exception e)
 		{

@@ -16,16 +16,14 @@ package com.nastel.jkool.api.sample.simple;
  * limitations under the License.
  */
 
-import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import com.nastel.jkool.api.model.Activity;
 import com.nastel.jkool.api.model.Event;
 import com.nastel.jkool.api.model.Property;
-import com.nastel.jkool.api.model.Snapshot;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
 
@@ -52,14 +50,15 @@ public class MoviesWithActivity {
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
-			String todaysDate = (new Date()).getTime() + "000";
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+			String movieDate = (formatter.parse("03-Aug-2015")).getTime() + "000";
 			
 			// Create the activity that the events will be attached to
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
 			activity.setActivityName("August Week 3 Movies");  // also referred to as "operation"
-			activity.setTimeUsec(todaysDate);
+			activity.setTimeUsec(movieDate);
 			activity.setStatus("END");
 			activity.setAppl("WebOrders");
 			activity.setServer("WebServer100");
@@ -101,7 +100,7 @@ public class MoviesWithActivity {
 			event.setSourceUrl("http://www.movies.com");
 			event.setLocation("New York, NY");
 			event.setEventName("Casablanca 8/3 at 1PM");
-			event.setTimeUsec(todaysDate);
+			event.setTimeUsec(movieDate);
 			event.setMsgText(null);
 			event.setMsgSize(0);
 			// This attaches the event to the activity.

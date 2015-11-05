@@ -18,14 +18,14 @@ This helper code is extremely simple.  Please be advised that jKool will handle 
 
 ###Using this helper code
 To use this helper code please do the following:
-* Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in RunApi.java:
+* Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in any of the sample code:
 ```java
-			String basePath = "http://data.jkoolcloud.com:6580/jKool/JKool_Service/rest";
+			String basePath = "http://data.jkoolcloud.com:6580/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 ```
 * Import the provided jKool objects residing in the "model" directory into your code.
-* Populate these jKool objects with your data. For example, please see the following in RunApi.java:
+* Populate these jKool objects with your data. For example, please see the following in the sample code:
 ```java
 			Event event = new Event();
 			event.setCompCode("SUCCESS");
@@ -33,17 +33,12 @@ To use this helper code please do the following:
 			event.setTrackingId(eventUuid);
 			event.setServer("WebServer100");
 			event.setNetAddr("11.0.0.2");
-			event.setDataCenter("DC1");
+			event.setDataCenter("DCNY");
 			event.setGeoAddr("New York, NY");
-			event.setSourceUrl("http://www.wunderground.com");
-			event.setSeverity("SUCCESS");
-			event.setReasonCode(0);
+			event.setSourceUrl("http://www.movies.com");
 			event.setLocation("New York, NY");
-			event.setEventName("August 31 Weather");
-			event.setUser("testuser");
-			event.setTimeUsec(todaysDate);
-			event.setStartTimeUsec(todaysDate);
-			event.setEndTimeUsec(todaysDate);
+			event.setEventName("Casablanca 8/3 at 1PM");
+			event.setTimeUsec(movieDate);
 			...
 ```
 * Invoke the post request on the client object sending the objects over as request entities. As part of this request, put your token in the header.  For example, please see the following in RunApi.java:

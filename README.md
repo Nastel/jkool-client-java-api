@@ -50,6 +50,8 @@ To use this helper code please do the following:
 			response.close();	
 ```
 
+The Rest Client will properly format the entity into JSON format.
+
 That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
 
 

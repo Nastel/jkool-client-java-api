@@ -14,6 +14,7 @@ package com.nastel.jkool.api.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import io.swagger.annotations.*;
@@ -31,6 +32,8 @@ public class Snapshot  {
   private String timeUsec = null;
   private String type = null;
   private List<Property> properties;
+  private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
   
   public Snapshot() {
 
@@ -85,7 +88,14 @@ public Snapshot(String parentId, String category, String name,
   @ApiModelProperty(value = "")
   @JsonProperty("time-usec")
   public String getTimeUsec() {
-    return timeUsec;
+	  try
+		{
+			return (formatter.parse(timeUsec)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
   }
   public void setTimeUsec(String timeUsec) {
     this.timeUsec = timeUsec;

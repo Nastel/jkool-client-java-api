@@ -14,6 +14,7 @@ package com.nastel.jkool.api.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import io.swagger.annotations.*;
@@ -52,12 +53,14 @@ public class Event {
 	public Integer waitTimeUsec = null;
 	public String eventName = null;
 	private List<Property> properties = null;;
-	public List<Snapshot> snapshots = new ArrayList<Snapshot>();
-	String appl = null;
-	String server = null;
-	String netAddr = null;
-	String dataCenter = null;
-	String geoAddr = null;
+	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+	private String appl = null;
+	private String server = null;
+	private String netAddr = null;
+	private String dataCenter = null;
+	private String geoAddr = null;
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
 	
 	
 
@@ -247,8 +250,14 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public String getTimeUsec() {
-		return timeUsec;
+	try
+	{
+		return (formatter.parse(timeUsec)).getTime() + "000";
 	}
+	catch (Exception e)
+	{
+		return null;
+	}}
 
 	public void setTimeUsec(String timeUsec) {
 		this.timeUsec = timeUsec;
@@ -259,7 +268,14 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public String getStartTimeUsec() {
-		return startTimeUsec;
+		try
+		{
+			return (formatter.parse(startTimeUsec)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 
 	public void setStartTimeUsec(String startTimeUsec) {
@@ -271,7 +287,14 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public String getEndTimeUsec() {
-		return endTimeUsec;
+		try
+		{
+			return (formatter.parse(endTimeUsec)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 
 	public void setEndTimeUsec(String endTimeUsec) {

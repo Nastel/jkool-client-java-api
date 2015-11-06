@@ -16,6 +16,8 @@ package com.nastel.jkool.api.model;
  * limitations under the License.
  */
  
+import java.text.SimpleDateFormat;
+
 import io.swagger.annotations.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,13 +28,16 @@ public class Activity {
 	private String trackingId = null;
 	private String status = null;
 	private String timeUsec = null;
+	private String startTime = null;
+	private String endTime = null;
 	private String activityName = null;
 	private String appl = null;
 	private String server = null;
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
-	
+	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
 	
 
 	public Activity() {
@@ -91,7 +96,14 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public String getTimeUsec() {
-		return timeUsec;
+		try
+		{
+			return (formatter.parse(timeUsec)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 
 	public void setTimeUsec(String timeUsec) {
@@ -109,9 +121,48 @@ public class Activity {
 	public void setActivityName(String activityName) {
 		this.activityName = activityName;
 	}
+	
+	
 
 	
-	
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("start-time-usec")
+	public String getStartTime() {
+		try
+		{
+			return (formatter.parse(startTime)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	/**
+	 **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("end-time-usec")
+	public String getEndTime() {
+		try
+		{
+			return (formatter.parse(endTime)).getTime() + "000";
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	public String getAppl() {
 		return appl;
 	}

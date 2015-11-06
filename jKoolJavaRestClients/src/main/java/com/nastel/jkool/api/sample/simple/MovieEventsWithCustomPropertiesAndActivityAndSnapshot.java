@@ -40,10 +40,10 @@ import javax.ws.rs.core.Response;
  * This example code uses the same data as the Movie example code.  However it demonstrates how to make use of Snapshots.  
  * In this example, snapshots are being used to capture the weather at the time the movie was playing.  
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
-public class MoviesWithWeatherSnapshotsAndActivity {
+public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 	
 	public static void main(String[] args) {
 		try
@@ -53,18 +53,18 @@ public class MoviesWithWeatherSnapshotsAndActivity {
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 			Response response = null;
-			//String todaysDate = (new Date()).getTime() + "000";
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-			String movieDate = (formatter.parse("03-Aug-2015")).getTime() + "000";
-			String endOfWeekDate = (formatter.parse("09-Aug-2015")).getTime() + "000";;
+			String movieDate = "03-Aug-2015 01:15:00";
+			String startOfWeekDate = "03-Aug-2015 00:00:00";
+			String endOfWeekDate = "09-Aug-2015 00:00:00";
 			
 
 			// Create the activity that the events will be attached to
 			Activity activity = new Activity();
 			String activityUuid = UUID.randomUUID().toString();
 			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Moviesss");  // also referred to as "operation"
-			activity.setTimeUsec(endOfWeekDate);
+			activity.setActivityName("August Week 3 Movies");  // also referred to as "operation"
+			activity.setEndTime(endOfWeekDate);
+			activity.setStartTime(startOfWeekDate);
 			activity.setStatus("END");
 			activity.setAppl("WebMovies");
 			activity.setServer("WebServer100");
@@ -115,7 +115,7 @@ public class MoviesWithWeatherSnapshotsAndActivity {
 			propertiesSeaLevel.add(propertySeaLevelMax);
 			propertiesSeaLevel.add(propertySeaLevelMin);
 			
-			// Attach the custom fields to snapshots (snapshots categorize custom fields)
+			// Attach the custom fields to snapshots 
 			Snapshot snapshotTemp = new Snapshot();
 			snapshotTemp.setCategory("Land");
 			snapshotTemp.setName("Temperature");

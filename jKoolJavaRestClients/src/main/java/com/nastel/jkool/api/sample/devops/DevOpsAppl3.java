@@ -34,17 +34,16 @@ import com.nastel.jkool.api.utils.JsonUtil;
 /**************************************************************************************************************************
  * In this example, we will demonstrate a DevOps use of jKool. This example will demonstrate two advanced aspects
  * of jKool: 
- * 1) How to make use of the many fields jKool uses to store DevOps data.  
+ * 1) How to make use of the many pre-defined fields jKool uses to store DevOps data.  
  * 2) Correlating events - in this example, instead of grouping events via the activity, we will rely on jKool to deduce 
- *    associations via the correlator id.  Part of the correlation will be the automatic creation of activities to group the 
- *    event.
+ *    associations via the correlator id's.  
  * 
  * In this example we are portraying three messaging queues residing in three different data center locations throughout the United States.  
- * As messages are passed from one data center to the next associations within the data are maintained via the 
- * "correlator id".
+ * As messages are passed from one data center to the next data center, associations within the data are maintained via the 
+ * "correlator id's".
  * 
  * Although this example does not demonstrate it, properties and/or snapshots could be added. 
- * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
 
@@ -74,9 +73,9 @@ public class DevOpsAppl3 {
 	                0,                                     // reasonCode
 	                "Charlotte, NC",                       // location
 	                "system",                              // user
-	                "1444318021840858",                    // timeUsec 
-	                "1444318021942074",                    // startTimeUsec
-	                "1444318021945106",                    // endTimeUsec
+	                "11-Aug-2015 01:15:00",                // timeUsec 
+	                "11-Aug-2015 01:15:00",                // startTimeUsec
+	                "11-Aug-2015 01:15:00",                // endTimeUsec
 	                3021,                                  // elapsedTimeUsec
 	                "Verify ProductId=28372373",           // msgText
 	                73,                                    // msgSize

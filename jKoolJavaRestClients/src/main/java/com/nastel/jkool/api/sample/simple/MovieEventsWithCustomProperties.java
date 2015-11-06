@@ -40,7 +40,7 @@ import javax.ws.rs.core.Response;
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
-public class MovieEventsWithCustomPropertiesAndActivity {
+public class MovieEventsWithCustomProperties {
 	
 	public static void main(String[] args) {
 		try
@@ -51,22 +51,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			WebTarget target = client.target(basePath);
 			Response response = null;
 			String movieDate = "03-Aug-2015 01:15:00";
-			String startOfWeekDate = "03-Aug-2015 00:00:00";
-			String endOfWeekDate = "09-Aug-2015 00:00:00";
-			
-			// Create the activity that the events will be attached to
-			Activity activity = new Activity();
-			String activityUuid = UUID.randomUUID().toString();
-			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Movies");  // also referred to as "operation"
-			activity.setStartTime(startOfWeekDate);
-			activity.setEndTime(endOfWeekDate);
-			activity.setStatus("END");
-			activity.setAppl("WebOrders");
-			activity.setServer("WebServer100");
-			activity.setNetAddr("11.0.0.2");
-			activity.setDataCenter("DC1");
-			activity.setGeoAddr("New York, NY");			
+					
 			// Create some custom fields
 			Property propertyName = new Property();
 			propertyName.setName("MovieName");
@@ -90,7 +75,6 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 
 			// Create the Event
 			// Attach it's properties
-			// Attach the event to its parent activity 
 			Event event = new Event();
 			String eventUuid = UUID.randomUUID().toString();
 			event.setTrackingId(eventUuid);
@@ -105,9 +89,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			event.setTimeUsec(movieDate);
 			event.setMsgText(null);
 			event.setMsgSize(0);
-			// This attaches the event to the activity.
-			event.setParentTrackId(activityUuid); 
-			
+
 			event.setProperties(properties);
 			event.setSnapshots(null);
 
@@ -116,16 +98,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
-			// **************************************************************************************
-			// And continue creating events for all of the movies playing in the third week of August. 
-			// **************************************************************************************
-			
-			// ......
-			
-			// Stream the activity 
-			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
-			response.close();
+
 
 		}
 		catch (Exception e)

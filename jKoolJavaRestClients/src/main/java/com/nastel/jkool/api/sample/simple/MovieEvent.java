@@ -34,13 +34,12 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies 
- * playing in a given week.
+ * This example demonstrates how to create a simple movie events 
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
-public class MovieEventsWithCustomPropertiesAndActivity {
+public class MovieEvent {
 	
 	public static void main(String[] args) {
 		try
@@ -51,46 +50,9 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			WebTarget target = client.target(basePath);
 			Response response = null;
 			String movieDate = "03-Aug-2015 01:15:00";
-			String startOfWeekDate = "03-Aug-2015 00:00:00";
-			String endOfWeekDate = "09-Aug-2015 00:00:00";
-			
-			// Create the activity that the events will be attached to
-			Activity activity = new Activity();
-			String activityUuid = UUID.randomUUID().toString();
-			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Movies");  // also referred to as "operation"
-			activity.setStartTime(startOfWeekDate);
-			activity.setEndTime(endOfWeekDate);
-			activity.setStatus("END");
-			activity.setAppl("WebOrders");
-			activity.setServer("WebServer100");
-			activity.setNetAddr("11.0.0.2");
-			activity.setDataCenter("DC1");
-			activity.setGeoAddr("New York, NY");			
-			// Create some custom fields
-			Property propertyName = new Property();
-			propertyName.setName("MovieName");
-			propertyName.setType("String");
-			propertyName.setValue("Casablanca");
-			
-			Property propertyPrice = new Property();
-			propertyPrice.setName("MoviePrice");
-			propertyPrice.setType("Double");
-			propertyPrice.setValue("10.50");
-			
-			Property propertyGenre = new Property();
-			propertyGenre.setName("MovieGenre");
-			propertyGenre.setType("String");
-			propertyGenre.setValue("Drama");
-			
-			List<Property> properties = new ArrayList<Property>();
-			properties.add(propertyGenre);
-			properties.add(propertyPrice);
-			properties.add(propertyName);
 
 			// Create the Event
 			// Attach it's properties
-			// Attach the event to its parent activity 
 			Event event = new Event();
 			String eventUuid = UUID.randomUUID().toString();
 			event.setTrackingId(eventUuid);
@@ -103,29 +65,15 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			event.setLocation("New York, NY");
 			event.setEventName("Casablanca 8/3 at 1PM");
 			event.setTimeUsec(movieDate);
-			event.setMsgText(null);
-			event.setMsgSize(0);
-			// This attaches the event to the activity.
-			event.setParentTrackId(activityUuid); 
-			
-			event.setProperties(properties);
-			event.setSnapshots(null);
+			event.setMsgText("Casablanca is playing on August 3rd at 1PM");
+			event.setMsgSize(21);
 
-		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
 			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
 			response.close();	
 			
-			// **************************************************************************************
-			// And continue creating events for all of the movies playing in the third week of August. 
-			// **************************************************************************************
-			
-			// ......
-			
-			// Stream the activity 
-			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
-			response.close();
+
+
 
 		}
 		catch (Exception e)

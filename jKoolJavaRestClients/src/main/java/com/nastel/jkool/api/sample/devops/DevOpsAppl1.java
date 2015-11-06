@@ -42,7 +42,8 @@ import com.nastel.jkool.api.utils.JsonUtil;
  * As messages are passed from one data center to the next data center, associations within the data are maintained via the 
  * "correlator id's".
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL REPLACE HARDCODED VALUES WITH YOUR APPLICATION VARIABLES.
+ * Although this example does not demonstrate it, properties and/or snapshots could be added. 
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
 
@@ -71,9 +72,9 @@ public class DevOpsAppl1 {
 	                0,                                     // reasonCode
 	                "New York, NY",                        // location
 	                "webuser",                             // user
-	                "1444318021832168",                    // timeUsec 
-	                "1444318021796264",                    // startTimeUsec
-	                "1444318021796724",                    // endTimeUsec
+	                "11-Aug-2015 01:15:00",                // timeUsec 
+	                "11-Aug-2015 01:15:00",                // startTimeUsec
+	                "11-Aug-2015 01:15:00",                // endTimeUsec
 	                460,                                   // elapsedTimeUsec
 	                "ProductId=28372373 Title: Crash Proof: Author: Robert Prechter Jr.", 
 	                                                       // msgText
@@ -116,9 +117,9 @@ public class DevOpsAppl1 {
 	                0,                                      // reasonCode
 	                "New York, NY",                         // location
 	                "webuser",                              // user
-	                "1444318021833443",                     // timeUsec 
-	                "1444318021796724",                     // startTimeUsec
-	                "1444318021797547",                     // endTimeUsec
+	                "11-Aug-2015 01:15:00",                 // timeUsec 
+	                "11-Aug-2015 01:15:00",                 // startTimeUsec
+	                "11-Aug-2015 01:15:00",                 // endTimeUsec
 	                823,                                    // elapsedTimeUsec
 	                "Order Processed ProductId=28372373",   // msgText
 	                73,                                     // msgSize

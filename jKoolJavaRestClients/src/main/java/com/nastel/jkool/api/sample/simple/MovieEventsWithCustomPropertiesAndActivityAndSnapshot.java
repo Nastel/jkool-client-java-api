@@ -37,7 +37,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * This example code uses the same data as the Movie example code.  However it demonstrates how to make use of Snapshots.  
+ * This example code uses the same data as the prior Movie example code.  However it also demonstrates how to make use of Snapshots.  
  * In this example, snapshots are being used to capture the weather at the time the movie was playing.  
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.

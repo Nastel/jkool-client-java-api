@@ -34,8 +34,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies 
- * playing in a given week.
+ * This example demonstrates how to create movie events with custom properties.
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/

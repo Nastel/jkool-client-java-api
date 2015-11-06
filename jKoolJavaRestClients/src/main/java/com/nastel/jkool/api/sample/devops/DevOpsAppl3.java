@@ -17,6 +17,7 @@ package com.nastel.jkool.api.sample.devops;
  */
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -61,7 +62,7 @@ public class DevOpsAppl3 {
 
 			// Create the first event which is a message received event representing a message received in a hypothetical 
 			// messaging queue residing in New York.
-			Event event = new Event("05d537d2-6dd1-11e5-9767-600292390333", 
+			Event event = new Event(UUID.randomUUID().toString(), 
 					                                       // trackingId
 	                                                       // sourceFqn
 	                "https://www.sample.com/orders/parts", // sourceUrl
@@ -73,17 +74,17 @@ public class DevOpsAppl3 {
 	                0,                                     // reasonCode
 	                "Charlotte, NC",                       // location
 	                "system",                              // user
-	                "11-Aug-2015 01:15:00",                // timeUsec 
-	                "11-Aug-2015 01:15:00",                // startTimeUsec
-	                "11-Aug-2015 01:15:00",                // endTimeUsec
-	                3021,                                  // elapsedTimeUsec
-	                "Verify ProductId=28372373",           // msgText
-	                73,                                    // msgSize
+	                null,                                  // timeUsec (we have start/end times, so this is null) 
+	                "11-Aug-2015 01:16:15",                // startTimeUsec
+	                "11-Aug-2015 01:16:30",                // endTimeUsec
+	                15,                                    // elapsedTimeUsec
+	                "OrderId=28372373 shipped.",           // msgText
+	                24,                                    // msgSize
 	                "none",                                // msgEncoding
 	                "windows-1252",                        // msgCharset
-	                Arrays.asList("OrderId:123@1444318021796223@1"),      
+	                Arrays.asList("CorrId:123"),      
 	                                                       // Correlator Id.
-	                "SHIPPING.ORDERS.QUEUE",                 // resource
+	                "SHIPPING.QUEUE",                      // resource
 	                "text/plain",                          // msgMimeType
 	                0,                                     // msgAge
 	                null,                                  // exception
@@ -94,9 +95,9 @@ public class DevOpsAppl3 {
 	                null,                                  // snapshots (none in this example)
 	    			"WebShipping",						   // appl name (comprises source-fqn)
 	    			"WebServerNC",	                       // server (comprises source-fqn)
-	    			"11.0.0.2",                            // network address (comprises source-fqn)
+	    			"172.16.297.11",                       // network address (comprises source-fqn)
 	    			"DCNC",								   // data center (comprises source-fqn)
-	    			"Charlotte, NC");                       // geo location (comprises source-fqn)
+	    			"Charlotte, NC");                      // geo location (comprises source-fqn)
 		
 		
 			// Stream the event 

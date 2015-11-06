@@ -17,6 +17,7 @@ package com.nastel.jkool.api.sample.devops;
  */
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -61,7 +62,7 @@ public class DevOpsAppl1 {
 
 			// Create the first event which is a message received event representing a message received in a hypothetical 
 			// messaging queue residing in New York.
-			Event event = new Event("05d537d1-6dd1-11e5-9767-600292390111", 
+			Event event = new Event(UUID.randomUUID().toString(), 
 					                                       // trackingId
 	                "https://www.sample.com/orders/parts", // sourceUrl
 	                Severities.SUCCESS,                    // severity
@@ -72,18 +73,18 @@ public class DevOpsAppl1 {
 	                0,                                     // reasonCode
 	                "New York, NY",                        // location
 	                "webuser",                             // user
-	                "11-Aug-2015 01:15:00",                // timeUsec 
+	                null,                                  // timeUsec (we have start/end times, so this is null)
 	                "11-Aug-2015 01:15:00",                // startTimeUsec
-	                "11-Aug-2015 01:15:00",                // endTimeUsec
-	                460,                                   // elapsedTimeUsec
-	                "ProductId=28372373 Title: Crash Proof: Author: Robert Prechter Jr.", 
+	                "11-Aug-2015 01:15:30",                // endTimeUsec
+	                30,                                    // elapsedTimeUsec
+	                "OrderId=28372373 received.", 
 	                                                       // msgText
-	                74,                                    // msgSize
+	                26,                                    // msgSize
 	                "none",                                // msgEncoding
 	                "windows-1252",                        // msgCharset
 	                Arrays.asList("CorrId:123"),      
 	                                                       // Correlator Id.
-	                "order/parts",                         // resource
+	                "ORDERS.QUEUE",                        // resource
 	                "text/plain",                          //msgMimeType
 	                0,                                     // msgAge
 	                null,                                  // exception
@@ -94,7 +95,7 @@ public class DevOpsAppl1 {
 	                null,                                  // snapshots (none in this example)
 	    			"WebOrders",						   // appl name (comprises source-fqn)
 	    			"WebServerNY",	                       // server (comprises source-fqn)
-	    			"11.0.0.2",                            // network address (comprises source-fqn)
+	    			"172.16.257.34",                       // network address (comprises source-fqn)
 	    			"DCNY",								   // data center (comprises source-fqn)
 	    			"New York, NY");                       // geo location (comprises source-fqn)
 		
@@ -105,7 +106,7 @@ public class DevOpsAppl1 {
 			
 			// Create the next event which is a message sent event representing a message sent from a hypothetical 
 			// messaging queue residing in New York to a hypothetical messaging queue residing in Los Angeles (DevOpsAppl2 class)
-			event = new Event("05d537d2-6dd1-11e5-9767-600292390f02", 
+			event = new Event(UUID.randomUUID().toString(), 
 					                                        // trackingId
 	                                                        // sourceFqn
 	                "https://www.sample.com/orders/parts",  // sourceUrl
@@ -117,16 +118,16 @@ public class DevOpsAppl1 {
 	                0,                                      // reasonCode
 	                "New York, NY",                         // location
 	                "webuser",                              // user
-	                "11-Aug-2015 01:15:00",                 // timeUsec 
-	                "11-Aug-2015 01:15:00",                 // startTimeUsec
-	                "11-Aug-2015 01:15:00",                 // endTimeUsec
-	                823,                                    // elapsedTimeUsec
+	                null,                                   // timeUsec 
+	                "11-Aug-2015 01:15:30",                 // startTimeUsec
+	                "11-Aug-2015 01:15:30",                 // endTimeUsec
+	                0,                                      // elapsedTimeUsec
 	                "Order Processed ProductId=28372373",   // msgText
 	                73,                                     // msgSize
 	                "none",                                 // msgEncoding
 	                "windows-1252",                         // msgCharset
 	                Arrays.asList("CorrId:123"),            // Correlator Id.
-	                "PROCESS.ORDERS.QUEUE",                 // resource
+	                "PAYMENT.QUEUE",                        // resource
 	                "text/plain",                           // msgMimeType
 	                0,                                      // msgAge
 	                null,                                   // exception
@@ -135,11 +136,11 @@ public class DevOpsAppl1 {
 	                0,                                      // waitTimeUsec
 	                "ProcessOrder",                         // eventName
 	                null,                                   // snapshots (none in this example)
-	    			"WebOrders",						   // appl name (comprises source-fqn)
-	    			"WebServerNY",	                       // server (comprises source-fqn)
-	    			"11.0.0.2",                            // network address (comprises source-fqn)
-	    			"DCNY",								   // data center (comprises source-fqn)
-	    			"New York, NY");                       // geo location (comprises source-fqn)
+	    			"WebOrders",						    // appl name (comprises source-fqn)
+	    			"WebServerNY",	                        // server (comprises source-fqn)
+	    			"172.16.257.34",                        // network address (comprises source-fqn)
+	    			"DCNY",								    // data center (comprises source-fqn)
+	    			"New York, NY");                        // geo location (comprises source-fqn)
 	
 
 					// Stream the event 

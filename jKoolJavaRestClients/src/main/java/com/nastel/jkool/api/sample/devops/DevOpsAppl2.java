@@ -17,6 +17,7 @@ package com.nastel.jkool.api.sample.devops;
  */
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -61,7 +62,7 @@ public class DevOpsAppl2 {
 
 			// Create the first event which is a message received event representing a message received in a hypothetical 
 			// messaging queue residing in New York.
-			Event event = new Event("05d537d2-6dd1-11e5-9767-600292390222", 
+			Event event = new Event(UUID.randomUUID().toString(), 
 					                                       // trackingId
 	                                                       // sourceFqn
 	                "https://www.sample.com/orders/parts", // sourceUrl
@@ -73,17 +74,17 @@ public class DevOpsAppl2 {
 	                0,                                     // reasonCode
 	                "Los Angeles, CA",                     // location
 	                "ebay-proc",                           // user
-	                "11-Aug-2015 01:15:00",                // timeUsec 
-	                "11-Aug-2015 01:15:00",                // startTimeUsec
-	                "11-Aug-2015 01:15:00",                // endTimeUsec
-	                638,                                   // elapsedTimeUsec
-	                "Verify ProductId=28372373",           // msgText
-	                74,                                    // msgSize
+	                null,                                  // timeUsec (we have start/end times, so this is null)
+	                "11-Aug-2015 01:15:30",                // startTimeUsec
+	                "11-Aug-2015 01:16:05",                // endTimeUsec
+	                35,                                    // elapsedTimeUsec
+	                "OrderId=28372373 payment processed.", // msgText
+	                35,                                    // msgSize
 	                "none",                                // msgEncoding
 	                "windows-1252",                        // msgCharset
 	                Arrays.asList("CorrId:123"),      
 	                                                       // Correlator Id.
-	                "order/parts",                         // resource
+	                "PAYMENT.QUEUE",                       // resource
 	                "text/plain",                          // msgMimeType
 	                0,                                     // msgAge
 	                null,                                  // exception
@@ -94,7 +95,7 @@ public class DevOpsAppl2 {
 	                null,                                  // snapshots (none in this example)
 	    			"WebPayments",						   // appl name (comprises source-fqn)
 	    			"WebServerCA",	                       // server (comprises source-fqn)
-	    			"11.0.0.2",                            // network address (comprises source-fqn)
+	    			"172.16.254.1",                        // network address (comprises source-fqn)
 	    			"DC1",								   // data center (comprises source-fqn)
 	    			"Los Angeles, CA");                    // geo location (comprises source-fqn)
 		
@@ -106,7 +107,7 @@ public class DevOpsAppl2 {
 			
 			// Create the next event which is a message sent event representing a message sent from a hypothetical 
 			// messaging queue residing in New York to a hypothetical messaging queue residing in Los Angeles (DevOpsAppl2 class)
-			event = new Event("05d537d2-6dd1-11e5-9767-600292390f02", 
+			event = new Event(UUID.randomUUID().toString(), 
 					                                        // trackingId
 	                                                        // sourceFqn
 	                "https://www.sample.com/orders/parts",  // sourceUrl
@@ -119,15 +120,15 @@ public class DevOpsAppl2 {
 	                "Los Angeles, CA",                      // location
 	                "webuser",                              // user
 	                "11-Aug-2015 01:15:00",                 // timeUsec 
-	                "11-Aug-2015 01:15:00",                 // startTimeUsec
-	                "11-Aug-2015 01:15:00",                 // endTimeUsec
-	                823,                                    // elapsedTimeUsec
+	                "11-Aug-2015 01:16:05",                 // startTimeUsec
+	                "11-Aug-2015 01:16:15",                 // endTimeUsec
+	                10,                                     // elapsedTimeUsec
 	                "Verify ProductId=28372373",            // msgText
 	                73,                                     // msgSize
 	                "none",                                 // msgEncoding
 	                "windows-1252",                         // msgCharset
 	                Arrays.asList("CorrId:123"),            // Correlator Id.
-	                "PAYMENT.ORDERS.QUEUE",                 // resource
+	                "SHIPPING.QUEUE",                       // resource
 	                "text/plain",                           // msgMimeType
 	                0,                                      // msgAge
 	                null,                                   // exception
@@ -138,9 +139,9 @@ public class DevOpsAppl2 {
 	                null,                                   // snapshots (none in this example)
 	    			"WebOrders",						    // appl name (comprises source-fqn)
 	    			"WebServerCA",	                        // server (comprises source-fqn)
-	    			"11.0.0.2",                             // network address (comprises source-fqn)
+	    			"172.16.254.1",                         // network address (comprises source-fqn)
 	    			"DCCA",								    // data center (comprises source-fqn)
-	    			"Los Angeles, CA");                        // geo location (comprises source-fqn)
+	    			"Los Angeles, CA");                     // geo location (comprises source-fqn)
 		
 
 					// Stream the event 

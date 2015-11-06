@@ -16,12 +16,15 @@ package com.nastel.jkool.api.sample.simple;
  * limitations under the License.
  */
 
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.Activity;
 import com.nastel.jkool.api.model.Event;
@@ -29,12 +32,6 @@ import com.nastel.jkool.api.model.Property;
 import com.nastel.jkool.api.model.Snapshot;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 /**************************************************************************************************************************
  * This example code uses the same data as the prior Movie example code.  However it also demonstrates how to make use of Snapshots.  

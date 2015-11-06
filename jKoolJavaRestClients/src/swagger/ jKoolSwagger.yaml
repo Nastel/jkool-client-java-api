@@ -256,6 +256,14 @@ definitions:
         type: string
         format: date-time
         description: Time this activity is reported.
+      start-time-usec:
+        type: string
+        format: date-time
+        description: Time the activity began.
+      end-time-usec:
+        type: string
+        format: date-time
+        description: Time the activity completed.
       status:
         type: string
         description: The status of this activity. Valid values are - UNKNOWN, END, EXCEPTION.

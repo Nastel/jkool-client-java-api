@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.Activity;
 import com.nastel.jkool.api.model.Event;
+import com.nastel.jkool.api.model.EventTypes;
 import com.nastel.jkool.api.model.Property;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
@@ -109,6 +110,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			
 			event.setProperties(properties);
 			event.setSnapshots(null);
+			event.setType(EventTypes.EVENT); // Temporary - will be eliminated after next rollout
 
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.

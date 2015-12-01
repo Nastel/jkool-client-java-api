@@ -25,6 +25,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.Event;
+import com.nastel.jkool.api.model.EventTypes;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
 
@@ -61,7 +62,8 @@ public class MovieEvent {
 			event.setEventName("Casablanca 8/3 at 1PM");
 			event.setTimeUsec(movieDate);
 			event.setMsgText("Casablanca is playing on August 3rd at 1PM");
-			event.setMsgSize(21);
+			event.setType(EventTypes.EVENT); // Temporary - will be eliminated after next rollout
+			event.setMsgSize(42);
 
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
 			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));

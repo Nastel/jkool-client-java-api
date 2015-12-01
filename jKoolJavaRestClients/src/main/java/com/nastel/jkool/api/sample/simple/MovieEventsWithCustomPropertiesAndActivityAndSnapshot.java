@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.Activity;
 import com.nastel.jkool.api.model.Event;
+import com.nastel.jkool.api.model.EventTypes;
 import com.nastel.jkool.api.model.Property;
 import com.nastel.jkool.api.model.Snapshot;
 import com.nastel.jkool.api.utils.ApiException;
@@ -181,6 +182,7 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			event.setMsgSize(0);
 			// This attaches the event to the activity.
 			event.setParentTrackId(activityUuid); 
+			event.setType(EventTypes.EVENT); // Temporary - will be eliminated after next rollout
 			
 			// Attach the event's properties
 			event.setProperties(propertiesMovie);

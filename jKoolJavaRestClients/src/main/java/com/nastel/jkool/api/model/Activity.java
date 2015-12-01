@@ -36,6 +36,7 @@ public class Activity {
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
+	private String type = null;
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
 	
@@ -201,6 +202,17 @@ public class Activity {
 
 	public void setGeoAddr(String geoAddr) {
 		this.geoAddr = geoAddr;
+	}
+	
+	// Temporary - will be eliminated after next rollout
+	@ApiModelProperty(value = "")
+	@JsonProperty("type")
+	public String getType() {
+		return "ACTIVITY";
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override

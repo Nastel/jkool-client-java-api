@@ -249,10 +249,10 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
-	public String getTimeUsec() {
+	public Long getTimeUsec() {
 	try
 	{
-		return (formatter.parse(timeUsec)).getTime() + "000";
+		return new Long((formatter.parse(timeUsec)).getTime() + "000");
 	}
 	catch (Exception e)
 	{

@@ -267,10 +267,10 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
-	public String getStartTimeUsec() {
+	public Long getStartTimeUsec() {
 		try
 		{
-			return (formatter.parse(startTimeUsec)).getTime() + "000";
+			return new Long((formatter.parse(startTimeUsec)).getTime() + "000");
 		}
 		catch (Exception e)
 		{
@@ -286,10 +286,10 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
-	public String getEndTimeUsec() {
+	public Long getEndTimeUsec() {
 		try
 		{
-			return (formatter.parse(endTimeUsec)).getTime() + "000";
+			return new Long((formatter.parse(endTimeUsec)).getTime() + "000");
 		}
 		catch (Exception e)
 		{

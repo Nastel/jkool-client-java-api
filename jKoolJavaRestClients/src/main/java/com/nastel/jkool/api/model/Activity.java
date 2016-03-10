@@ -130,10 +130,10 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
-	public String getStartTime() {
+	public Long getStartTime() {
 		try
 		{
-			return (formatter.parse(startTime)).getTime() + "000";
+			return new Long((formatter.parse(startTime)).getTime() + "000");
 		}
 		catch (Exception e)
 		{
@@ -149,10 +149,10 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
-	public String getEndTime() {
+	public Long getEndTime() {
 		try
 		{
-			return (formatter.parse(endTime)).getTime() + "000";
+			return new Long((formatter.parse(endTime)).getTime() + "000");
 		}
 		catch (Exception e)
 		{

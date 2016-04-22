@@ -55,5 +55,10 @@ The Rest Client will properly format the entity into JSON format.
 That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
 
 
+###Streaming with Curl
+Data can also be streamed into jKool using Curl. Below is an example:
 
+```
+curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://test.jkoolcloud.com:6585/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Testing Curl","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
+```java
 

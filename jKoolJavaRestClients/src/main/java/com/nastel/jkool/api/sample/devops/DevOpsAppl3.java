@@ -34,22 +34,22 @@ import com.nastel.jkool.api.utils.JsonUtil;
 
 /**************************************************************************************************************************
  * In this example, we will demonstrate a DevOps use of jKool. This example will demonstrate two advanced aspects
- * of jKool: 
- * 1) How to make use of the many pre-defined fields jKool uses to store DevOps data.  
- * 2) Correlating events - in this example, instead of grouping events via the activity, we will rely on jKool to deduce 
- *    associations via the correlator id's.  
- * 
- * In this example we are portraying three messaging queues residing in three different data center locations throughout the United States.  
- * As messages are passed from one data center to the next data center, associations within the data are maintained via the 
+ * of jKool:
+ * 1) How to make use of the many pre-defined fields jKool uses to store DevOps data.
+ * 2) Correlating events - in this example, instead of grouping events via the activity, we will rely on jKool to deduce
+ *    associations via the correlator id's.
+ *
+ * In this example we are portraying three messaging queues residing in three different data center locations throughout the United States.
+ * As messages are passed from one data center to the next data center, associations within the data are maintained via the
  * "correlator id's".
- * 
- * Although this example does not demonstrate it, properties and/or snapshots could be added. 
+ *
+ * Although this example does not demonstrate it, properties and/or snapshots could be added.
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
 
 public class DevOpsAppl3 {
-	
+
 	public static void main(String[] args) {
 		try
 		{
@@ -60,13 +60,13 @@ public class DevOpsAppl3 {
 			WebTarget target = client.target(basePath);
 			Response response = null;
 
-			// Create the first event which is a message received event representing a message received in a hypothetical 
+			// Create the first event which is a message received event representing a message received in a hypothetical
 			// messaging queue residing in New York.
-			Event event = new Event(UUID.randomUUID().toString(), 
+			Event event = new Event(UUID.randomUUID().toString(),
 					                                       // trackingId
 	                                                       // sourceFqn
 	                "https://www.sample.com/orders/parts", // sourceUrl
-	                Severities.SUCCESS,                    // severity
+	                Severities.INFO,                       // severity
 	                EventTypes.RECEIVE,                    // type
 	                432,                                   // pid (process id)
 	                64,                                    // tid (thread id)
@@ -74,7 +74,7 @@ public class DevOpsAppl3 {
 	                0,                                     // reasonCode
 	                "Charlotte, NC",                       // location
 	                "system",                              // user
-	                null,                                  // timeUsec (we have start/end times, so this is null) 
+	                null,                                  // timeUsec (we have start/end times, so this is null)
 	                "11-Aug-2015 01:16:15",                // startTimeUsec
 	                "11-Aug-2015 01:16:30",                // endTimeUsec
 	                15,                                    // elapsedTimeUsec
@@ -82,7 +82,7 @@ public class DevOpsAppl3 {
 	                24,                                    // msgSize
 	                "none",                                // msgEncoding
 	                "windows-1252",                        // msgCharset
-	                Arrays.asList("CorrId:123"),      
+	                Arrays.asList("CorrId:123"),
 	                                                       // Correlator Id.
 	                "SHIPPING.QUEUE",                      // resource
 	                "text/plain",                          // msgMimeType
@@ -98,20 +98,20 @@ public class DevOpsAppl3 {
 	    			"172.16.297.11",                       // network address (comprises source-fqn)
 	    			"DCNC",								   // data center (comprises source-fqn)
 	    			"Charlotte, NC");                      // geo location (comprises source-fqn)
-		
-		
-			// Stream the event 
+
+
+			// Stream the event
 			// (token is the token that was assigned to you when you purchased jKool).
 			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
-			response.close();	
-			
+			response.close();
+
 		}
 		catch (Exception e)
 		{
 			System.out.println("Error: " + e);
 		}
 	}
-	
+
 	 /**
 	   * Serialize the given Java object into JSON string.
 	   */

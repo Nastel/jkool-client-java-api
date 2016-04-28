@@ -123,7 +123,7 @@ definitions:
         description: URL that sourced this event. For example, if the event came from a browser.
       severity:
         type: string
-        description: Severity of the event. Defaults to SUCCESS. Valid values are - NONE, TRACE, DEBUG, INFO, SUCCESS, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT.
+        description: Severity of the event. Defaults to INFO. Valid values are - NONE, TRACE, DEBUG, INFO, NOTICE, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT.
       pid:
         type: integer
         format: int32

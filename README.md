@@ -59,6 +59,17 @@ That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
 Data can also be streamed into jKool using Curl. Below is an example:
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST http://data.jkoolcloud.com:6580/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Testing Curl","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
+curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST http://data.jkoolcloud.com:6580/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
+
+###Streaming with Python
+Data can also be streamed into jKool using Python. To do so, you will need to use the Python "Request". Details on the Python Request can be found here - http://docs.python-requests.org/en/latest/user/quickstart/. Below is an example of using it to stream into jKool:
+
+```java
+import requests
+headers = {'token': 'YOURTOKEN'}
+payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
+r = requests.post('http://data.jkoolcloud.com:6580/JESL/event', headers=headers, json=payload)
+```
+
 

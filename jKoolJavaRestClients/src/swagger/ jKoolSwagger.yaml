@@ -50,10 +50,8 @@ paths:
         '500':
           description: Internal Server Error.
         '501':
-          description: Not implemented.       
-        '500':
-          description: Internal Server Error        
-        default: 
+          description: Not implemented.           
+        default:
           description: Bad Request. 
   /activity:
     post:
@@ -87,9 +85,7 @@ paths:
         '500':
           description: Internal Server Error.
         '501':
-          description: Not implemented.       
-        '500':
-          description: Internal Server Error        
+          description: Not implemented.          
         default: 
           description: Bad Request. 
 definitions:
@@ -152,15 +148,15 @@ definitions:
       time-usec:
         type: string
         format: date-time
-        description: Time this event is reported.
+        description: Time this event is reported. If left out, will report to present date/time.
       start-time-usec:
         type: string
         format: date-time
-        description: Time the event began.
+        description: Time the event began. If left out, will report to end-time-usec if available otherwise will report to time-usec.
       end-time-usec:
         type: string
         format: date-time
-        description: Time the event completed.
+        description: Time the event completed.  If left out, will report to start-time-usec if available otherwise will report to time-usec.
       elapsed-time-usec:
         type: integer
         format: int32
@@ -214,7 +210,7 @@ definitions:
       time-usec:
         type: string
         format: date-time
-        description: Time the snapshot occurred.
+        description: Time the snapshot occurred. If left out, will report to present date/time.
       category:
         type: string
         description: A "super"-category. A higher grouping of snapshots.  Multiple snapshots can belong to the same super-category.
@@ -255,15 +251,15 @@ definitions:
       time-usec:
         type: string
         format: date-time
-        description: Time this activity is reported.
+        description: Time this activity is reported. If left out, will report to present date/time.
       start-time-usec:
         type: string
         format: date-time
-        description: Time the activity began.
+        description: Time the activity began. If left out, will report to end-time-usec if available otherwise will report to time-usec.
       end-time-usec:
         type: string
         format: date-time
-        description: Time the activity completed.
+        description: Time the activity completed. If left out, will report to start-time-usec if available otherwise will report to time-usec.
       status:
         type: string
         description: The status of this activity. Valid values are - UNKNOWN, END, EXCEPTION.

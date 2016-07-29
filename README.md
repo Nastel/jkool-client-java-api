@@ -5,12 +5,10 @@ This jKool Java Rest Client contains Java helper classes that will help you to g
 
 ###How to Stream data into jKool
 There are four types of data that can be streamed into jKool. They are:
-* Events: The main piece of data. Events contain pre-defined jKool fields and can also contain your own custom fields (as snapshots and properties, explained below)
-* Activities: A way of organizing events into groupings.
-* Snapshots: A way of representing custom data at a "point in time".
-* Properties: Your custom data.
-
-(Very detailed Data Model Documentation is soon to come)
+* Events: Represents a basic time series element containing time, message, severity and other fields associated with event.
+* Activities: Represents a group of events and other activities (e.g. transactions).
+* Snapshots: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
+* Properties: simple metrics (name, value pairs). Properties can be associated with events, activities. 
 
 ###Field level documentation
 This repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
@@ -52,7 +50,7 @@ To use this helper code please do the following:
 
 The Rest Client will properly format the entity into JSON format.
 
-That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
+That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
 
 ###Streaming with Curl

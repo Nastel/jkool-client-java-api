@@ -1,7 +1,7 @@
 # jKoolRestClients
 
 ###Why jKool Rest Clients?
-This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  ìtokenî in order to stream. This token will be associated with a repository that will be assigned to you when you sign-up for jKool.  The token is passed in the request header. We will be providing additional clients to use with other programming languages. Please check back. If you need them soon, they can be automatically generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" directory.  
+This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  ‚Äútoken‚Äù in order to stream. This token will be associated with a repository that will be assigned to you when you sign-up for jKool.  The token is passed in the request header. We will be providing additional clients to use with other programming languages. Please check back. If you need them soon, they can be automatically generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" directory.  
 
 ###How to Stream data into jKool
 There are four types of data that can be streamed into jKool. They are:
@@ -23,7 +23,7 @@ To use this helper code please do the following:
 * Import the required libraries residing inthe "libs" directory into your code.
 * Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in any of the sample code:
 ```java
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
+			String basePath = "https://data.jkoolcloud.com/JESL";
 			Client client = ClientBuilder.newClient();
 			WebTarget target = client.target(basePath);
 ```
@@ -59,7 +59,7 @@ That's it!! Any problems or concerns, please email us at support@jkoolcloud.com.
 Data can also be streamed into jKool using Curl. Below is an example:
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST http://data.jkoolcloud.com:6580/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
+curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
 ###Streaming with Python
@@ -69,7 +69,7 @@ Data can also be streamed into jKool using Python. To do so, you will need to us
 import requests
 headers = {'token': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
-r = requests.post('http://data.jkoolcloud.com:6580/JESL/event', headers=headers, json=payload)
+r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
 
 

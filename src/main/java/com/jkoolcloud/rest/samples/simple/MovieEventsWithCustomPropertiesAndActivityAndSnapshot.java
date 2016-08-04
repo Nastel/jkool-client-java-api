@@ -50,8 +50,8 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			        .setGeoAddr("40.803692,-73.402157");
 
 			// Create some snapshot custom fields
-			Property propertyTempHigh = new Property("TempHigh", "String", "95");
-			Property propertyTempLow = new Property("TempLow", "String", "83");
+			Property propertyTempHigh = new Property("TempHigh", "int", "95");
+			Property propertyTempLow = new Property("TempLow", "int", "83");
 
 			List<Property> propertiesTemp = new ArrayList<Property>();
 			propertiesTemp.add(propertyTempHigh);
@@ -64,8 +64,8 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			propertiesHumidity.add(propertyHumidityMax);
 			propertiesHumidity.add(propertyHumidityMin);
 
-			Property propertySeaLevelMax = new Property("SeaLevelMax", "String", "31");
-			Property propertySeaLevelMin = new Property("SealevelMin", "String", "29");
+			Property propertySeaLevelMax = new Property("SeaLevelMax", "int", "31");
+			Property propertySeaLevelMin = new Property("SealevelMin", "int", "29");
 
 			List<Property> propertiesSeaLevel = new ArrayList<Property>();
 			propertiesSeaLevel.add(propertySeaLevelMax);

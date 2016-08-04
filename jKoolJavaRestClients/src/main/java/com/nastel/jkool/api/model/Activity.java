@@ -45,7 +45,7 @@ public class Activity {
 	
 	public Activity(String tid) {
 		trackingId = tid;
-		timeUsec = System.currentTimeMillis()*1000;
+		timeUsec = System.currentTimeMillis()*1000; 
 	}
 
 	public Activity(String tid, long timeMs) {

@@ -238,7 +238,7 @@ public class Event {
 	}
 
 	public Event setTimeUsec(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime() * 1000;
+		this.timeUsec = timeUsec.getTime() * 1000; 
 		return this;
 	}
 

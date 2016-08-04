@@ -43,7 +43,7 @@ public Snapshot(String category, String name,
 	//this.parentId = parentId;
 	this.category = category;
 	this.name = name;
-	this.timeUsec = timeUsec.getTime() * 1000;
+	this.timeUsec = timeUsec.getTime() * 1000; 
 	this.properties = properties;
 }
 /**

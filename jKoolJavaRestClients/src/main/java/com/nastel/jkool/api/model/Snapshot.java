@@ -77,7 +77,7 @@ public Snapshot(String category, String name,
   @ApiModelProperty(value = "")
   @JsonProperty("time-usec")
   public Long getTimeUsec() {
-		return timeUsec;
+		return timeUsec * 1000;
   }
   public void setTimeUsec(Date timeUsec) {
     this.timeUsec = timeUsec.getTime();

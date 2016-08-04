@@ -3,7 +3,7 @@
 ###Why jKool Rest Clients?
 This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  “token” in order to stream. This token will be associated with a repository that will be assigned to you when you sign-up for jKool.  The token is passed in the request header. We will be providing additional clients to use with other programming languages. Please check back. If you need them soon, they can be automatically generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" directory.  
 
-###How to Stream data into jKool
+###jKool Data Types
 There are four types of data that can be streamed into jKool. They are:
 * Events: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * Activities: Represents a group of events and other activities (e.g. transactions).

@@ -16,7 +16,9 @@ package com.nastel.jkool.api.model;
  * limitations under the License.
  */
  
+import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 import io.swagger.annotations.*;
 
@@ -27,35 +29,19 @@ public class Activity {
 
 	private String trackingId = null;
 	private String status = null;
-	private String timeUsec = null;
-	private String startTime = null;
-	private String endTime = null;
+	private Long timeUsec = null;
+	private Long startTime = null;
+	private Long endTime = null;
 	private String activityName = null;
 	private String appl = null;
 	private String server = null;
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
-	private String type = null;
-	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-
-	
 
 	public Activity() {
-	}
-
-	public Activity(String trackingId, String status,
-			String timeUsec, String activityName, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
-		super();
-		this.trackingId = trackingId;
-		this.status = status;
-		this.timeUsec = timeUsec;
-		this.activityName = activityName;
-		this.appl = appl;
-		this.server = server;
-		this.netAddr = netAddr;
-		this.dataCenter = dataCenter;
-		this.geoAddr = geoAddr;
+		timeUsec = System.currentTimeMillis();
+		trackingId = UUID.randomUUID().toString();
 	}
 
 	/**
@@ -66,8 +52,9 @@ public class Activity {
 		return trackingId;
 	}
 
-	public void setTrackingId(String trackingId) {
+	public Activity setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
+		return this;
 	}
 
 	/**
@@ -77,8 +64,6 @@ public class Activity {
 	public String getSourceFqn() {
 		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR=" + geoAddr;
 	}
-	
-
 
 	/**
    **/
@@ -88,8 +73,9 @@ public class Activity {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public Activity setStatus(String status) {
 		this.status = status;
+		return this;
 	}
 
 	/**
@@ -97,18 +83,12 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public Long getTimeUsec() {
-		try
-		{
-			return new Long((formatter.parse(timeUsec)).getTime() + "000");
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		return timeUsec * 1000;
 	}
 
-	public void setTimeUsec(String timeUsec) {
-		this.timeUsec = timeUsec;
+	public Activity setTimeUsec(Date timeUsec) {
+		this.timeUsec = timeUsec.getTime();
+		return this;
 	}
 
 	/**
@@ -119,30 +99,25 @@ public class Activity {
 		return activityName;
 	}
 
-	public void setActivityName(String activityName) {
+	public Activity setActivityName(String activityName) {
 		this.activityName = activityName;
+		return this;
 	}
-	
-	
-
 	
 	/**
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public Long getStartTime() {
-		try
-		{
-			return new Long((formatter.parse(startTime)).getTime() + "000");
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		if (startTime != null && startTime > 0)
+			return startTime * 1000;
+		else 
+			return getTimeUsec();
 	}
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public Activity setStartTime(Date startTime) {
+		this.startTime = startTime.getTime();
+		return this;
 	}
 
 	/**
@@ -150,58 +125,60 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public Long getEndTime() {
-		try
-		{
-			return new Long((formatter.parse(endTime)).getTime() + "000");
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		if (endTime != null && endTime > 0)
+			return endTime * 1000;
+		else 
+			return getStartTime();
 	}
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public Activity setEndTime(Date endTime) {
+		this.endTime = endTime.getTime();
+		return this;
 	}
 
 	public String getAppl() {
 		return appl;
 	}
 
-	public void setAppl(String appl) {
+	public Activity setAppl(String appl) {
 		this.appl = appl;
+		return this;
 	}
 
 	public String getServer() {
 		return server;
 	}
 
-	public void setServer(String server) {
+	public Activity setServer(String server) {
 		this.server = server;
+		return this;
 	}
 
 	public String getNetAddr() {
 		return netAddr;
 	}
 
-	public void setNetAddr(String netAddr) {
+	public Activity setNetAddr(String netAddr) {
 		this.netAddr = netAddr;
+		return this;
 	}
 
 	public String getDataCenter() {
 		return dataCenter;
 	}
 
-	public void setDataCenter(String dataCenter) {
+	public Activity setDataCenter(String dataCenter) {
 		this.dataCenter = dataCenter;
+		return this;
 	}
 
 	public String getGeoAddr() {
 		return geoAddr;
 	}
 
-	public void setGeoAddr(String geoAddr) {
+	public Activity setGeoAddr(String geoAddr) {
 		this.geoAddr = geoAddr;
+		return this;
 	}
 	
 	// Temporary - will be eliminated after next rollout
@@ -209,10 +186,6 @@ public class Activity {
 	@JsonProperty("type")
 	public String getType() {
 		return "ACTIVITY";
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	@Override

@@ -16,13 +16,9 @@ package com.nastel.jkool.api.sample.devops;
  * limitations under the License.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.UUID;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.CompCodes;
@@ -31,6 +27,7 @@ import com.nastel.jkool.api.model.EventTypes;
 import com.nastel.jkool.api.model.Severities;
 import com.nastel.jkool.api.utils.ApiException;
 import com.nastel.jkool.api.utils.JsonUtil;
+import com.nastel.jkool.api.utils.jKoolSend;
 
 /**************************************************************************************************************************
  * In this example, we will demonstrate a DevOps use of jKool. This example will demonstrate two advanced aspects
@@ -53,58 +50,47 @@ public class DevOpsAppl3 {
 	public static void main(String[] args) {
 		try
 		{
-
-			// Setup connection to jKool
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
-			Client client = ClientBuilder.newClient();
-			WebTarget target = client.target(basePath);
-			Response response = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+			String token = "0bb480b6-582a-42e7-aeb0-3bd9ee40f4ee";
 
 			// Create the first event which is a message received event representing a message received in a hypothetical
 			// messaging queue residing in New York.
-			Event event = new Event(UUID.randomUUID().toString(),
-					                                       // trackingId
-	                                                       // sourceFqn
-	                "https://www.sample.com/orders/parts", // sourceUrl
-	                Severities.INFO,                       // severity
-	                EventTypes.RECEIVE,                    // type
-	                432,                                   // pid (process id)
-	                64,                                    // tid (thread id)
-	                CompCodes.SUCCESS,                     // compCode (completion code)
-	                0,                                     // reasonCode
-	                "Charlotte, NC",                       // location
-	                "system",                              // user
-	                null,                                  // timeUsec (we have start/end times, so this is null)
-	                "11-Aug-2015 01:16:15",                // startTimeUsec
-	                "11-Aug-2015 01:16:30",                // endTimeUsec
-	                15,                                    // elapsedTimeUsec
-	                "OrderId=28372373 shipped.",           // msgText
-	                24,                                    // msgSize
-	                "none",                                // msgEncoding
-	                "windows-1252",                        // msgCharset
-	                Arrays.asList("CorrId:123"),
-	                                                       // Correlator Id.
-	                "SHIPPING.QUEUE",                      // resource
-	                "text/plain",                          // msgMimeType
-	                0,                                     // msgAge
-	                null,                                  // exception
-	                null,                                  // msgTag
-	                null,                                  // parentTrackId (jKool will compute this)
-	                0,                                     // waitTimeUsec
-	                "ReceiveAndProcessShipping",           // eventName
-	                null,                                  // snapshots (none in this example)
-	    			"WebShipping",						   // appl name (comprises source-fqn)
-	    			"WebServerNC",	                       // server (comprises source-fqn)
-	    			"172.16.297.11",                       // network address (comprises source-fqn)
-	    			"DCNC",								   // data center (comprises source-fqn)
-	    			"Charlotte, NC");                      // geo location (comprises source-fqn)
-
+			Event event = new Event()				                                     
+	                      .setSourceUrl("https://www.sample.com/orders/parts")
+	                      .setSeverity(Severities.INFO)
+	                      .setType(EventTypes.RECEIVE)
+	                      .setPid(432)
+	                      .setTid(64)
+	                      .setCompCode(CompCodes.SUCCESS)
+	                      .setReasonCode(0)
+	                      .setLocation("Charlotte, NC")
+	                      .setUser("system")
+	                      .setStartTimeUsec(formatter.parse("11-Aug-2016 01:16:15"))
+	                      .setEndTimeUsec(formatter.parse("11-Aug-2016 01:16:30"))
+	                      .setElapsedTimeUsec(15)                                 
+	                      .setMsgText("OrderId=28372373 shipped.")
+	                      .setMsgEncoding("none")
+	                      .setMsgCharset("windows-1252")
+	                      .setCorrId(Arrays.asList("CorrId:123"))
+	                      .setResource("SHIPPING.QUEUE")
+	                      .setMsgMimeType("text/plain")
+	                      .setMsgAge(0)
+	                      .setException(null)
+	                      .setMsgTag(null)
+	                      .setParentTrackId(null)
+	                      .setWaitTimeUsec(0)
+	                      .setEventName("ReceiveAndProcessShipping")
+	                      .setSnapshots(null)
+	                      .setAppl("WebShipping")
+	                      .setServer("WebServerNC")
+	                      .setNetAddr("172.16.297.11")
+	                      .setDataCenter("DCNC")
+	                      .setGeoAddr("35.22709,-80.84313");
 
 			// Stream the event
 			// (token is the token that was assigned to you when you purchased jKool).
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
+			Response response = jKoolSend.post(event, token);
 			response.close();
-
 		}
 		catch (Exception e)
 		{
@@ -112,19 +98,6 @@ public class DevOpsAppl3 {
 		}
 	}
 
-	 /**
-	   * Serialize the given Java object into JSON string.
-	   */
-	  public static String serialize(Object obj) throws ApiException {
-	    try {
-	      if (obj != null)
-	        return JsonUtil.getJsonMapper().writeValueAsString(obj);
-	      else
-	        return null;
-	    }
-	    catch (Exception e) {
-	      throw new ApiException(500, e.getMessage());
-	    }
-	  }
+
 
 }

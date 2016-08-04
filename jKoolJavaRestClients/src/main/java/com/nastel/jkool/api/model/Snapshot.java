@@ -26,38 +26,27 @@ import com.nastel.jkool.api.model.Property;
 @ApiModel(description = "")
 public class Snapshot  {
   
-  private String parentId = null;
+  //private String parentId = null;
   private String category = null;
   private String name = null;
-  private String timeUsec = null;
+  private Long timeUsec = null;
   private String type = null;
   private List<Property> properties;
-  private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
   
   public Snapshot() {
 
 }
-public Snapshot(String parentId, String category, String name, 
-		String timeUsec, String type, List<Property> properties) {
+public Snapshot(String category, String name, 
+		Date timeUsec, List<Property> properties) {
 	super();
-	this.parentId = parentId;
+	//this.parentId = parentId;
 	this.category = category;
 	this.name = name;
-	this.timeUsec = timeUsec;
-	this.type = type;
+	this.timeUsec = timeUsec.getTime();
 	this.properties = properties;
 }
 /**
-   **/
-  @ApiModelProperty(value = "")
-  @JsonProperty("parent-id")
-  public String getParentId() {
-    return parentId;
-  }
-  public void setParentId(String parentId) {
-    this.parentId = parentId;
-  }
 
   /**
    **/
@@ -87,18 +76,11 @@ public Snapshot(String parentId, String category, String name,
    **/
   @ApiModelProperty(value = "")
   @JsonProperty("time-usec")
-  public String getTimeUsec() {
-	  try
-		{
-			return (formatter.parse(timeUsec)).getTime() + "000";
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+  public Long getTimeUsec() {
+		return timeUsec;
   }
-  public void setTimeUsec(String timeUsec) {
-    this.timeUsec = timeUsec;
+  public void setTimeUsec(Date timeUsec) {
+    this.timeUsec = timeUsec.getTime();
   }
   
   /**
@@ -106,11 +88,9 @@ public Snapshot(String parentId, String category, String name,
   @ApiModelProperty(value = "")
   @JsonProperty("type")
   public String getType() {
-    return type;
+    return "SNAPSHOT";
   }
-  public void setType(String type) {
-    this.type = type;
-  }
+
   
   /**
    **/
@@ -128,8 +108,6 @@ public Snapshot(String parentId, String category, String name,
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class Snapshot {\n");
-    
-    sb.append("  parentId: ").append(parentId).append("\n");
     sb.append("  category: ").append(category).append("\n");
     sb.append("  name: ").append(name).append("\n");
     sb.append("  timeUsec: ").append(timeUsec).append("\n");

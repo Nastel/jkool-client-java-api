@@ -16,22 +16,16 @@ package com.nastel.jkool.api.sample.simple;
  * limitations under the License.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import com.nastel.jkool.api.model.Activity;
 import com.nastel.jkool.api.model.Event;
-import com.nastel.jkool.api.model.EventTypes;
 import com.nastel.jkool.api.model.Property;
-import com.nastel.jkool.api.utils.ApiException;
-import com.nastel.jkool.api.utils.JsonUtil;
+import com.nastel.jkool.api.utils.jKoolSend;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies 
@@ -45,43 +39,28 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 	public static void main(String[] args) {
 		try
 		{
-
-			String basePath = "http://data.jkoolcloud.com:6580/JESL";
-			Client client = ClientBuilder.newClient();
-			WebTarget target = client.target(basePath);
-			Response response = null;
-			String movieDate = "03-Aug-2015 01:15:00";
-			String startOfWeekDate = "03-Aug-2015 00:00:00";
-			String endOfWeekDate = "09-Aug-2015 00:00:00";
+			String movieDate = "03-Aug-2016 01:15:00";
+			String startOfWeekDate = "03-Aug-2016 00:00:00";
+			String endOfWeekDate = "09-Aug-2016 00:00:00";
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+			String token = "0bb480b6-582a-42e7-aeb0-3bd9ee40f4ee";
 			
 			// Create the activity that the events will be attached to
-			Activity activity = new Activity();
-			String activityUuid = UUID.randomUUID().toString();
-			activity.setTrackingId(activityUuid);
-			activity.setActivityName("August Week 3 Movies");  // also referred to as "operation"
-			activity.setStartTime(startOfWeekDate);
-			activity.setEndTime(endOfWeekDate);
-			activity.setStatus("END");
-			activity.setAppl("WebOrders");
-			activity.setServer("WebServer100");
-			activity.setNetAddr("11.0.0.2");
-			activity.setDataCenter("DC1");
-			activity.setGeoAddr("New York, NY");			
+			Activity activity = new Activity()
+				.setActivityName("August Week 3 Movies")  // also referred to as "operation"
+				.setStartTime(formatter.parse(startOfWeekDate))
+				.setEndTime(formatter.parse(endOfWeekDate))
+				.setStatus("END")
+				.setAppl("WebOrders")
+				.setServer("WebServer100")
+				.setNetAddr("11.0.0.2")
+				.setDataCenter("DC1")
+				.setGeoAddr("40.803692,-73.402157");		
+			
 			// Create some custom fields
-			Property propertyName = new Property();
-			propertyName.setName("MovieName");
-			propertyName.setType("String");
-			propertyName.setValue("Casablanca");
-			
-			Property propertyPrice = new Property();
-			propertyPrice.setName("MoviePrice");
-			propertyPrice.setType("Double");
-			propertyPrice.setValue("10.50");
-			
-			Property propertyGenre = new Property();
-			propertyGenre.setName("MovieGenre");
-			propertyGenre.setType("String");
-			propertyGenre.setValue("Drama");
+			Property propertyName = new Property("MovieName", "String","Casablanca",null);			
+			Property propertyPrice = new Property("MoviePrice", "Double", "10.50", null);			
+			Property propertyGenre = new Property("MovieGenre", "String", "Drama", null);
 			
 			List<Property> properties = new ArrayList<Property>();
 			properties.add(propertyGenre);
@@ -91,31 +70,27 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			// Create the Event
 			// Attach it's properties
 			// Attach the event to its parent activity 
-			Event event = new Event();
-			String eventUuid = UUID.randomUUID().toString();
-			event.setTrackingId(eventUuid);
-			event.setAppl("WebOrders");
-			event.setServer("WebServer100");
-			event.setNetAddr("11.0.0.2");
-			event.setDataCenter("DCNY");
-			event.setGeoAddr("New York, NY");			
-			event.setSourceUrl("http://www.movies.com");
-			event.setLocation("New York, NY");
-			event.setEventName("Casablanca 8/3 at 1PM");
-			event.setTimeUsec(movieDate);
-			event.setMsgText(null);
-			event.setMsgSize(0);
+			Event event = new Event()
+			.setAppl("WebOrders")
+			.setServer("WebServer100")
+			.setNetAddr("11.0.0.2")
+			.setDataCenter("DCNY")
+			.setGeoAddr("40.803692,-73.402157")		
+			.setSourceUrl("http://www.movies.com")
+			.setLocation("New York, NY")
+			.setEventName("Casablanca 8/3 at 1PM")
+			.setTimeUsec(formatter.parse(movieDate))
+			.setMsgText(null)
 			// This attaches the event to the activity.
-			event.setParentTrackId(activityUuid); 
+			.setParentTrackId(activity.getTrackingId())
+			.setProperties(properties)
+			.setSnapshots(null);
 			
-			event.setProperties(properties);
-			event.setSnapshots(null);
-			event.setType(EventTypes.EVENT); // Temporary - will be eliminated after next rollout
 
 		
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
-			response.close();	
+			Response response = jKoolSend.post(event, token);
+			response.close();
 			
 			// **************************************************************************************
 			// And continue creating events for all of the movies playing in the third week of August. 
@@ -125,7 +100,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			
 			// Stream the activity 
 			// (token is the token that was assigned to you when you purchased jKool.
-			response = target.path("activity").request().header("token", "yourtoken").post(Entity.entity(serialize(activity), "application/json"));
+			response = jKoolSend.post(activity, token);
 			response.close();
 
 		}
@@ -135,19 +110,6 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 		}
 	}
 	
-	 /**
-	   * Serialize the given Java object into JSON string.
-	   */
-	  public static String serialize(Object obj) throws ApiException {
-	    try {
-	      if (obj != null)
-	        return JsonUtil.getJsonMapper().writeValueAsString(obj);
-	      else
-	        return null;
-	    }
-	    catch (Exception e) {
-	      throw new ApiException(500, e.getMessage());
-	    }
-	  }
+
 
 }

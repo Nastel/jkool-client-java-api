@@ -27,10 +27,7 @@ public class Property  {
   private String type = null;
   private String value = null;
   private String valueType = null;
-  
-  
 
-  
   public Property() {
 
 }
@@ -52,7 +49,6 @@ public Property(String name, String type, String value, String valueType) {
   public void setName(String name) {
     this.name = name;
   }
-
   
   /**
    **/
@@ -64,7 +60,6 @@ public Property(String name, String type, String value, String valueType) {
   public void setType(String type) {
     this.type = type;
   }
-
   
   /**
    **/
@@ -76,9 +71,6 @@ public Property(String name, String type, String value, String valueType) {
   public void setValue(String value) {
     this.value = value;
   }
-  
-  
-
   
   /**
    **/
@@ -95,7 +87,6 @@ public Property(String name, String type, String value, String valueType) {
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class Property {\n");
-    
     sb.append("  name: ").append(name).append("\n");
     sb.append("  type: ").append(type).append("\n");
     sb.append("  value: ").append(value).append("\n");

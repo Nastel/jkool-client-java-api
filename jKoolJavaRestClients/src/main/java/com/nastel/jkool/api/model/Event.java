@@ -14,44 +14,43 @@ package com.nastel.jkool.api.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import io.swagger.annotations.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nastel.jkool.api.model.Snapshot;
 
 @ApiModel(description = "")
 public class Event {
 
-	public String trackingId = null;
-	public String sourceUrl = null;
-	public Severities severity = null;
-	public EventTypes type = null;
-	public Integer pid = null;
-	public Integer tid = null;
-	public CompCodes compCode = null;
-	public Integer reasonCode = null;
-	public String location = null;
-	public String user = null;
-	public String timeUsec = null;
-	public String startTimeUsec = null;
-	public String endTimeUsec = null;
-	public Integer elapsedTimeUsec = null;
-	public String msgText = null;
-	public Integer msgSize = 0;
-	public String msgEncoding = null;
-	public String msgCharset = null;
-	public List<String> corrId = null;
-	public String resource = null;
-	public String msgMimeType = null;
-	public Integer msgAge = null;
-	public String exception = null;
-	public String msgTag = null;
-	public String parentTrackId = null;
-	public Integer waitTimeUsec = null;
-	public String eventName = null;
+	private String trackingId = null;
+	private String sourceUrl = null;
+	private Severities severity = null;
+	private EventTypes type = null;
+	private Integer pid = null;
+	private Integer tid = null;
+	private CompCodes compCode = null;
+	private Integer reasonCode = null;
+	private String location = null;
+	private String user = null;
+	private Long timeUsec = null;
+	private Long startTimeUsec = null;
+	private Long endTimeUsec = null;
+	private Integer elapsedTimeUsec = null;
+	private String msgText = null;
+	private String msgEncoding = null;
+	private String msgCharset = null;
+	private List<String> corrId = null;
+	private String resource = null;
+	private String msgMimeType = null;
+	private Integer msgAge = null;
+	private String exception = null;
+	private String msgTag = null;
+	private String parentTrackId = null;
+	private Integer waitTimeUsec = null;
+	private String eventName = null;
 	private List<Property> properties = null;;
 	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
 	private String appl = null;
@@ -59,59 +58,14 @@ public class Event {
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
-	private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-
-	
-	
 
 	public Event() {
-
+		timeUsec = System.currentTimeMillis();
+		trackingId = UUID.randomUUID().toString();
+		type = EventTypes.EVENT;
 	}
 
-	public Event(String trackingId, String sourceUrl,
-			Severities severity, EventTypes type, Integer pid, Integer tid,
-			CompCodes compCode, Integer reasonCode, String location, String user,
-			String timeUsec, String startTimeUsec, String endTimeUsec,
-			Integer elapsedTimeUsec, String msgText,
-			Integer msgSize, String msgEncoding, String msgCharset,
-			List<String> corrId, String resource, String msgMimeType, Integer msgAge,
-			String exception, String msgTag, String parentTrackId,
-			Integer waitTimeUsec, String eventName, List<Snapshot> snapshots, String appl, String server, String netAddr, String dataCenter, String geoAddr) {
-		super();
-		this.trackingId = trackingId;
-		this.sourceUrl = sourceUrl;
-		this.severity = severity;
-		this.type = type;
-		this.pid = pid;
-		this.tid = tid;
-		this.compCode = compCode;
-		this.reasonCode = reasonCode;
-		this.location = location;
-		this.user = user;
-		this.timeUsec = timeUsec;
-		this.startTimeUsec = startTimeUsec;
-		this.endTimeUsec = endTimeUsec;
-		this.elapsedTimeUsec = elapsedTimeUsec;
-		this.msgText = msgText;
-		this.msgSize = msgSize;
-		this.msgEncoding = msgEncoding;
-		this.msgCharset = msgCharset;
-		this.corrId = corrId;
-		this.resource = resource;
-		this.msgMimeType = msgMimeType;
-		this.msgAge = msgAge;
-		this.exception = exception;
-		this.msgTag = msgTag;
-		this.parentTrackId = parentTrackId;
-		this.waitTimeUsec = waitTimeUsec;
-		this.eventName = eventName;
-		this.snapshots = snapshots;
-		this.appl = appl;
-		this.geoAddr = geoAddr;
-		this.server = server;
-		this.netAddr = netAddr;
-		this.dataCenter = dataCenter;
-	}
+
 
 	/**
    **/
@@ -121,8 +75,9 @@ public class Event {
 		return trackingId;
 	}
 
-	public void setTrackingId(String trackingId) {
+	public Event setTrackingId(String trackingId) {
 		this.trackingId = trackingId;
+		return this;
 	}
 
 	/**
@@ -143,8 +98,9 @@ public class Event {
 		return sourceUrl;
 	}
 
-	public void setSourceUrl(String sourceUrl) {
+	public Event setSourceUrl(String sourceUrl) {
 		this.sourceUrl = sourceUrl;
+		return this;
 	}
 
 	/**
@@ -152,11 +108,15 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
 	public Severities getSeverity() {
-		return severity;
+		if (severity != null)
+			return severity;
+		else
+			return Severities.INFO;
 	}
 
-	public void setSeverity(Severities severity) {
+	public Event setSeverity(Severities severity) {
 		this.severity = severity;
+		return this;
 	}
 
 	/**
@@ -167,8 +127,9 @@ public class Event {
 		return type;
 	}
 
-	public void setType(EventTypes type) {
+	public Event setType(EventTypes type) {
 		this.type = type;
+		return this;
 	}
 
 	/**
@@ -179,8 +140,9 @@ public class Event {
 		return pid;
 	}
 
-	public void setPid(Integer pid) {
+	public Event setPid(Integer pid) {
 		this.pid = pid;
+		return this;
 	}
 
 	/**
@@ -191,8 +153,9 @@ public class Event {
 		return tid;
 	}
 
-	public void setTid(Integer tid) {
+	public Event setTid(Integer tid) {
 		this.tid = tid;
+		return this;
 	}
 
 	/**
@@ -203,8 +166,9 @@ public class Event {
 		return compCode;
 	}
 
-	public void setCompCode(CompCodes compCode) {
+	public Event setCompCode(CompCodes compCode) {
 		this.compCode = compCode;
+		return this;
 	}
 
 	/**
@@ -216,8 +180,9 @@ public class Event {
 	}
 	
 
-	public void setReasonCode(Integer reasonCode) {
+	public Event setReasonCode(Integer reasonCode) {
 		this.reasonCode = reasonCode;
+		return this;
 	}
 
 	/**
@@ -228,8 +193,9 @@ public class Event {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public Event setLocation(String location) {
 		this.location = location;
+		return this;
 	}
 
 
@@ -241,8 +207,9 @@ public class Event {
 		return user;
 	}
 
-	public void setUser(String user) {
+	public Event setUser(String user) {
 		this.user = user;
+		return this;
 	}
 
 	/**
@@ -252,15 +219,16 @@ public class Event {
 	public Long getTimeUsec() {
 	try
 	{
-		return new Long((formatter.parse(timeUsec)).getTime() + "000");
+		return timeUsec * 1000;
 	}
 	catch (Exception e)
 	{
 		return null;
 	}}
 
-	public void setTimeUsec(String timeUsec) {
-		this.timeUsec = timeUsec;
+	public Event setTimeUsec(Date timeUsec) {
+		this.timeUsec = timeUsec.getTime();
+		return this;
 	}
 
 	/**
@@ -268,18 +236,15 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public Long getStartTimeUsec() {
-		try
-		{
-			return new Long((formatter.parse(startTimeUsec)).getTime() + "000");
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		if (startTimeUsec != null && startTimeUsec > 0)
+			return startTimeUsec * 1000;
+		else
+			return getTimeUsec();
 	}
 
-	public void setStartTimeUsec(String startTimeUsec) {
-		this.startTimeUsec = startTimeUsec;
+	public Event setStartTimeUsec(Date startTimeUsec) {
+		this.startTimeUsec = startTimeUsec.getTime();
+		return this;
 	}
 
 	/**
@@ -287,18 +252,15 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public Long getEndTimeUsec() {
-		try
-		{
-			return new Long((formatter.parse(endTimeUsec)).getTime() + "000");
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
+		if (endTimeUsec != null && endTimeUsec > 0)
+			return endTimeUsec * 1000;
+		else
+			return getStartTimeUsec();
 	}
 
-	public void setEndTimeUsec(String endTimeUsec) {
-		this.endTimeUsec = endTimeUsec;
+	public Event setEndTimeUsec(Date endTimeUsec) {
+		this.endTimeUsec = endTimeUsec.getTime();
+		return this;
 	}
 
 	/**
@@ -309,8 +271,9 @@ public class Event {
 		return elapsedTimeUsec;
 	}
 
-	public void setElapsedTimeUsec(Integer elapsedTimeUsec) {
+	public Event setElapsedTimeUsec(Integer elapsedTimeUsec) {
 		this.elapsedTimeUsec = elapsedTimeUsec;
+		return this;
 	}
 
 	/**
@@ -321,8 +284,9 @@ public class Event {
 		return snapshots;
 	}
 
-	public void setSnapshots(List<Snapshot> snapshots) {
+	public Event setSnapshots(List<Snapshot> snapshots) {
 		this.snapshots = snapshots;
+		return this;
 	}
 
 
@@ -332,8 +296,9 @@ public class Event {
 		return msgEncoding;
 	}
 
-	public void setEncoding(String encoding) {
+	public Event setEncoding(String encoding) {
 		this.msgEncoding = encoding;
+		return this;
 	}
 
 	@ApiModelProperty(value = "")
@@ -342,8 +307,9 @@ public class Event {
 		return msgCharset;
 	}
 
-	public void setCharset(String charset) {
+	public Event setCharset(String charset) {
 		this.msgCharset = charset;
+		return this;
 	}
 
 	@ApiModelProperty(value = "")
@@ -352,8 +318,9 @@ public class Event {
 		return corrId;
 	}
 
-	public void setCorrId(List<String> corrId) {
+	public Event setCorrId(List<String> corrId) {
 		this.corrId = corrId;
+		return this;
 	}
 
 	@ApiModelProperty(value = "")
@@ -362,8 +329,9 @@ public class Event {
 		return resource;
 	}
 
-	public void setResource(String resource) {
+	public Event setResource(String resource) {
 		this.resource = resource;
+		return this;
 	}
 	
 	@ApiModelProperty(value = "")
@@ -372,17 +340,17 @@ public class Event {
 		return msgText;
 	}
 
-	public void setMsgText(String msgText) {
+	public Event setMsgText(String msgText) {
 		this.msgText = msgText;
+		return this;
 	}
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-size")
 	public Integer getMsgSize() {
-		return msgSize;
-	}
-
-	public void setMsgSize(Integer msgSize) {
-		this.msgSize = msgSize;
+		if (msgText != null)
+			return msgText.length();
+		else
+			return 0;
 	}
 
 	@ApiModelProperty(value = "")
@@ -391,8 +359,9 @@ public class Event {
 		return msgMimeType;
 	}
 
-	public void setMsgMimeType(String msgMimeType) {
+	public Event setMsgMimeType(String msgMimeType) {
 		this.msgMimeType = msgMimeType;
+		return this;
 	}
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-age")
@@ -400,17 +369,20 @@ public class Event {
 		return msgAge;
 	}
 
-	public void setMsgAge(Integer msgAge) {
+	public Event setMsgAge(Integer msgAge) {
 		this.msgAge = msgAge;
+		return this;
 	}
+	
 	@ApiModelProperty(value = "")
 	@JsonProperty("exception")
 	public String getException() {
 		return exception;
 	}
 
-	public void setException(String exception) {
+	public Event setException(String exception) {
 		this.exception = exception;
+		return this;
 	}
 	
 	@ApiModelProperty(value = "")
@@ -419,8 +391,9 @@ public class Event {
 		return msgTag;
 	}
 
-	public void setMsgTag(String msgTag) {
+	public Event setMsgTag(String msgTag) {
 		this.msgTag = msgTag;
+		return this;
 	}
 	
 	@ApiModelProperty(value = "")
@@ -429,8 +402,9 @@ public class Event {
 		return parentTrackId;
 	}
 
-	public void setParentTrackId(String parentTrackId) {
+	public Event setParentTrackId(String parentTrackId) {
 		this.parentTrackId = parentTrackId;
+		return this;
 	}
 	
 	@ApiModelProperty(value = "")
@@ -440,8 +414,9 @@ public class Event {
 	}
 	
 
-	public void setWaitTimeUsec(Integer waitTimeUsec) {
+	public Event setWaitTimeUsec(Integer waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
+		return this;
 	}
 	
 	/**
@@ -452,8 +427,9 @@ public class Event {
 		return eventName;
 	}
 
-	public void setEventName(String eventName) {
+	public Event setEventName(String eventName) {
 		this.eventName = eventName;
+		return this;
 	}
 	
 	 /**
@@ -463,67 +439,81 @@ public class Event {
 	  public List<Property> getProperties() {
 	    return properties;
 	  }
-	  public void setProperties(List<Property> properties) {
+	  public Event setProperties(List<Property> properties) {
 	    this.properties = properties;
+		return this;
 	  }
 	  
 	  
 
-
+	@JsonIgnore
 	public String getMsgEncoding() {
 		return msgEncoding;
 	}
 
-	public void setMsgEncoding(String msgEncoding) {
+	public Event setMsgEncoding(String msgEncoding) {
 		this.msgEncoding = msgEncoding;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getMsgCharset() {
 		return msgCharset;
 	}
 
-	public void setMsgCharset(String msgCharset) {
+	public Event setMsgCharset(String msgCharset) {
 		this.msgCharset = msgCharset;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getAppl() {
 		return appl;
 	}
 
-	public void setAppl(String appl) {
+	public Event setAppl(String appl) {
 		this.appl = appl;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getServer() {
 		return server;
 	}
 
-	public void setServer(String server) {
+	public Event setServer(String server) {
 		this.server = server;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getNetAddr() {
 		return netAddr;
 	}
 
-	public void setNetAddr(String netAddr) {
+	public Event setNetAddr(String netAddr) {
 		this.netAddr = netAddr;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getDataCenter() {
 		return dataCenter;
 	}
 
-	public void setDataCenter(String dataCenter) {
+	public Event setDataCenter(String dataCenter) {
 		this.dataCenter = dataCenter;
+		return this;
 	}
 
+	@JsonIgnore
 	public String getGeoAddr() {
 		return geoAddr;
 	}
 
-	public void setGeoAddr(String geoAddr) {
+	public Event setGeoAddr(String geoAddr) {
 		this.geoAddr = geoAddr;
+		return this;
 	}
 
 	@Override

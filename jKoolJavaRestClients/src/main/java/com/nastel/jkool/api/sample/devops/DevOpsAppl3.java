@@ -74,7 +74,7 @@ public class DevOpsAppl3 {
 	                      .setCorrId(Arrays.asList("CorrId:123"))
 	                      .setResource("SHIPPING.QUEUE")
 	                      .setMsgMimeType("text/plain")
-	                      .setMsgAgeUsec(0)
+	                      .setMsgAgeUsec(0) 
 	                      .setException(null)
 	                      .setMsgTag(null)
 	                      .setParentTrackId(null)

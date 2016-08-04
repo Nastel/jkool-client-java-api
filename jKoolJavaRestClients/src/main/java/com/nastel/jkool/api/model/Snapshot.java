@@ -29,7 +29,7 @@ public class Snapshot  {
   //private String parentId = null;
   private String category = null;
   private String name = null;
-  private Long timeUsec = null;
+  private long timeUsec;
   private String type = null;
   private List<Property> properties;
 
@@ -43,7 +43,7 @@ public Snapshot(String category, String name,
 	//this.parentId = parentId;
 	this.category = category;
 	this.name = name;
-	this.timeUsec = timeUsec.getTime();
+	this.timeUsec = timeUsec.getTime() * 1000;
 	this.properties = properties;
 }
 /**
@@ -77,10 +77,10 @@ public Snapshot(String category, String name,
   @ApiModelProperty(value = "")
   @JsonProperty("time-usec")
   public Long getTimeUsec() {
-		return timeUsec * 1000;
+		return timeUsec;
   }
   public void setTimeUsec(Date timeUsec) {
-    this.timeUsec = timeUsec.getTime();
+    this.timeUsec = timeUsec.getTime() * 1000;
   }
   
   /**

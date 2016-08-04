@@ -29,16 +29,16 @@ public class Event {
 	private String sourceUrl = null;
 	private Severities severity = null;
 	private EventTypes type = null;
-	private Integer pid = null;
-	private Integer tid = null;
+	private int pid;
+	private int tid;
 	private CompCodes compCode = null;
-	private Integer reasonCode = null;
+	private int reasonCode;
 	private String location = null;
 	private String user = null;
-	private Long timeUsec = null;
-	private Long startTimeUsec = null;
-	private Long endTimeUsec = null;
-	private Long elapsedTimeUsec = null;
+	private long timeUsec;
+	private long startTimeUsec;
+	private long endTimeUsec;
+	private long elapsedTimeUsec;
 	private String msgText = null;
 	private String msgEncoding = null;
 	private String msgCharset = null;
@@ -49,7 +49,7 @@ public class Event {
 	private String exception = null;
 	private String msgTag = null;
 	private String parentTrackId = null;
-	private Long waitTimeUsec = null;
+	private long waitTimeUsec;
 	private String eventName = null;
 	private List<Property> properties = null;;
 	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
@@ -238,7 +238,7 @@ public class Event {
 	}
 
 	public Event setTimeUsec(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime()*1000;
+		this.timeUsec = timeUsec.getTime() * 1000;
 		return this;
 	}
 
@@ -247,7 +247,7 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public Long getStartTimeUsec() {
-		if (startTimeUsec != null && startTimeUsec > 0)
+		if (startTimeUsec > 0)
 			return startTimeUsec;
 		else
 			return getTimeUsec();
@@ -263,7 +263,7 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public Long getEndTimeUsec() {
-		if (endTimeUsec != null && endTimeUsec > 0)
+		if (endTimeUsec > 0)
 			return endTimeUsec;
 		else
 			return getStartTimeUsec();

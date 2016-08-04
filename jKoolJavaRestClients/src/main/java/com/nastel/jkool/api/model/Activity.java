@@ -17,7 +17,6 @@ package com.nastel.jkool.api.model;
  */
  
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import io.swagger.annotations.*;
@@ -29,9 +28,9 @@ public class Activity {
 
 	private String trackingId = null;
 	private String status = null;
-	private Long timeUsec = null;
-	private Long startTime = null;
-	private Long endTime = null;
+	private long timeUsec;
+	private long startTime;
+	private long endTime;
 	private String activityName = null;
 	private String appl = null;
 	private String server = null;
@@ -40,9 +39,25 @@ public class Activity {
 	private String geoAddr = null;
 
 	public Activity() {
-		timeUsec = System.currentTimeMillis();
+		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 	}
+	
+	public Activity(String tid) {
+		trackingId = tid;
+		timeUsec = System.currentTimeMillis()*1000;
+	}
+
+	public Activity(String tid, long timeMs) {
+		trackingId = tid;
+		timeUsec = timeMs*1000;
+	}
+
+	public Activity(String tid, Date time) {
+		trackingId = tid;
+		timeUsec = time.getTime()*1000;
+	}
+
 
 	/**
    **/
@@ -83,11 +98,11 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public Long getTimeUsec() {
-		return timeUsec * 1000;
+		return timeUsec;
 	}
 
 	public Activity setTimeUsec(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime();
+		this.timeUsec = timeUsec.getTime() * 1000;
 		return this;
 	}
 
@@ -109,14 +124,14 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public Long getStartTime() {
-		if (startTime != null && startTime > 0)
-			return startTime * 1000;
+		if (startTime > 0)
+			return startTime;
 		else 
 			return getTimeUsec();
 	}
 
 	public Activity setStartTime(Date startTime) {
-		this.startTime = startTime.getTime();
+		this.startTime = startTime.getTime() * 1000;
 		return this;
 	}
 
@@ -125,14 +140,14 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public Long getEndTime() {
-		if (endTime != null && endTime > 0)
-			return endTime * 1000;
+		if (endTime > 0)
+			return endTime;
 		else 
 			return getStartTime();
 	}
 
 	public Activity setEndTime(Date endTime) {
-		this.endTime = endTime.getTime();
+		this.endTime = endTime.getTime() * 1000;
 		return this;
 	}
 

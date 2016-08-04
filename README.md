@@ -32,7 +32,7 @@ To use this helper code please do the following:
 			     .setServer("WebServer100")
 			     .setNetAddr("11.0.0.2")
 			     .setDataCenter("DCNY")
-			     //.setGeoAddr("40.803692,-73.402157")
+			     .setGeoAddr("40.803692,-73.402157")
 			     .setSourceUrl("http://www.movies.com")			    
 			     .setLocation("New York, NY")
 			     .setEventName("Casablanca 8/4 at 1PM")
@@ -40,7 +40,7 @@ To use this helper code please do the following:
 			     .setMsgText("Casablanca is playing on August 3rd at 1PM");
 ```
 * Finally, invoke the post method on the jKoolSend object, passing it the object you wish to stream. For example:
-* ```java
+```java
 			Response response = jkSend.post(event);
 			response.close();
 ```

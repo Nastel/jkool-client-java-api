@@ -3,18 +3,13 @@
 ###Why jKool Rest Clients?
 This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  “token” in order to stream. This token will be associated with a repository that will be assigned to you when you sign-up for jKool.  The token is passed in the request header. We will be providing additional clients to use with other programming languages. Please check back. If you need them soon, they can be automatically generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" directory.  
 
-###jKool Data Types
-There are four types of data that can be streamed into jKool. They are:
+###jKool Streaming Concepts and Documentation
+You can find very comprehensive documentation on jKool Data Types and Concepts in our jKool Streaming Guide found here: https://www.jkoolcloud.com/download/jkool-model.pdf. But basically, there are four types of data that can be streamed into jKool. They are:
 * Events: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * Activities: Represents a group of events and other activities (e.g. transactions).
 * Snapshots: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
 * Properties: simple metrics (name, value pairs). Properties can be associated with events, activities. 
-
-###Field level documentation
-This repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
-
-###Important note
-This helper code is extremely simple.  Please be advised that jKool will handle the most simple of use cases to the most complex use cases. For example, it is built with the ability to correlate events and track transactions among multiple applications.  This can be used for complex system analysis, for instance - to monitor system performance. We will be providing user documentation shortly that will explain in detail how to take advantage of complex jKool streaming and analysis.
+* In addition to the Streaming Guide, this Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ###Using this helper code
 To use this helper code please do the following:
@@ -49,6 +44,8 @@ The Rest Client will properly format the entity into JSON format.
 
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
+###Important note
+This helper code is extremely simple.  Please be advised that jKool will handle the most simple of use cases to the most complex use cases. For example, it is built with the ability to correlate events and track transactions among multiple applications.  This can be used for complex system analysis, for instance - to monitor system performance. The Streaming Guide will give more details on how to take advantage of the more complex jKool streaming and analysis.
 
 ###Streaming with Curl
 Data can also be streamed into jKool using Curl. Below is an example:

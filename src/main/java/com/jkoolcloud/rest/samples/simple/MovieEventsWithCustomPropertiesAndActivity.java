@@ -42,7 +42,7 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 
 			// Create the activity that the events will be attached to
 			Activity activity = new Activity()
-			        .setActivityName("Weekly Movies")
+			        .setActivityName("August Week 3 Movies")
 			        // also referred to as "operation"
 			        .setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
@@ -61,9 +61,10 @@ public class MovieEventsWithCustomPropertiesAndActivity {
 			// Create the Event
 			// Attach it's properties
 			// Attach the event to its parent activity
-			Event event = new Event().setAppl("WebOrders").setServer("WebServer100").setNetAddr("11.0.0.2")
-			        .setDataCenter("DCNY").setGeoAddr("40.803692,-73.402157").setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Casablanca")
+			Event event = new Event().setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+			        .setGeoAddr("40.803692,-73.402157").setSourceUrl("http://www.movies.com")
+			        .setLocation("New York, NY").setEventName("Casablanca 8/3 at 1PM")
 			        // This attaches the event to the activity.
 			        .setParentTrackId(activity.getTrackingId()).setProperties(properties).setSnapshots(null);
 

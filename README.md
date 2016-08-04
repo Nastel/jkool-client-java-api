@@ -23,16 +23,12 @@ To use this helper code please do the following:
 * Instantiate the object you wish to stream. Then populate all of the fields you wish to stream. For example:
 ```java
 			Event event = new Event();
-			event.setAppl("WebOrders")
-			     .setServer("WebServer100")
-			     .setNetAddr("11.0.0.2")
-			     .setDataCenter("DCNY")
-			     .setGeoAddr("40.803692,-73.402157")
-			     .setSourceUrl("http://www.movies.com")			    
-			     .setLocation("New York, NY")
-			     .setEventName("Casablanca 8/4 at 1PM")
-			     .setTimeUsec(formatter.parse(movieDate))
-			     .setMsgText("Casablanca is playing on August 3rd at 1PM");
+			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
+			        .setLocation("New York, NY").setEventName("Casablanca")
+			        .setMsgText("Casablanca is playing.");
+
 ```
 * Finally, invoke the post method on the jKoolSend object, passing it the object you wish to stream. For example:
 

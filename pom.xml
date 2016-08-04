@@ -173,6 +173,10 @@
                      <Implementation-Version>${project.version}</Implementation-Version>
                  </manifestEntries>
              </archive>
+             <excludes>
+            	<exclude>**/sample/**/*</exclude>
+            	<exclude>**/sample</exclude>
+          	 </excludes>
          </configuration>
          <executions>
              <execution>

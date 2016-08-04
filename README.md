@@ -18,36 +18,32 @@ This helper code is extremely simple.  Please be advised that jKool will handle 
 
 ###Using this helper code
 To use this helper code please do the following:
-* Import the required libraries residing inthe "libs" directory into your code.
-* Create a Client object. This helper code is using RestEasy to do this. For example, please see the following in any of the sample code:
+* Run mvn install on the project. This will generate a jar file (found in the target directory).
+* Import this jar file into your own project in which you wish to stream to jKool. 
+* Please see the sample classes and run them in order to get a good understanding on how to use the helper code. You will be doing the following:
+* Instantiate the jKoolSend object. You will need to pass it the token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the proper repository.
 ```java
-			String basePath = "https://data.jkoolcloud.com/JESL";
-			Client client = ClientBuilder.newClient();
-			WebTarget target = client.target(basePath);
+			jKoolSend jkSend = new jKoolSend("yourtoken");
 ```
-* Import the provided jKool objects residing in the "model" directory into your code.
-* Populate these jKool objects with your data. For example, please see the following in the sample code:
+* Instantiate the object you wish to stream. Then populate all of the fields you wish to stream. For example:
 ```java
 			Event event = new Event();
-			event.setCompCode("SUCCESS");
-			String eventUuid = UUID.randomUUID().toString();
-			event.setTrackingId(eventUuid);
-			event.setServer("WebServer100");
-			event.setNetAddr("11.0.0.2");
-			event.setDataCenter("DCNY");
-			event.setGeoAddr("New York, NY");
-			event.setSourceUrl("http://www.movies.com");
-			event.setLocation("New York, NY");
-			event.setEventName("Casablanca 8/3 at 1PM");
-			event.setTimeUsec(movieDate);
-			...
+			event.setAppl("WebOrders")
+			     .setServer("WebServer100")
+			     .setNetAddr("11.0.0.2")
+			     .setDataCenter("DCNY")
+			     //.setGeoAddr("40.803692,-73.402157")
+			     .setSourceUrl("http://www.movies.com")			    
+			     .setLocation("New York, NY")
+			     .setEventName("Casablanca 8/4 at 1PM")
+			     .setTimeUsec(formatter.parse(movieDate))
+			     .setMsgText("Casablanca is playing on August 3rd at 1PM");
 ```
-* Invoke the post request on the client object sending the objects over as request entities. As part of this request, put your token in the header.  For example, please see the following in any of the sample code. 
-```java
-			response = target.path("event").request().header("token", "yourtoken").post(Entity.entity(serialize(event), "application/json"));
-			response.close();	
+* Finally, invoke the post method on the jKoolSend object, passing it the object you wish to stream. For example:
+* ```java
+			Response response = jkSend.post(event);
+			response.close();
 ```
-
 The Rest Client will properly format the entity into JSON format.
 
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).

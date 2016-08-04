@@ -40,6 +40,7 @@ To use this helper code please do the following:
 			     .setMsgText("Casablanca is playing on August 3rd at 1PM");
 ```
 * Finally, invoke the post method on the jKoolSend object, passing it the object you wish to stream. For example:
+
 ```java
 			Response response = jkSend.post(event);
 			response.close();

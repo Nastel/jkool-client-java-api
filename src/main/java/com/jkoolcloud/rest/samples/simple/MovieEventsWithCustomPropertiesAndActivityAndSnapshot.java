@@ -19,6 +19,7 @@ package com.jkoolcloud.rest.samples.simple;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.Response;
 
@@ -100,6 +101,7 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
 			        .setGeoAddr("(40.803692,-73.402157)").setSourceUrl("http://www.movies.com")
 			        .setLocation("New York, NY").setEventName("Cassablanca")
+			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
 			        // This attaches the event to the activity.
 			        .setParentTrackId(activity.getTrackingId())
 			        // Attach the event's properties

@@ -26,7 +26,7 @@ import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 
 public class jKoolStream {
-	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://test.jkoolcloud.com:6585/JESL");
+	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://data.jkoolcloud.com/JESL");
 	
 	String basePath = JKOOL_REST_URL;
 	Client client = ClientBuilder.newClient();

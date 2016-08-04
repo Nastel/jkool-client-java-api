@@ -38,18 +38,18 @@ public class Event {
 	private Long timeUsec = null;
 	private Long startTimeUsec = null;
 	private Long endTimeUsec = null;
-	private Integer elapsedTimeUsec = null;
+	private Long elapsedTimeUsec = null;
 	private String msgText = null;
 	private String msgEncoding = null;
 	private String msgCharset = null;
 	private List<String> corrId = null;
 	private String resource = null;
 	private String msgMimeType = null;
-	private Integer msgAge = null;
+	private Long msgAgeUsec = null;
 	private String exception = null;
 	private String msgTag = null;
 	private String parentTrackId = null;
-	private Integer waitTimeUsec = null;
+	private Long waitTimeUsec = null;
 	private String eventName = null;
 	private List<Property> properties = null;;
 	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
@@ -60,11 +60,28 @@ public class Event {
 	private String geoAddr = null;
 
 	public Event() {
-		timeUsec = System.currentTimeMillis();
+		timeUsec = System.currentTimeMillis()*1000;
 		trackingId = UUID.randomUUID().toString();
 		type = EventTypes.EVENT;
 	}
 
+	public Event(String tid) {
+		trackingId = tid;
+		timeUsec = System.currentTimeMillis()*1000;
+		type = EventTypes.EVENT;
+	}
+
+	public Event(String tid, long timeMs) {
+		trackingId = tid;
+		timeUsec = timeMs*1000;
+		type = EventTypes.EVENT;
+	}
+
+	public Event(String tid, Date time) {
+		trackingId = tid;
+		timeUsec = time.getTime()*1000;
+		type = EventTypes.EVENT;
+	}
 
 
 	/**
@@ -217,17 +234,11 @@ public class Event {
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public Long getTimeUsec() {
-	try
-	{
-		return timeUsec * 1000;
+		return timeUsec;
 	}
-	catch (Exception e)
-	{
-		return null;
-	}}
 
 	public Event setTimeUsec(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime();
+		this.timeUsec = timeUsec.getTime()*1000;
 		return this;
 	}
 
@@ -237,13 +248,13 @@ public class Event {
 	@JsonProperty("start-time-usec")
 	public Long getStartTimeUsec() {
 		if (startTimeUsec != null && startTimeUsec > 0)
-			return startTimeUsec * 1000;
+			return startTimeUsec;
 		else
 			return getTimeUsec();
 	}
 
 	public Event setStartTimeUsec(Date startTimeUsec) {
-		this.startTimeUsec = startTimeUsec.getTime();
+		this.startTimeUsec = startTimeUsec.getTime()*1000;
 		return this;
 	}
 
@@ -253,13 +264,13 @@ public class Event {
 	@JsonProperty("end-time-usec")
 	public Long getEndTimeUsec() {
 		if (endTimeUsec != null && endTimeUsec > 0)
-			return endTimeUsec * 1000;
+			return endTimeUsec;
 		else
 			return getStartTimeUsec();
 	}
 
 	public Event setEndTimeUsec(Date endTimeUsec) {
-		this.endTimeUsec = endTimeUsec.getTime();
+		this.endTimeUsec = endTimeUsec.getTime()*1000;
 		return this;
 	}
 
@@ -267,11 +278,11 @@ public class Event {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("elapsed-time-usec")
-	public Integer getElapsedTimeUsec() {
+	public Long getElapsedTimeUsec() {
 		return elapsedTimeUsec;
 	}
 
-	public Event setElapsedTimeUsec(Integer elapsedTimeUsec) {
+	public Event setElapsedTimeUsec(long elapsedTimeUsec) {
 		this.elapsedTimeUsec = elapsedTimeUsec;
 		return this;
 	}
@@ -365,12 +376,12 @@ public class Event {
 	}
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-age")
-	public Integer getMsgAge() {
-		return msgAge;
+	public Long getMsgAgeUsec() {
+		return msgAgeUsec;
 	}
 
-	public Event setMsgAge(Integer msgAge) {
-		this.msgAge = msgAge;
+	public Event setMsgAgeUsec(long ageUsec) {
+		this.msgAgeUsec = ageUsec;
 		return this;
 	}
 	
@@ -409,12 +420,12 @@ public class Event {
 	
 	@ApiModelProperty(value = "")
 	@JsonProperty("waitTimeUsec")
-	public Integer getWaitTimeUsec() {
+	public Long getWaitTimeUsec() {
 		return waitTimeUsec;
 	}
 	
 
-	public Event setWaitTimeUsec(Integer waitTimeUsec) {
+	public Event setWaitTimeUsec(long waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
 		return this;
 	}

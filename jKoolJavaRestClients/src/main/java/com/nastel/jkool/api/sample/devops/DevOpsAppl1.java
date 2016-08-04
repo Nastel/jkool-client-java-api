@@ -52,7 +52,7 @@ public class DevOpsAppl1 {
 		{
 
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-			String token = "0bb480b6-582a-42e7-aeb0-3bd9ee40f4ee";
+			String token = "yourtoken";
 
 			// Create the first event which is a message received event representing a message received in a hypothetical
 			// messaging queue residing in New York.

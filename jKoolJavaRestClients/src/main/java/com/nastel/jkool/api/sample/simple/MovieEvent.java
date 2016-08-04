@@ -37,7 +37,7 @@ public class MovieEvent {
 
 			String movieDate = "03-Jun-2016 01:15:00";
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-			String token = "0bb480b6-582a-42e7-aeb0-3bd9ee40f4ee";
+			String token = "yourtoken";
 
 			// Create the Event
 			// Attach it's properties

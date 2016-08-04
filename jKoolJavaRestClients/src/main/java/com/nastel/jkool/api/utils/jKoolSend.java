@@ -11,7 +11,7 @@ import com.nastel.jkool.api.model.Event;
 
 public class jKoolSend {
 	
-	public static String basePath = "https://test.jkoolcloud.com:6585/JESL";
+	public static String basePath = "https://data.jkoolcloud.com/JESL";
 	public static Client client = ClientBuilder.newClient();
 	public static WebTarget target = client.target(basePath);
 	

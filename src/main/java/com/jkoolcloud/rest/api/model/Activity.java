@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.jkool_java_rest.model;
+package com.jkoolcloud.rest.api.model;
 
- 
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,10 +26,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Activity {
 
 	private String trackingId = null;
-	private String status = null;
+	private String status = "END";
 	private long timeUsec;
 	private long startTime;
 	private long endTime;
+	private long elapsedTimeUsec;
 	private String activityName = null;
 	private String appl = null;
 	private String server = null;
@@ -44,25 +44,24 @@ public class Activity {
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 	}
-	
+
 	public Activity(String tid) {
 		type = EventTypes.ACTIVITY;
 		trackingId = tid;
-		timeUsec = System.currentTimeMillis()*1000; 
+		timeUsec = System.currentTimeMillis() * 1000;
 	}
 
 	public Activity(String tid, long timeMs) {
 		type = EventTypes.ACTIVITY;
 		trackingId = tid;
-		timeUsec = timeMs*1000;
+		timeUsec = timeMs * 1000;
 	}
 
 	public Activity(String tid, Date time) {
 		type = EventTypes.ACTIVITY;
 		trackingId = tid;
-		timeUsec = time.getTime()*1000;
+		timeUsec = time.getTime() * 1000;
 	}
-
 
 	/**
    **/
@@ -82,7 +81,8 @@ public class Activity {
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
-		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR=" + geoAddr;
+		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR="
+		        + geoAddr;
 	}
 
 	/**
@@ -93,16 +93,11 @@ public class Activity {
 		return status;
 	}
 
-	public Activity setStatus(String status) {
-		this.status = status;
-		return this;
-	}
-
 	/**
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
-	public Long getTimeUsec() {
+	public long getTimeUsec() {
 		return timeUsec;
 	}
 
@@ -113,7 +108,6 @@ public class Activity {
 	public EventTypes getType() {
 		return type;
 	}
-
 
 	public Activity setTimeUsec(Date timeUsec) {
 		this.timeUsec = timeUsec.getTime() * 1000;
@@ -132,15 +126,15 @@ public class Activity {
 		this.activityName = activityName;
 		return this;
 	}
-	
+
 	/**
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
-	public Long getStartTime() {
+	public long getStartTime() {
 		if (startTime > 0)
 			return startTime;
-		else 
+		else
 			return getTimeUsec();
 	}
 
@@ -153,11 +147,24 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
-	public Long getEndTime() {
+	public long getEndTime() {
 		if (endTime > 0)
 			return endTime;
-		else 
+		else
 			return getStartTime();
+	}
+
+	/**
+	   **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("elapsed-time-usec")
+	public long getElapsedTimeUsec() {
+		return elapsedTimeUsec;
+	}
+
+	public Activity setElapsedTimeUsec(long elapsedTimeUsec) {
+		this.elapsedTimeUsec = elapsedTimeUsec;
+		return this;
 	}
 
 	public Activity setEndTime(Date endTime) {
@@ -209,15 +216,14 @@ public class Activity {
 		this.geoAddr = geoAddr;
 		return this;
 	}
-	
-
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Event {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  status: ").append(status).append("\n");;
+		sb.append("  status: ").append(status).append("\n");
+		;
 		sb.append("  operation: ").append(activityName).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 

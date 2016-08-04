@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.jkool_java_rest.utils;
+package com.jkoolcloud.rest.api.utils;
 
 import java.util.Map;
 import java.util.List;
 
 public class ApiException extends Exception {
+	/**
+	 * 
+	 */
+    private static final long serialVersionUID = 293667154457636080L;
+    
 	private int code = 0;
 	private String message = null;
 	private Map<String, List<String>> responseHeaders = null;

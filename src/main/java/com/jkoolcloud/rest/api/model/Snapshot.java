@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.jkool_java_rest.model;
+package com.jkoolcloud.rest.api.model;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import io.swagger.annotations.*;
+import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jkoolcloud.rest.api.jkool_java_rest.model.Property;
 
 @ApiModel(description = "")
 public class Snapshot {
@@ -46,6 +46,10 @@ public class Snapshot {
 		this.timeUsec = timeMs * 1000;
 	}
 
+	public Snapshot(String category, String name, List<Property> properties) {
+		this(category, name, System.currentTimeMillis());
+		this.properties = properties;
+	}
 	public Snapshot(String category, String name, Date time, List<Property> properties) {
 		this(category, name, time.getTime());
 		this.properties = properties;
@@ -82,7 +86,7 @@ public class Snapshot {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
-	public Long getTimeUsec() {
+	public long getTimeUsec() {
 		return timeUsec;
 	}
 

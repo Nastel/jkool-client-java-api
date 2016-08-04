@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.jkool_java_rest.model;
+package com.jkoolcloud.rest.api.model;
 
 import io.swagger.annotations.*;
 

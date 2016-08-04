@@ -1,5 +1,3 @@
-package com.nastel.jkool.api.model;
-
 /*
  * Copyright 2014-2015 JKOOL, LLC.
  *
@@ -15,6 +13,8 @@ package com.nastel.jkool.api.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.nastel.jkool.api.model;
+
  
 import java.util.Date;
 import java.util.UUID;
@@ -37,23 +37,28 @@ public class Activity {
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
+	private EventTypes type = EventTypes.ACTIVITY;
 
 	public Activity() {
+		type = EventTypes.ACTIVITY;
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 	}
 	
 	public Activity(String tid) {
+		type = EventTypes.ACTIVITY;
 		trackingId = tid;
 		timeUsec = System.currentTimeMillis()*1000; 
 	}
 
 	public Activity(String tid, long timeMs) {
+		type = EventTypes.ACTIVITY;
 		trackingId = tid;
 		timeUsec = timeMs*1000;
 	}
 
 	public Activity(String tid, Date time) {
+		type = EventTypes.ACTIVITY;
 		trackingId = tid;
 		timeUsec = time.getTime()*1000;
 	}
@@ -100,6 +105,15 @@ public class Activity {
 	public Long getTimeUsec() {
 		return timeUsec;
 	}
+
+	/**
+   **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("type")
+	public EventTypes getType() {
+		return type;
+	}
+
 
 	public Activity setTimeUsec(Date timeUsec) {
 		this.timeUsec = timeUsec.getTime() * 1000;

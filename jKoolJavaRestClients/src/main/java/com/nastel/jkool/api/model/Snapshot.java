@@ -1,5 +1,3 @@
-package com.nastel.jkool.api.model;
-
 /*
  * Copyright 2014-2015 JKOOL, LLC.
  *
@@ -15,6 +13,8 @@ package com.nastel.jkool.api.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.nastel.jkool.api.model;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -31,6 +31,7 @@ public class Snapshot {
 	private long timeUsec;
 	private String type = null;
 	private List<Property> properties;
+	private EventTypes type = EventTypes.SNAPSHOT;
 
 	public Snapshot() {
 		this.timeUsec = System.currentTimeMillis() * 1000;
@@ -95,9 +96,10 @@ public class Snapshot {
    **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
-	public String getType() {
-		return "SNAPSHOT";
+	public EventTypes getType() {
+		return type;
 	}
+
 
 	/**
    **/

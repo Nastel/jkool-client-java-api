@@ -30,7 +30,7 @@ To use this helper code please do the following:
 			        .setMsgText("Casablanca is playing.");
 
 ```
-Please not that this example code depicts streaming in real-time. Therefore the start date of the event will default to the current date/time and the end date will default to the start date plus the elapsed time. You can however control start/end dates by setting start and end dates with with a java date object. For example:
+Please note that this example code depicts streaming in real-time. Therefore the start date of the event will default to the current date/time and the end date will default to the start date plus the elapsed time. You can however control start/end dates by setting start and end dates with with a java date object. For example:
 ```java
 			String movieDate = "03-Aug-2016 01:15:00";
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");

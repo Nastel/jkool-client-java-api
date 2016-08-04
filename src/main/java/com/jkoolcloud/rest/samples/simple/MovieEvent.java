@@ -41,9 +41,9 @@ public class MovieEvent {
 			Event event = new Event();
 			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
-			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(1)).setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Casablanca 8/4 at 1PM")
-			        .setMsgText("Casablanca is playing on August 3rd at 1PM");
+			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
+			        .setLocation("New York, NY").setEventName("Casablanca")
+			        .setMsgText("Casablanca is playing.");
 
 			Response response = jkSend.post(event);
 			response.close();

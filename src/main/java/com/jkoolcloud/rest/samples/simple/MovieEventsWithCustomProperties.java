@@ -53,7 +53,7 @@ public class MovieEventsWithCustomProperties {
 			Event event = new Event().setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 			        .setGeoAddr("40.803692,-73.402157").setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Casablanca 8/3 at 1PM").setProperties(properties);
+			        .setLocation("New York, NY").setEventName("Casablanca").setProperties(properties);
 
 			// Stream the event (token is the token that was assigned to you when you purchased jKool.
 			Response response = jkSend.post(event);

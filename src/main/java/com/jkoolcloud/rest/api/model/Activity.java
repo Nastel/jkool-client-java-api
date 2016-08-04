@@ -37,6 +37,7 @@ public class Activity {
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
+	private String exception = null;
 	private EventTypes type = EventTypes.ACTIVITY;
 
 	public Activity() {
@@ -153,6 +154,11 @@ public class Activity {
 		else
 			return getStartTime();
 	}
+	
+	public Activity setEndTime(Date endTime) {
+		this.endTime = endTime.getTime() * 1000;
+		return this;
+	}
 
 	/**
 	   **/
@@ -167,8 +173,17 @@ public class Activity {
 		return this;
 	}
 
-	public Activity setEndTime(Date endTime) {
-		this.endTime = endTime.getTime() * 1000;
+	/**
+	   **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("exception")
+	public String getException() {
+		return exception;
+	}
+
+	public Activity setException(String exception) {
+		this.exception = exception;
+		this.status = "EXCEPTION";
 		return this;
 	}
 

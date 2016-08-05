@@ -26,37 +26,46 @@ import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 
 public class jKoolStream {
-	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://data.jkoolcloud.com/JESL");
-	
+	public static final String TOKEN_KEY = "token";
+	public static final String MEDIA_TYPE = "application/json";
+	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
+	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url",
+			"https://data.jkoolcloud.com/JESL");
+
 	String basePath = JKOOL_REST_URL;
-	Client client = ClientBuilder.newClient();
-	WebTarget target = client.target(basePath);
-	String token;
-	
+	String token = JKOOL_TOKEN;
+
+	Client rsClient;
+	WebTarget target;
+
+	public jKoolStream() {
+		this(JKOOL_REST_URL, JKOOL_TOKEN);
+	}
+
 	public jKoolStream(String token) {
 		this(JKOOL_REST_URL, token);
 	}
-	
+
 	public jKoolStream(String endPoint, String token) {
-		basePath = endPoint;
-		client = ClientBuilder.newClient();
-		target = client.target(basePath);		
+		this.basePath = endPoint;
+		this.rsClient = ClientBuilder.newClient();
+		this.target = rsClient.target(basePath);
 		this.token = token;
 	}
-	
+
 	public Response post(Event event) throws ApiException {
-		return target.path("event").request().header("token", token)
-		        .post(Entity.entity(serialize(event), "application/json"));
+		return target.path("event").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(event), MEDIA_TYPE));
 	}
 
 	public Response post(Activity activity) throws ApiException {
-		return target.path("activity").request().header("token", token)
-		        .post(Entity.entity(serialize(activity), "application/json"));
+		return target.path("activity").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(activity), MEDIA_TYPE));
 	}
 
 	public Response post(Snapshot snapshot) throws ApiException {
-		return target.path("snapshot").request().header("token", token)
-		        .post(Entity.entity(serialize(snapshot), "application/json"));
+		return target.path("snapshot").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(snapshot), MEDIA_TYPE));
 	}
 
 	/**
@@ -72,5 +81,4 @@ public class jKoolStream {
 			throw new ApiException(500, e.getMessage());
 		}
 	}
-
 }

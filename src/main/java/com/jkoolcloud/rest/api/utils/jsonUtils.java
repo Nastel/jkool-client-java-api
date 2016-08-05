@@ -20,17 +20,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
-public class JsonUtil {
-	public static ObjectMapper mapper;
+public class jsonUtils {
+	public static ObjectMapper MAPPER;
 
 	static {
-		mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-		mapper.registerModule(new JodaModule());
+		MAPPER = newObjectMapper();
 	}
 
 	public static ObjectMapper getJsonMapper() {
+		return MAPPER;
+	}
+	
+	public static ObjectMapper newObjectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		mapper.registerModule(new JodaModule());
 		return mapper;
 	}
 }

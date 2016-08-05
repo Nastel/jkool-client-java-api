@@ -21,6 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
@@ -37,6 +38,7 @@ public class jKoolStream {
 
 	Client rsClient;
 	WebTarget target;
+	ObjectMapper mapper;
 
 	public jKoolStream() {
 		this(JKOOL_REST_URL, JKOOL_TOKEN);
@@ -48,6 +50,7 @@ public class jKoolStream {
 
 	public jKoolStream(String endPoint, String token) {
 		this.basePath = endPoint;
+		this.mapper = jsonUtils.newObjectMapper();
 		this.rsClient = ClientBuilder.newClient();
 		this.target = rsClient.target(basePath);
 		this.token = token;
@@ -71,10 +74,10 @@ public class jKoolStream {
 	/**
 	 * Serialize the given Java object into JSON string.
 	 */
-	public static String serialize(Object obj) throws ApiException {
+	public String serialize(Object obj) throws ApiException {
 		try {
 			if (obj != null)
-				return JsonUtil.getJsonMapper().writeValueAsString(obj);
+				return mapper.writeValueAsString(obj);
 			else
 				return null;
 		} catch (Exception e) {

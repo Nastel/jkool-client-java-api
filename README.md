@@ -47,7 +47,7 @@ The Rest Client will properly format the entity into JSON format and stream it t
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
 ###Important note
-This sample code showcases some basic examples of using jKool Rest API. jKool can handle very complex application interactions. For example, it is built with the ability to correlate events and track transactions among multiple applications. This can be used for complex tracking and analytics.
+This sample code showcases some basic examples of using jKool Rest API. jKool can handle very complex application interactions. For example, it is built with the ability to correlate events and track transactions across multiple applications. This can be used for complex tracking and analytics.
 
 ###Streaming with Curl
 Data can also be streamed into jKool using Curl. Below is an example:

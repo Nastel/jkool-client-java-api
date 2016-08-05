@@ -38,7 +38,7 @@ Please note that this example code depicts streaming in real-time. Therefore the
 * Finally, invoke the post method on the `jKoolStream` object, passing it the object you wish to stream. For example:
 
 ```java
-		jKoolSend jkSend = new jKoolStream("yourtoken");
+		jKoolStream jkSend = new jKoolStream("yourtoken");
 		Response response = jkSend.post(event);
 		response.close();
 ```

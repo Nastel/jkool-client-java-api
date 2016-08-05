@@ -18,38 +18,39 @@ package com.jkoolcloud.rest.api.utils;
 import java.util.Map;
 import java.util.List;
 
-public class ApiException extends Exception {
+public class JKApiException extends Exception {
 	/**
 	 * 
 	 */
     private static final long serialVersionUID = 293667154457636080L;
     
 	private int code = 0;
-	private String message = null;
 	private Map<String, List<String>> responseHeaders = null;
 	private String responseBody = null;
 
-	public ApiException() {
+	public JKApiException(String message) {
+		super(message);
 	}
 
-	public ApiException(int code, String message) {
+	public JKApiException(int code, String message) {
+		super(message);
 		this.code = code;
-		this.message = message;
 	}
 
-	public ApiException(int code, String message, Map<String, List<String>> responseHeaders, String responseBody) {
+	public JKApiException(int code, String message, Throwable e) {
+		super(message, e);
 		this.code = code;
-		this.message = message;
+	}
+
+	public JKApiException(int code, String message, Map<String, List<String>> responseHeaders, String responseBody, Throwable e) {
+		super(message, e);
+		this.code = code;
 		this.responseHeaders = responseHeaders;
 		this.responseBody = responseBody;
 	}
 
 	public int getCode() {
 		return code;
-	}
-
-	public String getMessage() {
-		return message;
 	}
 
 	/**

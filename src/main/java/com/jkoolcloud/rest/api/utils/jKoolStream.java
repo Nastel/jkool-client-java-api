@@ -21,56 +21,70 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 
 public class jKoolStream {
+	public static final String TOKEN_KEY = "token";
+	public static final String MEDIA_TYPE = "application/json";
+	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://data.jkoolcloud.com/JESL");
-	
+
 	String basePath = JKOOL_REST_URL;
-	Client client = ClientBuilder.newClient();
-	WebTarget target = client.target(basePath);
-	String token;
-	
+	String token = JKOOL_TOKEN;
+
+	Client rsClient;
+	WebTarget target;
+	ObjectMapper mapper;
+
+	public jKoolStream() {
+		this(JKOOL_REST_URL, JKOOL_TOKEN);
+	}
+
 	public jKoolStream(String token) {
 		this(JKOOL_REST_URL, token);
 	}
-	
+
 	public jKoolStream(String endPoint, String token) {
-		basePath = endPoint;
-		client = ClientBuilder.newClient();
-		target = client.target(basePath);		
 		this.token = token;
-	}
-	
-	public Response post(Event event) throws ApiException {
-		return target.path("event").request().header("token", token)
-		        .post(Entity.entity(serialize(event), "application/json"));
-	}
-
-	public Response post(Activity activity) throws ApiException {
-		return target.path("activity").request().header("token", token)
-		        .post(Entity.entity(serialize(activity), "application/json"));
+		this.basePath = endPoint;
+		this.mapper = jsonUtils.newObjectMapper();
+		this.rsClient = ClientBuilder.newClient();
+		this.target = rsClient.target(basePath);
 	}
 
-	public Response post(Snapshot snapshot) throws ApiException {
-		return target.path("snapshot").request().header("token", token)
-		        .post(Entity.entity(serialize(snapshot), "application/json"));
+	public Response post(Event event) throws JKApiException {
+		return target.path("event").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(event), MEDIA_TYPE));
+	}
+
+	public Response post(Activity activity) throws JKApiException {
+		return target.path("activity").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(activity), MEDIA_TYPE));
+	}
+
+	public Response post(Snapshot snapshot) throws JKApiException {
+		return target.path("snapshot").request().header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(snapshot), MEDIA_TYPE));
 	}
 
 	/**
-	 * Serialize the given Java object into JSON string.
+	 * Serialize an object into JSON format
+	 * 
+	 * @param obj java object instance (non null)
+	 * @return JSON representation of the object
+	 * @throws JKApiException
 	 */
-	public static String serialize(Object obj) throws ApiException {
+	public String serialize(Object obj) throws JKApiException {
+		if (obj == null) {
+			throw new JKApiException(500, "Object must not be null");			
+		}
 		try {
-			if (obj != null)
-				return JsonUtil.getJsonMapper().writeValueAsString(obj);
-			else
-				return null;
+			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
-			throw new ApiException(500, e.getMessage());
+			throw new JKApiException(600, "Failed to serialize object: " + e.getMessage(), e);
 		}
 	}
-
 }

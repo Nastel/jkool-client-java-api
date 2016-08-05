@@ -40,7 +40,7 @@ import com.jkoolcloud.rest.api.utils.jKoolStream;
  * REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
-public class RestSampl3 {
+public class RestSample3 {
 
 	public static void main(String[] args) {
 		try {

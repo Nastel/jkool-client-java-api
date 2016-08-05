@@ -46,6 +46,17 @@ The Rest Client will properly format the entity into JSON format and stream it t
 
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
+###Running jKool Queries
+Below is an example of running JKQL queries against a repository associated with an access token:
+
+```java
+		jKoolQuery jkQuery = new jKoolQuery("yourtoken");
+		Response response = jkSend.get("get number of events for today");
+		Map<String, Object> jsonResponse = response.readEntity(Map.class);
+		response.close();
+```
+All returned JKQL responses are JSON.
+
 ###Important note
 This sample code showcases some basic examples of using jKool Rest API. jKool can handle very complex application interactions. For example, it is built with the ability to correlate events and track transactions across multiple applications. This can be used for complex tracking and analytics.
 
@@ -65,7 +76,7 @@ headers = {'token': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
 r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
-###Retrieving Data out of jKool via Rest
+###Query jKool using Curl
 
 Rest can be used to retrieve data out of jKool. To do this, make use of the jKool Query Language (JKQL). Please see JKQL Documentation here http://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf. To use JKQL via Restful Services, pass your repository and repository credentials (username and password) in the request header. Then issue the GET request via the following URL https://jkool.jkoolcloud.com/jKool/jkql passing the JKQL in a 'query' parameter. For instance, to get all activities in your repository, do the following in curl: 
 

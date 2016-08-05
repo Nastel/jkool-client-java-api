@@ -35,6 +35,6 @@ public class jKoolQuery extends JKService {
 	}
 
 	public Response get(String query) throws JKApiException {
-		return target.path("jkql").queryParam(QUERY_KEY, query).queryParam(TOKEN_KEY, getToken()).request(MediaType.TEXT_PLAIN_TYPE).header(TOKEN_KEY, getToken()).get();
+		return target.path("jkql").queryParam(QUERY_KEY, query).queryParam(TOKEN_KEY, getToken()).request(MediaType.TEXT_PLAIN_TYPE).header(TOKEN_KEY, getToken()).get(Response.class);
 	}
 }

@@ -33,7 +33,7 @@ import com.jkoolcloud.rest.api.utils.jKoolStream;
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  * ***********************************************************************************************************************/
 
-public class MovieEventsWithCustomProperties {
+public class MovieEvents2 {
 
 	public static void main(String[] args) {
 		try {

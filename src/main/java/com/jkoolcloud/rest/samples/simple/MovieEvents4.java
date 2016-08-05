@@ -30,25 +30,26 @@ import com.jkoolcloud.rest.api.model.Snapshot;
 import com.jkoolcloud.rest.api.utils.jKoolStream;
 
 /**************************************************************************************************************************
- * This example code uses the same data as the prior Movie example code. However it also demonstrates how to make use of
- * Snapshots. In this example, snapshots are being used to capture the weather at the time the movie was playing.
+ * This example code uses the same data as the prior Movie example code. However
+ * it also demonstrates how to make use of Snapshots. In this example, snapshots
+ * are being used to capture the weather at the time the movie was playing.
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
- * ***********************************************************************************************************************/
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD
+ * OF HARDCODED VALUES.
+ ***********************************************************************************************************************/
 
-public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
+public class MovieEvents4 {
 
 	public static void main(String[] args) {
 		try {
 			jKoolStream jkSend = new jKoolStream("your-access-token");
 
 			// Create the activity that the events will be attached to
-			Activity activity = new Activity()
-			        .setActivityName("Weekly Movies")
-			        // also referred to as "operation"
-			        .setAppl("WebMovies").setServer(InetAddress.getLocalHost().getHostName())
-			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
-			        .setGeoAddr("40.803692,-73.402157");
+			Activity activity = new Activity().setActivityName("Weekly Movies")
+					// also referred to as "operation"
+					.setAppl("WebMovies").setServer(InetAddress.getLocalHost().getHostName())
+					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+					.setGeoAddr("40.803692,-73.402157");
 
 			// Create some snapshot custom fields
 			Property propertyTempHigh = new Property("TempHigh", "int", "95");
@@ -98,14 +99,14 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			// Attach it's properties
 			// Attach the event to its parent activity
 			Event event = new Event().setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
-			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
-			        .setGeoAddr("(40.803692,-73.402157)").setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Cassablanca")
-			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
-			        // This attaches the event to the activity.
-			        .setParentTrackId(activity.getTrackingId())
-			        // Attach the event's properties
-			        .setProperties(propertiesMovie);
+					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
+					.setGeoAddr("(40.803692,-73.402157)").setSourceUrl("http://www.movies.com")
+					.setLocation("New York, NY").setEventName("Cassablanca")
+					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
+					// This attaches the event to the activity.
+					.setParentTrackId(activity.getTrackingId())
+					// Attach the event's properties
+					.setProperties(propertiesMovie);
 
 			// This attaches the snapshots to the event.
 			List<Snapshot> snapshots = new ArrayList<Snapshot>();
@@ -114,18 +115,21 @@ public class MovieEventsWithCustomPropertiesAndActivityAndSnapshot {
 			snapshots.add(snapshotSeaLevel);
 			event.setSnapshots(snapshots);
 
-			// Stream the event (token is the token that was assigned to you when you purchased jKool.
+			// Stream the event (token is the token that was assigned to you
+			// when you purchased jKool.
 			Response response = jkSend.post(event);
 			response.close();
 
 			// **************************************************************************************
-			// And continue creating events for all of the movies playing in the third week of August.
+			// And continue creating events for all of the movies playing in the
+			// third week of August.
 			// **************************************************************************************
 
 			// ......
 
 			// Stream the activity.
-			// (token is the token that was assigned to you when you purchased jKool.
+			// (token is the token that was assigned to you when you purchased
+			// jKool.
 			response = jkSend.post(activity);
 			response.close();
 

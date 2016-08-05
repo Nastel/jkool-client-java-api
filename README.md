@@ -25,8 +25,8 @@ To use this helper code please do the following:
 		Event event = new Event("Casablanca");
 		event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 		        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
-		        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
-		        .setLocation("New York, NY").setMsgText("Casablanca is playing.");
+		        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setLocation("New York, NY")
+		        .setMsgText("Casablanca is playing.");
 
 ```
 Please note that this example code depicts streaming in real-time. Therefore the start date of the event will default to the current date/time and the end date will default to the start date plus the elapsed time. You can however control start/end dates by setting start and end dates with with a java date object. For example:

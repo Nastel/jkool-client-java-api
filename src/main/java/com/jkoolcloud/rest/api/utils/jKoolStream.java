@@ -15,44 +15,26 @@
  */
 package com.jkoolcloud.rest.api.utils;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 
-public class jKoolStream {
-	public static final String TOKEN_KEY = "token";
-	public static final String MEDIA_TYPE = "application/json";
-	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
-	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://data.jkoolcloud.com/JESL");
-
-	String basePath = JKOOL_REST_URL;
-	String token = JKOOL_TOKEN;
-
-	Client rsClient;
-	WebTarget target;
-	ObjectMapper mapper;
+public class jKoolStream extends JKService {
+	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
 
 	public jKoolStream() {
-		this(JKOOL_REST_URL, JKOOL_TOKEN);
+		this(JKOOL_STREAM_URL, JKOOL_TOKEN);
 	}
 
 	public jKoolStream(String token) {
-		this(JKOOL_REST_URL, token);
+		this(JKOOL_STREAM_URL, token);
 	}
 
 	public jKoolStream(String endPoint, String token) {
-		this.token = token;
-		this.basePath = endPoint;
-		this.mapper = jsonUtils.newObjectMapper();
-		this.rsClient = ClientBuilder.newClient();
-		this.target = rsClient.target(basePath);
+		super(endPoint, token);
 	}
 
 	public Response post(Event event) throws JKApiException {
@@ -68,23 +50,5 @@ public class jKoolStream {
 	public Response post(Snapshot snapshot) throws JKApiException {
 		return target.path("snapshot").request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MEDIA_TYPE));
-	}
-
-	/**
-	 * Serialize an object into JSON format
-	 * 
-	 * @param obj java object instance (non null)
-	 * @return JSON representation of the object
-	 * @throws JKApiException
-	 */
-	public String serialize(Object obj) throws JKApiException {
-		if (obj == null) {
-			throw new JKApiException(500, "Object must not be null");			
-		}
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new JKApiException(600, "Failed to serialize object: " + e.getMessage(), e);
-		}
 	}
 }

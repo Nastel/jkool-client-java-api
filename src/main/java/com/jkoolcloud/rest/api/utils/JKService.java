@@ -18,46 +18,57 @@ package com.jkoolcloud.rest.api.utils;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class jKoolRetrieve {
-	public static final String TOKEN_KEY = "token";
+abstract public class JKService {
 	public static final String MEDIA_TYPE = "application/json";
+	public static final String TOKEN_KEY = "token";
 	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
-	//public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "https://jkool.jkoolcloud.com/jKool");
-	public static final String JKOOL_REST_URL = System.getProperty("jkool.rest.url", "http://localhost:8080/jKool");
-	
-	String basePath = JKOOL_REST_URL;
-	String token = JKOOL_TOKEN;
+
+	String token;
+	String basePath;
 
 	Client rsClient;
 	WebTarget target;
 	ObjectMapper mapper;
 
-	public jKoolRetrieve() {
-		this(JKOOL_REST_URL, JKOOL_TOKEN);
+	public JKService(String endPoint) {
+		this(endPoint, JKOOL_TOKEN);
 	}
-
-	public jKoolRetrieve(String token) {
-		this(JKOOL_REST_URL, token);
-	}
-
-	public jKoolRetrieve(String endPoint, String token) {
+	
+	public JKService(String endPoint, String token) {
 		this.token = token;
 		this.basePath = endPoint;
 		this.mapper = jsonUtils.newObjectMapper();
 		this.rsClient = ClientBuilder.newClient();
 		this.target = rsClient.target(basePath);
 	}
-
-	public Response get(String query) throws JKApiException {
-		return target.path("jkql").queryParam("query", query).request(MediaType.TEXT_PLAIN_TYPE).header("username", "test3").header("password", "pwtest3").header("repositoryId", "R_test385529$O_test3").get();
-		//return target.path("jkql").queryParam("query", query).request(MediaType.APPLICATION_JSON).header("username", "test3").header("password", "pwtest3").header("repositoryId", "R_test385529$O_test3").get(String.class);
-
-	}
-
 	
+	public String getToken() {
+		return token;
+	}
+	
+	public String getServiceUrl() {
+		return basePath;
+	}
+	
+	
+	/**
+	 * Serialize an object into JSON format
+	 * 
+	 * @param obj java object instance (non null)
+	 * @return JSON representation of the object
+	 * @throws JKApiException
+	 */
+	public String serialize(Object obj) throws JKApiException {
+		if (obj == null) {
+			throw new JKApiException(500, "Object must not be null");			
+		}
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new JKApiException(600, "Failed to serialize object: " + e.getMessage(), e);
+		}
+	}	
 }

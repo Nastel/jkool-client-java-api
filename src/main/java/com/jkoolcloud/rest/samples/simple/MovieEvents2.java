@@ -30,8 +30,9 @@ import com.jkoolcloud.rest.api.service.JKStream;
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events with custom properties.
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
- * ***********************************************************************************************************************/
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD
+ * OF HARDCODED VALUES.
+ ***********************************************************************************************************************/
 
 public class MovieEvents2 {
 
@@ -51,15 +52,17 @@ public class MovieEvents2 {
 
 			// Create the Event
 			// Attach it's properties
-			Event event = new Event().setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
-			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY").setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
-			        .setGeoAddr("40.803692,-73.402157").setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Casablanca").setProperties(properties);
+			Event event = new Event();
+			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setGeoAddr("40.803692,-73.402157")
+					.setSourceUrl("http://www.movies.com").setLocation("New York, NY").setName("Casablanca")
+					.setProperties(properties);
 
-			// Stream the event (token is the token that was assigned to you when you purchased jKool.
+			// Stream the event (token is the token that was assigned to you
+			// when you purchased jKool.
 			Response response = jkSend.post(event);
 			response.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

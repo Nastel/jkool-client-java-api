@@ -39,11 +39,10 @@ public class MovieEvent1 {
 			// Create the Event
 			// Attach it's properties
 			Event event = new Event();
-			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			event.setMsgText("Casablanca is playing.").setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setEventName("Casablanca")
-			        .setMsgText("Casablanca is playing.");
+			        .setLocation("New York, NY").setName("Casablanca");
 
 			Response response = jkSend.post(event);
 			response.close();

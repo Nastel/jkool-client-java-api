@@ -45,7 +45,8 @@ public class MovieEvents4 {
 			JKStream jkSend = new JKStream("your-access-token");
 
 			// Create the activity that the events will be attached to
-			Activity activity = new Activity().setActivityName("Weekly Movies")
+			Activity activity = new Activity();
+			activity.setName("Weekly Movies")
 					// also referred to as "operation"
 					.setAppl("WebMovies").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
@@ -98,10 +99,11 @@ public class MovieEvents4 {
 			// Attach it's snapshots
 			// Attach it's properties
 			// Attach the event to its parent activity
-			Event event = new Event().setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			Event event = new Event();
+			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
 					.setGeoAddr("(40.803692,-73.402157)").setSourceUrl("http://www.movies.com")
-					.setLocation("New York, NY").setEventName("Cassablanca")
+					.setLocation("New York, NY").setName("Cassablanca")
 					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
 					// This attaches the event to the activity.
 					.setParentTrackId(activity.getTrackingId())

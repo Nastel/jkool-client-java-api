@@ -11,14 +11,14 @@ You can find very comprehensive documentation on jKool Data Types and Concepts i
 * Properties: simple metrics (name, value pairs). Properties can be associated with events, activities. 
 * In addition to the Streaming Guide, this Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
-###Using this helper code
-To use this helper code please do the following:
+###Streaming Examples
+To use this sample code please do the following:
 * Run mvn install on the project. This will generate a jar file (found in the target directory).
 * Import this jar file into your own project in which you wish to stream to jKool. 
 * Please see the sample classes and run them in order to get a good understanding on how to use the helper code. You will be doing the following:
-* Instantiate the `jKoolStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the proper repository.
+* Instantiate the `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the proper repository.
 ```java
-		jKoolStream jkSend = new jKoolStream("yourtoken");
+		JKStream jkSend = new JKStream("yourtoken");
 ```
 * Instantiate the object you wish to stream. Then populate all of the fields you wish to stream. For example:
 ```java

@@ -15,16 +15,73 @@
  */
 package com.jkoolcloud.rest.api.utils;
 
+import java.lang.management.ManagementFactory;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 public class JKUtils {
-	public static ObjectMapper MAPPER;
 
-	static {
-		MAPPER = newObjectMapper();
+	/**
+	 * JVM process ID
+	 */
+	public static final long VM_PID = initVMID();
+	
+	/**
+	 * JVM user name
+	 */
+	public static final String VM_USER = System.getProperty("user.name");
+	
+	/**
+	 * JSON object mapper instance
+	 */
+	public static final ObjectMapper MAPPER = newObjectMapper();
+
+	/**
+	 * JVM runtime name
+	 */
+	public static final String VM_NAME = ManagementFactory.getRuntimeMXBean().getName();
+
+	private static long initVMID() {
+		String _vm_pid_del = System.getProperty("jk.vm.pid.dlm", "@");
+		String vm_name = ManagementFactory.getRuntimeMXBean().getName();
+		try {
+			int index = vm_name.indexOf(_vm_pid_del);
+			if (index > 0) {
+				return Long.parseLong(vm_name.substring(0, index));
+			}
+		} catch (Throwable e) {
+		}
+		return 0;
+	}
+
+	/**
+	 * Return process ID associated with the current VM.
+	 *
+	 * @return process id associated with the current VM
+	 */
+	public static long getVMPID() {
+		return VM_PID;
+	}
+
+	/**
+	 * Return user name associated with the current VM.
+	 *
+	 * @return user name associated with the current VM.
+	 */
+	public static String getVMUser() {
+		return VM_USER;
+	}
+
+	/**
+	 * Return a name associated with the current VM.
+	 *
+	 * @return name associated with the current VM
+	 */
+	public static String getVMName() {
+		return VM_NAME;
 	}
 
 	public static ObjectMapper getJsonMapper() {

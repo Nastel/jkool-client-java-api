@@ -1,4 +1,5 @@
 package com.jkoolcloud.rest.api.model;
+
 /*
  * Copyright 2014-2015 JKOOL, LLC.
  *
@@ -21,6 +22,7 @@ import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jkoolcloud.rest.api.model.Snapshot;
+import com.jkoolcloud.rest.api.utils.JKUtils;
 
 @ApiModel(description = "")
 public class Event {
@@ -29,20 +31,19 @@ public class Event {
 	private EventTypes type = EventTypes.EVENT;
 	private CompCodes compCode = CompCodes.SUCCESS;
 
-	private long pid;
-	private long tid;
+	private long pid = JKUtils.getVMPID();
+	private long tid = Thread.currentThread().getId();
 	private int reasonCode;
 	private long timeUsec;
 	private long startTimeUsec;
 	private long endTimeUsec;
 	private long elapsedTimeUsec;
-	private long msgAgeUsec = 0;
+	private long msgAgeUsec;
 	private long waitTimeUsec;
-	
+
 	private String trackingId = null;
 	private String sourceUrl = null;
 	private String location = null;
-	private String user = null;
 	private String msgText = null;
 	private String msgEncoding = null;
 	private String msgCharset = null;
@@ -57,20 +58,21 @@ public class Event {
 	private String netAddr = null;
 	private String dataCenter = null;
 	private String geoAddr = null;
-	
+	private String user = JKUtils.getVMUser();
+
 	private List<String> corrId = null;
 	private List<Property> properties = null;;
 	private List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
 	public Event() {
-		timeUsec = System.currentTimeMillis()*1000;
+		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 		type = EventTypes.EVENT;
 	}
 
 	public Event(String name) {
 		eventName = name;
-		timeUsec = System.currentTimeMillis()*1000;
+		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 		type = EventTypes.EVENT;
 	}
@@ -78,27 +80,26 @@ public class Event {
 	public Event(String name, String tid) {
 		eventName = name;
 		trackingId = tid;
-		timeUsec = System.currentTimeMillis()*1000;
+		timeUsec = System.currentTimeMillis() * 1000;
 		type = EventTypes.EVENT;
 	}
 
 	public Event(String name, String tid, long timeMs) {
 		eventName = name;
 		trackingId = tid;
-		timeUsec = timeMs*1000;
+		timeUsec = timeMs * 1000;
 		type = EventTypes.EVENT;
 	}
 
 	public Event(String name, String tid, Date time) {
 		eventName = name;
 		trackingId = tid;
-		timeUsec = time.getTime()*1000;
+		timeUsec = time.getTime() * 1000;
 		type = EventTypes.EVENT;
 	}
 
-
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("tracking-id")
 	public String getTrackingId() {
@@ -111,17 +112,16 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
-		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR=" + geoAddr;
+		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR="
+				+ geoAddr;
 	}
-	
-
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-url")
 	public String getSourceUrl() {
@@ -134,7 +134,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
 	public Severities getSeverity() {
@@ -150,7 +150,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public EventTypes getType() {
@@ -163,7 +163,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("pid")
 	public long getPid() {
@@ -176,7 +176,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("tid")
 	public long getTid() {
@@ -189,7 +189,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("comp-code")
 	public CompCodes getCompCode() {
@@ -202,13 +202,12 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("reason-code")
 	public long getReasonCode() {
 		return reasonCode;
 	}
-	
 
 	public Event setReasonCode(Integer reasonCode) {
 		this.reasonCode = reasonCode;
@@ -216,7 +215,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("location")
 	public String getLocation() {
@@ -228,9 +227,8 @@ public class Event {
 		return this;
 	}
 
-
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("user")
 	public String getUser() {
@@ -243,7 +241,7 @@ public class Event {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public long getTimeUsec() {
@@ -251,12 +249,12 @@ public class Event {
 	}
 
 	public Event setTimeUsec(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime() * 1000; 
+		this.timeUsec = timeUsec.getTime() * 1000;
 		return this;
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
 	public long getStartTimeUsec() {
@@ -267,28 +265,29 @@ public class Event {
 	}
 
 	public Event setStartTimeUsec(Date startTimeUsec) {
-		this.startTimeUsec = startTimeUsec.getTime()*1000;
+		this.startTimeUsec = startTimeUsec.getTime() * 1000;
 		return this;
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
 	public long getEndTimeUsec() {
-		if (endTimeUsec > 0)
+		if (endTimeUsec > 0) {
 			return endTimeUsec;
-		else
-			return getStartTimeUsec();
+		} else {
+			return getStartTimeUsec() + getElapsedTimeUsec();
+		}
 	}
 
 	public Event setEndTimeUsec(Date endTimeUsec) {
-		this.endTimeUsec = endTimeUsec.getTime()*1000;
+		this.endTimeUsec = endTimeUsec.getTime() * 1000;
 		return this;
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("elapsed-time-usec")
 	public long getElapsedTimeUsec() {
@@ -312,7 +311,6 @@ public class Event {
 		this.snapshots = snapshots;
 		return this;
 	}
-
 
 	@ApiModelProperty(value = "")
 	@JsonProperty("encoding")
@@ -357,7 +355,7 @@ public class Event {
 		this.resource = resource;
 		return this;
 	}
-	
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-text")
 	public String getMsgText() {
@@ -368,6 +366,7 @@ public class Event {
 		this.msgText = msgText;
 		return this;
 	}
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-size")
 	public Integer getMsgSize() {
@@ -387,6 +386,7 @@ public class Event {
 		this.msgMimeType = msgMimeType;
 		return this;
 	}
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-age")
 	public long getMsgAgeUsec() {
@@ -397,7 +397,7 @@ public class Event {
 		this.msgAgeUsec = ageUsec;
 		return this;
 	}
-	
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("exception")
 	public String getException() {
@@ -408,7 +408,7 @@ public class Event {
 		this.exception = exception;
 		return this;
 	}
-	
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-tag")
 	public String getMsgTag() {
@@ -419,7 +419,7 @@ public class Event {
 		this.msgTag = msgTag;
 		return this;
 	}
-	
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("parent-id")
 	public String getParentTrackId() {
@@ -430,19 +430,18 @@ public class Event {
 		this.parentTrackId = parentTrackId;
 		return this;
 	}
-	
+
 	@ApiModelProperty(value = "")
 	@JsonProperty("waitTimeUsec")
 	public long getWaitTimeUsec() {
 		return waitTimeUsec;
 	}
-	
 
 	public Event setWaitTimeUsec(long waitTimeUsec) {
 		this.waitTimeUsec = waitTimeUsec;
 		return this;
 	}
-	
+
 	/**
 	 **/
 	@ApiModelProperty(value = "")
@@ -455,20 +454,19 @@ public class Event {
 		this.eventName = eventName;
 		return this;
 	}
-	
-	 /**
-	   **/
-	  @ApiModelProperty(value = "")
-	  @JsonProperty("properties")
-	  public List<Property> getProperties() {
-	    return properties;
-	  }
-	  public Event setProperties(List<Property> properties) {
-	    this.properties = properties;
+
+	/**
+	  **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("properties")
+	public List<Property> getProperties() {
+		return properties;
+	}
+
+	public Event setProperties(List<Property> properties) {
+		this.properties = properties;
 		return this;
-	  }
-	  
-	  
+	}
 
 	@JsonIgnore
 	public String getMsgEncoding() {

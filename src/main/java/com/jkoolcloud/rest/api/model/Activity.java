@@ -21,6 +21,7 @@ import java.util.UUID;
 import io.swagger.annotations.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jkoolcloud.rest.api.utils.JKUtils;
 
 @ApiModel(description = "")
 public class Activity {
@@ -31,6 +32,7 @@ public class Activity {
 	private long startTime;
 	private long endTime;
 	private long elapsedTimeUsec;
+	
 	private String activityName = null;
 	private String appl = null;
 	private String server = null;
@@ -38,6 +40,7 @@ public class Activity {
 	private String dataCenter = null;
 	private String geoAddr = null;
 	private String exception = null;
+	private String user = JKUtils.getVMUser();
 	private EventTypes type = EventTypes.ACTIVITY;
 
 	public Activity() {
@@ -65,7 +68,20 @@ public class Activity {
 	}
 
 	/**
-   **/
+	   **/
+	@ApiModelProperty(value = "")
+	@JsonProperty("user")
+	public String getUser() {
+		return user;
+	}
+
+	public Activity setUser(String user) {
+		this.user = user;
+		return this;
+	}
+
+	/**
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("tracking-id")
 	public String getTrackingId() {
@@ -78,16 +94,16 @@ public class Activity {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
 		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR="
-		        + geoAddr;
+				+ geoAddr;
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("status")
 	public String getStatus() {
@@ -95,7 +111,7 @@ public class Activity {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public long getTimeUsec() {
@@ -103,7 +119,7 @@ public class Activity {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public EventTypes getType() {
@@ -132,7 +148,7 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
-	public long getStartTime() {
+	public long getStartTimeUsec() {
 		if (startTime > 0)
 			return startTime;
 		else
@@ -148,13 +164,13 @@ public class Activity {
 	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
-	public long getEndTime() {
+	public long getEndTimeUsec() {
 		if (endTime > 0)
 			return endTime;
 		else
-			return getStartTime();
+			return getStartTimeUsec() + getElapsedTimeUsec();
 	}
-	
+
 	public Activity setEndTime(Date endTime) {
 		this.endTime = endTime.getTime() * 1000;
 		return this;
@@ -183,7 +199,7 @@ public class Activity {
 
 	public Activity setException(String exception) {
 		this.exception = exception;
-		this.status = "EXCEPTION";
+		this.status = exception != null? "EXCEPTION": status;
 		return this;
 	}
 
@@ -238,7 +254,7 @@ public class Activity {
 		sb.append("class Event {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
 		sb.append("  status: ").append(status).append("\n");
-		;
+		sb.append("  user: ").append(user).append("\n");
 		sb.append("  operation: ").append(activityName).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 

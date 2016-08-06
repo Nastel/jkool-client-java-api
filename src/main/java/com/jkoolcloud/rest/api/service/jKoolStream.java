@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.utils;
+package com.jkoolcloud.rest.api.service;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;

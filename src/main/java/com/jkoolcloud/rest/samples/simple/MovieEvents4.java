@@ -27,7 +27,7 @@ import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Property;
 import com.jkoolcloud.rest.api.model.Snapshot;
-import com.jkoolcloud.rest.api.utils.jKoolStream;
+import com.jkoolcloud.rest.api.service.jKoolStream;
 
 /**************************************************************************************************************************
  * This example code uses the same data as the prior Movie example code. However

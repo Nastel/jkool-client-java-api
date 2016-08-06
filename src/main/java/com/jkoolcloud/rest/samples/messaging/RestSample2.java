@@ -25,7 +25,7 @@ import com.jkoolcloud.rest.api.model.CompCodes;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.EventTypes;
 import com.jkoolcloud.rest.api.model.Severities;
-import com.jkoolcloud.rest.api.utils.jKoolStream;
+import com.jkoolcloud.rest.api.service.jKoolStream;
 
 /**************************************************************************************************************************
  * In this example, we will demonstrate a Rest API usage. This example will demonstrate two advanced aspects of

@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Property;
-import com.jkoolcloud.rest.api.utils.jKoolStream;
+import com.jkoolcloud.rest.api.service.jKoolStream;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events with custom properties.

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.utils;
+package com.jkoolcloud.rest.api.service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jkoolcloud.rest.api.utils.JsonUtils;
 
 abstract public class JKService {
 	public static final String TOKEN_KEY = "token";

@@ -18,7 +18,7 @@ package com.jkoolcloud.rest.samples.query;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
-import com.jkoolcloud.rest.api.utils.jKoolQuery;
+import com.jkoolcloud.rest.api.service.jKoolQuery;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL

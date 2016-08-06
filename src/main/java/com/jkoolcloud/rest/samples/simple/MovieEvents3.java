@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Property;
-import com.jkoolcloud.rest.api.utils.jKoolStream;
+import com.jkoolcloud.rest.api.service.jKoolStream;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies

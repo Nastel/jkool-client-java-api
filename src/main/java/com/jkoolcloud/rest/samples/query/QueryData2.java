@@ -17,7 +17,7 @@ package com.jkoolcloud.rest.samples.query;
 
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.rest.api.utils.jKoolQuery;
+import com.jkoolcloud.rest.api.service.jKoolQuery;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL

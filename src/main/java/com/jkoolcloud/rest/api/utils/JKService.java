@@ -22,7 +22,6 @@ import javax.ws.rs.client.WebTarget;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 abstract public class JKService {
-	public static final String MEDIA_TYPE = "application/json";
 	public static final String TOKEN_KEY = "token";
 	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 

@@ -47,11 +47,11 @@ The Rest Client will properly format the entity into JSON format and stream it t
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
 ###Running jKool Queries
-Below is an example of running JKQL queries against a repository associated with an access token:
+Below is an example of running a JKQL query against a repository associated with a specified access token `yourtoken`:
 
 ```java
 		jKoolQuery jkQuery = new jKoolQuery("yourtoken");
-		Response response = jkSend.get("get number of events for today");
+		Response response = jkQuery.call("get number of events for today");
 		Map<String, Object> jsonResponse = response.readEntity(Map.class);
 		response.close();
 ```

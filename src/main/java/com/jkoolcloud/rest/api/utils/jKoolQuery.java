@@ -15,23 +15,21 @@
  */
 package com.jkoolcloud.rest.api.utils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 public class jKoolQuery extends JKService {
-	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com:8080/jKool/");
+	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
+	public static final String QUERY_ENDPOINT = "jkql";
 	public static final String QUERY_KEY = "query";
-	
+
+	HttpClient httpClient = new DefaultHttpClient();
+
 	public jKoolQuery() {
 		super(JKOOL_QUERY_URL, JKOOL_TOKEN);
 	}
@@ -44,12 +42,21 @@ public class jKoolQuery extends JKService {
 		super(endPoint, token);
 	}
 
-	public HttpResponse get(String query) throws UnsupportedEncodingException, IOException, ClientProtocolException {
-    	HttpClient httpClient = new DefaultHttpClient();
-        HttpGet request = new HttpGet(basePath + "jkql?query=" + query );
-        request.addHeader("token",token);
-        request.addHeader("content-type", "application/json");
-        HttpResponse response =  httpClient.execute(request);
-        return response;
-	}}
+	public Response call(String query) throws JKApiException {
+		return target.path(QUERY_ENDPOINT).queryParam(QUERY_KEY, query).queryParam(TOKEN_KEY, getToken())
+				.request(MediaType.APPLICATION_JSON).header(TOKEN_KEY, getToken()).get(Response.class);
+	}
 
+	public HttpResponse get(String query) throws JKApiException {
+		try {
+			HttpGet request = new HttpGet(
+					basePath + QUERY_ENDPOINT + "?" + QUERY_KEY + "=" + query + "?" + TOKEN_KEY + "=" + getToken());
+			request.addHeader(TOKEN_KEY, getToken());
+			request.addHeader("content-type", MediaType.APPLICATION_JSON);
+			HttpResponse response = httpClient.execute(request);
+			return response;
+		} catch (Throwable e) {
+			throw new JKApiException(300, "Failed run query=" + query, e);
+		}
+	}
+}

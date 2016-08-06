@@ -1,5 +1,3 @@
-package com.jkoolcloud.rest.samples.getdata;
-
 /*
  * Copyright 2014-2015 JKOOL, LLC.
  *
@@ -15,31 +13,25 @@ package com.jkoolcloud.rest.samples.getdata;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.jkoolcloud.rest.samples.query;
 
 import javax.ws.rs.core.Response;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 
 import com.jkoolcloud.rest.api.utils.jKoolQuery;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL
- * 
- * ***********************************************************************************************************************/
+ * using {@code jKoolQuery.call()}
+ ***********************************************************************************************************************/
 
-public class GetData1 {
-
+public class QueryData2 {
 	public static void main(String[] args) {
 		try {
-			jKoolQuery jkRetrieve = new jKoolQuery("your-access-token");
-			HttpResponse response = jkRetrieve.get("get%20events");
-			response.getEntity();
-			EntityUtils.toString(response.getEntity());
-
+			jKoolQuery jkQuery = new jKoolQuery("your-access-token");
+			Response response = jkQuery.call("get%20events");
+			System.out.println(response.readEntity(String.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

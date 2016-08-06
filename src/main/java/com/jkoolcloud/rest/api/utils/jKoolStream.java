@@ -16,6 +16,7 @@
 package com.jkoolcloud.rest.api.utils;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.rest.api.model.Activity;
@@ -39,16 +40,16 @@ public class jKoolStream extends JKService {
 
 	public Response post(Event event) throws JKApiException {
 		return target.path("event").request().header(TOKEN_KEY, token)
-				.post(Entity.entity(serialize(event), MEDIA_TYPE));
+				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
 	public Response post(Activity activity) throws JKApiException {
 		return target.path("activity").request().header(TOKEN_KEY, token)
-				.post(Entity.entity(serialize(activity), MEDIA_TYPE));
+				.post(Entity.entity(serialize(activity), MediaType.APPLICATION_JSON));
 	}
 
 	public Response post(Snapshot snapshot) throws JKApiException {
 		return target.path("snapshot").request().header(TOKEN_KEY, token)
-				.post(Entity.entity(serialize(snapshot), MEDIA_TYPE));
+				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 }

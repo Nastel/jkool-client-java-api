@@ -19,8 +19,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.rest.api.model.Activity;
-import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 import com.jkoolcloud.rest.api.model.Trackable;
 

@@ -18,7 +18,7 @@ package com.jkoolcloud.rest.samples.query;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
-import com.jkoolcloud.rest.api.service.jKoolQuery;
+import com.jkoolcloud.rest.api.service.JKQuery;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL
@@ -28,7 +28,7 @@ import com.jkoolcloud.rest.api.service.jKoolQuery;
 public class QueryData1 {
 	public static void main(String[] args) {
 		try {
-			jKoolQuery jkRetrieve = new jKoolQuery("your-access-token");
+			JKQuery jkRetrieve = new JKQuery("your-access-token");
 			HttpResponse response = jkRetrieve.get("get%20events");
 			System.out.println(EntityUtils.toString(response.getEntity()));
 		} catch (Exception e) {

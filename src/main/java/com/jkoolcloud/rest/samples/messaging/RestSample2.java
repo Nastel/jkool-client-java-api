@@ -25,7 +25,7 @@ import com.jkoolcloud.rest.api.model.CompCodes;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.EventTypes;
 import com.jkoolcloud.rest.api.model.Severities;
-import com.jkoolcloud.rest.api.service.jKoolStream;
+import com.jkoolcloud.rest.api.service.JKStream;
 
 /**************************************************************************************************************************
  * In this example, we will demonstrate a Rest API usage. This example will demonstrate two advanced aspects of
@@ -45,7 +45,7 @@ public class RestSample2 {
 
 	public static void main(String[] args) {
 		try {
-			jKoolStream jkSend = new jKoolStream("your-access-token");
+			JKStream jkSend = new JKStream("your-access-token");
 
 			// Create the first event which is a message received event representing a message received in a
 			// hypothetical

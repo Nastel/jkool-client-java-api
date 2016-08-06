@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Property;
-import com.jkoolcloud.rest.api.service.jKoolStream;
+import com.jkoolcloud.rest.api.service.JKStream;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies
@@ -39,7 +39,7 @@ public class MovieEvents3 {
 
 	public static void main(String[] args) {
 		try {
-			jKoolStream jkSend = new jKoolStream("your-access-token");
+			JKStream jkSend = new JKStream("your-access-token");
 
 			// Create the activity that the events will be attached to
 			Activity activity = new Activity()

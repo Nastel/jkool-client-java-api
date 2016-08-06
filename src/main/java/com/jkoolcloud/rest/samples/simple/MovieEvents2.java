@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Property;
-import com.jkoolcloud.rest.api.service.jKoolStream;
+import com.jkoolcloud.rest.api.service.JKStream;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events with custom properties.
@@ -37,7 +37,7 @@ public class MovieEvents2 {
 
 	public static void main(String[] args) {
 		try {
-			jKoolStream jkSend = new jKoolStream("your-access-token");
+			JKStream jkSend = new JKStream("your-access-token");
 
 			// Create some custom fields
 			Property propertyName = new Property("MovieName", "String", "Casablanca", null);

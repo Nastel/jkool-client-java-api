@@ -23,22 +23,22 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class jKoolQuery extends JKService {
+public class JKQuery extends JKService {
 	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
 	public static final String QUERY_ENDPOINT = "jkql";
 	public static final String QUERY_KEY = "query";
 
 	HttpClient httpClient = new DefaultHttpClient();
 
-	public jKoolQuery() {
+	public JKQuery() {
 		super(JKOOL_QUERY_URL, JKOOL_TOKEN);
 	}
 
-	public jKoolQuery(String token) {
+	public JKQuery(String token) {
 		super(JKOOL_QUERY_URL, token);
 	}
 
-	public jKoolQuery(String endPoint, String token) {
+	public JKQuery(String endPoint, String token) {
 		super(endPoint, token);
 	}
 

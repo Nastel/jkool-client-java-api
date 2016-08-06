@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.rest.api.model.Event;
-import com.jkoolcloud.rest.api.service.jKoolStream;
+import com.jkoolcloud.rest.api.service.JKStream;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create a simple movie events
@@ -34,7 +34,7 @@ public class MovieEvent1 {
 
 	public static void main(String[] args) {
 		try {
-			jKoolStream jkSend = new jKoolStream("your-access-token");
+			JKStream jkSend = new JKStream("your-access-token");
 
 			// Create the Event
 			// Attach it's properties

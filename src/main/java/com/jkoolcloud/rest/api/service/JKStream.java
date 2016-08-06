@@ -23,18 +23,18 @@ import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
 
-public class jKoolStream extends JKService {
+public class JKStream extends JKService {
 	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
 
-	public jKoolStream() {
+	public JKStream() {
 		this(JKOOL_STREAM_URL, JKOOL_TOKEN);
 	}
 
-	public jKoolStream(String token) {
+	public JKStream(String token) {
 		this(JKOOL_STREAM_URL, token);
 	}
 
-	public jKoolStream(String endPoint, String token) {
+	public JKStream(String endPoint, String token) {
 		super(endPoint, token);
 	}
 

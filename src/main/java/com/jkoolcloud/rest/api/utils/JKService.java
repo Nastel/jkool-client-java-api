@@ -39,7 +39,7 @@ abstract public class JKService {
 	public JKService(String endPoint, String token) {
 		this.token = token;
 		this.basePath = endPoint;
-		this.mapper = jsonUtils.newObjectMapper();
+		this.mapper = JsonUtils.newObjectMapper();
 		this.rsClient = ClientBuilder.newClient();
 		this.target = rsClient.target(basePath);
 	}

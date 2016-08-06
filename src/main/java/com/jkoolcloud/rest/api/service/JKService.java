@@ -20,7 +20,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jkoolcloud.rest.api.utils.JsonUtils;
+import com.jkoolcloud.rest.api.utils.JKUtils;
 
 abstract public class JKService {
 	public static final String TOKEN_KEY = "token";
@@ -40,7 +40,7 @@ abstract public class JKService {
 	public JKService(String endPoint, String token) {
 		this.token = token;
 		this.basePath = endPoint;
-		this.mapper = JsonUtils.newObjectMapper();
+		this.mapper = JKUtils.newObjectMapper();
 		this.rsClient = ClientBuilder.newClient();
 		this.target = rsClient.target(basePath);
 	}

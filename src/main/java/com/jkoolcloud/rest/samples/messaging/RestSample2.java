@@ -55,8 +55,7 @@ public class RestSample2 {
 			// hypothetical
 			// messaging queue residing in New York.
 			Event event = new Event();
-			event.setMsgText("OrderId=28372373 payment processed.").setMsgEncoding("none").setMsgMimeType("text/plain")
-					.setMsgAgeUsec(0).setMsgCharset("windows-1252").setSourceUrl("https://www.sample.com/orders/parts")
+			event.setMsgText("OrderId=28372373 payment processed.").setSourceUrl("https://www.sample.com/orders/parts")
 					.setSeverity(Severities.INFO).setType(EventTypes.RECEIVE).setCompCode(CompCodes.SUCCESS)
 					.setReasonCode(0).setLocation("Los Angeles, CA").setUser("ebay-proc").setElapsedTimeUsec(45938)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("PAYMENT.QUEUE").setWaitTimeUsec(0)
@@ -77,8 +76,7 @@ public class RestSample2 {
 			// queue residing in Los Angeles
 			// (RestSample2 class)
 			event = new Event();
-			event.setMsgText("Verify ProductId=28372373").setMsgEncoding("none").setMsgCharset("windows-1252")
-					.setMsgMimeType("text/plain").setMsgAgeUsec(0).setSourceUrl("https://www.sample.com/orders/parts")
+			event.setMsgText("Verify ProductId=28372373").setSourceUrl("https://www.sample.com/orders/parts")
 					.setSeverity(Severities.INFO).setType(EventTypes.SEND).setCompCode(CompCodes.SUCCESS)
 					.setReasonCode(0).setLocation("Los Angeles, CA").setUser("webuser").setElapsedTimeUsec(107)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("SHIPPING.QUEUE").setName("ProcessPayment")

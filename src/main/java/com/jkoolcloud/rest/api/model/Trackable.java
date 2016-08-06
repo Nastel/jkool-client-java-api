@@ -16,14 +16,17 @@
 
 package com.jkoolcloud.rest.api.model;
 
-import java.util.*;
-
-import io.swagger.annotations.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jkoolcloud.rest.api.model.Snapshot;
 import com.jkoolcloud.rest.api.utils.JKUtils;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 public abstract class Trackable {

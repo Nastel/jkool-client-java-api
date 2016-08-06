@@ -56,13 +56,11 @@ public class RestSample1 {
 			// hypothetical
 			// messaging queue residing in New York.
 			Event event = new Event("ReceiveOrder");
-			event.setMsgText("OrderId=28372373 received.").setMsgMimeType("text/plain").setMsgAgeUsec(0)
-					.setMsgCharset("windows-1252").setMsgEncoding("none")
-					.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Severities.INFO)
-					.setType(EventTypes.RECEIVE).setTid(Thread.currentThread().getId()).setCompCode(CompCodes.SUCCESS)
-					.setReasonCode(0).setLocation("New York, NY").setUser("webuser").setElapsedTimeUsec(3500)
-					.setCorrId(Arrays.asList("CorrId:123")).setResource("ORDERS.QUEUE").setWaitTimeUsec(0)
-					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			event.setMsgText("OrderId=28372373 received.").setSourceUrl("https://www.sample.com/orders/parts")
+					.setSeverity(Severities.INFO).setType(EventTypes.RECEIVE).setTid(Thread.currentThread().getId())
+					.setCompCode(CompCodes.SUCCESS).setLocation("New York, NY").setUser("webuser")
+					.setElapsedTimeUsec(3500).setCorrId(Arrays.asList("CorrId:123")).setResource("ORDERS.QUEUE")
+					.setWaitTimeUsec(0).setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 					.setGeoAddr("40.803692,-73.402157");
 
@@ -78,8 +76,7 @@ public class RestSample1 {
 			// queue residing in Los Angeles
 			// (RestSample2 class)
 			event = new Event("ProcessOrder");
-			event.setMsgText("Order Processed ProductId=28372373").setMsgEncoding("none").setMsgCharset("windows-1252")
-					.setMsgMimeType("text/plain").setSeverity(Severities.INFO).setType(EventTypes.SEND)
+			event.setMsgText("Order Processed ProductId=28372373").setSeverity(Severities.INFO).setType(EventTypes.SEND)
 					.setTid(Thread.currentThread().getId()).setCompCode(CompCodes.SUCCESS).setReasonCode(0)
 					.setLocation("New York, NY").setUser("webuser").setElapsedTimeUsec(0)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("PAYMENT.QUEUE").setAppl("WebOrders")

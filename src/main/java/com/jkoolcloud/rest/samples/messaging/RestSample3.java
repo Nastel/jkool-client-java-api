@@ -54,8 +54,7 @@ public class RestSample3 {
 			// hypothetical
 			// messaging queue residing in New York.
 			Event event = new Event();
-			event.setMsgText("OrderId=28372373 shipped.").setMsgEncoding("none").setMsgCharset("windows-1252")
-					.setMsgMimeType("text/plain").setSourceUrl("https://www.sample.com/orders/parts")
+			event.setMsgText("OrderId=28372373 shipped.").setSourceUrl("https://www.sample.com/orders/parts")
 					.setSeverity(Severities.INFO).setType(EventTypes.RECEIVE).setCompCode(CompCodes.SUCCESS)
 					.setLocation("Charlotte, NC").setUser("system").setElapsedTimeUsec(1578)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("SHIPPING.QUEUE")

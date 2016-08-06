@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.rest.api.model.Activity;
 import com.jkoolcloud.rest.api.model.Event;
 import com.jkoolcloud.rest.api.model.Snapshot;
+import com.jkoolcloud.rest.api.model.Trackable;
 
 public class JKStream extends JKService {
 	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
@@ -38,14 +39,9 @@ public class JKStream extends JKService {
 		super(endPoint, token);
 	}
 
-	public Response post(Event event) throws JKApiException {
+	public Response post(Trackable event) throws JKApiException {
 		return target.path("event").request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
-	}
-
-	public Response post(Activity activity) throws JKApiException {
-		return target.path("activity").request().header(TOKEN_KEY, token)
-				.post(Entity.entity(serialize(activity), MediaType.APPLICATION_JSON));
 	}
 
 	public Response post(Snapshot snapshot) throws JKApiException {

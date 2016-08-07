@@ -17,6 +17,8 @@ package com.jkoolcloud.rest.api.model;
 
 import io.swagger.annotations.*;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ApiModel(description = "")
@@ -24,21 +26,25 @@ public class Property {
 
 	private String name = null;
 	private String type = null;
-	private String value = null;
+	private Object value = null;
 	private String valueType = null;
 
 	public Property() {
 	}
 
-	public Property(String name, String type, String value) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.value = value;
+	public Property(String name, Object value) {
+		this(name, getDataType(value), value, null);
 	}
-	
-	public Property(String name, String type, String value, String valueType) {
-		super();
+
+	public Property(String name, Object value, String valueType) {
+		this(name, getDataType(value), value, valueType);
+	}
+
+	public Property(String name, String type, String value) {
+		this(name, type, value, null);
+	}
+
+	public Property(String name, String type, Object value, String valueType) {
 		this.name = name;
 		this.type = type;
 		this.value = value;
@@ -46,7 +52,7 @@ public class Property {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("name")
 	public String getName() {
@@ -59,7 +65,7 @@ public class Property {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public String getType() {
@@ -72,20 +78,20 @@ public class Property {
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value")
 	public String getValue() {
-		return value;
+		return value != null? String.valueOf(value): null;
 	}
 
-	public Property setValue(String value) {
+	public Property setValue(Object value) {
 		this.value = value;
-		return this;		
+		return this;
 	}
 
 	/**
-   **/
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value-type")
 	public String getValueType() {
@@ -95,6 +101,39 @@ public class Property {
 	public Property setValueType(String valueType) {
 		this.valueType = valueType;
 		return this;
+	}
+
+	/**
+	 * Obtain the language independent value data type of the property
+	 * 
+	 * @return string representation of the value data type
+	 */
+	public static String getDataType(Object value) {
+		if (value instanceof String) {
+			return "string";
+		} else if (value instanceof Long) {
+			return "long";
+		} else if (value instanceof Integer) {
+			return "int";
+		} else if (value instanceof Double) {
+			return "double";
+		} else if (value instanceof Float) {
+			return "float";
+		} else if (value instanceof Boolean) {
+			return "bool";
+		} else if (value instanceof Byte) {
+			return "byte";
+		} else if (value instanceof Short) {
+			return "short";
+		} else if (value instanceof Character) {
+			return "char";
+		} else if (value instanceof Date) {
+			return "date";
+		} else if (value != null) {
+			return value.getClass().getSimpleName();
+		} else {
+			return "none";
+		}
 	}
 
 	@Override

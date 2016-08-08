@@ -46,6 +46,9 @@ public class JKStream extends JKService {
 	}
 
 	public Response post(Snapshot snapshot) throws JKApiException {
+		if (!snapshot.isValid()) {
+			throw new JKApiException(200, "Invalid snapshot=" + snapshot);
+		}
 		return target.path("snapshot").request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}

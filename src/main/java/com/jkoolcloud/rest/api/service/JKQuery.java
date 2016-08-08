@@ -15,6 +15,8 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.net.URLEncoder;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -49,9 +51,8 @@ public class JKQuery extends JKService {
 
 	public HttpResponse get(String query) throws JKApiException {
 		try {
-			query = query.replace(" ", "%20");
-			HttpGet request = new HttpGet(
-					basePath + QUERY_ENDPOINT + "?" + QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken());
+			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken(), "UTF-8");
+			HttpGet request = new HttpGet(basePath + QUERY_ENDPOINT + "?" + urlQuery);
 			request.addHeader(TOKEN_KEY, getToken());
 			request.addHeader("content-type", MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);

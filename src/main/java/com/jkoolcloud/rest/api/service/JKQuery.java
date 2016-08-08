@@ -50,7 +50,7 @@ public class JKQuery extends JKService {
 	public HttpResponse get(String query) throws JKApiException {
 		try {
 			HttpGet request = new HttpGet(
-					basePath + QUERY_ENDPOINT + "?" + QUERY_KEY + "=" + query + "?" + TOKEN_KEY + "=" + getToken());
+					basePath + QUERY_ENDPOINT + "?" + QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken());
 			request.addHeader(TOKEN_KEY, getToken());
 			request.addHeader("content-type", MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);

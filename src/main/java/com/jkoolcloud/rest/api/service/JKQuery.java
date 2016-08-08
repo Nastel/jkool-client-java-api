@@ -49,6 +49,7 @@ public class JKQuery extends JKService {
 
 	public HttpResponse get(String query) throws JKApiException {
 		try {
+			query = query.replace(" ", "%20");
 			HttpGet request = new HttpGet(
 					basePath + QUERY_ENDPOINT + "?" + QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken());
 			request.addHeader(TOKEN_KEY, getToken());

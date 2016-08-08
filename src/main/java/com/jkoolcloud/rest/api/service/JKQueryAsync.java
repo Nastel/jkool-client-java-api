@@ -33,6 +33,13 @@ public class JKQueryAsync extends JKQuery {
 		return null;
 	}
 	
+	/**
+	 * Cancel a live subscription
+	 * 
+	 * @param subid subscription id returned by {@#call(String, JKResultCallback)}
+	 * @return un-subscription response
+	 * @throws JKApiException
+	 */
 	public Response cancel(String subid) throws JKApiException {
 		return super.call("unsubscribe " + subid);
 	}

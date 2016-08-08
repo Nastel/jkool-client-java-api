@@ -30,6 +30,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 public abstract class Trackable {
+	public static final String DATACENTER_NONE = System.getProperty("jkool.rest.dc.name", "none");
+	public static final String DEFAULT_APP_NAME = System.getProperty("jkool.rest.appl.name", "java");
+	public static final String DEFAULT_GEOADDR = System.getProperty("jkool.rest.geo.addr", "0,0");;
 
 	Severities severity = Severities.INFO;
 	EventTypes type = EventTypes.EVENT;
@@ -42,25 +45,27 @@ public abstract class Trackable {
 	long endTimeUsec;
 	long elapsedTimeUsec;
 	long waitTimeUsec;
-	
+
 	int reasonCode;
 
 	String trackingId;
 	String sourceUrl;
-	String location;
-	String resource;
 	String exception;
 	String parentTrackId;
-	String eventName;
-	String appl;
-	String server;
-	String netAddr;
-	String dataCenter;
-	String geoAddr;
+
+	String eventName = getClass().getName();
+	String appl = DEFAULT_APP_NAME;
+	String dataCenter = DATACENTER_NONE;
+	String geoAddr = DEFAULT_GEOADDR;
+
+	String location = JKUtils.getHostAddress();
+	String resource = JKUtils.getVMName();
+	String server = JKUtils.getHostName();
+	String netAddr = JKUtils.getHostAddress();
 	String user = JKUtils.getVMUser();
 
-	List<String> corrId = null;
-	List<Property> properties = null;;
+	List<String> corrId;
+	List<Property> properties;
 	List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
 	public Trackable() {
@@ -92,6 +97,11 @@ public abstract class Trackable {
 		timeUsec = time.getTime() * 1000;
 	}
 
+	public boolean isValid() {
+		return eventName != null && appl != null && netAddr != null && server != null && dataCenter != null
+		        && geoAddr != null;
+	}
+
 	/**
 	**/
 	@ApiModelProperty(value = "")
@@ -111,7 +121,7 @@ public abstract class Trackable {
 	@JsonProperty("source-fqn")
 	public String getSourceFqn() {
 		return "APPL=" + appl + "#SERVER=" + server + "#NETADDR=" + netAddr + "#DATACENTER=" + dataCenter + "#GEOADDR="
-				+ geoAddr;
+		        + geoAddr;
 	}
 
 	/**

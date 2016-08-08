@@ -37,64 +37,59 @@ public abstract class Trackable {
 
 	long pid = JKUtils.getVMPID();
 	long tid = Thread.currentThread().getId();
-	int reasonCode;
 	long timeUsec;
 	long startTimeUsec;
 	long endTimeUsec;
 	long elapsedTimeUsec;
 	long waitTimeUsec;
+	
+	int reasonCode;
 
-	String trackingId = null;
-	String sourceUrl = null;
-	String location = null;
-	String msgTag = null;
-	String resource = null;
-	String exception = null;
-	String parentTrackId = null;
-	String eventName = null;
-	String appl = null;
-	String server = null;
-	String netAddr = null;
-	String dataCenter = null;
-	String geoAddr = null;
+	String trackingId;
+	String sourceUrl;
+	String location;
+	String resource;
+	String exception;
+	String parentTrackId;
+	String eventName;
+	String appl;
+	String server;
+	String netAddr;
+	String dataCenter;
+	String geoAddr;
 	String user = JKUtils.getVMUser();
 
 	List<String> corrId = null;
 	List<Property> properties = null;;
 	List<Snapshot> snapshots = new ArrayList<Snapshot>();
-	
+
 	public Trackable() {
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
-		type = EventTypes.EVENT;
 	}
 
 	public Trackable(String name) {
 		eventName = name;
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
-		type = EventTypes.EVENT;
 	}
 
 	public Trackable(String name, String tid) {
 		eventName = name;
 		trackingId = tid;
 		timeUsec = System.currentTimeMillis() * 1000;
-		type = EventTypes.EVENT;
 	}
 
 	public Trackable(String name, String tid, long timeMs) {
 		eventName = name;
 		trackingId = tid;
 		timeUsec = timeMs * 1000;
-		type = EventTypes.EVENT;
 	}
 
 	public Trackable(String name, String tid, Date time) {
 		eventName = name;
 		trackingId = tid;
 		timeUsec = time.getTime() * 1000;
-		type = EventTypes.EVENT;
 	}
 
 	/**
@@ -137,10 +132,7 @@ public abstract class Trackable {
 	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
 	public Severities getSeverity() {
-		if (severity != null)
-			return severity;
-		else
-			return Severities.INFO;
+		return severity;
 	}
 
 	public Trackable setSeverity(Severities severity) {
@@ -352,17 +344,6 @@ public abstract class Trackable {
 
 	public Trackable setException(String exception) {
 		this.exception = exception;
-		return this;
-	}
-
-	@ApiModelProperty(value = "")
-	@JsonProperty("msg-tag")
-	public String getMsgTag() {
-		return msgTag;
-	}
-
-	public Trackable setMsgTag(String msgTag) {
-		this.msgTag = msgTag;
 		return this;
 	}
 

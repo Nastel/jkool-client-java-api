@@ -42,11 +42,12 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "")
 public class Event extends Trackable {
 
-	private String msgText = null;
-	private String msgCharset = Charset.defaultCharset().displayName();
-	private String msgEncoding = "none";
-	private String msgMimeType = "text/plain";
-	private long msgAgeUsec;
+	String msgText;
+	String msgTag;
+	String msgCharset = Charset.defaultCharset().displayName();
+	String msgEncoding = "none";
+	String msgMimeType = "text/plain";
+	long msgAgeUsec;
 
 	public Event() {
 		super();
@@ -103,6 +104,17 @@ public class Event extends Trackable {
 
 	public Event setMsgText(String msgText) {
 		this.msgText = msgText;
+		return this;
+	}
+
+	@ApiModelProperty(value = "")
+	@JsonProperty("msg-tag")
+	public String getMsgTag() {
+		return msgTag;
+	}
+
+	public Trackable setMsgTag(String msgTag) {
+		this.msgTag = msgTag;
 		return this;
 	}
 

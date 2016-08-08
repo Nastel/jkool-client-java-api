@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @ApiModel(description = "")
 public class Property {
 
-	private String name = null;
-	private String type = null;
-	private Object value = null;
-	private String valueType = null;
+	private String name;
+	private String type;
+	private Object value;
+	private String valueType;
 
 	public Property() {
 	}

@@ -25,8 +25,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "")
 public class Activity extends Trackable {
 
-	private String status = "END";
-
 	public Activity() {
 		super();
 		setType(EventTypes.ACTIVITY);
@@ -57,7 +55,7 @@ public class Activity extends Trackable {
 	@ApiModelProperty(value = "")
 	@JsonProperty("status")
 	public String getStatus() {
-		return status;
+		return exception == null? "END": "EXCEPTION";
 	}
 
 	@Override
@@ -65,10 +63,10 @@ public class Activity extends Trackable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Activity {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
-		sb.append("  status: ").append(status).append("\n");
-		sb.append("  user: ").append(user).append("\n");
+		sb.append("  status: ").append(getStatus()).append("\n");
+		sb.append("  user: ").append(getUser()).append("\n");
 		sb.append("  operation: ").append(getName()).append("\n");
-		sb.append("  timeUsec: ").append(timeUsec).append("\n");
+		sb.append("  timeUsec: ").append(getTimeUsec()).append("\n");
 
 		sb.append("}\n");
 		return sb.toString();

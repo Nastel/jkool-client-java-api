@@ -31,8 +31,7 @@ To use this sample code please do the following:
 ```
 Please note that this example code depicts streaming in real-time. Therefore the start date of the event will default to the current date/time and the end date will default to the start date plus the elapsed time. You can however control start/end dates by setting start and end dates with with a java date object. For example:
 ```java
-		String movieDate = new Date();
-		event.setTimeUsec(movieDate).setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2));
+		event.setTime(System.currentTimeMillis()).setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2));
 ```
 
 * Finally, invoke the post method on the `jKoolStream` object, passing it the object you wish to stream. For example:

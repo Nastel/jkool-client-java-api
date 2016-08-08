@@ -38,6 +38,9 @@ public class JKStream extends JKService {
 	}
 
 	public Response post(Trackable event) throws JKApiException {
+		if (!event.isValid()) {
+			throw new JKApiException(200, "Invalid event=" + event);
+		}
 		return target.path("event").request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}

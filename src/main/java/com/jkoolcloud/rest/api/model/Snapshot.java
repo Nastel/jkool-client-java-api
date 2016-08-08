@@ -24,17 +24,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ApiModel(description = "")
-public class Snapshot {
+public class Snapshot implements Validated {
 
-	private String category = null;
-	private String name = null;
+	private String category;
+	private String name;
 	private long timeUsec;
 	private List<Property> properties;
 	private EventTypes type = EventTypes.SNAPSHOT;
-
-	public Snapshot() {
-		this.timeUsec = System.currentTimeMillis() * 1000;
-	}
 
 	public Snapshot(String category, String name) {
 		this(category, name, System.currentTimeMillis());
@@ -50,9 +46,24 @@ public class Snapshot {
 		this(category, name, System.currentTimeMillis());
 		this.properties = properties;
 	}
+	
+	public Snapshot(String category, String name, long timeMs, List<Property> properties) {
+		this(category, name, timeMs);
+		this.properties = properties;
+	}
+
 	public Snapshot(String category, String name, Date time, List<Property> properties) {
 		this(category, name, time.getTime());
 		this.properties = properties;
+	}
+
+	/**
+	 * Validate fields of this entity
+	 *
+	 * @return true if valid, false otherwise
+	 */
+	public boolean isValid() {
+		return category != null && name != null && (timeUsec > 0) && (properties != null && properties.size() > 0);
 	}
 
 	/**

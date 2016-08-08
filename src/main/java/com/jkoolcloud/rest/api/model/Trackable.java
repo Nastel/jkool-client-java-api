@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-public abstract class Trackable {
+public abstract class Trackable implements Validated {
 	public static final String DEFAULT_DC_NAME = System.getProperty("jkool.client.dc.name", "none");
 	public static final String DEFAULT_APP_NAME = System.getProperty("jkool.client.appl.name", "java");
 	public static final String DEFAULT_GEOADDR = System.getProperty("jkool.client.geo.addr", "0,0");

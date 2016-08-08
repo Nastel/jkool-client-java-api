@@ -22,7 +22,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @ApiModel(description = "")
-public class Property {
+public class Property implements Validated {
 
 	private String name;
 	private String type;
@@ -49,6 +49,15 @@ public class Property {
 		this.type = type;
 		this.value = value;
 		this.valueType = valueType;
+	}
+
+	/**
+	 * Validate fields of this entity
+	 *
+	 * @return true if valid, false otherwise
+	 */
+	public boolean isValid() {
+		return name != null && type != null && value != null;
 	}
 
 	/**

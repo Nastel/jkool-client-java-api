@@ -297,16 +297,6 @@ public abstract class Trackable {
 		}
 	}
 
-	public Trackable setEndTime(long timeMs) {
-		this.endTimeUsec = timeMs * 1000;
-		return this;
-	}
-
-	public Trackable setEndTime(Date endTime) {
-		this.endTimeUsec = endTime.getTime() * 1000;
-		return this;
-	}
-
 	/**
 	**/
 	@ApiModelProperty(value = "")

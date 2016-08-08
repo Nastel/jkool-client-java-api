@@ -38,6 +38,11 @@ Please note that this example code depicts streaming in real-time. Therefore the
 
 ```java
 		JKStream jkSend = new JKStream("yourtoken");
+		Event event = new Event("Casablanca");
+		event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+			.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setLocation("New York, NY")
+			.setMsgText("Casablanca is playing.");
 		Response response = jkSend.post(event);
 		response.close();
 ```

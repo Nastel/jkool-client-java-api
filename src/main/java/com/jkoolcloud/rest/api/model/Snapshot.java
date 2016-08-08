@@ -26,15 +26,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @ApiModel(description = "")
 public class Snapshot {
 
-	private String category = null;
-	private String name = null;
+	private String category;
+	private String name;
 	private long timeUsec;
 	private List<Property> properties;
 	private EventTypes type = EventTypes.SNAPSHOT;
-
-	public Snapshot() {
-		this.timeUsec = System.currentTimeMillis() * 1000;
-	}
 
 	public Snapshot(String category, String name) {
 		this(category, name, System.currentTimeMillis());

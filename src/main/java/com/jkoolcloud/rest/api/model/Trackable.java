@@ -30,21 +30,21 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 public abstract class Trackable {
-	public static final String DATACENTER_NONE = System.getProperty("jkool.rest.dc.name", "none");
-	public static final String DEFAULT_APP_NAME = System.getProperty("jkool.rest.appl.name", "java");
-	public static final String DEFAULT_GEOADDR = System.getProperty("jkool.rest.geo.addr", "0,0");;
+	public static final String DEFAULT_DC_NAME = System.getProperty("jkool.client.dc.name", "none");
+	public static final String DEFAULT_APP_NAME = System.getProperty("jkool.client.appl.name", "java");
+	public static final String DEFAULT_GEOADDR = System.getProperty("jkool.client.geo.addr", "0,0");
 
 	Severities severity = Severities.INFO;
 	EventTypes type = EventTypes.EVENT;
 	CompCodes compCode = CompCodes.SUCCESS;
 
-	long pid = JKUtils.getVMPID();
-	long tid = Thread.currentThread().getId();
 	long timeUsec;
 	long startTimeUsec;
 	long endTimeUsec;
 	long elapsedTimeUsec;
 	long waitTimeUsec;
+	long pid = JKUtils.getVMPID();
+	long tid = Thread.currentThread().getId();
 
 	int reasonCode;
 
@@ -53,10 +53,10 @@ public abstract class Trackable {
 	String exception;
 	String parentTrackId;
 
-	String eventName = getClass().getName();
 	String appl = DEFAULT_APP_NAME;
-	String dataCenter = DATACENTER_NONE;
+	String dataCenter = DEFAULT_DC_NAME;
 	String geoAddr = DEFAULT_GEOADDR;
+	String eventName = getClass().getName();
 
 	String location = JKUtils.getHostAddress();
 	String resource = JKUtils.getVMName();
@@ -97,9 +97,14 @@ public abstract class Trackable {
 		timeUsec = time.getTime() * 1000;
 	}
 
+	/**
+	 * Validate fields of this entity
+	 *
+	 * @return true if valid, false otherwise
+	 */
 	public boolean isValid() {
 		return eventName != null && appl != null && netAddr != null && server != null && dataCenter != null
-		        && geoAddr != null;
+		        && geoAddr != null && (getStartTimeUsec() <= getEndTimeUsec()) && (getElapsedTimeUsec() >= 0);
 	}
 
 	/**
@@ -249,7 +254,12 @@ public abstract class Trackable {
 		return timeUsec;
 	}
 
-	public Trackable setTimeUsec(Date timeUsec) {
+	public Trackable setTime(long timeMs) {
+		this.timeUsec = timeMs * 1000;
+		return this;
+	}
+
+	public Trackable setTime(Date timeUsec) {
 		this.timeUsec = timeUsec.getTime() * 1000;
 		return this;
 	}
@@ -265,8 +275,13 @@ public abstract class Trackable {
 			return getTimeUsec();
 	}
 
-	public Trackable setStartTimeUsec(Date startTimeUsec) {
-		this.startTimeUsec = startTimeUsec.getTime() * 1000;
+	public Trackable setStartTime(long timeMs) {
+		this.startTimeUsec = timeMs * 1000;
+		return this;
+	}
+
+	public Trackable setStartTime(Date startTime) {
+		this.startTimeUsec = startTime.getTime() * 1000;
 		return this;
 	}
 
@@ -282,8 +297,13 @@ public abstract class Trackable {
 		}
 	}
 
-	public Trackable setEndTimeUsec(Date endTimeUsec) {
-		this.endTimeUsec = endTimeUsec.getTime() * 1000;
+	public Trackable setEndTime(long timeMs) {
+		this.endTimeUsec = timeMs * 1000;
+		return this;
+	}
+
+	public Trackable setEndTime(Date endTime) {
+		this.endTimeUsec = endTime.getTime() * 1000;
 		return this;
 	}
 

@@ -16,6 +16,8 @@
 package com.jkoolcloud.rest.api.utils;
 
 import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +37,16 @@ public class JKUtils {
 	public static final String VM_USER = System.getProperty("user.name");
 	
 	/**
+	 * JVM host name
+	 */
+	public static String VM_HOST;
+	
+	/**
+	 * JVM network address
+	 */
+	public static String VM_NETADDR;
+	
+	/**
 	 * JSON object mapper instance
 	 */
 	public static final ObjectMapper MAPPER = newObjectMapper();
@@ -43,6 +55,17 @@ public class JKUtils {
 	 * JVM runtime name
 	 */
 	public static final String VM_NAME = ManagementFactory.getRuntimeMXBean().getName();
+	
+	
+	static {
+		try {
+	        VM_HOST = InetAddress.getLocalHost().getHostName();
+	        VM_NETADDR = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+           	VM_HOST = "uknown";
+           	VM_NETADDR = "0.0.0.0";
+        }
+	}
 
 	private static long initVMID() {
 		String _vm_pid_del = System.getProperty("jk.vm.pid.dlm", "@");
@@ -55,6 +78,24 @@ public class JKUtils {
 		} catch (Throwable e) {
 		}
 		return 0;
+	}
+
+	/**
+	 * Return local host name
+	 *
+	 * @return Return local host name
+	 */
+	public static String getHostName() {
+		return VM_HOST;
+	}
+
+	/**
+	 * Return local host address
+	 *
+	 * @return Return local host address
+	 */
+	public static String getHostAddress() {
+		return VM_NETADDR;
 	}
 
 	/**

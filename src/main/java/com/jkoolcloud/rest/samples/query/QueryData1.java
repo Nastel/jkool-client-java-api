@@ -29,7 +29,7 @@ public class QueryData1 {
 	public static void main(String[] args) {
 		try {
 			JKQuery jkRetrieve = new JKQuery("your-access-token");
-			HttpResponse response = jkRetrieve.get("get%20events");
+			HttpResponse response = jkRetrieve.get("get events");
 			System.out.println(EntityUtils.toString(response.getEntity()));
 		} catch (Exception e) {
 			e.printStackTrace();

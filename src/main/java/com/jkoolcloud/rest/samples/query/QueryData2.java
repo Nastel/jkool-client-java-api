@@ -28,7 +28,7 @@ public class QueryData2 {
 	public static void main(String[] args) {
 		try {
 			JKQuery jkQuery = new JKQuery("your-access-token");
-			Response response = jkQuery.call("get%20events");
+			Response response = jkQuery.call("get events");
 			System.out.println(response.readEntity(String.class));
 		} catch (Exception e) {
 			e.printStackTrace();

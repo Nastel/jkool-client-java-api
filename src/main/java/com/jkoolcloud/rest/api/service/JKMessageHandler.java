@@ -15,8 +15,6 @@
  */
 package com.jkoolcloud.rest.api.service;
 
-
-public interface JKResultCallback {
-	void handle(String subid, String response);
-	void error(String subid, Throwable ex);
+public interface JKMessageHandler {
+	void handle(WebsocketClient client, String message);
 }

@@ -34,7 +34,7 @@ import javax.websocket.WebSocketContainer;
 public class WebsocketClient {
 
 	Session userSession = null;
-	private MessageHandler messageHandler;
+	private JKMessageHandler messageHandler;
 
 	public WebsocketClient(String uri) throws URISyntaxException {
 		this(new URI(uri));
@@ -84,7 +84,7 @@ public class WebsocketClient {
 	@OnMessage
 	public void onMessage(String message) {
 		if (this.messageHandler != null) {
-			this.messageHandler.handleMessage(message);
+			this.messageHandler.handle(this, message);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class WebsocketClient {
 	 * register message handler
 	 *
 	 */
-	public void addMessageHandler(MessageHandler msgHandler) {
+	public void setMessageHandler(JKMessageHandler msgHandler) {
 		this.messageHandler = msgHandler;
 	}
 
@@ -102,13 +102,5 @@ public class WebsocketClient {
 	 */
 	public void sendMessage(String message) {
 		this.userSession.getAsyncRemote().sendText(message);
-	}
-
-	/**
-	 * Message handler.
-	 *
-	 */
-	public static interface MessageHandler {
-		public void handleMessage(String message);
 	}
 }

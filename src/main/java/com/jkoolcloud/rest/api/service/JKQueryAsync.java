@@ -16,12 +16,16 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.net.URISyntaxException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.ws.rs.core.Response;
 
 
 public class JKQueryAsync extends JKQuery {
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jKool/");
+	
+	private static ConcurrentMap<String, JKResultCallback> SUBID_MAP = new ConcurrentHashMap<String, JKResultCallback>();
 	
 	String webSockUrl;
 	WebsocketClient socket;
@@ -37,6 +41,7 @@ public class JKQueryAsync extends JKQuery {
 	public JKQueryAsync(String webSockUrl, String queryUrl, String token) throws URISyntaxException {
 		super(queryUrl, token);
 		socket = new WebsocketClient(webSockUrl);
+		socket.setMessageHandler(new MessageHandlerImpl(this));
 	}
 	
 	/**
@@ -47,7 +52,10 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws JKApiException
 	 */
 	public String call(String query, JKResultCallback callback) throws JKApiException {
-		return null;
+		Response response = call(query);
+		String subid = response.getHeaderString("subid"); // implement
+		SUBID_MAP.put(subid, callback);
+		return subid;
 	}
 	
 	/**
@@ -58,6 +66,31 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws JKApiException
 	 */
 	public Response cancel(String subid) throws JKApiException {
-		return super.call("unsubscribe " + subid);
+		Response resp = call("unsubscribe " + subid);
+		SUBID_MAP.remove(subid);
+		return resp;
 	}
+	
+	protected void routeResponse(String subid, String response) {
+		JKResultCallback callBack = SUBID_MAP.get(subid);
+		if (callBack != null) {
+			callBack.handle(subid, response);
+		}		
+	}
+}
+
+class MessageHandlerImpl implements JKMessageHandler {
+	JKQueryAsync async;
+	
+	MessageHandlerImpl(JKQueryAsync async) {
+		this.async = async;
+	}
+
+	@Override
+    public void handle(WebsocketClient client, String message) {
+		// extract subid from the message
+		// create Response object from message
+		String subid = null; // implement
+		async.routeResponse(subid, message);
+    }
 }

@@ -23,8 +23,8 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
 import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
 import javax.websocket.OnError;
+import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
@@ -35,23 +35,37 @@ import javax.websocket.WebSocketContainer;
 @ClientEndpoint
 public class WebsocketClient {
 
-	Session userSession = null;
-	private JKMessageHandler messageHandler;
+	URI wsUri;
+	Session userSession;
+	WebSocketContainer container;
+	JKMessageHandler messageHandler;
 
 	public WebsocketClient(String uri, JKMessageHandler handler) throws URISyntaxException {
 		this(new URI(uri), handler);
 	}
 
 	public WebsocketClient(URI uri, JKMessageHandler handler) {
-		try {
-			setMessageHandler(handler);
-			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-			container.connectToServer(this, uri);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		this.wsUri = uri;
+		setMessageHandler(handler);
+		container = ContainerProvider.getWebSocketContainer();
 	}
 
+	public synchronized void connect() throws IOException {
+		try {
+			if (userSession == null) {
+				container.connectToServer(this, wsUri);		
+			}
+		} catch (Throwable ex) {
+			throw new IOException("Failed to connect: " + wsUri, ex);
+		}
+	}
+	
+	public synchronized void disconnect() throws IOException {
+		if (userSession != null) {
+			userSession.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));	
+		}
+	}
+	
 	/**
 	 * Callback hook for Connection open events.
 	 *
@@ -60,7 +74,7 @@ public class WebsocketClient {
 	 */
 	@OnOpen
 	public void onOpen(Session userSession) {
-		System.out.println("opening websocket");
+		System.out.println("opening websocket: " + userSession);
 		this.userSession = userSession;
 		if (this.messageHandler != null) {
 			this.messageHandler.onOpen(this, userSession);
@@ -75,7 +89,7 @@ public class WebsocketClient {
 	 */
 	@OnError
 	public void onError(Session userSession, Throwable ex) {
-		System.out.println("error websocket: " + ex);
+		System.out.println("opening websocket: " + userSession + ", ex: " + ex);
 		if (this.messageHandler != null) {
 			this.messageHandler.onError(this, userSession, ex);
 		}
@@ -91,7 +105,7 @@ public class WebsocketClient {
 	 */
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason) {
-		System.out.println("closing websocket");
+		System.out.println("opening websocket: " + userSession + ", reason: " + reason);
 		if (this.messageHandler != null) {
 			this.messageHandler.onClose(this, userSession, reason);
 		}

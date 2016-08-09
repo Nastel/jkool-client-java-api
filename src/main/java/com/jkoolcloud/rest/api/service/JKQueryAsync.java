@@ -15,6 +15,9 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,25 +26,51 @@ import java.util.concurrent.ConcurrentMap;
 import javax.ws.rs.core.Response;
 
 
-public class JKQueryAsync extends JKQuery {
+public class JKQueryAsync extends JKQuery implements Closeable {
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jKool/");
 	
 	private static ConcurrentMap<String, JKResultCallback> SUBID_MAP = new ConcurrentHashMap<String, JKResultCallback>();
 	
-	String webSockUrl;
+	URI webSockUrl;
 	WebsocketClient socket;
 	
-	public JKQueryAsync(String token) throws URISyntaxException {
+	public JKQueryAsync(String token) throws URISyntaxException, IOException {
 		this(JKOOL_WEBSOCK_URL, JKOOL_QUERY_URL, token);
 	}
 
-	public JKQueryAsync(String webSockUrl, String token) throws URISyntaxException {
+	public JKQueryAsync(String webSockUrl, String token) throws URISyntaxException, IOException {
 		this(webSockUrl, JKOOL_QUERY_URL, token);
 	}
 
-	public JKQueryAsync(String webSockUrl, String queryUrl, String token) throws URISyntaxException {
+	public JKQueryAsync(String wsUrl, String queryUrl, String token) throws URISyntaxException, IOException {
 		super(queryUrl, token);
-		socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this));
+		this.webSockUrl = new URI(wsUrl);
+		connect();
+	}
+	
+	/**
+	 * Close all communication sessions
+	 * 
+	 * @throws IOException 
+	 * @throws URISyntaxException 
+	 */
+	public synchronized void connect() throws IOException {
+		if (socket == null) {
+			socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this));
+			socket.connect();
+		}
+	}
+	
+	/**
+	 * Close all communication sessions
+	 * 
+	 * @throws IOException 
+	 */
+	public synchronized void close() throws IOException {
+		if (socket != null) {
+			socket.disconnect();
+		}
+		socket = null;
 	}
 	
 	/**

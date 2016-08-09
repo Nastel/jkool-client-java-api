@@ -16,6 +16,8 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
@@ -33,6 +35,10 @@ public class WebsocketClient {
 
 	Session userSession = null;
 	private MessageHandler messageHandler;
+
+	public WebsocketClient(String uri) throws URISyntaxException {
+		this(new URI(uri));
+	}
 
 	public WebsocketClient(URI uri) {
 		try {

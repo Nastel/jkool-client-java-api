@@ -15,12 +15,29 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.net.URISyntaxException;
+
 import javax.ws.rs.core.Response;
 
 
 public class JKQueryAsync extends JKQuery {
+	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jKool/");
 	
+	String webSockUrl;
 	WebsocketClient socket;
+	
+	public JKQueryAsync(String token) throws URISyntaxException {
+		this(JKOOL_WEBSOCK_URL, JKOOL_QUERY_URL, token);
+	}
+
+	public JKQueryAsync(String webSockUrl, String token) throws URISyntaxException {
+		this(webSockUrl, JKOOL_QUERY_URL, token);
+	}
+
+	public JKQueryAsync(String webSockUrl, String queryUrl, String token) throws URISyntaxException {
+		super(queryUrl, token);
+		socket = new WebsocketClient(webSockUrl);
+	}
 	
 	/**
 	 * Call query in async mode using a callback

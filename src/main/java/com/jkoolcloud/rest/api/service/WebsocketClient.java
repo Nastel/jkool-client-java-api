@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,6 +24,7 @@ import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
+import javax.websocket.OnError;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
@@ -36,12 +38,13 @@ public class WebsocketClient {
 	Session userSession = null;
 	private JKMessageHandler messageHandler;
 
-	public WebsocketClient(String uri) throws URISyntaxException {
-		this(new URI(uri));
+	public WebsocketClient(String uri, JKMessageHandler handler) throws URISyntaxException {
+		this(new URI(uri), handler);
 	}
 
-	public WebsocketClient(URI uri) {
+	public WebsocketClient(URI uri, JKMessageHandler handler) {
 		try {
+			setMessageHandler(handler);
 			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 			container.connectToServer(this, uri);
 		} catch (Exception e) {
@@ -59,6 +62,23 @@ public class WebsocketClient {
 	public void onOpen(Session userSession) {
 		System.out.println("opening websocket");
 		this.userSession = userSession;
+		if (this.messageHandler != null) {
+			this.messageHandler.onOpen(this, userSession);
+		}
+	}
+
+	/**
+	 * Callback hook for Connection error events.
+	 *
+	 * @param userSession
+	 *            the userSession which is opened.
+	 */
+	@OnError
+	public void onError(Session userSession, Throwable ex) {
+		System.out.println("error websocket: " + ex);
+		if (this.messageHandler != null) {
+			this.messageHandler.onError(this, userSession, ex);
+		}
 	}
 
 	/**
@@ -72,6 +92,9 @@ public class WebsocketClient {
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason) {
 		System.out.println("closing websocket");
+		if (this.messageHandler != null) {
+			this.messageHandler.onClose(this, userSession, reason);
+		}
 		this.userSession = null;
 	}
 
@@ -92,15 +115,33 @@ public class WebsocketClient {
 	 * register message handler
 	 *
 	 */
-	public void setMessageHandler(JKMessageHandler msgHandler) {
+	private void setMessageHandler(JKMessageHandler msgHandler) {
 		this.messageHandler = msgHandler;
 	}
 
 	/**
-	 * Send a message.
+	 * Send a message async
+	 * @throws IOException 
 	 *
 	 */
-	public void sendMessage(String message) {
-		this.userSession.getAsyncRemote().sendText(message);
+	public void sendMessageAsync(String message) throws IOException {
+		if (this.userSession != null) {
+			this.userSession.getAsyncRemote().sendText(message);
+		} else {
+			throw new IOException("Session not available");
+		}
+	}
+	
+	/**
+	 * Send a message async
+	 * @throws IOException 
+	 *
+	 */
+	public void sendMessageSync(String message) throws IOException {
+		if (this.userSession != null) {
+			this.userSession.getBasicRemote().sendText(message);
+		} else {
+			throw new IOException("Session not available");
+		}
 	}
 }

@@ -15,6 +15,14 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import javax.websocket.CloseReason;
+import javax.websocket.Session;
+
 public interface JKMessageHandler {
 	void handle(WebsocketClient client, String message);
+	
+	void onError(WebsocketClient client, Session userSession, Throwable ex);
+
+	void onOpen(WebsocketClient client, Session userSession);
+	void onClose(WebsocketClient client, Session userSession, CloseReason reason);
 }

@@ -16,6 +16,7 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.net.URISyntaxException;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -40,8 +41,7 @@ public class JKQueryAsync extends JKQuery {
 
 	public JKQueryAsync(String webSockUrl, String queryUrl, String token) throws URISyntaxException {
 		super(queryUrl, token);
-		socket = new WebsocketClient(webSockUrl);
-		socket.setMessageHandler(new MessageHandlerImpl(this));
+		socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this));
 	}
 	
 	/**
@@ -77,20 +77,10 @@ public class JKQueryAsync extends JKQuery {
 			callBack.handle(subid, response);
 		}		
 	}
-}
-
-class MessageHandlerImpl implements JKMessageHandler {
-	JKQueryAsync async;
 	
-	MessageHandlerImpl(JKQueryAsync async) {
-		this.async = async;
+	protected void routeError(Throwable error) {
+		for (Entry<String, JKResultCallback> entry: SUBID_MAP.entrySet()) {
+			entry.getValue().error(entry.getKey(), error);
+		}
 	}
-
-	@Override
-    public void handle(WebsocketClient client, String message) {
-		// extract subid from the message
-		// create Response object from message
-		String subid = null; // implement
-		async.routeResponse(subid, message);
-    }
 }

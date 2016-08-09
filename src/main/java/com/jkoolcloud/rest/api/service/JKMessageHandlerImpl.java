@@ -15,8 +15,15 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.io.StringReader;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
+
+
 
 class JKMessageHandlerImpl implements JKMessageHandler {
 	JKQueryAsync async;
@@ -27,9 +34,9 @@ class JKMessageHandlerImpl implements JKMessageHandler {
 
 	@Override
     public void handle(WebsocketClient client, String message) {
-		// extract subid from the message
-		// create Response object from message
-		String subid = null; // implement
+		JsonReader reader = Json.createReader(new StringReader(message));
+		JsonObject	jsonMessage = reader.readObject();
+		String subid = jsonMessage.getString("subid");
 		async.routeResponse(subid, message);
     }
 

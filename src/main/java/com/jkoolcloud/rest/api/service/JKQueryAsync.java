@@ -17,17 +17,27 @@ package com.jkoolcloud.rest.api.service;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonWriter;
+
+import com.jkoolcloud.rest.api.service.WebsocketClient;
 
 import javax.ws.rs.core.Response;
 
 
 public class JKQueryAsync extends JKQuery implements Closeable {
-	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jKool/");
+	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "ws://11.0.0.40:8080/jKool/jkqlasync");
 	
 	private static ConcurrentMap<String, JKResultCallback> SUBID_MAP = new ConcurrentHashMap<String, JKResultCallback>();
 	
@@ -56,7 +66,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */
 	public synchronized void connect() throws IOException {
 		if (socket == null) {
-			socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this));
+			socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this)); 
 			socket.connect();
 		}
 	}
@@ -80,9 +90,22 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @return callback callback class
 	 * @throws JKApiException
 	 */
-	public String call(String query, JKResultCallback callback) throws JKApiException {
-		Response response = call(query);
-		String subid = response.getHeaderString("subid"); // implement
+	public String call(String query, JKResultCallback callback, String rows) throws JKApiException, IOException {
+		// Userid/password coming out. Token will be used instead.
+		UUID uuid = UUID.randomUUID();
+		String subid = uuid.toString();
+		 JsonObject asyncSend = Json.createObjectBuilder()
+	                .add("username", "test3")
+	                .add("password", "pwtest3")
+	                .add("repositoryId", "R_test385529$O_test3")
+	                .add("query", query)
+	                .add("maxResultRows", rows)
+	                .add("subid", subid).build();
+
+		
+		
+
+		socket.sendMessageAsync(asyncSend.toString());
 		SUBID_MAP.put(subid, callback);
 		return subid;
 	}

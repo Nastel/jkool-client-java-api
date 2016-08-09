@@ -61,8 +61,12 @@ public class WebsocketClient {
 	}
 	
 	public synchronized void disconnect() throws IOException {
+		disconnect(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));
+	}
+	
+	public synchronized void disconnect(CloseReason reason) throws IOException {
 		if (userSession != null) {
-			userSession.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));	
+			userSession.close(reason);	
 		}
 	}
 	

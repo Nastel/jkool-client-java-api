@@ -110,7 +110,6 @@ public class JKWSClient {
 	 */
 	@OnOpen
 	public void onOpen(Session userSession) {
-		System.out.println("opening websocket: " + userSession);
 		this.userSession = userSession;
 		if (this.messageHandler != null) {
 			this.messageHandler.onOpen(this, userSession);
@@ -125,7 +124,6 @@ public class JKWSClient {
 	 */
 	@OnError
 	public void onError(Session userSession, Throwable ex) {
-		System.out.println("opening websocket: " + userSession + ", ex: " + ex);
 		if (this.messageHandler != null) {
 			this.messageHandler.onError(this, userSession, ex);
 		}
@@ -141,7 +139,6 @@ public class JKWSClient {
 	 */
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason) {
-		System.out.println("opening websocket: " + userSession + ", reason: " + reason);
 		if (this.messageHandler != null) {
 			this.messageHandler.onClose(this, userSession, reason);
 		}

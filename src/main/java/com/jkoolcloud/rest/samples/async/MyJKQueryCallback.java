@@ -25,7 +25,7 @@ public class MyJKQueryCallback implements JKQueryCallback {
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		System.out.println("response: handle=" + qhandle + ", response=" + response);
 		if (ex != null) {
-			System.out.println("error: handle=" + qhandle + ", error=" + ex);
+			ex.printStackTrace();
 		}	
 	}
 }

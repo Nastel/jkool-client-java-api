@@ -93,10 +93,11 @@ public class JKQueryHandle {
 	
 	@Override
 	public String toString() {
-		return this.getClass().getName()+ "{"
-				+ "id: " + id
-				+ ", query:" + query
-				+ ", callback:" + callback
-				+ "}";
+		return "{"
+				+ "class: \"" + this.getClass().getName() 
+				+ "\", id: \"" + id
+				+ "\", query: \"" + query
+				+ "\", callback: \"" + callback
+				+ "\"}";
 	}
 }

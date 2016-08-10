@@ -208,7 +208,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
-		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
+		JKQueryHandle qhandle = createQueryHandle(query, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -295,6 +295,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
 	}
 
+	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
+		 return new JKQueryHandle(query, callback);		
+	}
+	
 	/**
 	 * Handle async message response
 	 * 
@@ -313,7 +317,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		try {
 			if (qhandle != null) {
 				qhandle.handle(qhandle, response, ex);
-			} else if (this.orphanHandler != null) {
+			} else if (orphanHandler != null) {
 				orphanHandler.handle(qhandle, response, ex);
 			}
 			return this;

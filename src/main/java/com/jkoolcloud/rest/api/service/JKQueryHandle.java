@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -84,10 +85,28 @@ public class JKQueryHandle implements JKQueryCallback {
 		return id;
 	}
 
-	public void waitOnCallback(long time, TimeUnit unit) throws InterruptedException {
+	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
-			calledBack.await(time, unit);
+			return calledBack.awaitUntil(until);
+		} finally {
+			aLock.unlock();
+		}
+	}
+	
+	public void awaitOnCallback() throws InterruptedException {
+		aLock.lock();
+		try {
+			calledBack.await();
+		} finally {
+			aLock.unlock();
+		}
+	}
+	
+	public boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException {
+		aLock.lock();
+		try {
+			return calledBack.await(time, unit);
 		} finally {
 			aLock.unlock();
 		}

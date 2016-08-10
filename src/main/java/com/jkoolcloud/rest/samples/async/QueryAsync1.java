@@ -44,14 +44,14 @@ public class QueryAsync1 {
 			System.out.println("callAsync: query.handle=" + qhandle);
 			
 			// wait for response to come, or do something else
-			qhandle.waitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			
 			// attempt to cancel subscription to the query results
 			qhandle = jkQueryAsync.cancelAsync(qhandle);
 			System.out.println("cancelAsync: query.handle=" + qhandle);
 
 			// wait or do something else
-			qhandle.waitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 
 			// close async connection, done
 			jkQueryAsync.close();

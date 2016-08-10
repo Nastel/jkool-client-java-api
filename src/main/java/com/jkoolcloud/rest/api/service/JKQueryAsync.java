@@ -38,8 +38,6 @@ import javax.websocket.Session;
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
-
-	public static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS";
 	
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
@@ -50,7 +48,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
 	        "ws://jkool.jkoolcloud.com/jKool/jkqlasync");
 
-	private static ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
+	private static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS"; // dummy query associated with default response handler
+	private static final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
 
 	URI webSockUri;
 	JKWSClient socket;

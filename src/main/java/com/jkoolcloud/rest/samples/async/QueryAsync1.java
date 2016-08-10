@@ -23,9 +23,9 @@ public class QueryAsync1 {
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.url", "ws://localhost:8080/jKool/jkqlasync"),
 					System.getProperty("jk.access.token", "access-token"));
-			jkQueryAsync.setConnectionHandler(new MyConnectionHandler()).setOrphanHandler(new MyJKResultCallback())
+			jkQueryAsync.setConnectionHandler(new MyConnectionHandler()).setOrphanHandler(new MyJKQueryCallback())
 					.connect();
-			jkQueryAsync.callAsync("get events", new MyJKResultCallback());
+			jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
 
 			Thread.sleep(15000000);
 			jkQueryAsync.close();

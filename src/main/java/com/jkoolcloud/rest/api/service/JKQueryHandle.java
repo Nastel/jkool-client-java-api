@@ -17,20 +17,20 @@ package com.jkoolcloud.rest.api.service;
 
 import java.util.UUID;
 
-public class QueryHandle {
+public class JKQueryHandle {
 	public static final String SUB_UUID_PREFIX = "$sub/";
 	public static final String SUB_QUERY_PREFIX = "subscribe to ";
 	public static final String UNSUB_QUERY_PREFIX = "unsubsribe ";
 
 	final String query, id;
 	final boolean subscribe;
-	final JKResultCallback callback;
+	final JKQueryCallback callback;
 	
-	public QueryHandle(String q, JKResultCallback callback) {
+	public JKQueryHandle(String q, JKQueryCallback callback) {
 		this(q, newId(q), callback);
 	}
 	
-	public QueryHandle(String q, String id, JKResultCallback callback) {
+	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
 		this.query = q;
 		this.id = id;
 		this.callback = callback;
@@ -63,7 +63,7 @@ public class QueryHandle {
 		return query;
 	}
 	
-	public JKResultCallback getCallback() {
+	public JKQueryCallback getCallback() {
 		return callback;
 	}
 	
@@ -78,8 +78,8 @@ public class QueryHandle {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof QueryHandle) {
-			QueryHandle q2 = (QueryHandle) obj;
+		if (obj instanceof JKQueryHandle) {
+			JKQueryHandle q2 = (JKQueryHandle) obj;
 			return id.equals(q2.id);
 		}
 		return false;
@@ -89,8 +89,8 @@ public class QueryHandle {
 	public String toString() {
 		return this.getClass().getName()+ "{"
 				+ "id: " + id
-				+ "query:" + query
-				+ "callback:" + callback
+				+ ", query:" + query
+				+ ", callback:" + callback
 				+ "}";
 	}
 }

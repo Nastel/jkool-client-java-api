@@ -15,8 +15,12 @@
  */
 package com.jkoolcloud.rest.api.service;
 
-import javax.json.JsonObject;
+import javax.websocket.CloseReason;
+import javax.websocket.Session;
 
-public interface JKResultCallback {
-	void handle(QueryHandle subid, JsonObject response);
+public interface JKWSHandler {
+	void onMessage(JKWSClient client, String message);	
+	void onError(JKWSClient client, Session userSession, Throwable ex);
+	void onOpen(JKWSClient client, Session userSession);
+	void onClose(JKWSClient client, Session userSession, CloseReason reason);
 }

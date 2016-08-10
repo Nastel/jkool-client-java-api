@@ -33,24 +33,24 @@ import javax.websocket.WebSocketContainer;
  *
  */
 @ClientEndpoint
-public class WebsocketClient {
+public class JKWSClient {
 
 	URI wsUri;
 	Session userSession;
 	WebSocketContainer container;
-	JKMessageHandler messageHandler;
+	JKWSHandler messageHandler;
 
-	public WebsocketClient(String uri, JKMessageHandler handler) throws URISyntaxException {
-		this(new URI(uri), handler);
+	public JKWSClient(String uri, JKWSHandler jkh) throws URISyntaxException {
+		this(new URI(uri), jkh);
 	}
 
-	public WebsocketClient(URI uri, JKMessageHandler handler) {
+	public JKWSClient(URI uri, JKWSHandler jkh) {
 		this.wsUri = uri;
-		setMessageHandler(handler);
+		setMessageHandler(jkh);
 		container = ContainerProvider.getWebSocketContainer();
 	}
 
-	public synchronized void connect() throws IOException {
+	public synchronized JKWSClient connect() throws IOException {
 		try {
 			if (userSession == null) {
 				container.connectToServer(this, wsUri);		
@@ -58,18 +58,43 @@ public class WebsocketClient {
 		} catch (Throwable ex) {
 			throw new IOException("Failed to connect: " + wsUri, ex);
 		}
+		return this;
 	}
 	
-	public synchronized void disconnect() throws IOException {
-		disconnect(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));
+	/**
+	 * Disconnect current connection
+	 * 
+	 */
+	public synchronized JKWSClient disconnect() throws IOException {
+		return disconnect(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));
 	}
 	
-	public synchronized void disconnect(CloseReason reason) throws IOException {
+	/**
+	 * Disconnect current connection
+	 * 
+	 * @param reason close reason
+	 */
+	public synchronized JKWSClient disconnect(CloseReason reason) throws IOException {
 		if (userSession != null) {
 			userSession.close(reason);	
 		}
+		return this;
 	}
 	
+	/**
+	 * Obtain underlying web socket session
+	 *
+	 * @return connection session
+	 */
+	public Session getSession() {
+		return userSession;
+	}
+	
+	/**
+	 * Determine if client connection is open
+	 *
+	 * @return true if connection, false otherwise
+	 */
 	public boolean isConnected() {
 		return userSession != null? userSession.isOpen(): false;
 	}
@@ -129,41 +154,51 @@ public class WebsocketClient {
 	@OnMessage
 	public void onMessage(String message) {
 		if (this.messageHandler != null) {
-			this.messageHandler.handle(this, message);
+			this.messageHandler.onMessage(this, message);
 		}
 	}
 
 	/**
 	 * register message handler
-	 *
+	 * 
+	 * @param msgHandler message handler called on message
+	 * @return itself
 	 */
-	private void setMessageHandler(JKMessageHandler msgHandler) {
+	private JKWSClient setMessageHandler(JKWSHandler msgHandler) {
 		this.messageHandler = msgHandler;
+		return this;
 	}
 
 	/**
 	 * Send a message async
 	 * @throws IOException 
-	 *
+	 * 
+	 * @param message text message
+	 * @return itself
 	 */
-	public void sendMessageAsync(String message) throws IOException {
+	public JKWSClient sendMessageAsync(String message) throws IOException {
 		if (this.userSession != null) {
 			this.userSession.getAsyncRemote().sendText(message);
 		} else {
 			throw new IOException("Session not available");
 		}
+		return this;
 	}
 	
 	/**
-	 * Send a message async
+	 * Send message, synchronous
+	 * 
+	 * @param message text message
+	 * @return itself
 	 * @throws IOException 
 	 *
 	 */
-	public void sendMessageSync(String message) throws IOException {
+	public JKWSClient sendMessageSync(String message) throws IOException {
 		if (this.userSession != null) {
 			this.userSession.getBasicRemote().sendText(message);
 		} else {
 			throw new IOException("Session not available");
 		}
+		return this;
 	}
 }

@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.service;
+package com.jkoolcloud.rest.samples.async;
 
-import javax.websocket.CloseReason;
-import javax.websocket.Session;
+import javax.json.JsonObject;
 
-public interface JKMessageHandler {
-	void handle(WebsocketClient client, String message);
-	
-	void onError(WebsocketClient client, Session userSession, Throwable ex);
-	void onOpen(WebsocketClient client, Session userSession);
-	void onClose(WebsocketClient client, Session userSession, CloseReason reason);
+import com.jkoolcloud.rest.api.service.JKQueryCallback;
+import com.jkoolcloud.rest.api.service.JKQueryHandle;
+
+public class MyJKQueryCallback implements JKQueryCallback {
+	@Override
+	public void handle(JKQueryHandle qhandle, JsonObject response) {
+		System.out.println("handle: subid=" + qhandle + ", response=" + response);
+	}
 }

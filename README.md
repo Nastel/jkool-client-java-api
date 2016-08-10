@@ -109,8 +109,8 @@ public class MyConnectionHandler implements JKConnectionHandler {
 }
 
 ```
-`jkQueryAsync.callAsync()` return a query handler (instance of `JKQueryHandle`) which can be used later to cancel subscriptions.
-Cancelling active query subscriptions will attempt to stop any streaming traffic associated with the specific subscription.
+`jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
+Cancelling active query subscription attempts to stop any streaming traffic associated with the specific subscription.
 Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `setDefaultResponseHandler()` call.
 ```java
 		// run query in async mode with a callback
@@ -120,7 +120,7 @@ Cancellation is also issued asynchronously and any responses that are still in t
 		jkQueryAsync.cancelAsync(qhandle);
 ```
 ###Running jKool Subscriptions
-Developers can also subscribe to data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the querie are emmitted as data becomes available and streamed back to the client
+Developers can also subscribe to data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client
 call back handler instance of `JKQueryCallback`. See example below:
 ```java
 		// setup jKool WebSocket connection and connect

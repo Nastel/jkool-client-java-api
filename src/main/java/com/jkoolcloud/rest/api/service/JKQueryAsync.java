@@ -351,7 +351,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	
 	@Override
 	public String toString() {
-		return "{" + "class: \"" + this.getClass().getName() + "\", uri: \"" + webSockUri + "\", socket: \"" + socket
-		        + "\", connected: \"" + isConnected() + "\"}";
+		return "{"
+				+ "class: \"" + this.getClass().getName()
+				+ "\", uri: \"" + webSockUri
+				+ "\", socket: \"" + socket
+		        + "\"}";
 	}
 }

@@ -22,7 +22,10 @@ import com.jkoolcloud.rest.api.service.JKQueryHandle;
 
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override
-	public void handle(JKQueryHandle qhandle, JsonObject response) {
-		System.out.println("handle: subid=" + qhandle + ", response=" + response);
+	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+		System.out.println("response: handle=" + qhandle + ", response=" + response);
+		if (ex != null) {
+			System.out.println("error: handle=" + qhandle + ", error=" + ex);
+		}	
 	}
 }

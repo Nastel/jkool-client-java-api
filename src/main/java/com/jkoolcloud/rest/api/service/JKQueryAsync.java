@@ -33,6 +33,7 @@ import javax.websocket.Session;
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
+	public static final String ERROR_KEY = "query_error";
 	public static final String MAX_ROWS_KEY = "maxResultRows";
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
 			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
@@ -224,13 +225,15 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	
 	protected void handleResponse(String subid, JsonObject response) {
 		JKQueryHandle qhandle = SUBID_MAP.get(subid);
+		String qerror = response.getString(JKQueryAsync.ERROR_KEY);
+		Throwable ex = qerror != null? new JKApiException(100, qerror): null;
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQ()) {
 				SUBID_MAP.remove(subid);
 			}
-			qhandle.getCallback().handle(qhandle, response);
+			qhandle.getCallback().handle(qhandle, response, ex);
 		} else if (this.orphanHandler != null) {
-			orphanHandler.handle(qhandle, response);
+			orphanHandler.handle(qhandle, response, ex);
 		}
 	}	
 }

@@ -18,5 +18,5 @@ package com.jkoolcloud.rest.api.service;
 import javax.json.JsonObject;
 
 public interface JKQueryCallback {
-	void handle(JKQueryHandle qhandle, JsonObject response);
+	void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex);
 }

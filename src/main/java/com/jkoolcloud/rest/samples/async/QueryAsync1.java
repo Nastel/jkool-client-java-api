@@ -54,7 +54,7 @@ public class QueryAsync1 {
 			if (qhandle != null) {
 				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			}
-
+			System.out.println("Active count=" + JKQueryAsync.getHandleCount());
 			// close async connection, done
 			jkQueryAsync.close();
 		} catch (Exception e) {

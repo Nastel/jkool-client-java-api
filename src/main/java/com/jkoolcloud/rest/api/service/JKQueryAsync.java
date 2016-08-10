@@ -54,7 +54,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	URI webSockUri;
 	JKWSClient socket;
 	JKConnectionHandler connectHandler;
-	JKQueryCallback orphanHandler;
+	JKQueryHandle orphanHandler;
 
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
@@ -74,8 +74,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	public JKQueryAsync setDefaultResponseHandler(JKQueryCallback callback) {
-		this.orphanHandler = callback;
-		createQueryHandle(DEFAULT_QUERY, callback);
+		this.orphanHandler = createQueryHandle(DEFAULT_QUERY, callback);
 		return this;
 	}
 
@@ -269,6 +268,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
 		        .add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid)
+				.add(MAX_ROWS_KEY, 10)
 		        .add(SUBID_KEY, subid).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
@@ -279,8 +279,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public void onMessage(JKWSClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
 		JsonObject jsonMessage = reader.readObject();
-		String subid = jsonMessage.containsKey(JKQueryAsync.SUBID_KEY) ? jsonMessage.getString(JKQueryAsync.SUBID_KEY)
-		        : null;
+		String subid = jsonMessage.getString(JKQueryAsync.SUBID_KEY, null);
 		handleResponse(subid, jsonMessage);
 	}
 

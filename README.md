@@ -62,11 +62,16 @@ Below is an example of running a JKQL query against a repository associated with
 All returned JKQL responses are JSON.
 Developers can also invoke JKQL queries asynchronously using callbacks. See example below:
 ```java
+		// setup jKool WebSocket connection and connect
 		jkQueryAsync jkQuery = new jkQueryAsync("yourtoken");
 		jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
+		
+		// setup a default response handler for responses not associated with any specific query
 		jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
 		jkQueryAsync.connect(); // connect stream with WebSocket interface
-		jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+		
+		// run query in async mode with a callback
+		JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
 		...
 		jkQueryAsync.close(); // close connection
 ```
@@ -102,6 +107,16 @@ public class MyConnectionHandler implements JKConnectionHandler {
 	}
 }
 
+```
+`jkQueryAsync.callAsync()` return a query handler (instance of `JKQueryHandle`) which can be used later to cancel subscriptions.
+Cancelling active query subscriptions will attempt to stop any streaming traffic associated with the specific subscription.
+Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `setDefaultResponseHandler()` call.
+```java
+		// run query in async mode with a callback
+		JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
+		...
+		// attempt to cancel subscription to the query results
+		jkQueryAsync.cancelAsync(qhandle);
 ```
 
 ###Important note

@@ -63,7 +63,7 @@ All returned JKQL responses are JSON.
 Developers can also invoke JKQL queries asynchronously using callbacks. See example below:
 ```java
 		// setup jKool WebSocket connection and connect
-		jkQueryAsync jkQuery = new jkQueryAsync("yourtoken");
+		JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
 		jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
 		
 		// setup a default response handler for responses not associated with any specific query

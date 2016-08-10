@@ -23,6 +23,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * This class defines a snapshot, which is a collection of properties
+ * at a particular moment in time.
+ * 
+ * @author cathy
+ */
 @ApiModel(description = "")
 public class Snapshot implements Validated {
 

@@ -17,6 +17,12 @@ package com.jkoolcloud.rest.api.service;
 
 import javax.websocket.CloseReason;
 
+/**
+ * Implementations of this interface defines a way to handle
+ * WebSocket connection events.
+ * 
+ * @author albert
+ */
 public interface JKConnectionHandler {
 	void open(JKQueryAsync async);
 	void error(JKQueryAsync async, Throwable ex);

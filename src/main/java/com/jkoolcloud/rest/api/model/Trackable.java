@@ -28,6 +28,12 @@ import com.jkoolcloud.rest.api.utils.JKUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * This class is a common time series trackable entity, which
+ * has time, id and a set of parameters.
+ * 
+ * @author cathy
+ */
 @ApiModel(description = "")
 public abstract class Trackable implements Validated {
 	public static final String DEFAULT_DC_NAME = System.getProperty("jkool.client.dc.name", "none");

@@ -18,6 +18,11 @@ package com.jkoolcloud.rest.api.service;
 import java.util.Map;
 import java.util.List;
 
+/**
+ * This class implements a standard jKool client API exception
+ * 
+ * @author albert
+ */
 public class JKApiException extends Exception {
 	/**
 	 * 

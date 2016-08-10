@@ -22,6 +22,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * This class defines an activity -- a group of related events, such 
+ * as transaction.
+ * 
+ * @author cathy
+ */
 @ApiModel(description = "")
 public class Activity extends Trackable {
 

@@ -15,6 +15,11 @@
  */
 package com.jkoolcloud.rest.api.model;
 
+/**
+ * This class defines common event severities supported by jKool.
+ * 
+ * @author cathy
+ */
 public enum Severities {
 	NONE, TRACE, DEBUG, INFO, NOTICE, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT
 }

@@ -25,6 +25,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+/**
+ * This class defines a RESTFul way to run jKool queries.
+ * Supports standard queries only (does not support subscriptions)
+ * 
+ * @author albert
+ */
 public class JKQuery extends JKService {
 	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
 	public static final String QUERY_ENDPOINT = "jkql";

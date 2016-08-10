@@ -24,6 +24,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * This class defines an event which has a timestamp and a message.
+ * Example: log event.
+ * 
+ * @author cathy
+ */
 @ApiModel(description = "")
 public class Event extends Trackable {
 

@@ -60,6 +60,49 @@ Below is an example of running a JKQL query against a repository associated with
 		response.close();
 ```
 All returned JKQL responses are JSON.
+Developers can also invoke JKQL queries asynchronously using callbacks. See example below:
+```java
+		jkQueryAsync jkQuery = new jkQueryAsync("yourtoken");
+		jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
+		jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
+		jkQueryAsync.connect(); // connect stream with WebSocket interface
+		jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+		...
+		jkQueryAsync.close(); // close connection
+```
+`MyJKQueryCallback` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.setDefaultResponseHandler(...)` call.
+```java
+public class MyJKQueryCallback implements JKQueryCallback {
+	@Override
+	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+		System.out.println("response: handle=" + qhandle + ", response=" + response);
+		if (ex != null) {
+			System.out.println("error: handle=" + qhandle + ", error=" + ex);
+		}	
+	}
+}
+```
+Connection handler can be used to intercept and handle WebSocket connection events such as open, close, error:
+```java
+public class MyConnectionHandler implements JKConnectionHandler {
+	@Override
+	public void error(JKQueryAsync async, Throwable ex) {
+		System.err.println("error:: " + async + ", error=" + ex);
+		ex.printStackTrace();
+	}
+
+	@Override
+	public void close(JKQueryAsync async, CloseReason reason) {
+		System.out.println("close: " + async + ", reason=" + reason);
+	}
+
+	@Override
+	public void open(JKQueryAsync async) {
+		System.out.println("open: " + async);
+	}
+}
+
+```
 
 ###Important note
 This sample code showcases some basic examples of using jKool Rest API. jKool can handle very complex application interactions. For example, it is built with the ability to correlate events and track transactions across multiple applications. This can be used for complex tracking and analytics.

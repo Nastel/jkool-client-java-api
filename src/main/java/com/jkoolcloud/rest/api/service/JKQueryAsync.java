@@ -55,7 +55,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
 	}
 
-	public JKQueryAsync(URI webSockUrl, String token){
+	public JKQueryAsync(URI webSockUrl, String token) {
 		this(webSockUrl, JKOOL_QUERY_URL, token);
 	}
 
@@ -83,10 +83,28 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 	
 	/**
-	 * Close all communication sessions
+	 * Return total number of live query handles
 	 * 
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 * @return total number of live query handles
+	 */
+	public static int getHandleCount(){
+		return SUBID_MAP.size();
+	}
+	
+	/**
+	 * Obtain a subscription handle
+	 * 
+	 * @param id subscription id
+	 * @return query handle associated with subscription id
+	 */
+	public JKQueryHandle getHandle(String id) {
+		return SUBID_MAP.get(id);
+	}
+	
+	/**
+	 * Determine if current session is connected
+	 * 
+	 * @return true if connected, false otherwise
 	 */
 	public synchronized boolean isConnected(){
 		return socket != null? socket.isConnected(): false;
@@ -125,9 +143,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @param query
 	 *            JKQL query
 	 * @return callback callback class
-	 * @throws JKApiException
+	 * @throws IOException
 	 */
-	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws JKApiException, IOException {
+	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(JKQueryHandle.SUB_QUERY_PREFIX + query, 100, callback);
 	}
 
@@ -137,9 +155,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @param query
 	 *            JKQL query
 	 * @return callback callback class
-	 * @throws JKApiException
+	 * @throws IOException
 	 */
-	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws JKApiException, IOException {
+	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(query, 100, callback);
 	}
 
@@ -151,7 +169,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @param maxRows
 	 *            maximum rows to return
 	 * @return callback callback class
-	 * @throws JKApiException
+	 * @throws IOException
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
 		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
@@ -171,9 +189,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * Cancel a live subscription
 	 * 
 	 * @param handle
-	 *            query handle {@#call(String, JKQueryCallback)}
+	 *            query handle {@#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws JKApiException
 	 * @throws IOException 
 	 */
 	public JKQueryHandle cancelAsync(JKQueryHandle handle) throws IOException {
@@ -184,9 +201,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * Cancel a live subscription
 	 * 
 	 * @param subid
-	 *            subscription id returned by {@#call(String, JKQueryCallback)}
+	 *            subscription id returned by {@#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws JKApiException
 	 * @throws IOException 
 	 */
 	public JKQueryHandle cancelAsync(String subid) throws IOException {
@@ -229,7 +245,16 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
     }
 	
-	protected void handleResponse(String subid, JsonObject response) {
+	/**
+	 * Handle async message response
+	 * 
+	 * @param subid
+	 *            subscription id returned by {@#callAsync(String, JKQueryCallback)}
+	 * @param response
+	 *            JSON message response
+	 * @return itself
+	 */
+	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
 		JKQueryHandle qhandle = SUBID_MAP.get(subid);
 		String qerror = response.getString(JKQueryAsync.ERROR_KEY);
 		Throwable ex = qerror != null? new JKApiException(100, qerror): null;
@@ -241,5 +266,6 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		} else if (this.orphanHandler != null) {
 			orphanHandler.handle(qhandle, response, ex);
 		}
+		return this;
 	}	
 }

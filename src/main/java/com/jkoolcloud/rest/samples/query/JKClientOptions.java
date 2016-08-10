@@ -32,10 +32,10 @@ public class JKClientOptions {
 			if ("-a".equals(arg)) { if (i == args.length) { usage = "Must specify access token with -a"; return; } token = args[i++]; }
 			if ("-q".equals(arg)) { if (i == args.length) { usage = "Must specify query with -q"; return; } query = args[i++]; }
 			if ("-u".equals(arg)) { if (i == args.length) { usage = "Must specify URL with -u"; return; } url = args[i++]; }
-			if ("-w".equals(arg)) { if (i == args.length) { usage = "Must specify URL with -u"; return; } waitTimeMs = Long.parseLong(args[i++]); }
+			if ("-w".equals(arg)) { if (i == args.length) { usage = "Must specify wait time (ms) -w"; return; } waitTimeMs = Long.parseLong(args[i++]); }
 		}
 		if (query == null | token == null) {
-			usage = "Usage: [-u url] -a token -q query [-w wait-ms]";
+			usage = "Usage: -a token -q query [-u url] [-w wait-ms]";
 			return;
 		}
     }

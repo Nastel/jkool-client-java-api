@@ -16,6 +16,7 @@
 package com.jkoolcloud.rest.samples.async;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
+import com.jkoolcloud.rest.api.service.JKQueryHandle;
 import com.jkoolcloud.rest.samples.query.JKClientOptions;
 
 public class QueryAsync1 {
@@ -26,13 +27,29 @@ public class QueryAsync1 {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
+			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.url", options.url),
 					System.getProperty("jk.access.token", options.token));
-			jkQueryAsync.setConnectionHandler(new MyConnectionHandler()).setDefaultResponseHandler(new MyJKQueryCallback())
-					.connect();
-			jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
+			jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
+			jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
+			jkQueryAsync.connect();
+			
+			// run query in async mode with a callback
+			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
+			System.out.println("callAsync: query.handle=" + qhandle);
+			
+			// wait for response to come, or do something else
 			Thread.sleep(options.waitTimeMs);
+			
+			// attempt to cancel subscription to the query results
+			jkQueryAsync.cancelAsync(qhandle);
+			System.out.println("cancelAsync: query.handle=" + qhandle);
+
+			// wait or do something else
+			Thread.sleep(options.waitTimeMs);
+
+			// close async connection, done
 			jkQueryAsync.close();
 		} catch (Exception e) {
 			e.printStackTrace();

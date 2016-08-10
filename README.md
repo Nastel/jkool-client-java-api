@@ -72,6 +72,7 @@ Developers can also invoke JKQL queries asynchronously using callbacks. See exam
 		
 		// run query in async mode with a callback
 		JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+		qhandle.awaitOnCallback(10000, TimeUnit.MILLISECONDS); // optional wait 10s or until response
 		...
 		jkQueryAsync.close(); // close connection
 ```

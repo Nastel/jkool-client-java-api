@@ -17,13 +17,15 @@ package com.jkoolcloud.rest.api.service;
 
 import java.util.UUID;
 
+import javax.json.JsonObject;
+
 /**
  * This class implements a query handle which encapsulates
  * an async subscription for query->callback pair.
  * 
  * @author albert
  */
-public class JKQueryHandle {
+public class JKQueryHandle implements JKQueryCallback {
 	public static final String SUB_UUID_PREFIX = "$sub/";
 	public static final String SUB_QUERY_PREFIX = "subscribe to ";
 	public static final String UNSUB_QUERY_PREFIX = "unsubsribe ";
@@ -99,5 +101,10 @@ public class JKQueryHandle {
 				+ "\", query: \"" + query
 				+ "\", callback: \"" + callback
 				+ "\"}";
+	}
+
+	@Override
+	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+		callback.handle(qhandle, response, ex);
 	}
 }

@@ -311,7 +311,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			if (!qhandle.isSubscribeQ()) {
 				SUBID_MAP.remove(subid);
 			}
-			qhandle.getCallback().handle(qhandle, response, ex);
+			qhandle.handle(qhandle, response, ex);
 		} else if (this.orphanHandler != null) {
 			orphanHandler.handle(qhandle, response, ex);
 		}

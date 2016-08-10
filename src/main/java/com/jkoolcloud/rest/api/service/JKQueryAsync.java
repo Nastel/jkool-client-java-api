@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -37,6 +38,8 @@ import javax.websocket.Session;
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
+	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
+
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
 	public static final String ERROR_KEY = "query_error";
@@ -143,6 +146,32 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 	
 	/**
+	 * Search for events that contain a given string.
+	 * 
+	 * @param searchText
+	 *            search text
+	 * @return callback callback class
+	 * @throws IOException
+	 */
+	public JKQueryHandle searchAsync(String searchText, JKQueryCallback callback) throws IOException {
+		return searchAsync(searchText, 100, callback);
+	}
+
+	/**
+	 * Search for events that contain a given string.
+	 * 
+	 * @param searchText
+	 *            search text
+	 * @param maxRows
+	 *            maximum rows to return
+	 * @return callback callback class
+	 * @throws IOException
+	 */
+	public JKQueryHandle searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
+		return callAsync(String.format(SEARCH_QUERY_PREFIX, searchText), maxRows, callback);
+	}
+
+	/**
 	 * Call query in async mode using a callback and a maximum rows of 100.
 	 * 
 	 * @param query
@@ -191,6 +220,20 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
+	 * Cancel all active subscriptions
+	 * 
+	 * @return itself
+	 * @throws IOException 
+	 */
+	public JKQueryAsync cancelAsyncAll() throws IOException {
+		ArrayList<String> idList = new ArrayList<String>(SUBID_MAP.keySet());
+		for (String id: idList) {
+			cancelAsync(id);
+		}
+		return this;
+	}
+	
+	/**
 	 * Cancel a live subscription
 	 * 
 	 * @param handle
@@ -202,6 +245,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		return cancelAsync(handle.getId());
 	}
 	
+
 	/**
 	 * Cancel a live subscription
 	 * 

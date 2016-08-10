@@ -19,57 +19,89 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map.Entry;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.ws.rs.core.Response;
-
+import javax.json.JsonObjectBuilder;
+import javax.websocket.CloseReason;
 
 public class JKQueryAsync extends JKQuery implements Closeable {
-	//public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "ws://11.0.0.40:8080/jKool/jkqlasync");
-	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "ws://jkool.jkoolcloud.com/jKool/jkqlasync");
-	
-	private static ConcurrentMap<String, JKResultCallback> SUBID_MAP = new ConcurrentHashMap<String, JKResultCallback>();
-	
-	URI webSockUrl;
+	public static final String QUERY_KEY = "query";
+	public static final String SUBID_KEY = "subid";
+	public static final String MAX_ROWS_KEY = "maxResultRows";
+	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
+			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
+
+	private static ConcurrentMap<String, QueryHandle> SUBID_MAP = new ConcurrentHashMap<String, QueryHandle>();
+
+	URI webSockUri;
 	WebsocketClient socket;
+	JKConnectionHandler connectHandler;
+	JKResultCallback orphanHandler;
 	
-	public JKQueryAsync(String token) throws URISyntaxException, IOException {
-		this(JKOOL_WEBSOCK_URL, JKOOL_QUERY_URL, token);
+	public JKQueryAsync(String token) throws URISyntaxException {
+		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
 	}
 
-	public JKQueryAsync(String webSockUrl, String token) throws URISyntaxException, IOException {
+	public JKQueryAsync(URI webSockUrl, String token){
 		this(webSockUrl, JKOOL_QUERY_URL, token);
 	}
 
-	public JKQueryAsync(String wsUrl, String queryUrl, String token) throws URISyntaxException, IOException {
+	public JKQueryAsync(String webSockUri, String token) throws URISyntaxException {
+		this(new URI(webSockUri), JKOOL_QUERY_URL, token);
+	}
+	
+	public JKQueryAsync(URI wsUri, String queryUrl, String token) {
 		super(queryUrl, token);
-		this.webSockUrl = new URI(wsUrl);
-		connect();
+		this.webSockUri = wsUri;
+	}
+
+	public JKQueryAsync setOrphanHandler(JKResultCallback rhandler) {
+		this.orphanHandler = rhandler;
+		return this;
+	}
+
+	public JKQueryAsync setConnectionHandler(JKConnectionHandler cHandler) {
+		this.connectHandler = cHandler;
+		return this;
+	}
+
+	public WebsocketClient getConnection() {
+		return this.socket;
 	}
 	
 	/**
 	 * Close all communication sessions
 	 * 
-	 * @throws IOException 
-	 * @throws URISyntaxException 
+	 * @throws IOException
+	 * @throws URISyntaxException
 	 */
-	public synchronized void connect() throws IOException {
+	public synchronized boolean isConnected(){
+		return socket != null? socket.isConnected(): false;
+	}
+	
+	/**
+	 * Close all communication sessions
+	 * 
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public synchronized JKQueryAsync connect() throws IOException {
 		if (socket == null) {
-			socket = new WebsocketClient(webSockUrl, new JKMessageHandlerImpl(this)); 
+			socket = new WebsocketClient(webSockUri, new JKMessageHandlerImpl(this));
 			socket.connect();
 		}
+		return this;
 	}
-	
+
 	/**
 	 * Close all communication sessions
 	 * 
-	 * @throws IOException 
+	 * @throws IOException
 	 */
+	@Override
 	public synchronized void close() throws IOException {
 		if (socket != null) {
 			socket.disconnect();
@@ -78,55 +110,113 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	}
 	
 	/**
-	 * Call query in async mode using a callback
+	 * Call query in async mode using a callback and a maximum rows of 100.
 	 * 
-	 * @param query JKQL query
+	 * @param query
+	 *            JKQL query
 	 * @return callback callback class
 	 * @throws JKApiException
 	 */
-	public String call(String query, JKResultCallback callback, String rows) throws JKApiException, IOException {
-		// Userid/password coming out. Token will be used instead.
-		UUID uuid = UUID.randomUUID();
-		String subid = uuid.toString();
-		 JsonObject asyncSend = Json.createObjectBuilder()
-	                .add("username", "xxxxx") // going away
-	                .add("password", "xxxxx") // going away 
-	                .add("repositoryId", "xxxxx") // going away
-	                .add("query", query)
-	                .add("maxResultRows", rows)
-	                .add("subid", subid).build();
+	public QueryHandle subAsync(String query, JKResultCallback callback) throws JKApiException, IOException {
+		return callAsync(QueryHandle.SUB_QUERY_PREFIX + query, 100, callback);
+	}
 
-		
-		
+	/**
+	 * Call query in async mode using a callback and a maximum rows of 100.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @return callback callback class
+	 * @throws JKApiException
+	 */
+	public QueryHandle callAsync(String query, JKResultCallback callback) throws JKApiException, IOException {
+		return callAsync(query, 100, callback);
+	}
 
-		socket.sendMessageAsync(asyncSend.toString());
-		SUBID_MAP.put(subid, callback);
-		return subid;
+	/**
+	 * Call query in async mode using a callback
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param maxRows
+	 *            maximum rows to return
+	 * @return callback callback class
+	 * @throws JKApiException
+	 */
+	public QueryHandle callAsync(String query, int maxRows, JKResultCallback callback) throws IOException {
+		QueryHandle qhandle = new QueryHandle(query, callback);
+		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObject jsonQuery = jsonBuilder
+				.add(TOKEN_KEY, getToken())
+				.add(QUERY_KEY, query)
+				.add(MAX_ROWS_KEY, maxRows)
+				.add(SUBID_KEY, qhandle.getId()).build();
+
+		socket.sendMessageAsync(jsonQuery.toString());
+		SUBID_MAP.put(qhandle.getId(), qhandle);
+		return qhandle;
+	}
+
+	/**
+	 * Cancel a live subscription
+	 * 
+	 * @param handle
+	 *            query handle {@#call(String, JKResultCallback)}
+	 * @return un-subscription response
+	 * @throws JKApiException
+	 * @throws IOException 
+	 */
+	public QueryHandle cancelAsync(QueryHandle handle) throws IOException {
+		return cancelAsync(handle.getId());
 	}
 	
 	/**
 	 * Cancel a live subscription
 	 * 
-	 * @param subid subscription id returned by {@#call(String, JKResultCallback)}
+	 * @param subid
+	 *            subscription id returned by {@#call(String, JKResultCallback)}
 	 * @return un-subscription response
 	 * @throws JKApiException
+	 * @throws IOException 
 	 */
-	public Response cancel(String subid) throws JKApiException {
-		Response resp = call("unsubscribe " + subid);
-		SUBID_MAP.remove(subid);
-		return resp;
+	public QueryHandle cancelAsync(String subid) throws IOException {
+		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObject jsonQuery = jsonBuilder
+				.add(TOKEN_KEY, getToken())
+				.add(QUERY_KEY, QueryHandle.UNSUB_QUERY_PREFIX + subid)
+				.add(SUBID_KEY, subid).build();
+
+		socket.sendMessageAsync(jsonQuery.toString());
+		return SUBID_MAP.remove(subid);
 	}
-	
-	protected void routeResponse(String subid, String response) {
-		JKResultCallback callBack = SUBID_MAP.get(subid);
-		if (callBack != null) {
-			callBack.handle(subid, response);
-		}		
+
+	protected void routeResponse(String subid, JsonObject response) {
+		QueryHandle qhandle = SUBID_MAP.get(subid);
+		if (qhandle != null) {
+			if (!qhandle.isSubscribeQ()) {
+				SUBID_MAP.remove(subid);
+			}
+			qhandle.getCallback().handle(qhandle, response);
+		} else if (this.orphanHandler != null) {
+			orphanHandler.handle(qhandle, response);
+		}
 	}
-	
+
 	protected void routeError(Throwable error) {
-		for (Entry<String, JKResultCallback> entry: SUBID_MAP.entrySet()) {
-			entry.getValue().error(entry.getKey(), error);
+		if (this.connectHandler != null) {
+			connectHandler.error(this, error);
+		}
+	}
+	
+	protected void routeOpen() {
+		if (this.connectHandler != null) {
+			connectHandler.open(this);
+		}
+	}
+
+	protected void routeClose(CloseReason reason) {
+		if (this.connectHandler != null) {
+			connectHandler.close(this, reason);
 		}
 	}
 }

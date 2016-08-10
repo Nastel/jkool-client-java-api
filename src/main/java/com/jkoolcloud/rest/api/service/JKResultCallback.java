@@ -15,8 +15,8 @@
  */
 package com.jkoolcloud.rest.api.service;
 
+import javax.json.JsonObject;
 
 public interface JKResultCallback {
-	void handle(String subid, String response);
-	void error(String subid, Throwable ex);
+	void handle(QueryHandle subid, JsonObject response);
 }

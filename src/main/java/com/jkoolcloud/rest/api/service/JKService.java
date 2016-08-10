@@ -24,6 +24,7 @@ import com.jkoolcloud.rest.api.utils.JKUtils;
 
 abstract public class JKService {
 	public static final String TOKEN_KEY = "token";
+	public static final String CONTENT_TYPE = "content-type";
 	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
 	String token;

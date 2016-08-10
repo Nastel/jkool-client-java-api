@@ -36,25 +36,22 @@ class JKMessageHandlerImpl implements JKMessageHandler {
     public void handle(WebsocketClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
 		JsonObject	jsonMessage = reader.readObject();
-		String subid = jsonMessage.getString("subid");
-		async.routeResponse(subid, message);
+		String subid = jsonMessage.getString(JKQueryAsync.SUBID_KEY);
+		async.routeResponse(subid, jsonMessage);
     }
 
 	@Override
     public void onClose(WebsocketClient client, Session userSession, CloseReason reason) {
-	    // TODO Auto-generated method stub
-	    
-    }
+		async.routeClose(reason);
+	}
 
 	@Override
     public void onError(WebsocketClient client, Session userSession, Throwable ex) {
-	    // TODO Auto-generated method stub
 		async.routeError(ex);	    
     }
 
 	@Override
     public void onOpen(WebsocketClient client, Session userSession) {
-	    // TODO Auto-generated method stub
-	    
+		async.routeOpen();	    
     }
 }

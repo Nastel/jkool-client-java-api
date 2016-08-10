@@ -54,7 +54,7 @@ public class JKQuery extends JKService {
 			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken(), "UTF-8");
 			HttpGet request = new HttpGet(basePath + QUERY_ENDPOINT + "?" + urlQuery);
 			request.addHeader(TOKEN_KEY, getToken());
-			request.addHeader("content-type", MediaType.APPLICATION_JSON);
+			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);
 			return response;
 		} catch (Throwable e) {

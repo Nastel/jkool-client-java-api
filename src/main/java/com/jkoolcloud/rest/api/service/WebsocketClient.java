@@ -70,6 +70,10 @@ public class WebsocketClient {
 		}
 	}
 	
+	public boolean isConnected() {
+		return userSession != null? userSession.isOpen(): false;
+	}
+	
 	/**
 	 * Callback hook for Connection open events.
 	 *

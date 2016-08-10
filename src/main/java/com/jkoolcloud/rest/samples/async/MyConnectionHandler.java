@@ -13,15 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.service;
+package com.jkoolcloud.rest.samples.async;
 
 import javax.websocket.CloseReason;
-import javax.websocket.Session;
 
-public interface JKMessageHandler {
-	void handle(WebsocketClient client, String message);
-	
-	void onError(WebsocketClient client, Session userSession, Throwable ex);
-	void onOpen(WebsocketClient client, Session userSession);
-	void onClose(WebsocketClient client, Session userSession, CloseReason reason);
+import com.jkoolcloud.rest.api.service.JKConnectionHandler;
+import com.jkoolcloud.rest.api.service.JKQueryAsync;
+
+public class MyConnectionHandler implements JKConnectionHandler {
+
+	@Override
+	public void error(JKQueryAsync async, Throwable ex) {
+		System.err.println("error:: " + async + ", error=" + ex);
+		ex.printStackTrace();
+	}
+
+	@Override
+	public void close(JKQueryAsync async, CloseReason reason) {
+		System.out.println("close: " + async + ", reason=" + reason);
+	}
+
+	@Override
+	public void open(JKQueryAsync async) {
+		System.out.println("open: " + async);
+	}
 }

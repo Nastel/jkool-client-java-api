@@ -39,6 +39,8 @@ import javax.websocket.Session;
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 
+	public static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS";
+	
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
 	public static final String ERROR_KEY = "query_error";
@@ -72,8 +74,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		this.webSockUri = wsUri;
 	}
 
-	public JKQueryAsync setDefaultResponseHandler(JKQueryCallback rhandler) {
-		this.orphanHandler = rhandler;
+	public JKQueryAsync setDefaultResponseHandler(JKQueryCallback callback) {
+		this.orphanHandler = callback;
+		createQueryHandle(DEFAULT_QUERY, callback);
 		return this;
 	}
 
@@ -109,6 +112,16 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	public JKQueryHandle getHandle(String id) {
 		return SUBID_MAP.get(id);
+	}
+
+	/**
+	 * Obtain a subscription handle for the default response
+	 * call back set by {{@link #setDefaultResponseHandler(JKQueryCallback)}
+	 * 
+	 * @return query handle associated with a default response handler
+	 */
+	public JKQueryHandle getDefaultHandle() {
+		return SUBID_MAP.get(DEFAULT_QUERY);
 	}
 
 	/**
@@ -209,8 +222,6 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
 		JKQueryHandle qhandle = createQueryHandle(query, callback);
-		SUBID_MAP.put(qhandle.getId(), qhandle);
-
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
 				.add(QUERY_KEY, query)
@@ -296,7 +307,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
-		 return new JKQueryHandle(query, callback);		
+		JKQueryHandle qhandle = new JKQueryHandle(query, callback);		
+		SUBID_MAP.put(qhandle.getId(), qhandle);
+		return qhandle;
 	}
 	
 	/**
@@ -322,14 +335,21 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			}
 			return this;
 		} finally {
-			if (qhandle != null) {
-				if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(CALL_CANCEL)) {
-					SUBID_MAP.remove(subid);
-				}
-			}
+			cleanHandlers(callName, qhandle);
 		}
 	}
 
+	private void cleanHandlers(String callName, JKQueryHandle qhandle) {
+		if (qhandle != null) {
+			if (qhandle.getQuery().equalsIgnoreCase(DEFAULT_QUERY)) {
+				return;
+			}
+			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(CALL_CANCEL)) {
+				SUBID_MAP.remove(qhandle.getId());
+			}
+		}		
+	}
+	
 	@Override
 	public String toString() {
 		return "{" + "class: \"" + this.getClass().getName() + "\", uri: \"" + webSockUri + "\", socket: \"" + socket

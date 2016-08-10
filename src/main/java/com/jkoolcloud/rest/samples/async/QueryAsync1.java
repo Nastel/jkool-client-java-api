@@ -33,7 +33,7 @@ public class QueryAsync1 {
 			
 			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
-					System.getProperty("jk.ws.url", options.url),
+					System.getProperty("jk.ws.url", options.uri),
 					System.getProperty("jk.access.token", options.token));
 			jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
 			jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());

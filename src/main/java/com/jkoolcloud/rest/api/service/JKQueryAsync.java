@@ -61,7 +61,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		this.webSockUri = wsUri;
 	}
 
-	public JKQueryAsync setOrphanHandler(JKQueryCallback rhandler) {
+	public JKQueryAsync setDefaultResponseHandler(JKQueryCallback rhandler) {
 		this.orphanHandler = rhandler;
 		return this;
 	}

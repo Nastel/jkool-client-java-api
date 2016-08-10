@@ -51,7 +51,9 @@ public class QueryAsync1 {
 			System.out.println("cancelAsync: query.handle=" + qhandle);
 
 			// wait or do something else
-			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			if (qhandle != null) {
+				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			}
 
 			// close async connection, done
 			jkQueryAsync.close();

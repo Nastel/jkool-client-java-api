@@ -16,18 +16,23 @@
 package com.jkoolcloud.rest.samples.async;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
+import com.jkoolcloud.rest.samples.query.JKClientOptions;
 
 public class QueryAsync1 {
 	public static void main(String[] args) {
 		try {
+			JKClientOptions options = new JKClientOptions(args);
+			if (options.usage != null) {
+				System.out.println(options.usage);
+				System.exit(-1);
+			}
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
-					System.getProperty("jk.ws.url", "ws://localhost:8080/jKool/jkqlasync"),
-					System.getProperty("jk.access.token", "access-token"));
+					System.getProperty("jk.ws.url", options.url),
+					System.getProperty("jk.access.token", options.token));
 			jkQueryAsync.setConnectionHandler(new MyConnectionHandler()).setDefaultResponseHandler(new MyJKQueryCallback())
 					.connect();
-			jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-
-			Thread.sleep(15000000);
+			jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
+			Thread.sleep(options.waitTimeMs);
 			jkQueryAsync.close();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -27,8 +27,13 @@ import com.jkoolcloud.rest.api.service.JKQuery;
 public class QueryData2 {
 	public static void main(String[] args) {
 		try {
-			JKQuery jkQuery = new JKQuery(System.getProperty("jk.access.token", "access-token"));
-			Response response = jkQuery.call("get events");
+			JKClientOptions options = new JKClientOptions(args);
+			if (options.usage != null) {
+				System.out.println(options.usage);
+				System.exit(-1);
+			}
+			JKQuery jkQuery = new JKQuery(System.getProperty("jk.access.token", options.token));
+			Response response = jkQuery.call(options.query);
 			System.out.println(response.readEntity(String.class));
 		} catch (Exception e) {
 			e.printStackTrace();

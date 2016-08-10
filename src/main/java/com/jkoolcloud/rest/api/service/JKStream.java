@@ -22,6 +22,12 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.rest.api.model.Snapshot;
 import com.jkoolcloud.rest.api.model.Trackable;
 
+/**
+ * This class implements RESTFull event streaming pipe to jKool
+ * 
+ * @author albert
+ * @see JKService
+ */
 public class JKStream extends JKService {
 	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
 

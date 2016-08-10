@@ -15,6 +15,11 @@
  */
 package com.jkoolcloud.rest.api.model;
 
+/**
+ * This interface defines an entity that can be validated
+ * 
+ * @author cathy
+ */
 public interface Validated {
 	boolean isValid();
 }

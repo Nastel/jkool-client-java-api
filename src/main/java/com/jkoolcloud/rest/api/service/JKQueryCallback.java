@@ -17,6 +17,12 @@ package com.jkoolcloud.rest.api.service;
 
 import javax.json.JsonObject;
 
+/**
+ * Implementations of this interface defines a query response callback
+ * for async queries.
+ * 
+ * @author albert
+ */
 public interface JKQueryCallback {
 	void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex);
 }

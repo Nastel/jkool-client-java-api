@@ -15,6 +15,11 @@
  */
 package com.jkoolcloud.rest.api.model;
 
+/**
+ * This class defines common event completion codes
+ * 
+ * @author cathy
+ */
 public enum CompCodes {
 	SUCCESS, WARNING, ERROR
 }

@@ -30,7 +30,10 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 /**
- *
+ * This class implements WebSockets communication, message and error handling.
+ * 
+ * @author albert
+ * @see JKWSHandler
  */
 @ClientEndpoint
 public class JKWSClient {

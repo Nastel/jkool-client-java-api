@@ -30,6 +30,12 @@ import javax.json.JsonReader;
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
+/**
+ * This class defines an async way to run jKool queries via WebSockets.
+ * Supports standard queries and subscriptions.
+ * 
+ * @author albert
+ */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";

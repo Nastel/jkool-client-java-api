@@ -22,6 +22,12 @@ import javax.ws.rs.client.WebTarget;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.rest.api.utils.JKUtils;
 
+/**
+ * This class defines a common way to communicate with jKool 
+ * via RESTFull interface.
+ * 
+ * @author albert
+ */
 abstract public class JKService {
 	public static final String TOKEN_KEY = "token";
 	public static final String CONTENT_TYPE = "content-type";

@@ -21,6 +21,11 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * This class a property name=value pair
+ * 
+ * @author cathy
+ */
 @ApiModel(description = "")
 public class Property implements Validated {
 

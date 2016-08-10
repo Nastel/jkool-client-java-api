@@ -24,6 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
+/**
+ * This class implements common API utilities
+ * 
+ * @author albert
+ */
 public class JKUtils {
 
 	/**

@@ -177,7 +177,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		JsonObject jsonQuery = jsonBuilder
 				.add(TOKEN_KEY, getToken())
 				.add(QUERY_KEY, query)
-				.add(MAX_ROWS_KEY, maxRows)
+				.add(MAX_ROWS_KEY, Integer.toString(maxRows))
 				.add(SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
@@ -220,7 +220,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
     public void onMessage(JKWSClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
 		JsonObject	jsonMessage = reader.readObject();
-		String subid = jsonMessage.getString(JKQueryAsync.SUBID_KEY);
+		String subid = jsonMessage.containsKey(JKQueryAsync.SUBID_KEY) ? jsonMessage.getString(JKQueryAsync.SUBID_KEY) : null;
 		handleResponse(subid, jsonMessage);
     }
 
@@ -245,6 +245,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
     }
 	
+<<<<<<< HEAD
 	/**
 	 * Handle async message response
 	 * 
@@ -257,6 +258,11 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
 		JKQueryHandle qhandle = SUBID_MAP.get(subid);
 		String qerror = response.getString(JKQueryAsync.ERROR_KEY);
+=======
+	protected void handleResponse(String subid, JsonObject response) {
+		String qerror = response.containsKey(JKQueryAsync.ERROR_KEY) ? response.getString(JKQueryAsync.ERROR_KEY) : null;
+		JKQueryHandle qhandle = subid != null ? SUBID_MAP.get(subid): null;
+>>>>>>> origin/master
 		Throwable ex = qerror != null? new JKApiException(100, qerror): null;
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQ()) {

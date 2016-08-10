@@ -27,6 +27,8 @@ public class QueryAsync1 {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
+			options.print(System.out);
+			
 			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.url", options.url),

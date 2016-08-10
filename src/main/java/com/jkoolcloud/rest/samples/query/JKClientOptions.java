@@ -15,6 +15,8 @@
  */
 package com.jkoolcloud.rest.samples.query;
 
+import java.io.PrintStream;
+
 public class JKClientOptions {
 	public String url;
 	public String query;
@@ -28,15 +30,19 @@ public class JKClientOptions {
 
 	private void parseOptions(String[] args) {
 		for (int i=0; i < args.length; i++) {
-			String arg = args[i++];
-			if ("-a".equals(arg)) { if (i == args.length) { usage = "Must specify access token with -a"; return; } token = args[i++]; }
-			if ("-q".equals(arg)) { if (i == args.length) { usage = "Must specify query with -q"; return; } query = args[i++]; }
-			if ("-u".equals(arg)) { if (i == args.length) { usage = "Must specify URL with -u"; return; } url = args[i++]; }
-			if ("-w".equals(arg)) { if (i == args.length) { usage = "Must specify wait time (ms) -w"; return; } waitTimeMs = Long.parseLong(args[i++]); }
+			String arg = args[i];
+			if ("-a".equals(arg)) { if (i == args.length) { usage = "Must specify access token with -a"; return; } token = args[++i]; }
+			if ("-q".equals(arg)) { if (i == args.length) { usage = "Must specify query with -q"; return; } query = args[++i]; }
+			if ("-u".equals(arg)) { if (i == args.length) { usage = "Must specify URL with -u"; return; } url = args[++i]; }
+			if ("-w".equals(arg)) { if (i == args.length) { usage = "Must specify wait time (ms) -w"; return; } waitTimeMs = Long.parseLong(args[++i]); }
 		}
-		if (query == null | token == null) {
+		if (query == null || token == null) {
 			usage = "Usage: -a token -q query [-u url] [-w wait-ms]";
 			return;
 		}
     }
+	
+	public void print(PrintStream out) {
+		out.println("Options: -a " + token + ", -q \"" + query + "\", -w " + waitTimeMs + ", -u \"" + url + "\"");
+	}
 }

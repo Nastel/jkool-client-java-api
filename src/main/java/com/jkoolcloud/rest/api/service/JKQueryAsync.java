@@ -256,8 +256,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
 		String qerror = response.getString(JKQueryAsync.ERROR_KEY, null);
-		JKQueryHandle qhandle = subid != null ? SUBID_MAP.get(subid): null;
 		Throwable ex = qerror != null? new JKApiException(100, qerror): null;
+		JKQueryHandle qhandle = subid != null ? SUBID_MAP.get(subid): null;
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQ()) {
 				SUBID_MAP.remove(subid);

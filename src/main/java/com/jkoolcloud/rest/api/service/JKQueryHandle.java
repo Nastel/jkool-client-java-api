@@ -16,12 +16,14 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.json.JsonObject;
 
 /**
- * This class implements a query handle which encapsulates
- * an async subscription for query->callback pair.
+ * This class implements a query handle which encapsulates an async subscription for query->callback pair.
  * 
  * @author albert
  */
@@ -33,57 +35,69 @@ public class JKQueryHandle implements JKQueryCallback {
 	final String query, id;
 	final boolean subscribe;
 	final JKQueryCallback callback;
-	
+
+	private final ReentrantLock aLock = new ReentrantLock();
+	private final Condition calledBack = aLock.newCondition();
+
 	public JKQueryHandle(String q, JKQueryCallback callback) {
 		this(q, newId(q), callback);
 	}
-	
+
 	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
 		this.query = q;
 		this.id = id;
 		this.callback = callback;
 		this.subscribe = isSubscribeQ(q);
 	}
-	
+
 	public static String newId(String q) {
 		String uuid = UUID.randomUUID().toString();
-		uuid = isSubscribeQ(q)? SUB_UUID_PREFIX + uuid: uuid;
+		uuid = isSubscribeQ(q) ? SUB_UUID_PREFIX + uuid : uuid;
 		return uuid;
 	}
-	
+
 	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(SUB_QUERY_PREFIX);		
+		return query.toLowerCase().startsWith(SUB_QUERY_PREFIX);
 	}
-	
+
 	public static boolean isSubscribeId(String id) {
-		return id.startsWith(SUB_UUID_PREFIX);		
+		return id.startsWith(SUB_UUID_PREFIX);
 	}
-	
-	public boolean isSubscribeQ() {
+
+	public boolean isSubscribeQuery() {
 		return subscribe;
 	}
-	
+
 	public boolean isSubscribeId() {
 		return id.startsWith(SUB_UUID_PREFIX);
 	}
-	
+
 	public String getQuery() {
 		return query;
 	}
-	
+
 	public JKQueryCallback getCallback() {
 		return callback;
 	}
-	
+
 	public String getId() {
 		return id;
+	}
+
+	public void waitOnCallback(long time, TimeUnit unit) throws InterruptedException {
+		aLock.lock();
+		try {
+			calledBack.await(time, unit);
+		} finally {
+			aLock.unlock();
+		}
 	}
 	
 	@Override
 	public int hashCode() {
 		return id.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof JKQueryHandle) {
@@ -92,19 +106,21 @@ public class JKQueryHandle implements JKQueryCallback {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "{"
-				+ "class: \"" + this.getClass().getName() 
-				+ "\", id: \"" + id
-				+ "\", query: \"" + query
-				+ "\", callback: \"" + callback
-				+ "\"}";
+		return "{" + "class: \"" + this.getClass().getName() + "\", id: \"" + id + "\", query: \"" + query
+		        + "\", callback: \"" + callback + "\"}";
 	}
 
 	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
-		callback.handle(qhandle, response, ex);
+		aLock.lock();
+		try {
+			callback.handle(qhandle, response, ex);
+			calledBack.signalAll();
+		} finally {
+			aLock.unlock();
+		}
 	}
 }

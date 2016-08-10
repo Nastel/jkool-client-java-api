@@ -15,6 +15,8 @@
  */
 package com.jkoolcloud.rest.samples.async;
 
+import java.util.concurrent.TimeUnit;
+
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryHandle;
 import com.jkoolcloud.rest.samples.query.JKClientOptions;
@@ -42,14 +44,14 @@ public class QueryAsync1 {
 			System.out.println("callAsync: query.handle=" + qhandle);
 			
 			// wait for response to come, or do something else
-			Thread.sleep(options.waitTimeMs);
+			qhandle.waitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			
 			// attempt to cancel subscription to the query results
-			jkQueryAsync.cancelAsync(qhandle);
+			qhandle = jkQueryAsync.cancelAsync(qhandle);
 			System.out.println("cancelAsync: query.handle=" + qhandle);
 
 			// wait or do something else
-			Thread.sleep(options.waitTimeMs);
+			qhandle.waitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 
 			// close async connection, done
 			jkQueryAsync.close();

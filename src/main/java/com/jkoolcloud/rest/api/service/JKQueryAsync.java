@@ -32,8 +32,7 @@ import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
 /**
- * This class defines an async way to run jKool queries via WebSockets.
- * Supports standard queries and subscriptions.
+ * This class defines an async way to run jKool queries via WebSockets. Supports standard queries and subscriptions.
  * 
  * @author albert
  */
@@ -43,9 +42,11 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
 	public static final String ERROR_KEY = "query_error";
+	public static final String CALL_CANCEL = "unsubscribe";
+	public static final String CALL_KEY = "call";
 	public static final String MAX_ROWS_KEY = "maxResultRows";
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
-			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
+	        "ws://jkool.jkoolcloud.com/jKool/jkqlasync");
 
 	private static ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
 
@@ -53,7 +54,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	JKWSClient socket;
 	JKConnectionHandler connectHandler;
 	JKQueryCallback orphanHandler;
-	
+
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
 	}
@@ -65,7 +66,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public JKQueryAsync(String webSockUri, String token) throws URISyntaxException {
 		this(new URI(webSockUri), JKOOL_QUERY_URL, token);
 	}
-	
+
 	public JKQueryAsync(URI wsUri, String queryUrl, String token) {
 		super(queryUrl, token);
 		this.webSockUri = wsUri;
@@ -89,35 +90,36 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public JKWSClient getConnection() {
 		return this.socket;
 	}
-	
+
 	/**
 	 * Return total number of live query handles
 	 * 
 	 * @return total number of live query handles
 	 */
-	public static int getHandleCount(){
+	public static int getHandleCount() {
 		return SUBID_MAP.size();
 	}
-	
+
 	/**
 	 * Obtain a subscription handle
 	 * 
-	 * @param id subscription id
+	 * @param id
+	 *            subscription id
 	 * @return query handle associated with subscription id
 	 */
 	public JKQueryHandle getHandle(String id) {
 		return SUBID_MAP.get(id);
 	}
-	
+
 	/**
 	 * Determine if current session is connected
 	 * 
 	 * @return true if connected, false otherwise
 	 */
-	public synchronized boolean isConnected(){
-		return socket != null? socket.isConnected(): false;
+	public synchronized boolean isConnected() {
+		return socket != null ? socket.isConnected() : false;
 	}
-	
+
 	/**
 	 * Close all communication sessions
 	 * 
@@ -144,7 +146,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
 		socket = null;
 	}
-	
+
 	/**
 	 * Search for events that contain a given string.
 	 * 
@@ -207,15 +209,15 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
 		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
+		SUBID_MAP.put(qhandle.getId(), qhandle);
+
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder
-				.add(TOKEN_KEY, getToken())
+		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
 				.add(QUERY_KEY, query)
 				.add(MAX_ROWS_KEY, maxRows)
-				.add(SUBID_KEY, qhandle.getId()).build();
+		        .add(SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
-		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
 
@@ -223,28 +225,27 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * Cancel all active subscriptions
 	 * 
 	 * @return itself
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
 		ArrayList<String> idList = new ArrayList<String>(SUBID_MAP.keySet());
-		for (String id: idList) {
+		for (String id : idList) {
 			cancelAsync(id);
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Cancel a live subscription
 	 * 
 	 * @param handle
 	 *            query handle {@#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public JKQueryHandle cancelAsync(JKQueryHandle handle) throws IOException {
 		return cancelAsync(handle.getId());
 	}
-	
 
 	/**
 	 * Cancel a live subscription
@@ -252,48 +253,48 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @param subid
 	 *            subscription id returned by {@#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public JKQueryHandle cancelAsync(String subid) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder
-				.add(TOKEN_KEY, getToken())
-				.add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid)
-				.add(SUBID_KEY, subid).build();
+		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
+		        .add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid)
+		        .add(SUBID_KEY, subid).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
-		return SUBID_MAP.remove(subid);
+		return SUBID_MAP.get(subid);
 	}
 
 	@Override
-    public void onMessage(JKWSClient client, String message) {
+	public void onMessage(JKWSClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
-		JsonObject	jsonMessage = reader.readObject();
-		String subid = jsonMessage.containsKey(JKQueryAsync.SUBID_KEY) ? jsonMessage.getString(JKQueryAsync.SUBID_KEY) : null;
+		JsonObject jsonMessage = reader.readObject();
+		String subid = jsonMessage.containsKey(JKQueryAsync.SUBID_KEY) ? jsonMessage.getString(JKQueryAsync.SUBID_KEY)
+		        : null;
 		handleResponse(subid, jsonMessage);
-    }
+	}
 
 	@Override
-    public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
+	public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
 		if (this.connectHandler != null) {
 			connectHandler.close(this, reason);
 		}
 	}
 
 	@Override
-    public void onError(JKWSClient client, Session userSession, Throwable ex) {
+	public void onError(JKWSClient client, Session userSession, Throwable ex) {
 		if (this.connectHandler != null) {
 			connectHandler.error(this, ex);
 		}
-    }
+	}
 
 	@Override
-    public void onOpen(JKWSClient client, Session userSession) {
+	public void onOpen(JKWSClient client, Session userSession) {
 		if (this.connectHandler != null) {
 			connectHandler.open(this);
 		}
-    }
-	
+	}
+
 	/**
 	 * Handle async message response
 	 * 
@@ -305,26 +306,29 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
 		String qerror = response.getString(JKQueryAsync.ERROR_KEY, null);
-		Throwable ex = (qerror != null? new JKApiException(100, qerror): null);
-		JKQueryHandle qhandle = subid != null ? SUBID_MAP.get(subid): null;
-		if (qhandle != null) {
-			if (!qhandle.isSubscribeQ()) {
-				SUBID_MAP.remove(subid);
+		Throwable ex = (qerror != null ? new JKApiException(100, qerror) : null);
+		JKQueryHandle qhandle = (subid != null ? SUBID_MAP.get(subid) : null);
+		String callName = response.getString(JKQueryAsync.CALL_KEY, "");
+
+		try {
+			if (qhandle != null) {
+				qhandle.handle(qhandle, response, ex);
+			} else if (this.orphanHandler != null) {
+				orphanHandler.handle(qhandle, response, ex);
 			}
-			qhandle.handle(qhandle, response, ex);
-		} else if (this.orphanHandler != null) {
-			orphanHandler.handle(qhandle, response, ex);
+			return this;
+		} finally {
+			if (qhandle != null) {
+				if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(CALL_CANCEL)) {
+					SUBID_MAP.remove(subid);
+				}
+			}
 		}
-		return this;
-	}	
-	
+	}
+
 	@Override
 	public String toString() {
-		return "{"
-				+ "class: \"" + this.getClass().getName() 
-				+ "\", uri: \"" + webSockUri
-				+ "\", socket: \"" + socket
-				+ "\", connected: \"" + isConnected()
-				+ "\"}";
+		return "{" + "class: \"" + this.getClass().getName() + "\", uri: \"" + webSockUri + "\", socket: \"" + socket
+		        + "\", connected: \"" + isConnected() + "\"}";
 	}
 }

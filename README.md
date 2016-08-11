@@ -160,7 +160,7 @@ Command line arguments can be specified via a property file, where any command l
 java -jar jkool-java-rest<version>.jar -file cmd.properties -q "get number of events for today"
 ```
 Bleow is an example of a property file containing command line arguments (token should have your jKool API access token):
-```
+```properties
 token=your-access-token
 uri=ws://jkool.jkoolcloud.com/jKool/jkqlasync
 query=get number of events

@@ -24,7 +24,7 @@ public class MyConnectionHandler implements JKConnectionHandler {
 
 	@Override
 	public void error(JKQueryAsync async, Throwable ex) {
-		System.err.println("error:: " + async + ", error=" + ex);
+		System.err.println("error: " + async + ", error=" + ex);
 		ex.printStackTrace();
 	}
 

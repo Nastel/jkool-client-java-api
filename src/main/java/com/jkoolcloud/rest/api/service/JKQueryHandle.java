@@ -18,6 +18,7 @@ package com.jkoolcloud.rest.api.service;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -39,6 +40,7 @@ public class JKQueryHandle implements JKQueryCallback {
 
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
+	private AtomicLong callCount = new AtomicLong(0);
 
 	public JKQueryHandle(String q, JKQueryCallback callback) {
 		this(q, newId(q), callback);
@@ -112,6 +114,14 @@ public class JKQueryHandle implements JKQueryCallback {
 		}
 	}
 	
+	public long getCallCount() {
+		return callCount.get();
+	}
+
+	public void resetCallCount() {
+		callCount.set(0);
+	}
+
 	@Override
 	public int hashCode() {
 		return id.hashCode();
@@ -136,6 +146,7 @@ public class JKQueryHandle implements JKQueryCallback {
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		aLock.lock();
 		try {
+			callCount.incrementAndGet();
 			callback.handle(qhandle, response, ex);
 			calledBack.signalAll();
 		} finally {

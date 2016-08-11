@@ -21,6 +21,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -128,6 +129,16 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 */
 	public JKQueryHandle getDefaultHandle() {
 		return SUBID_MAP.get(DEFAULT_QUERY);
+	}
+
+	/**
+	 * Obtain a list of all active subscription handles
+	 * 
+	 * @return query handle associated with a default response handler
+	 */
+	public List<JKQueryHandle> getAllHandles() {
+		ArrayList<JKQueryHandle> list = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
+		return list;
 	}
 
 	/**

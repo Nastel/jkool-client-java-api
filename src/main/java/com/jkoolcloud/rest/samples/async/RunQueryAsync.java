@@ -47,14 +47,11 @@ public class RunQueryAsync {
 			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			
 			// attempt to cancel subscription to the query results
-			qhandle = jkQueryAsync.cancelAsync(qhandle);
-			System.out.println("cancelAsync: query.handle=" + qhandle);
-
-			// wait or do something else
-			if (qhandle != null) {
+			if (qhandle.isSubscribeQuery()) {
+				qhandle = jkQueryAsync.cancelAsync(qhandle);
+				System.out.println("cancelAsync: query.handle=" + qhandle);
 				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			}
-			System.out.println("Active count=" + JKQueryAsync.getHandleCount());
 			// close async connection, done
 			jkQueryAsync.close();
 		} catch (Exception e) {

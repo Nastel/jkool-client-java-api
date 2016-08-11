@@ -110,7 +110,7 @@ public class MyConnectionHandler implements JKConnectionHandler {
 
 ```
 `jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
-Cancelling active query subscription attempts to stop any streaming traffic associated with the specific subscription.
+Cancelling an active query subscription attempts to stop any streaming traffic associated with a specific subscription.
 Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `setDefaultResponseHandler()` call.
 ```java
 	// run query in async mode with a callback
@@ -119,9 +119,8 @@ Cancellation is also issued asynchronously and any responses that are still in t
 	// attempt to cancel subscription to the query results
 	jkQueryAsync.cancelAsync(qhandle);
 ```
-###Running jKool Subscriptions
-Developers can also subscribe to data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client
-call back handler instance of `JKQueryCallback`. See example below:
+###Subscribing to real-time event streams
+Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:
 ```java
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
@@ -135,9 +134,9 @@ call back handler instance of `JKQueryCallback`. See example below:
 	JKQueryHandle qhandle = jkQueryAsync.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
 	...
 ```
-The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the query matches incoming stream. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams only and never on past data. Use `get` queries to get past data.
+The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams only and never on past data. Use `get` queries to get past data.
 
-###Running jKool Searches on message content
+###Running jKool searches on message content
 `JKQueryAsync` class provides a helper method to run pattern macthes against event message content. See below:
 ```java
 	// run search query in async mode with a callback
@@ -150,7 +149,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
 	...
 ```
-###Running jKool Queries from command line
+###Running jKool queries from command line
 You can run jKool queries from command line using a helper class `JKQLCmd` below:
 ```sh
 	java -jar jkool-java-rest-<version>.jar -a access-token -q "get number of events" -w 30000

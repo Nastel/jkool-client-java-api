@@ -23,13 +23,13 @@ import com.jkoolcloud.rest.samples.async.MyJKQueryCallback;
 
 public class JKQLCmd {
 	public static void main(String[] args) {
+		JKCmdOptions options = new JKCmdOptions(JKQLCmd.class, args);
+		if (options.usage != null) {
+			System.out.println(options.usage);
+			System.exit(-1);
+		}
+		options.print();
 		try {
-			JKCmdOptions options = new JKCmdOptions(JKQLCmd.class, args);
-			if (options.usage != null) {
-				System.out.println(options.usage);
-				System.exit(-1);
-			}
-			options.print();
 			
 			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
@@ -41,15 +41,22 @@ public class JKQLCmd {
 			
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
+			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
 				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
+				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
+				qhandle = jkQueryAsync.cancelAsync(qhandle);
+				if (qhandle != null) {
+					qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+				}
 			}
 			jkQueryAsync.close();
 		} catch (Throwable e) {
+			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
 		}
 	}

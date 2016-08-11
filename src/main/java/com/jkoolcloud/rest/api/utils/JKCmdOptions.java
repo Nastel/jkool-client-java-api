@@ -86,8 +86,13 @@ public class JKCmdOptions {
 	}
 
 	public void print(PrintStream out) {
+		out.println(this.toString());
+	}
+	
+	@Override
+	public String toString() {
 		String formatted = String.format("Options:%s token=%s, query=\"%s\", wait.ms=%d, uri=\"%s\"", appname, token,
 				query, waitTimeMs, uri);
-		out.println(formatted);
+		return formatted;
 	}
 }

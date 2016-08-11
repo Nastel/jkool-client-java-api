@@ -23,14 +23,13 @@ import com.jkoolcloud.rest.api.utils.JKCmdOptions;
 
 public class RunQueryAsync {
 	public static void main(String[] args) {
+		JKCmdOptions options = new JKCmdOptions(args);
+		if (options.usage != null) {
+			System.out.println(options.usage);
+			System.exit(-1);
+		}
+		options.print(System.out);	
 		try {
-			JKCmdOptions options = new JKCmdOptions(args);
-			if (options.usage != null) {
-				System.out.println(options.usage);
-				System.exit(-1);
-			}
-			options.print(System.out);
-			
 			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.uri", options.uri),
@@ -41,20 +40,26 @@ public class RunQueryAsync {
 			
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
-			System.out.println("callAsync: query.handle=" + qhandle);
+			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			
 			// wait for response to come, or do something else
 			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
-			
-			// attempt to cancel subscription to the query results
-			if (qhandle.isSubscribeQuery()) {
-				qhandle = jkQueryAsync.cancelAsync(qhandle);
-				System.out.println("cancelAsync: query.handle=" + qhandle);
+			if (!qhandle.isSubscribeQuery()) {
+				// standard query only one response expected
 				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			} else {
+				// streaming query, so lets collect responses until timeout
+				Thread.sleep(options.waitTimeMs);
+				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
+				qhandle = jkQueryAsync.cancelAsync(qhandle);
+				if (qhandle != null) {
+					qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+				}
 			}
 			// close async connection, done
 			jkQueryAsync.close();
 		} catch (Exception e) {
+			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
 		}
 	}

@@ -103,8 +103,8 @@ public class JKCmdOptions {
 	
 	@Override
 	public String toString() {
-		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, token=%s, max.rows=%d, trace=%b", 
-				appname, uri, query, waitTimeMs, token, maxRows, trace);
+		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b, token=%s", 
+				appname, uri, query, waitTimeMs, maxRows, trace, token);
 		return formatted;
 	}
 }

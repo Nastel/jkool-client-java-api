@@ -47,7 +47,7 @@ public class JKStream extends JKService {
 		if (!event.isValid()) {
 			throw new JKApiException(200, "Invalid event=" + event);
 		}
-		return target.path("event").request().header(TOKEN_KEY, token)
+		return target.path("event").request().header(JK_TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
@@ -55,7 +55,7 @@ public class JKStream extends JKService {
 		if (!snapshot.isValid()) {
 			throw new JKApiException(200, "Invalid snapshot=" + snapshot);
 		}
-		return target.path("snapshot").request().header(TOKEN_KEY, token)
+		return target.path("snapshot").request().header(JK_TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 }

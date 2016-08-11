@@ -28,8 +28,7 @@ import com.jkoolcloud.rest.api.utils.JKUtils;
  * 
  * @author albert
  */
-abstract public class JKService {
-	public static final String TOKEN_KEY = "token";
+abstract public class JKService implements JKQueryConstants {
 	public static final String CONTENT_TYPE = "content-type";
 	public static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 

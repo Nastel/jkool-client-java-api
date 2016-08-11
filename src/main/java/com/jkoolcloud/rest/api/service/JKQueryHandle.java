@@ -29,11 +29,7 @@ import javax.json.JsonObject;
  * 
  * @author albert
  */
-public class JKQueryHandle implements JKQueryCallback {
-	public static final String RETURN_KEY = "result";
-	public static final String SUB_UUID_PREFIX = "$sub/";
-	public static final String SUB_QUERY_PREFIX = "subscribe to ";
-	public static final String UNSUB_QUERY_PREFIX = "unsubscribe ";
+public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
 
 	final String query, id;
 	final boolean subscribe;
@@ -56,16 +52,16 @@ public class JKQueryHandle implements JKQueryCallback {
 
 	public static String newId(String q) {
 		String uuid = UUID.randomUUID().toString();
-		uuid = isSubscribeQ(q) ? SUB_UUID_PREFIX + uuid : uuid;
+		uuid = isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;
 		return uuid;
 	}
 
 	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(SUB_QUERY_PREFIX);
+		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX);
 	}
 
 	public static boolean isSubscribeId(String id) {
-		return id.startsWith(SUB_UUID_PREFIX);
+		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
 
 	public boolean isSubscribeQuery() {
@@ -73,7 +69,7 @@ public class JKQueryHandle implements JKQueryCallback {
 	}
 
 	public boolean isSubscribeId() {
-		return id.startsWith(SUB_UUID_PREFIX);
+		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
 
 	public String getQuery() {

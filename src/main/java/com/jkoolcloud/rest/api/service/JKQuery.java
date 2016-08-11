@@ -32,9 +32,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * @author albert
  */
 public class JKQuery extends JKService {
-	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
 	public static final String QUERY_ENDPOINT = "jkql";
-	public static final String QUERY_KEY = "query";
+	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
 
 	HttpClient httpClient = new DefaultHttpClient();
 
@@ -51,15 +50,15 @@ public class JKQuery extends JKService {
 	}
 
 	public Response call(String query) throws JKApiException {
-		return target.path(QUERY_ENDPOINT).queryParam(QUERY_KEY, query).queryParam(TOKEN_KEY, getToken())
-				.request(MediaType.APPLICATION_JSON).header(TOKEN_KEY, getToken()).get(Response.class);
+		return target.path(QUERY_ENDPOINT).queryParam(QUERY_KEY, query).queryParam(JK_TOKEN_KEY, getToken())
+				.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, getToken()).get(Response.class);
 	}
 
 	public HttpResponse get(String query) throws JKApiException {
 		try {
-			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query + "&" + TOKEN_KEY + "=" + getToken(), "UTF-8");
+			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query + "&" + JK_TOKEN_KEY + "=" + getToken(), "UTF-8");
 			HttpGet request = new HttpGet(basePath + QUERY_ENDPOINT + "?" + urlQuery);
-			request.addHeader(TOKEN_KEY, getToken());
+			request.addHeader(JK_TOKEN_KEY, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);
 			return response;

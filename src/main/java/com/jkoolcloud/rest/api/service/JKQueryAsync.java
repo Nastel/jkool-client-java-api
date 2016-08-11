@@ -40,14 +40,7 @@ import javax.websocket.Session;
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
-	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 
-	public static final String QUERY_KEY = "query";
-	public static final String SUBID_KEY = "subid";
-	public static final String ERROR_KEY = "query_error";
-	public static final String CALL_CANCEL = "unsubscribe";
-	public static final String CALL_KEY = "call";
-	public static final String MAX_ROWS_KEY = "maxResultRows";
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
 			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
 
@@ -231,7 +224,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
-		return callAsync(String.format(SEARCH_QUERY_PREFIX, searchText), maxRows, callback);
+		return callAsync(String.format(JK_SEARCH_QUERY_PREFIX, searchText), maxRows, callback);
 	}
 
 	/**
@@ -243,7 +236,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
-		return callAsync(JKQueryHandle.SUB_QUERY_PREFIX + query, 100, callback);
+		return callAsync(JK_SUB_QUERY_PREFIX + query, 100, callback);
 	}
 
 	/**
@@ -275,8 +268,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
 		JKQueryHandle qhandle = createQueryHandle(query, callback);
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken()).add(QUERY_KEY, query).add(MAX_ROWS_KEY, maxRows)
-				.add(SUBID_KEY, qhandle.getId()).build();
+		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken())
+				.add(JK_QUERY_KEY, query)
+				.add(JK_MAX_ROWS_KEY, maxRows)
+				.add(JK_SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return qhandle;
@@ -322,8 +317,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			throw new IllegalArgumentException("subscription id can not be null");
 		}
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
-				.add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid).add(MAX_ROWS_KEY, 10).add(SUBID_KEY, subid)
+		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken())
+				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX)
+				.add(JK_MAX_ROWS_KEY, 10).add(JK_SUBID_KEY, subid)
 				.build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
@@ -334,7 +330,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public void onMessage(JKWSClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
 		JsonObject jsonMessage = reader.readObject();
-		String subid = jsonMessage.getString(JKQueryAsync.SUBID_KEY, null);
+		String subid = jsonMessage.getString(JKQueryAsync.JK_SUBID_KEY, null);
 		handleResponse(subid, jsonMessage);
 	}
 
@@ -376,10 +372,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @return itself
 	 */
 	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
-		String qerror = response.getString(JKQueryAsync.ERROR_KEY, null);
+		String qerror = response.getString(JKQueryAsync.JK_ERROR_KEY, null);
 		Throwable ex = ((qerror != null && !qerror.trim().isEmpty()) ? new JKApiException(100, qerror) : null);
 		JKQueryHandle qhandle = (subid != null ? SUBID_MAP.get(subid) : null);
-		String callName = response.getString(JKQueryAsync.CALL_KEY, "");
+		String callName = response.getString(JKQueryAsync.JK_CALL_KEY, "");
 
 		try {
 			if (qhandle != null) {
@@ -398,7 +394,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			if (qhandle.getQuery().equalsIgnoreCase(DEFAULT_QUERY)) {
 				return;
 			}
-			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(CALL_CANCEL)) {
+			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
 				SUBID_MAP.remove(qhandle.getId());
 			}
 		}

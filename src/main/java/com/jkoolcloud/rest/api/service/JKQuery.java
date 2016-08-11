@@ -32,9 +32,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * @author albert
  */
 public class JKQuery extends JKService {
-	public static final String QUERY_ENDPOINT = "jkql";
-	public static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
-
 	HttpClient httpClient = new DefaultHttpClient();
 
 	public JKQuery() {

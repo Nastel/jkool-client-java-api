@@ -40,10 +40,6 @@ import javax.websocket.Session;
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
-
-	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
-			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
-
 	private static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS"; // dummy
 																		// query
 																		// associated

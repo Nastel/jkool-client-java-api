@@ -16,6 +16,7 @@
             <includes>
                 <include>LICENSE</include>
                 <include>README.md</include>
+				<include>cmd.properties</include>
             </includes>
             <outputDirectory></outputDirectory>
         </fileSet>

@@ -32,13 +32,15 @@ import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
 /**
- * This class defines an async way to run jKool queries via WebSockets. Supports standard queries and subscriptions.
+ * This class defines an async way to run jKool queries via WebSockets. Supports
+ * standard queries and subscriptions.
  * 
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
-	
+
+	public static final String RESULT_KEY = "query";
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
 	public static final String ERROR_KEY = "query_error";
@@ -46,9 +48,15 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String CALL_KEY = "call";
 	public static final String MAX_ROWS_KEY = "maxResultRows";
 	public static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
-	        "ws://jkool.jkoolcloud.com/jKool/jkqlasync");
+			"ws://jkool.jkoolcloud.com/jKool/jkqlasync");
 
-	private static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS"; // dummy query associated with default response handler
+	private static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS"; // dummy
+																		// query
+																		// associated
+																		// with
+																		// default
+																		// response
+																		// handler
 	private static final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
 
 	URI webSockUri;
@@ -113,8 +121,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
-	 * Obtain a subscription handle for the default response
-	 * call back set by {{@link #setDefaultResponseHandler(JKQueryCallback)}
+	 * Obtain a subscription handle for the default response call back set by {
+	 * {@link #setDefaultResponseHandler(JKQueryCallback)}
 	 * 
 	 * @return query handle associated with a default response handler
 	 */
@@ -138,11 +146,18 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws URISyntaxException
 	 */
 	public synchronized JKQueryAsync connect() throws IOException {
-		if (socket == null) {
-			socket = new JKWSClient(webSockUri, this);
-			socket.connect();
+		try {
+			if (socket == null) {
+				socket = new JKWSClient(webSockUri, this);
+				socket.connect();
+			}
+			return this;
+		} catch (Throwable ex) {
+			if (this.connectHandler != null) {
+				connectHandler.error(this, ex);
+			}
+			throw ex;
 		}
-		return this;
 	}
 
 	/**
@@ -217,14 +232,16 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 *            maximum rows to return
 	 * @return callback callback class
 	 * @throws IOException
+	 * @throws IllegalArgumentException
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
+		if (callback == null) {
+			throw new IllegalArgumentException("callback can not be null");
+		}
 		JKQueryHandle qhandle = createQueryHandle(query, callback);
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
-				.add(QUERY_KEY, query)
-				.add(MAX_ROWS_KEY, maxRows)
-		        .add(SUBID_KEY, qhandle.getId()).build();
+		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken()).add(QUERY_KEY, query).add(MAX_ROWS_KEY, maxRows)
+				.add(SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return qhandle;
@@ -260,16 +277,19 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * Cancel a live subscription
 	 * 
 	 * @param subid
-	 *            subscription id returned by {@#callAsync(String, JKQueryCallback)}
+	 *            subscription id returned by {@#callAsync(String,
+	 *            JKQueryCallback)}
 	 * @return un-subscription response
 	 * @throws IOException
 	 */
 	public JKQueryHandle cancelAsync(String subid) throws IOException {
+		if (subid == null) {
+			throw new IllegalArgumentException("subscription id can not be null");
+		}
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder.add(TOKEN_KEY, getToken())
-		        .add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid)
-				.add(MAX_ROWS_KEY, 10)
-		        .add(SUBID_KEY, subid).build();
+				.add(QUERY_KEY, JKQueryHandle.UNSUB_QUERY_PREFIX + subid).add(MAX_ROWS_KEY, 10).add(SUBID_KEY, subid)
+				.build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return SUBID_MAP.get(subid);
@@ -305,16 +325,17 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(query, callback);		
+		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
-	
+
 	/**
 	 * Handle async message response
 	 * 
 	 * @param subid
-	 *            subscription id returned by {@#callAsync(String, JKQueryCallback)}
+	 *            subscription id returned by {@#callAsync(String,
+	 *            JKQueryCallback)}
 	 * @param response
 	 *            JSON message response
 	 * @return itself
@@ -345,15 +366,11 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(CALL_CANCEL)) {
 				SUBID_MAP.remove(qhandle.getId());
 			}
-		}		
+		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return "{"
-				+ "class: \"" + this.getClass().getName()
-				+ "\", uri: \"" + webSockUri
-				+ "\", socket: \"" + socket
-		        + "\"}";
+		return "{" + "class: \"" + this.getClass().getSimpleName() + "\", uri: \"" + webSockUri + "\"}";
 	}
 }

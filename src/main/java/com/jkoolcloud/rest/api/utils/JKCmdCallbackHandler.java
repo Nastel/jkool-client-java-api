@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.samples.async;
+package com.jkoolcloud.rest.api.utils;
 
 import javax.json.JsonObject;
 
 import com.jkoolcloud.rest.api.service.JKQueryCallback;
 import com.jkoolcloud.rest.api.service.JKQueryHandle;
-import com.jkoolcloud.rest.api.utils.JKUtils;
 
-public class MyJKQueryCallback implements JKQueryCallback {
+public class JKCmdCallbackHandler implements JKQueryCallback {
+
 	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
+			System.err.println("Error for query=" + qhandle + ", error=" + ex.getMessage());
 			ex.printStackTrace();
-		}	
-		System.out.println("response: handle=" + qhandle);
-		System.out.println(JKUtils.prettyPrint(response));
+		} else {
+			System.out.println(JKUtils.prettyPrint(response));
+		}
 	}
 }

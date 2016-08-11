@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.samples.query;
+package com.jkoolcloud.rest.api.utils;
 
 import java.io.PrintStream;
 
-public class JKClientOptions {
-	public String uri;
+import com.jkoolcloud.rest.api.service.JKQueryAsync;
+
+public class JKCmdOptions {
 	public String query;
 	public String token;
 	public String usage;
+	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
 	public long waitTimeMs = 20000;
 	
-	public JKClientOptions(String [] args) {
+	public JKCmdOptions(String [] args) {
 		parseOptions(args);
 	}
 
@@ -41,6 +43,10 @@ public class JKClientOptions {
 			return;
 		}
     }
+	
+	public void print() {
+		print(System.out);
+	}
 	
 	public void print(PrintStream out) {
 		out.println("Options: token=" + token + ", query=\"" + query + "\", wait.ms=" + waitTimeMs + ", uri=\"" + uri + "\"");

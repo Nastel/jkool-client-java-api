@@ -15,9 +15,18 @@
  */
 package com.jkoolcloud.rest.api.utils;
 
+import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.json.Json;
+import javax.json.JsonStructure;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,11 +60,6 @@ public class JKUtils {
 	 */
 	public static String VM_NETADDR;
 	
-	/**
-	 * JSON object mapper instance
-	 */
-	public static final ObjectMapper MAPPER = newObjectMapper();
-
 	/**
 	 * JVM runtime name
 	 */
@@ -130,10 +134,6 @@ public class JKUtils {
 		return VM_NAME;
 	}
 
-	public static ObjectMapper getJsonMapper() {
-		return MAPPER;
-	}
-	
 	public static ObjectMapper newObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -141,4 +141,30 @@ public class JKUtils {
 		mapper.registerModule(new JodaModule());
 		return mapper;
 	}
+	
+	public static String prettyPrint(JsonStructure json) {
+		return jsonFormat(json, JsonGenerator.PRETTY_PRINTING);
+	}
+
+	public static String jsonFormat(JsonStructure json, String... options) {
+		StringWriter stringWriter = new StringWriter();
+		Map<String, Boolean> config = buildConfig(options);
+		JsonWriterFactory writerFactory = Json.createWriterFactory(config);
+		JsonWriter jsonWriter = writerFactory.createWriter(stringWriter);
+
+		jsonWriter.write(json);
+		jsonWriter.close();
+		return stringWriter.toString();
+	}
+
+	private static Map<String, Boolean> buildConfig(String... options) {
+		Map<String, Boolean> config = new HashMap<String, Boolean>();
+
+		if (options != null) {
+			for (String option : options) {
+				config.put(option, true);
+			}
+		}
+		return config;
+	}	
 }

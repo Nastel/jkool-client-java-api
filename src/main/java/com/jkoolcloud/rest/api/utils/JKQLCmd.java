@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.samples.async;
+package com.jkoolcloud.rest.api.utils;
 
 import java.util.concurrent.TimeUnit;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryHandle;
-import com.jkoolcloud.rest.api.utils.JKCmdOptions;
+import com.jkoolcloud.rest.samples.async.MyJKQueryCallback;
 
-public class RunQueryAsync {
+public class JKQLCmd {
 	public static void main(String[] args) {
 		try {
 			JKCmdOptions options = new JKCmdOptions(args);
@@ -29,35 +29,27 @@ public class RunQueryAsync {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
-			options.print(System.out);
+			options.print();
 			
 			// setup jKool WebSocket connection and connect
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.uri", options.uri),
 					System.getProperty("jk.access.token", options.token));
-			jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
-			jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
+			jkQueryAsync.setConnectionHandler(new JKCmdConnectionHandler());
+			jkQueryAsync.setDefaultResponseHandler(new JKCmdCallbackHandler());
 			jkQueryAsync.connect();
 			
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
-			System.out.println("callAsync: query.handle=" + qhandle);
-			
-			// wait for response to come, or do something else
-			qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
-			
-			// attempt to cancel subscription to the query results
-			qhandle = jkQueryAsync.cancelAsync(qhandle);
-			System.out.println("cancelAsync: query.handle=" + qhandle);
-
-			// wait or do something else
-			if (qhandle != null) {
+			if (!qhandle.isSubscribeQuery()) {
+				// standard query only one response expected
 				qhandle.awaitOnCallback(options.waitTimeMs, TimeUnit.MILLISECONDS);
+			} else {
+				// streaming query, so lets collect responses until timeout
+				Thread.sleep(options.waitTimeMs);
 			}
-			System.out.println("Active count=" + JKQueryAsync.getHandleCount());
-			// close async connection, done
 			jkQueryAsync.close();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}

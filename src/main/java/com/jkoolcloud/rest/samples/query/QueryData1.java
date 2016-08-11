@@ -19,6 +19,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
 import com.jkoolcloud.rest.api.service.JKQuery;
+import com.jkoolcloud.rest.api.utils.JKCmdOptions;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL
@@ -28,7 +29,7 @@ import com.jkoolcloud.rest.api.service.JKQuery;
 public class QueryData1 {
 	public static void main(String[] args) {
 		try {
-			JKClientOptions options = new JKClientOptions(args);
+			JKCmdOptions options = new JKCmdOptions(args);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);

@@ -30,6 +30,7 @@ import javax.json.JsonObject;
  * @author albert
  */
 public class JKQueryHandle implements JKQueryCallback {
+	public static final String RETURN_KEY = "result";
 	public static final String SUB_UUID_PREFIX = "$sub/";
 	public static final String SUB_QUERY_PREFIX = "subscribe to ";
 	public static final String UNSUB_QUERY_PREFIX = "unsubscribe ";

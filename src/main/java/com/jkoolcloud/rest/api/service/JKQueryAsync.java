@@ -41,7 +41,6 @@ import javax.websocket.Session;
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public static final String SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 
-	public static final String RESULT_KEY = "query";
 	public static final String QUERY_KEY = "query";
 	public static final String SUBID_KEY = "subid";
 	public static final String ERROR_KEY = "query_error";

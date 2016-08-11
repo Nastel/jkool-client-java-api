@@ -1,7 +1,7 @@
 # jKool Streaming RESTFul API
 
 ###Why jKool Rest Clients?
-This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  “token” in order to stream. This token is associated with a repository assigned to you when you sign-up for jKool. The token is passed in the request header. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder.  Please be aware the the Swagger yaml file is documenting every field that can be passed via Resful Services and the when using the helper classes, many of these fields are automatically populated for you.
+This jKool Java Rest Client contains Java helper classes that will help you to get up and running very quickly with the jKool Streaming API. You will need a streaming  “token” in order to stream. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API.
 
 ###jKool Streaming Concepts and Documentation
 You can find very comprehensive documentation on jKool Data Types and Concepts in our jKool Streaming Guide found here: https://www.jkoolcloud.com/download/jkool-model.pdf. But basically, there are four types of data that can be streamed into jKool. They are:
@@ -9,7 +9,8 @@ You can find very comprehensive documentation on jKool Data Types and Concepts i
 * Activities: Represents a group of events and other activities (e.g. transactions).
 * Snapshots: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
 * Properties: simple metrics (name, value pairs). Properties can be associated with events, activities. 
-* In addition to the Streaming Guide, this Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
+
+In addition to the Streaming Guide, this Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ###Streaming Examples
 To use this sample code please do the following:

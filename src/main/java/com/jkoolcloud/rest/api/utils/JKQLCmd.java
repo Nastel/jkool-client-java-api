@@ -24,7 +24,7 @@ import com.jkoolcloud.rest.samples.async.MyJKQueryCallback;
 public class JKQLCmd {
 	public static void main(String[] args) {
 		try {
-			JKCmdOptions options = new JKCmdOptions(args);
+			JKCmdOptions options = new JKCmdOptions(JKQLCmd.class, args);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);

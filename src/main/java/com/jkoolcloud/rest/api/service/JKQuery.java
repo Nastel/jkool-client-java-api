@@ -49,12 +49,12 @@ public class JKQuery extends JKService {
 		super(endPoint, token);
 	}
 
-	public Response call(String query) throws JKApiException {
+	public Response call(String query) throws JKStreamException {
 		return target.path(QUERY_ENDPOINT).queryParam(QUERY_KEY, query).queryParam(JK_TOKEN_KEY, getToken())
 				.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, getToken()).get(Response.class);
 	}
 
-	public HttpResponse get(String query) throws JKApiException {
+	public HttpResponse get(String query) throws JKStreamException {
 		try {
 			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query + "&" + JK_TOKEN_KEY + "=" + getToken(), "UTF-8");
 			HttpGet request = new HttpGet(basePath + QUERY_ENDPOINT + "?" + urlQuery);
@@ -63,7 +63,7 @@ public class JKQuery extends JKService {
 			HttpResponse response = httpClient.execute(request);
 			return response;
 		} catch (Throwable e) {
-			throw new JKApiException(300, "Failed run query=" + query, e);
+			throw new JKStreamException(300, "Failed run query=" + query, e);
 		}
 	}
 }

@@ -65,16 +65,16 @@ abstract public class JKService implements JKQueryConstants {
 	 * 
 	 * @param obj java object instance (non null)
 	 * @return JSON representation of the object
-	 * @throws JKApiException
+	 * @throws JKStreamException
 	 */
-	public String serialize(Object obj) throws JKApiException {
+	public String serialize(Object obj) throws JKStreamException {
 		if (obj == null) {
-			throw new JKApiException(500, "Object must not be null");			
+			throw new JKStreamException(500, "Object must not be null");			
 		}
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
-			throw new JKApiException(600, "Failed to serialize object: " + e.getMessage(), e);
+			throw new JKStreamException(600, "Failed to serialize object: " + e.getMessage(), e);
 		}
 	}	
 }

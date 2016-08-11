@@ -43,17 +43,17 @@ public class JKStream extends JKService {
 		super(endPoint, token);
 	}
 
-	public Response post(Trackable event) throws JKApiException {
+	public Response post(Trackable event) throws JKStreamException {
 		if (!event.isValid()) {
-			throw new JKApiException(200, "Invalid event=" + event);
+			throw new JKStreamException(200, "Invalid event=" + event);
 		}
 		return target.path("event").request().header(JK_TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
-	public Response post(Snapshot snapshot) throws JKApiException {
+	public Response post(Snapshot snapshot) throws JKStreamException {
 		if (!snapshot.isValid()) {
-			throw new JKApiException(200, "Invalid snapshot=" + snapshot);
+			throw new JKStreamException(200, "Invalid snapshot=" + snapshot);
 		}
 		return target.path("snapshot").request().header(JK_TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));

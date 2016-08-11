@@ -15,60 +15,44 @@
  */
 package com.jkoolcloud.rest.api.service;
 
-import java.util.Map;
-import java.util.List;
 
 /**
  * This class implements a standard jKool client API exception
  * 
  * @author albert
  */
-public class JKApiException extends Exception {
+public class JKStreamException extends Exception {
 	/**
 	 * 
 	 */
     private static final long serialVersionUID = 293667154457636080L;
     
 	private int code = 0;
-	private Map<String, List<String>> responseHeaders = null;
-	private String responseBody = null;
 
-	public JKApiException(String message) {
+	public JKStreamException(String message) {
 		super(message);
 	}
 
-	public JKApiException(int code, String message) {
+	public JKStreamException(String message, Throwable e) {
+		super(message, e);
+	}
+
+	public JKStreamException(int code, String message) {
 		super(message);
 		this.code = code;
 	}
 
-	public JKApiException(int code, String message, Throwable e) {
+	public JKStreamException(int code, String message, Throwable e) {
 		super(message, e);
 		this.code = code;
 	}
 
-	public JKApiException(int code, String message, Map<String, List<String>> responseHeaders, String responseBody, Throwable e) {
-		super(message, e);
-		this.code = code;
-		this.responseHeaders = responseHeaders;
-		this.responseBody = responseBody;
-	}
-
+	/**
+	 * Get exception code
+	 * 
+	 * @return exception code, 0 if none
+	 */
 	public int getCode() {
 		return code;
-	}
-
-	/**
-	 * Get the HTTP response headers.
-	 */
-	public Map<String, List<String>> getResponseHeaders() {
-		return responseHeaders;
-	}
-
-	/**
-	 * Get the HTTP response body.
-	 */
-	public String getResponseBody() {
-		return responseBody;
 	}
 }

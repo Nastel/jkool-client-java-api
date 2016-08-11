@@ -38,7 +38,7 @@ public class MovieEvents2 {
 
 	public static void main(String[] args) {
 		try {
-			JKStream jkSend = new JKStream("your-access-token");
+			JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
 
 			// Create some custom fields
 			Property propertyName = new Property("MovieName", "String", "Casablanca", null);

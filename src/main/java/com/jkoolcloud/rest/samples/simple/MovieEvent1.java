@@ -34,7 +34,7 @@ public class MovieEvent1 {
 
 	public static void main(String[] args) {
 		try {
-			JKStream jkSend = new JKStream("your-access-token");
+			JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
 
 			// Create the Event
 			// Attach it's properties

@@ -17,6 +17,7 @@ package com.jkoolcloud.rest.api.service;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -89,6 +90,30 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public JKQueryAsync setConnectionHandler(JKConnectionHandler cHandler) {
 		this.connectHandler = cHandler;
 		return this;
+	}
+
+	/**
+	 * Create a default connection handler instance
+	 * 
+	 * @param out output print stream
+	 * @param trace flag
+	 * @return new instance of {@link JKConnectionHandler}
+	 */
+	public JKConnectionHandler traceConnectionHandler(PrintStream out, boolean trace) {
+		return new TraceJKConnectionHandler(out, trace);
+	}
+
+	/**
+	 * Create a default query callback instance
+	 * 
+	 * @param out output print stream
+	 * @param trace flag
+	 * @param trace 
+	 * 
+	 * @return new instance of {@link JKQueryCallback}
+	 */
+	public JKQueryCallback traceJKQueryCallback(PrintStream out, boolean trace) {
+		return new TraceJKQueryCallback(out, trace);
 	}
 
 	/**

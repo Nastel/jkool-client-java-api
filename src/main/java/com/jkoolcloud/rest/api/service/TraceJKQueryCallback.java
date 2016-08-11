@@ -13,22 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jkoolcloud.rest.api.utils;
+package com.jkoolcloud.rest.api.service;
+
+import java.io.PrintStream;
 
 import javax.json.JsonObject;
 
-import com.jkoolcloud.rest.api.service.JKQueryCallback;
-import com.jkoolcloud.rest.api.service.JKQueryHandle;
+import com.jkoolcloud.rest.api.utils.JKUtils;
 
-public class JKCmdCallbackHandler implements JKQueryCallback {
-
+public class TraceJKQueryCallback implements JKQueryCallback {
+	PrintStream out;
+	boolean trace = true;
+	
+	public TraceJKQueryCallback(PrintStream out) {
+		this(out, true);
+	}
+	
+	public TraceJKQueryCallback(PrintStream out, boolean flag) {
+		this.out = out;
+		setTrace(flag);
+	}
+	
 	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
-			System.err.println("Error for query=" + qhandle + ", error=" + ex.getMessage());
-			ex.printStackTrace();
+			out.println("Error on handle=" + qhandle + ", error=" + ex.getMessage());
+			ex.printStackTrace(out);
 		} else {
-			System.out.println(JKUtils.prettyPrint(response));
+			out.println(JKUtils.prettyPrint(response));
 		}
+	}
+	
+	public TraceJKQueryCallback setTrace(boolean flag) {
+		this.trace = flag;
+		return this;
 	}
 }

@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryHandle;
-import com.jkoolcloud.rest.samples.async.MyJKQueryCallback;
 
 public class JKQLCmd {
 	public static void main(String[] args) {
@@ -35,12 +34,12 @@ public class JKQLCmd {
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.uri", options.uri),
 					System.getProperty("jk.access.token", options.token));
-			jkQueryAsync.setConnectionHandler(new JKCmdConnectionHandler());
-			jkQueryAsync.setDefaultResponseHandler(new JKCmdCallbackHandler());
+			jkQueryAsync.setConnectionHandler(jkQueryAsync.traceConnectionHandler(System.out, options.trace));
+			jkQueryAsync.setDefaultResponseHandler(jkQueryAsync.traceJKQueryCallback(System.out, options.trace));
 			jkQueryAsync.connect();
 			
 			// run query in async mode with a callback
-			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, new MyJKQueryCallback());
+			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, jkQueryAsync.traceJKQueryCallback(System.out, options.trace));
 			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected

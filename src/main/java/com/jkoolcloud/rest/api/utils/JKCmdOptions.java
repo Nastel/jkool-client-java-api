@@ -27,7 +27,9 @@ public class JKCmdOptions {
 	public String usage;
 	public String appname = DEFAULT_CMD_NAME;
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
+	public boolean trace = false;
 	public long waitTimeMs = 20000;
+	public int maxRows = 50;
 
 	public JKCmdOptions(String[] args) {
 		parseOptions(args);
@@ -74,9 +76,19 @@ public class JKCmdOptions {
 				}
 				waitTimeMs = Long.parseLong(args[++i]);
 			}
+			if ("-rows".equals(arg)) {
+				if (i == args.length) {
+					usage = "Must specify maximum rows with -rows";
+					return;
+				}
+				maxRows = Integer.parseInt(args[++i]);
+			}
+			if ("-trace".equals(arg)) {
+				trace = true;
+			}
 		}
 		if (query == null || token == null) {
-			usage = String.format("Usage: %s -a token -q query [-u url] [-w wait-ms]", appname);
+			usage = String.format("Usage: %s -a token -q query [-u url -w wait-ms -rows max-rows -trace]", appname);
 			return;
 		}
 	}
@@ -91,8 +103,8 @@ public class JKCmdOptions {
 	
 	@Override
 	public String toString() {
-		String formatted = String.format("Options:%s token=%s, query=\"%s\", wait.ms=%d, uri=\"%s\"", appname, token,
-				query, waitTimeMs, uri);
+		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, token=%s, max.rows=%d, trace=%b", 
+				appname, uri, query, waitTimeMs, token, maxRows, trace);
 		return formatted;
 	}
 }

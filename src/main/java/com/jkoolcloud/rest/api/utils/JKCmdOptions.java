@@ -15,7 +15,11 @@
  */
 package com.jkoolcloud.rest.api.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Properties;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
 
@@ -46,51 +50,74 @@ public class JKCmdOptions {
 	}
 
 	private void parseOptions(String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
-			if ("-a".equals(arg)) {
-				if (i == args.length) {
-					usage = "Must specify access token with -a";
-					return;
+		try {
+			for (int i = 0; i < args.length; i++) {
+				String arg = args[i];
+				if ("-a".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify access token with -a";
+						return;
+					}
+					token = args[++i];
 				}
-				token = args[++i];
-			}
-			if ("-q".equals(arg)) {
-				if (i == args.length) {
-					usage = "Must specify query with -q";
-					return;
+				if ("-q".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify query with -q";
+						return;
+					}
+					query = args[++i];
 				}
-				query = args[++i];
-			}
-			if ("-u".equals(arg)) {
-				if (i == args.length) {
-					usage = "Must specify URI with -u";
-					return;
+				if ("-u".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify URI with -u";
+						return;
+					}
+					uri = args[++i];
 				}
-				uri = args[++i];
-			}
-			if ("-w".equals(arg)) {
-				if (i == args.length) {
-					usage = "Must specify wait time (ms) -w";
-					return;
+				if ("-file".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify file name with -file";
+						return;
+					}
+					loadProperties(args[++i]);
 				}
-				waitTimeMs = Long.parseLong(args[++i]);
-			}
-			if ("-rows".equals(arg)) {
-				if (i == args.length) {
-					usage = "Must specify maximum rows with -rows";
-					return;
+				if ("-w".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify wait time (ms) -w";
+						return;
+					}
+					waitTimeMs = Long.parseLong(args[++i]);
 				}
-				maxRows = Integer.parseInt(args[++i]);
+				if ("-rows".equals(arg)) {
+					if (i == args.length) {
+						usage = "Must specify maximum rows with -rows";
+						return;
+					}
+					maxRows = Integer.parseInt(args[++i]);
+				}
+				if ("-trace".equals(arg)) {
+					trace = true;
+				}
 			}
-			if ("-trace".equals(arg)) {
-				trace = true;
+		} catch (Throwable e) {
+			e.printStackTrace();
+		} finally {
+			if (query == null || token == null) {
+				usage = String.format("Usage: %s -a token -q query [-u url -w wait-ms -rows max-rows -trace]", appname);
+				return;
 			}
 		}
-		if (query == null || token == null) {
-			usage = String.format("Usage: %s -a token -q query [-u url -w wait-ms -rows max-rows -trace]", appname);
-			return;
-		}
+	}
+
+	private void loadProperties(String file) throws FileNotFoundException, IOException {
+		Properties props = new Properties();
+		props.load(new FileInputStream(file));
+		token = props.getProperty("token", token);
+		query = props.getProperty("query", query);
+		uri = props.getProperty("uri", uri);
+		waitTimeMs = Long.parseLong(props.getProperty("wait", String.valueOf(waitTimeMs)));
+		maxRows = Integer.parseInt(props.getProperty("maxrows", String.valueOf(maxRows)));
+		trace = Boolean.parseBoolean(props.getProperty("trace", String.valueOf(trace)));
 	}
 
 	public void print() {
@@ -100,11 +127,11 @@ public class JKCmdOptions {
 	public void print(PrintStream out) {
 		out.println(this.toString());
 	}
-	
+
 	@Override
 	public String toString() {
-		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b, token=%s", 
-				appname, uri, query, waitTimeMs, maxRows, trace, token);
+		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b, token=%s",
+		        appname, uri, query, waitTimeMs, maxRows, trace, token);
 		return formatted;
 	}
 }

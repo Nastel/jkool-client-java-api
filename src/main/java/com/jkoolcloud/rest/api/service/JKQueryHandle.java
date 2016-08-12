@@ -56,6 +56,11 @@ public class JKQueryHandle implements JKQueryConstants {
 		this.subscribe = isSubscribeQ(q);
 	}
 
+	public static String newId() {
+		String uuid = UUID.randomUUID().toString();
+		return uuid;
+	}
+
 	public static String newId(String q) {
 		String uuid = UUID.randomUUID().toString();
 		uuid = isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;

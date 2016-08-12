@@ -88,6 +88,13 @@ public class MyJKQueryCallback implements JKQueryCallback {
 			System.out.println("error: handle=" + qhandle + ", error=" + ex);
 		}	
 	}
+
+	@Override
+    public void dead(JKQueryHandle qhandle) {
+		if (trace) {
+			out.println("Dead handle=" + qhandle + ", dead=" + qhandle.isDead());
+		}
+	}
 }
 ```
 Connection handler can be used to intercept and handle WebSocket connection events such as open, close, error:
@@ -173,6 +180,7 @@ query=get number of events
 trace=true
 wait=15000
 maxrows=100
+retry=0
 #get=jk_response/rows-found
 ```
 

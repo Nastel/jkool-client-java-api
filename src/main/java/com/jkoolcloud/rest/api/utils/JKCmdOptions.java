@@ -116,24 +116,25 @@ public class JKCmdOptions {
 				trace = true;
 			}
 		}		
+		if (query == null || token == null) {
+			usage = String.format("%s options:\n\t"
+					+ "-token access-token\n\t"
+					+ "-query jkql-query\n\t"
+					+ "[-file args-file]\n\t"
+					+ "[-url url]\n\t"
+					+ "[-get json-path]\n\t"
+					+ "[-search search-text]\n\t"
+					+ "[-wait wait-ms]\n\t"
+					+ "[-rows max-rows]\n\t"
+					+ "[-trace]", appname);
+		}
 	}
 	
 	private void parseOptions(String[] args) {
 		try {
 			processOptions(args);
-			if (query == null || token == null) {
-				usage = String.format("%s options:\n\t"
-						+ "-token access-token\n\t"
-						+ "-query jkql-query\n\t"
-						+ "[-file args-file]\n\t"
-						+ "[-url url]\n\t"
-						+ "[-get json-path]\n\t"
-						+ "[-search search-text]\n\t"
-						+ "[-wait wait-ms]\n\t"
-						+ "[-rows max-rows]\n\t"
-						+ "[-trace]", appname);
-			}
 		} catch (Throwable e) {
+			usage = "Must specify valid arguments";
 			e.printStackTrace();
 		}
 	}
@@ -164,7 +165,7 @@ public class JKCmdOptions {
 
 	@Override
 	public String toString() {
-		String formatted = String.format("%s: uri=\"%s\"," +
+		String formatted = String.format("%s: uri=\"%s\", " +
 				"query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b",
 		        appname, uri, query, waitTimeMs, maxRows, trace);
 		return formatted;

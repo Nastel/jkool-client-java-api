@@ -37,7 +37,9 @@ public class JKQLCmd {
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.uri", options.uri),
 					System.getProperty("jk.access.token", options.token));
-			jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
+			if (options.retryTimeMs > 0) {
+				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
+			}
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.setDefaultResponseHandler(new JKTraceQueryCallback(System.out, options.json_path, options.trace));
 			jkQueryAsync.connect();

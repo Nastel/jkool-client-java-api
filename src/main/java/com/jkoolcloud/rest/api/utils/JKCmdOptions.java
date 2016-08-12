@@ -47,7 +47,7 @@ public class JKCmdOptions {
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
 	public boolean trace = false;
 	public long waitTimeMs = 20000;
-	public long retryTimeMs = 20000;
+	public long retryTimeMs = 0;
 	public int maxRows = 50;
 
 	public JKCmdOptions(String[] args) {

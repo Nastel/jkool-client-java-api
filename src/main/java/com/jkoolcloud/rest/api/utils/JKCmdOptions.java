@@ -144,6 +144,7 @@ public class JKCmdOptions {
 		uri = props.getProperty("uri", uri);
 		token = props.getProperty("token", token);
 		query = props.getProperty("query", query);
+		json_path = props.getProperty("get", json_path);
 		search = props.getProperty("search", search);
 		if (search != null) {
 			query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);

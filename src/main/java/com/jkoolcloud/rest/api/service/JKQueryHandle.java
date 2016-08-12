@@ -41,6 +41,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
+	private final Condition deadCall = aLock.newCondition();
 	private AtomicLong callCount = new AtomicLong(0);
 
 	public JKQueryHandle(String q, JKQueryCallback callback) {
@@ -133,6 +134,33 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
+		aLock.lock();
+		try {
+			return deadCall.awaitUntil(until);
+		} finally {
+			aLock.unlock();
+		}
+	}
+	
+	public void awaitOnDead() throws InterruptedException {
+		aLock.lock();
+		try {
+			deadCall.await();
+		} finally {
+			aLock.unlock();
+		}
+	}
+	
+	public boolean awaitOnDead(long time, TimeUnit unit) throws InterruptedException {
+		aLock.lock();
+		try {
+			return deadCall.await(time, unit);
+		} finally {
+			aLock.unlock();
+		}
+	}
+	
 	public long getCallCount() {
 		return callCount.get();
 	}
@@ -166,7 +194,7 @@ public class JKQueryHandle implements JKQueryConstants {
 		try {
 			dead = true;
 			callback.dead(this);
-			calledBack.signalAll();
+			deadCall.signalAll();
 		} finally {
 			aLock.unlock();
 		}

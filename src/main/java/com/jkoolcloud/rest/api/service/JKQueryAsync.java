@@ -51,7 +51,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 	URI webSockUri;
 	JKWSClient socket;
-	JKQueryHandle orphanHandler;
+
+	Vector<JKQueryHandle> defCallbacks = new Vector<JKQueryHandle>(5, 5);
 	Vector<JKConnectionHandler> conHandlers = new Vector<JKConnectionHandler>(5, 5);
 
 	public JKQueryAsync(String token) throws URISyntaxException {
@@ -71,8 +72,26 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		this.webSockUri = wsUri;
 	}
 
-	public JKQueryAsync setDefaultResponseHandler(JKQueryCallback callback) {
-		this.orphanHandler = createQueryHandle(DEFAULT_QUERY, callback);
+	/**
+	 * Add a default callback handler for responses
+	 * not handled by a specific query handler
+	 * 
+	 * @param callback query callback handler
+	 * @return itself
+	 */
+	public JKQueryAsync addDefaultCallbackHandler(JKQueryCallback callback) {
+		defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callback));
+		return this;
+	}
+
+	/**
+	 * Remove a callback handler from the list of default handlers
+	 * 
+	 * @param callback callback handler
+	 * @return itself
+	 */
+	public JKQueryAsync removeConnectionHandler(JKQueryCallback callback) {
+		defCallbacks.remove(callback);
 		return this;
 	}
 
@@ -128,22 +147,22 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
-	 * Obtain a subscription handle for the default response call back set by {
-	 * {@link #setDefaultResponseHandler(JKQueryCallback)}
-	 * 
-	 * @return query handle associated with a default response handler
-	 */
-	public JKQueryHandle getDefaultHandle() {
-		return SUBID_MAP.get(DEFAULT_QUERY);
-	}
-
-	/**
 	 * Obtain a list of all active subscription handles
 	 * 
 	 * @return query handle associated with a default response handler
 	 */
 	public List<JKQueryHandle> getAllHandles() {
 		ArrayList<JKQueryHandle> list = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
+		return list;
+	}
+
+	/**
+	 * Obtain a list of all default subscription handles
+	 * 
+	 * @return list of all default subscription handles
+	 */
+	public List<JKQueryHandle> getAllDefaultHandles() {
+		ArrayList<JKQueryHandle> list = new ArrayList<JKQueryHandle>(defCallbacks);
 		return list;
 	}
 
@@ -371,10 +390,6 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	protected JKQueryAsync restoreSubscriptions(long timeOpen) throws IOException {
 		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
 		for (JKQueryHandle handle: handleList) {
-			if (handle.getQuery().equalsIgnoreCase(DEFAULT_QUERY)) {
-				// this is an internal catch all handle (do not issue to server).
-				continue;
-			}
 			if (handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeOpen)) {
 				// restore subscription
 				callAsync(handle);
@@ -387,6 +402,20 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		return this;
     }
 
+	/**
+	 * Invoke default handles with a given response, exception
+	 * 
+	 * @param response
+	 *            JSON message response
+	 * @param ex exception
+	 * @return itself
+	 */
+	protected void invokeDefaultHandles(JsonObject response, Throwable ex) {
+		for (JKQueryHandle handle: defCallbacks) {
+			handle.handle(response, ex);
+		}		
+	}
+	
 	/**
 	 * Handle async message response
 	 * 
@@ -406,8 +435,8 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		try {
 			if (qhandle != null) {
 				qhandle.handle(response, ex);
-			} else if (orphanHandler != null) {
-				orphanHandler.handle(response, ex);
+			} else if (defCallbacks.size() > 0) {
+				invokeDefaultHandles(response, ex);
 			}
 			return this;
 		} finally {
@@ -417,9 +446,6 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 	private void cleanHandlers(String callName, JKQueryHandle qhandle) {
 		if (qhandle != null) {
-			if (qhandle.getQuery().equalsIgnoreCase(DEFAULT_QUERY)) {
-				return;
-			}
 			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
 				SUBID_MAP.remove(qhandle.getId());
 				qhandle.dead();

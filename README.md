@@ -69,16 +69,16 @@ Developers can also invoke JKQL queries asynchronously using callbacks. See exam
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
 		
 	// setup a default response handler for responses not associated with any specific query
-	jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
+	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
 		
 	// run query in async mode with a callback
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-	qhandle.awaitOnCallback(10000, TimeUnit.MILLISECONDS); // optional wait 10s or until response
+	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s query finished
 	...
 	jkQueryAsync.close(); // close connection
 ```
-`MyJKQueryCallback` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.setDefaultResponseHandler(...)` call.
+`MyJKQueryCallback` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call.
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override
@@ -120,7 +120,7 @@ public class MyConnectionHandler implements JKConnectionHandler {
 ```
 `jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
 Cancelling an active query subscription attempts to stop any streaming traffic associated with a specific subscription.
-Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `setDefaultResponseHandler()` call.
+Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `addDefaultCallbackHandler()` call.
 ```java
 	// run query in async mode with a callback
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
@@ -137,7 +137,7 @@ Developers can also subscribe to live data streams using `JKQueryAsync` class. S
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
 		
 	// setup a default response handler for responses not associated with any specific query
-	jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
+	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
 		
 	// run subscription query in async mode with a callback

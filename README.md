@@ -153,11 +153,11 @@ The code above is equivalent to the JKQL statement `get events where message con
 ###Running jKool queries from command line
 You can run jKool queries from command line using a helper class `JKQLCmd` below:
 ```sh
-	java -jar jkool-java-rest-<version>.jar -a access-token -q "get number of events" -w 30000
+	java -jar jkool-java-rest-<version>.jar -token access-token -query "get number of events" -wait 30000
 ```
 Command line arguments can be specified via a property file, where any command line argument overrides values specified in the property file:
 ```sh
-java -jar jkool-java-rest<version>.jar -file cmd.properties -q "get number of events for today"
+java -jar jkool-java-rest<version>.jar -file cmd.properties -query "get number of events for today"
 ```
 Bleow is an example of a property file containing command line arguments (token should have your jKool API access token):
 ```properties
@@ -167,6 +167,7 @@ query=get number of events
 trace=true
 wait=15000
 maxrows=100
+#get=jk_response/rows-found
 ```
 
 ###Important note

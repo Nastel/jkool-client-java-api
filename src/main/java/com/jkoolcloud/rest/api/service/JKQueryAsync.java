@@ -214,7 +214,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * 
 	 * @param searchText
 	 *            search text
-	 * @return callback callback class
+	 * @return query handle associated with the query
 	 * @throws IOException
 	 */
 	public JKQueryHandle searchAsync(String searchText, JKQueryCallback callback) throws IOException {
@@ -228,7 +228,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 *            search text
 	 * @param maxRows
 	 *            maximum rows to return
-	 * @return callback callback class
+	 * @return query handle associated with the query
 	 * @throws IOException
 	 */
 	public JKQueryHandle searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
@@ -240,7 +240,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * 
 	 * @param query
 	 *            JKQL query
-	 * @return callback callback class
+	 * @return query handle associated with the query
 	 * @throws IOException
 	 */
 	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
@@ -252,7 +252,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * 
 	 * @param query
 	 *            JKQL query
-	 * @return callback callback class
+	 * @return query handle associated with the query
 	 * @throws IOException
 	 */
 	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws IOException {
@@ -266,7 +266,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 *            JKQL query
 	 * @param maxRows
 	 *            maximum rows to return
-	 * @return callback callback class
+	 * @return query handle associated with the query
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 */
@@ -285,6 +285,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 *            JKQL query handle
 	 * @throws IOException
 	 * @throws IllegalArgumentException
+	 * @return query handle associated with the query
 	 */
 	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -295,6 +296,32 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return qhandle;
+	}
+
+	/**
+	 * Call query in async mode using a callback
+	 * All responses will be tagged with given id and
+	 * routed to all registered default handlers.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param id
+	 *            tag associated with the query
+	 * @param maxRows
+	 *            maximum rows to return
+	 * @return itself
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 */
+	public JKQueryAsync callAsync(String query, String id, int maxRows) throws IOException {
+		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken())
+				.add(JK_QUERY_KEY, query)
+				.add(JK_MAX_ROWS_KEY, maxRows)
+				.add(JK_SUBID_KEY, id).build();
+
+		socket.sendMessageAsync(jsonQuery.toString());
+		return this;
 	}
 
 	/**

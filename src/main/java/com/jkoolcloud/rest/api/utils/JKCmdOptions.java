@@ -36,7 +36,7 @@ public class JKCmdOptions {
 			+ "[-wait wait-ms]\n\t"
 			+ "[-retry retry-ms]\n\t"
 			+ "[-rows max-rows]\n\t"
-			+ "[-trace]";
+			+ "[-trace true|false]";
 	
 	public String query;
 	public String search;
@@ -132,7 +132,11 @@ public class JKCmdOptions {
 				maxRows = Integer.parseInt(args[++i]);
 			}
 			if ("-trace".equals(arg)) {
-				trace = true;
+				if ((i+1) == args.length) {
+					usage = "Must specify true|false with -trace";
+					return;
+				}
+				trace = Boolean.parseBoolean((args[++i]));
 			}
 		}		
 		if (query == null || token == null || uri == null) {

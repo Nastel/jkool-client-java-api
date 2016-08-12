@@ -101,8 +101,22 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * 
 	 * @return new instance of {@link JKQueryCallback}
 	 */
-	public JKQueryCallback traceJKQueryCallback(PrintStream out, boolean trace) {
+	public JKQueryCallback traceJKQueryCallback(PrintStream out,  boolean trace) {
 		return new TraceJKQueryCallback(out, trace);
+	}
+
+	/**
+	 * Create a default query callback instance
+	 * 
+	 * @param out output print stream
+	 * @param json_path json path to get from the response
+	 * @param trace flag
+	 * @param trace 
+	 * 
+	 * @return new instance of {@link JKQueryCallback}
+	 */
+	public JKQueryCallback traceJKQueryCallback(PrintStream out, String json_path, boolean trace) {
+		return new TraceJKQueryCallback(out, json_path, trace);
 	}
 
 	/**

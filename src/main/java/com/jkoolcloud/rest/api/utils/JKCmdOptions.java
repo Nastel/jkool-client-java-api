@@ -31,6 +31,7 @@ public class JKCmdOptions {
 	public String search;
 	public String token;
 	public String usage;
+	public String json_path;
 	public String appname = DEFAULT_CMD_NAME;
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
 	public boolean trace = false;
@@ -51,71 +52,89 @@ public class JKCmdOptions {
 		parseOptions(args);
 	}
 
+	private void processOptions(String[] args) throws FileNotFoundException, IOException {
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			if ("-token".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify access token with -token";
+					return;
+				}
+				token = args[++i];
+			}
+			if ("-query".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify query with -query";
+					return;
+				}
+				query = args[++i];
+			}
+			if ("-get".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify json path with -get";
+					return;
+				}
+				json_path = args[++i];
+			}
+			if ("-search".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify search text with -search";
+					return;
+				}
+				search = args[++i];
+				query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
+			}
+			if ("-uri".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify URI with -uri";
+					return;
+				}
+				uri = args[++i];
+			}
+			if ("-file".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify file name with -file";
+					return;
+				}
+				loadProperties(args[++i]);
+			}
+			if ("-wait".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify wait time (ms) -wait";
+					return;
+				}
+				waitTimeMs = Long.parseLong(args[++i]);
+			}
+			if ("-rows".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify maximum rows with -rows";
+					return;
+				}
+				maxRows = Integer.parseInt(args[++i]);
+			}
+			if ("-trace".equals(arg)) {
+				trace = true;
+			}
+		}		
+	}
+	
 	private void parseOptions(String[] args) {
 		try {
-			for (int i = 0; i < args.length; i++) {
-				String arg = args[i];
-				if ("-a".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify access token with -a";
-						return;
-					}
-					token = args[++i];
-				}
-				if ("-q".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify query with -q";
-						return;
-					}
-					query = args[++i];
-				}
-				if ("-s".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify search text with -s";
-						return;
-					}
-					search = args[++i];
-					query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
-				}
-				if ("-u".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify URI with -u";
-						return;
-					}
-					uri = args[++i];
-				}
-				if ("-file".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify file name with -file";
-						return;
-					}
-					loadProperties(args[++i]);
-				}
-				if ("-w".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify wait time (ms) -w";
-						return;
-					}
-					waitTimeMs = Long.parseLong(args[++i]);
-				}
-				if ("-rows".equals(arg)) {
-					if ((i+1) == args.length) {
-						usage = "Must specify maximum rows with -rows";
-						return;
-					}
-					maxRows = Integer.parseInt(args[++i]);
-				}
-				if ("-trace".equals(arg)) {
-					trace = true;
-				}
+			processOptions(args);
+			if (query == null || token == null) {
+				usage = String.format("%s options:\n\t"
+						+ "-token access-token\n\t"
+						+ "-query jkql-query\n\t"
+						+ "[-file args-file]\n\t"
+						+ "[-url url]\n\t"
+						+ "[-get json-path]\n\t"
+						+ "[-search search-text]\n\t"
+						+ "[-wait wait-ms]\n\t"
+						+ "[-rows max-rows]\n\t"
+						+ "[-trace]", appname);
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
-		} finally {
-			if (query == null || token == null) {
-				usage = String.format("Usage: %s -a token -q query [-u url -s search-text -w wait-ms -rows max-rows -trace]", appname);
-				return;
-			}
 		}
 	}
 
@@ -144,7 +163,8 @@ public class JKCmdOptions {
 
 	@Override
 	public String toString() {
-		String formatted = String.format("%s: uri=\"%s\", query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b",
+		String formatted = String.format("%s: uri=\"%s\"," +
+				"query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b",
 		        appname, uri, query, waitTimeMs, maxRows, trace);
 		return formatted;
 	}

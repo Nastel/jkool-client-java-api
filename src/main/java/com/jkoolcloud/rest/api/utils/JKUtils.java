@@ -21,9 +21,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonStructure;
+import javax.json.JsonValue;
+import javax.json.JsonValue.ValueType;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
@@ -44,36 +48,35 @@ public class JKUtils {
 	 * JVM process ID
 	 */
 	public static final long VM_PID = initVMID();
-	
+
 	/**
 	 * JVM user name
 	 */
 	public static final String VM_USER = System.getProperty("user.name");
-	
+
 	/**
 	 * JVM host name
 	 */
 	public static String VM_HOST;
-	
+
 	/**
 	 * JVM network address
 	 */
 	public static String VM_NETADDR;
-	
+
 	/**
 	 * JVM runtime name
 	 */
 	public static final String VM_NAME = ManagementFactory.getRuntimeMXBean().getName();
-	
-	
+
 	static {
 		try {
-	        VM_HOST = InetAddress.getLocalHost().getHostName();
-	        VM_NETADDR = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-           	VM_HOST = "uknown";
-           	VM_NETADDR = "0.0.0.0";
-        }
+			VM_HOST = InetAddress.getLocalHost().getHostName();
+			VM_NETADDR = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			VM_HOST = "uknown";
+			VM_NETADDR = "0.0.0.0";
+		}
 	}
 
 	private static long initVMID() {
@@ -141,7 +144,7 @@ public class JKUtils {
 		mapper.registerModule(new JodaModule());
 		return mapper;
 	}
-	
+
 	public static String prettyPrint(JsonStructure json) {
 		return jsonFormat(json, JsonGenerator.PRETTY_PRINTING);
 	}
@@ -166,5 +169,22 @@ public class JKUtils {
 			}
 		}
 		return config;
-	}	
+	}
+
+	public static JsonValue getJsonValue(String json_path, JsonObject response) {
+		StringTokenizer tk = new StringTokenizer(json_path, "/");
+
+		JsonValue rValue = response;
+		JsonObject value = response;
+		while (tk.hasMoreTokens()) {
+			String key = tk.nextToken();
+			rValue = value.get(key);
+			if (rValue == null || (rValue.getValueType() != ValueType.OBJECT)) {
+				break;
+			} else {
+				value = (JsonObject) rValue;
+			}
+		}
+		return rValue;
+	}
 }

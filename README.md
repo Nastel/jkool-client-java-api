@@ -155,6 +155,10 @@ You can run jKool queries from command line using a helper class `JKQLCmd` below
 ```sh
 	java -jar jkool-java-rest-<version>.jar -token access-token -query "get number of events" -wait 30000
 ```
+Running message payload searches:
+```sh
+	java -jar jkool-java-rest-<version>.jar -token access-token -search "failure" -wait 30000
+```
 Command line arguments can be specified via a property file, where any command line argument overrides values specified in the property file:
 ```sh
 java -jar jkool-java-rest<version>.jar -file cmd.properties -query "get number of events for today"

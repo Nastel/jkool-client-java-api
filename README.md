@@ -61,20 +61,33 @@ Below is an example of running a JKQL query against a repository associated with
 	response.close();
 ```
 All returned JKQL responses are JSON.
-Developers can also invoke JKQL queries asynchronously using callbacks. See example below:
+
+###Running jKool Queries Asynchronously
+Developers can also invoke JKQL queries asynchronously using callbacks. See examples below.
+First setup `JKQueryAsync` connection handler:
 ```java
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
-		
+```
+You can then setup default response handlers (optional but recommended). Default response handlers are called for responses not associated with any specific query or subscription.
+```java
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
-		
-	// run query in async mode with a callback
+```
+Next execute your query and associate it with a call back:
+```java
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
 	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s query finished
+	...
+	jkQueryAsync.close(); // close connection
+```
+You can also execute a query without a callback in which cases all responses will be delegated to the default response handlers:
+```java
+	// run query in async mode without a callback (use default response handlers)
+	jkQueryAsync.callAsync("get events", JKQueryHandle.newId(), 50);
 	...
 	jkQueryAsync.close(); // close connection
 ```

@@ -40,7 +40,7 @@ import javax.websocket.Session;
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
-	private static final String DEFAULT_QUERY = "SUBSCRIBE-TO-ORPHANS"; // dummy
+	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy
 																		// query
 																		// associated
 																		// with
@@ -371,6 +371,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	protected JKQueryAsync restoreSubscriptions(long timeOpen) throws IOException {
 		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
 		for (JKQueryHandle handle: handleList) {
+			if (handle.getQuery().equalsIgnoreCase(DEFAULT_QUERY)) {
+				// this is an internal catch all handle (do not issue to server).
+				continue;
+			}
 			if (handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeOpen)) {
 				// restore subscription
 				callAsync(handle);

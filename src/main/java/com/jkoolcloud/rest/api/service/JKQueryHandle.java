@@ -70,6 +70,10 @@ public class JKQueryHandle implements JKQueryConstants {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
 
+	public boolean isSubscribeId() {
+		return id.startsWith(JK_SUB_UUID_PREFIX);
+	}
+
 	public boolean isSubscribeQuery() {
 		return subscribe;
 	}
@@ -78,9 +82,6 @@ public class JKQueryHandle implements JKQueryConstants {
 		return dead;
 	}
 
-	public boolean isSubscribeId() {
-		return id.startsWith(JK_SUB_UUID_PREFIX);
-	}
 
 	public String getQuery() {
 		return query;

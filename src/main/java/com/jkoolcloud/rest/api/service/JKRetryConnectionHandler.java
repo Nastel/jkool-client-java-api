@@ -22,13 +22,14 @@ import java.util.concurrent.TimeUnit;
 import javax.websocket.CloseReason;
 
 public class JKRetryConnectionHandler implements JKConnectionHandler {
-	ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(2);
+	ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(2, new JKThreadFactory("jk_retry_handler", true));
 
 	long retryTimeout;
 	TimeUnit tunit;
 
 	long errorCount = 0;
 	long timeClose, timeOpen, timeError;
+	volatile boolean closedState = false;
 
 	public JKRetryConnectionHandler(long retryTime, TimeUnit unit) {
 		retryTimeout = retryTime;
@@ -39,19 +40,24 @@ public class JKRetryConnectionHandler implements JKConnectionHandler {
 	public void open(JKQueryAsync async) {
 		long now = System.currentTimeMillis();
 		timeOpen = now;
-		scheduleResubscribe(async, 10, TimeUnit.MILLISECONDS, now);
+		if (closedState) {
+			scheduleResubscribe(async, 10, TimeUnit.MILLISECONDS, now);
+		}
+		closedState = false;
 	}
 
 	@Override
 	public void error(JKQueryAsync async, Throwable ex) {
 		timeError = System.currentTimeMillis();
 		errorCount++;
+		closedState = true;
 		scheduleReconnect(async, new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, ex.getMessage()));
 	}
 
 	@Override
 	public void close(JKQueryAsync async, CloseReason reason) {
 		timeClose = System.currentTimeMillis();
+		closedState = true;
 		scheduleReconnect(async, reason);
 	}
 	

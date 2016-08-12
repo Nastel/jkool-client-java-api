@@ -40,7 +40,7 @@
   	 </repository>
   </distributionManagement>
   <dependencies>
-	<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
@@ -122,9 +122,6 @@
 		    <artifactId>javax.json</artifactId>
 		    <version>1.0.4</version>
 		</dependency>
-
-
-		
   </dependencies>
     <build>
     <plugins>

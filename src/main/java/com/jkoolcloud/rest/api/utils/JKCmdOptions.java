@@ -116,17 +116,20 @@ public class JKCmdOptions {
 				trace = true;
 			}
 		}		
-		if (query == null || token == null) {
+		if (query == null || token == null || uri == null) {
 			usage = String.format("%s options:\n\t"
 					+ "-token access-token\n\t"
 					+ "-query jkql-query\n\t"
 					+ "[-file args-file]\n\t"
-					+ "[-url url]\n\t"
+					+ "[-uri jkool service uri]\n\t"
 					+ "[-get json-path]\n\t"
 					+ "[-search search-text]\n\t"
 					+ "[-wait wait-ms]\n\t"
 					+ "[-rows max-rows]\n\t"
 					+ "[-trace]", appname);
+			if (uri == null) usage += "\nMissing -uri option";
+			if (token == null) usage += "\nMissing -token option";
+			if (query == null) usage += "\nMissing -query option";
 		}
 	}
 	

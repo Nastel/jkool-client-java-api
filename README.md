@@ -71,7 +71,7 @@ First setup `JKQueryAsync` connection handler:
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
 ```
-You can then setup default response handlers (optional but recommended). Default response handlers are called for responses not associated with any specific query or subscription.
+You can then setup default response handlers (optional but recommended). Default response handlers are called for responses not associated with any specific query or subscription. `JKRetryConnectionHandler` automatically reconnects and recovers websocket connection in case of communication failures.
 ```java
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());

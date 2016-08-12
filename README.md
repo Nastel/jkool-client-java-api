@@ -65,7 +65,8 @@ Developers can also invoke JKQL queries asynchronously using callbacks. See exam
 ```java
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
-	jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
+	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
+	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
 		
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());
@@ -125,7 +126,8 @@ Developers can also subscribe to live data streams using `JKQueryAsync` class. S
 ```java
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
-	jkQueryAsync.setConnectionHandler(new MyConnectionHandler());
+	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
+	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
 		
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.setDefaultResponseHandler(new MyJKQueryCallback());

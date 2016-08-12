@@ -26,7 +26,18 @@ import com.jkoolcloud.rest.api.service.JKQueryConstants;
 
 public class JKCmdOptions {
 	public static final String DEFAULT_CMD_NAME = "class";
-
+	public static final String USAGE_TEXT = "%s options:\n\t"
+			+ "-token access-token\n\t"
+			+ "-query jkql-query\n\t"
+			+ "[-file args-file]\n\t"
+			+ "[-uri jkool service uri]\n\t"
+			+ "[-get json-path]\n\t"
+			+ "[-search search-text]\n\t"
+			+ "[-wait wait-ms]\n\t"
+			+ "[-retry retry-ms]\n\t"
+			+ "[-rows max-rows]\n\t"
+			+ "[-trace]";
+	
 	public String query;
 	public String search;
 	public String token;
@@ -36,6 +47,7 @@ public class JKCmdOptions {
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
 	public boolean trace = false;
 	public long waitTimeMs = 20000;
+	public long retryTimeMs = 20000;
 	public int maxRows = 50;
 
 	public JKCmdOptions(String[] args) {
@@ -105,6 +117,13 @@ public class JKCmdOptions {
 				}
 				waitTimeMs = Long.parseLong(args[++i]);
 			}
+			if ("-retry".equals(arg)) {
+				if ((i+1) == args.length) {
+					usage = "Must specify wait time (ms) -wait";
+					return;
+				}
+				retryTimeMs = Long.parseLong(args[++i]);
+			}
 			if ("-rows".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify maximum rows with -rows";
@@ -117,16 +136,7 @@ public class JKCmdOptions {
 			}
 		}		
 		if (query == null || token == null || uri == null) {
-			usage = String.format("%s options:\n\t"
-					+ "-token access-token\n\t"
-					+ "-query jkql-query\n\t"
-					+ "[-file args-file]\n\t"
-					+ "[-uri jkool service uri]\n\t"
-					+ "[-get json-path]\n\t"
-					+ "[-search search-text]\n\t"
-					+ "[-wait wait-ms]\n\t"
-					+ "[-rows max-rows]\n\t"
-					+ "[-trace]", appname);
+			usage = String.format(USAGE_TEXT, appname);
 			if (uri == null) usage += "\nMissing -uri option";
 			if (token == null) usage += "\nMissing -token option";
 			if (query == null) usage += "\nMissing -query option";
@@ -154,6 +164,7 @@ public class JKCmdOptions {
 			query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
 		}
 		waitTimeMs = Long.parseLong(props.getProperty("wait", String.valueOf(waitTimeMs)));
+		retryTimeMs = Long.parseLong(props.getProperty("retry", String.valueOf(retryTimeMs)));
 		maxRows = Integer.parseInt(props.getProperty("maxrows", String.valueOf(maxRows)));
 		trace = Boolean.parseBoolean(props.getProperty("trace", String.valueOf(trace)));
 	}

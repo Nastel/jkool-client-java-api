@@ -23,21 +23,50 @@ import javax.json.JsonValue;
 
 import com.jkoolcloud.rest.api.utils.JKUtils;
 
-public class TraceJKQueryCallback implements JKQueryCallback {
+public class JKTraceQueryCallback implements JKQueryCallback {
 	PrintStream out;
-	boolean trace = true;
 	String json_path;
+	boolean trace = true;
 	
-	public TraceJKQueryCallback(PrintStream out) {
+	/**
+	 * Create a trace query callback instance
+	 * 
+	 */
+	public JKTraceQueryCallback() {
+		this(System.out, true);
+	}
+	
+	/**
+	 * Create a trace query callback instance
+	 * 
+	 * @param out output print stream
+	 * 
+	 */
+	public JKTraceQueryCallback(PrintStream out) {
 		this(out, true);
 	}
 	
-	public TraceJKQueryCallback(PrintStream out, boolean flag) {
+	/**
+	 * Create a trace query callback instance
+	 * 
+	 * @param out output print stream
+	 * @param flag flag
+	 * 
+	 */
+	public JKTraceQueryCallback(PrintStream out, boolean flag) {
 		this.out = out;
 		setTrace(flag);
 	}
 	
-	public TraceJKQueryCallback(PrintStream out, String jsonPath, boolean flag) {
+	/**
+	 * Create a trace query callback instance
+	 * 
+	 * @param out output print stream
+	 * @param json_path json path to get from the response
+	 * @param flag flag
+	 * 
+	 */
+	public JKTraceQueryCallback(PrintStream out, String jsonPath, boolean flag) {
 		this.out = out;
 		this.json_path = jsonPath;
 		setTrace(flag);
@@ -64,8 +93,15 @@ public class TraceJKQueryCallback implements JKQueryCallback {
 		}
 	}
 	
-	public TraceJKQueryCallback setTrace(boolean flag) {
+	public JKTraceQueryCallback setTrace(boolean flag) {
 		this.trace = flag;
 		return this;
+	}
+
+	@Override
+    public void dead(JKQueryHandle qhandle) {
+		if (trace) {
+			out.println("Dead handle=" + qhandle + ", dead=" + qhandle.isDead());
+		}
 	}
 }

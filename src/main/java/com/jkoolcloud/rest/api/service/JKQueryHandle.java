@@ -29,12 +29,16 @@ import javax.json.JsonObject;
  * 
  * @author albert
  */
-public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
+public class JKQueryHandle implements JKQueryConstants {
 
 	final String query, id;
 	final boolean subscribe;
 	final JKQueryCallback callback;
+	final long timeCreated;
 
+	int maxRows;
+	boolean dead = false;
+	
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
 	private AtomicLong callCount = new AtomicLong(0);
@@ -44,6 +48,7 @@ public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
 	}
 
 	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
+		this.timeCreated = System.currentTimeMillis();
 		this.query = q;
 		this.id = id;
 		this.callback = callback;
@@ -68,6 +73,10 @@ public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
 		return subscribe;
 	}
 
+	public boolean isDead() {
+		return dead;
+	}
+
 	public boolean isSubscribeId() {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
@@ -84,6 +93,19 @@ public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
 		return id;
 	}
 
+	public long getTimeCreated() {
+		return timeCreated;
+	}
+
+	public JKQueryHandle setMaxRows(int rows) {
+		this.maxRows = rows;
+		return this;
+	}
+	
+	public int getMaxRows() {
+		return maxRows;
+	}
+	
 	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -139,12 +161,22 @@ public class JKQueryHandle implements JKQueryConstants, JKQueryCallback {
 		        + "\", callback: \"" + callback + "\"}";
 	}
 
-	@Override
-	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+	protected void dead() {
+		aLock.lock();
+		try {
+			dead = true;
+			callback.dead(this);
+			calledBack.signalAll();
+		} finally {
+			aLock.unlock();
+		}
+    }
+
+	protected void handle(JsonObject response, Throwable ex) {
 		aLock.lock();
 		try {
 			callCount.incrementAndGet();
-			callback.handle(qhandle, response, ex);
+			callback.handle(this, response, ex);
 			calledBack.signalAll();
 		} finally {
 			aLock.unlock();

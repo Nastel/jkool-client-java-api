@@ -19,16 +19,16 @@ import java.io.PrintStream;
 
 import javax.websocket.CloseReason;
 
-public class TraceJKConnectionHandler implements JKConnectionHandler {
+public class JKTraceConnectionHandler implements JKConnectionHandler {
 	
 	PrintStream out;
 	boolean trace = true;
 	
-	public TraceJKConnectionHandler(PrintStream out) {
+	public JKTraceConnectionHandler(PrintStream out) {
 		this(out, true);
 	}
 	
-	public TraceJKConnectionHandler(PrintStream out, boolean flag) {
+	public JKTraceConnectionHandler(PrintStream out, boolean flag) {
 		this.out = out;
 		setTrace(flag);
 	}
@@ -55,7 +55,7 @@ public class TraceJKConnectionHandler implements JKConnectionHandler {
 		}
 	}
 	
-	public TraceJKConnectionHandler setTrace(boolean flag) {
+	public JKTraceConnectionHandler setTrace(boolean flag) {
 		this.trace = flag;
 		return this;
 	}

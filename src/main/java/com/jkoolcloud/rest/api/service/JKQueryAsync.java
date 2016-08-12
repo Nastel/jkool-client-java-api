@@ -17,12 +17,12 @@ package com.jkoolcloud.rest.api.service;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -47,12 +47,12 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 																		// default
 																		// response
 																		// handler
-	private static final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
+	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
 
 	URI webSockUri;
 	JKWSClient socket;
-	JKConnectionHandler connectHandler;
 	JKQueryHandle orphanHandler;
+	Vector<JKConnectionHandler> conHandlers = new Vector<JKConnectionHandler>(5, 5);
 
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
@@ -76,47 +76,26 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		return this;
 	}
 
-	public JKQueryAsync setConnectionHandler(JKConnectionHandler cHandler) {
-		this.connectHandler = cHandler;
+	/**
+	 * Add a connection handler to the list of handlers
+	 * 
+	 * @param cHandler connection handler
+	 * @return itself
+	 */
+	public JKQueryAsync addConnectionHandler(JKConnectionHandler cHandler) {
+		conHandlers.add(cHandler);
 		return this;
 	}
 
 	/**
-	 * Create a default connection handler instance
+	 * Remove a connection handler from the list of handlers
 	 * 
-	 * @param out output print stream
-	 * @param trace flag
-	 * @return new instance of {@link JKConnectionHandler}
+	 * @param cHandler connection handler
+	 * @return itself
 	 */
-	public JKConnectionHandler traceConnectionHandler(PrintStream out, boolean trace) {
-		return new TraceJKConnectionHandler(out, trace);
-	}
-
-	/**
-	 * Create a default query callback instance
-	 * 
-	 * @param out output print stream
-	 * @param trace flag
-	 * @param trace 
-	 * 
-	 * @return new instance of {@link JKQueryCallback}
-	 */
-	public JKQueryCallback traceJKQueryCallback(PrintStream out,  boolean trace) {
-		return new TraceJKQueryCallback(out, trace);
-	}
-
-	/**
-	 * Create a default query callback instance
-	 * 
-	 * @param out output print stream
-	 * @param json_path json path to get from the response
-	 * @param trace flag
-	 * @param trace 
-	 * 
-	 * @return new instance of {@link JKQueryCallback}
-	 */
-	public JKQueryCallback traceJKQueryCallback(PrintStream out, String json_path, boolean trace) {
-		return new TraceJKQueryCallback(out, json_path, trace);
+	public JKQueryAsync removeConnectionHandler(JKConnectionHandler cHandler) {
+		conHandlers.remove(cHandler);
+		return this;
 	}
 
 	/**
@@ -133,7 +112,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * 
 	 * @return total number of live query handles
 	 */
-	public static int getHandleCount() {
+	public int getHandleCount() {
 		return SUBID_MAP.size();
 	}
 
@@ -188,12 +167,12 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 			if (socket == null) {
 				socket = new JKWSClient(webSockUri, this);
 				socket.connect();
+			} else if (!socket.isConnected()) {
+				socket.connect();				
 			}
 			return this;
 		} catch (Throwable ex) {
-			if (this.connectHandler != null) {
-				connectHandler.error(this, ex);
-			}
+			onError(socket, socket.getSession(), ex);
 			throw ex;
 		}
 	}
@@ -276,11 +255,23 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		if (callback == null) {
 			throw new IllegalArgumentException("callback can not be null");
 		}
-		JKQueryHandle qhandle = createQueryHandle(query, callback);
+		JKQueryHandle qhandle = createQueryHandle(query, callback).setMaxRows(maxRows);
+		return callAsync(qhandle);
+	}
+
+	/**
+	 * Call query in async mode using a query handle
+	 * 
+	 * @param qhandle
+	 *            JKQL query handle
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 */
+	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken())
-				.add(JK_QUERY_KEY, query)
-				.add(JK_MAX_ROWS_KEY, maxRows)
+				.add(JK_QUERY_KEY, qhandle.getQuery())
+				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows())
 				.add(JK_SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
@@ -346,22 +337,28 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 	@Override
 	public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
-		if (this.connectHandler != null) {
-			connectHandler.close(this, reason);
+		synchronized (conHandlers) {
+			for (JKConnectionHandler ch: conHandlers) {
+				ch.close(this, reason);
+			}
 		}
 	}
 
 	@Override
 	public void onError(JKWSClient client, Session userSession, Throwable ex) {
-		if (this.connectHandler != null) {
-			connectHandler.error(this, ex);
+		synchronized (conHandlers) {
+			for (JKConnectionHandler ch: conHandlers) {
+				ch.error(this, ex);
+			}
 		}
 	}
 
 	@Override
 	public void onOpen(JKWSClient client, Session userSession) {
-		if (this.connectHandler != null) {
-			connectHandler.open(this);
+		synchronized (conHandlers) {
+			for (JKConnectionHandler ch: conHandlers) {
+				ch.open(this);
+			}
 		}
 	}
 
@@ -370,6 +367,21 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
+
+	protected JKQueryAsync restoreSubscriptions(long timeOpen) throws IOException {
+		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
+		for (JKQueryHandle handle: handleList) {
+			if (handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeOpen)) {
+				// restore subscription
+				callAsync(handle);
+			} else {
+				// remove standard query subscription since none will ever be coming
+				SUBID_MAP.remove(handle.getId());
+				handle.dead();
+			}
+		}
+		return this;
+    }
 
 	/**
 	 * Handle async message response
@@ -389,9 +401,9 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 		try {
 			if (qhandle != null) {
-				qhandle.handle(qhandle, response, ex);
+				qhandle.handle(response, ex);
 			} else if (orphanHandler != null) {
-				orphanHandler.handle(qhandle, response, ex);
+				orphanHandler.handle(response, ex);
 			}
 			return this;
 		} finally {

@@ -15,15 +15,22 @@
  */
 package com.jkoolcloud.rest.api.service;
 
-import javax.json.JsonObject;
+import java.io.IOException;
 
-/**
- * Implementations of this interface defines a query response callback
- * for async queries.
- * 
- * @author albert
- */
-public interface JKQueryCallback {
-	void dead(JKQueryHandle qhandle);
-	void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex);
+public class JKReconnectTask implements Runnable {
+	JKQueryAsync agent;
+
+	protected JKReconnectTask(JKQueryAsync async) {
+		agent = async;
+	}
+
+	@Override
+	public void run() {
+		try {
+			if (!agent.isConnected()) {
+				agent.connect();
+			}
+        } catch (IOException e) {
+        }
+	}
 }

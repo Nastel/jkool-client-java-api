@@ -19,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryHandle;
+import com.jkoolcloud.rest.api.service.JKRetryConnectionHandler;
+import com.jkoolcloud.rest.api.service.JKTraceConnectionHandler;
+import com.jkoolcloud.rest.api.service.JKTraceQueryCallback;
 
 public class JKQLCmd {
 	public static void main(String[] args) {
@@ -34,12 +37,13 @@ public class JKQLCmd {
 			JKQueryAsync jkQueryAsync = new JKQueryAsync(
 					System.getProperty("jk.ws.uri", options.uri),
 					System.getProperty("jk.access.token", options.token));
-			jkQueryAsync.setConnectionHandler(jkQueryAsync.traceConnectionHandler(System.out, options.trace));
-			jkQueryAsync.setDefaultResponseHandler(jkQueryAsync.traceJKQueryCallback(System.out, options.json_path, options.trace));
+			jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
+			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
+			jkQueryAsync.setDefaultResponseHandler(new JKTraceQueryCallback(System.out, options.json_path, options.trace));
 			jkQueryAsync.connect();
 			
 			// run query in async mode with a callback
-			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, jkQueryAsync.traceJKQueryCallback(System.out, options.json_path, options.trace));
+			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, new JKTraceQueryCallback(System.out, options.json_path, options.trace));
 			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected

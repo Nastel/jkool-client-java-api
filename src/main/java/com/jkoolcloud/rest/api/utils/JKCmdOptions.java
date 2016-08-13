@@ -73,70 +73,63 @@ public class JKCmdOptions {
 					return;
 				}
 				token = args[++i];
-			}
-			if ("-query".equals(arg)) {
+			} else if ("-query".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify query with -query";
 					return;
 				}
 				query = args[++i];
-			}
-			if ("-get".equals(arg)) {
+			} else if ("-get".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify json path with -get";
 					return;
 				}
 				json_path = args[++i];
-			}
-			if ("-search".equals(arg)) {
+			} else if ("-search".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify search text with -search";
 					return;
 				}
 				search = args[++i];
 				query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
-			}
-			if ("-uri".equals(arg)) {
+			} else if ("-uri".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify URI with -uri";
 					return;
 				}
 				uri = args[++i];
-			}
-			if ("-file".equals(arg)) {
+			} else if ("-file".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify file name with -file";
 					return;
 				}
 				loadProperties(args[++i]);
-			}
-			if ("-wait".equals(arg)) {
+			} else if ("-wait".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify wait time (ms) -wait";
 					return;
 				}
 				waitTimeMs = Long.parseLong(args[++i]);
-			}
-			if ("-retry".equals(arg)) {
+			} else if ("-retry".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify wait time (ms) -wait";
 					return;
 				}
 				retryTimeMs = Long.parseLong(args[++i]);
-			}
-			if ("-rows".equals(arg)) {
+			} else if ("-rows".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify maximum rows with -rows";
 					return;
 				}
 				maxRows = Integer.parseInt(args[++i]);
-			}
-			if ("-trace".equals(arg)) {
+			} else if ("-trace".equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify true|false with -trace";
 					return;
 				}
 				trace = Boolean.parseBoolean((args[++i]));
+			} else {
+				throw new IllegalArgumentException("Unknown option: " + arg);
 			}
 		}		
 		if (query == null || token == null || uri == null) {

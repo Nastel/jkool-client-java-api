@@ -185,6 +185,10 @@ public class JKQueryHandle implements JKQueryConstants {
 		if (obj instanceof JKQueryHandle) {
 			JKQueryHandle q2 = (JKQueryHandle) obj;
 			return id.equals(q2.id);
+		} else if (obj instanceof JKQueryCallback) {
+			return this.callback == (JKQueryCallback)obj;
+		} else if (obj instanceof String) {
+			return id.equals(String.valueOf(obj));			
 		}
 		return false;
 	}

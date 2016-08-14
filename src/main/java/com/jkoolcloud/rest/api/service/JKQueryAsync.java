@@ -76,44 +76,64 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * Add a default callback handler for responses
 	 * not handled by a specific query handler
 	 * 
-	 * @param callback query callback handler
+	 * @param callbacks list of query callback handlers
 	 * @return itself
 	 */
-	public JKQueryAsync addDefaultCallbackHandler(JKQueryCallback callback) {
-		defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callback));
+	public JKQueryAsync addDefaultCallbackHandler(JKQueryCallback...callbacks) {
+		if (callbacks == null) {
+			throw new IllegalArgumentException("list can not be null");
+		}
+		for (int i=0; i < callbacks.length; i++) {
+			defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callbacks[i]));	
+		}
 		return this;
 	}
 
 	/**
 	 * Remove a callback handler from the list of default handlers
 	 * 
-	 * @param callback callback handler
+	 * @param callbacks list of callback handlers
 	 * @return itself
 	 */
-	public JKQueryAsync removeConnectionHandler(JKQueryCallback callback) {
-		defCallbacks.remove(callback);
+	public JKQueryAsync removeConnectionHandler(JKQueryCallback...callbacks) {
+		if (callbacks == null) {
+			throw new IllegalArgumentException("list can not be null");
+		}
+		for (int i=0; i < callbacks.length; i++) {
+			conHandlers.remove(callbacks[i]);
+		}
 		return this;
 	}
 
 	/**
 	 * Add a connection handler to the list of handlers
 	 * 
-	 * @param cHandler connection handler
+	 * @param cHandlers list of connection handlers
 	 * @return itself
 	 */
-	public JKQueryAsync addConnectionHandler(JKConnectionHandler cHandler) {
-		conHandlers.add(cHandler);
+	public JKQueryAsync addConnectionHandler(JKConnectionHandler...cHandlers) {
+		if (cHandlers == null) {
+			throw new IllegalArgumentException("list can not be null");
+		}
+		for (int i=0; i < cHandlers.length; i++) {
+			conHandlers.add(cHandlers[i]);
+		}
 		return this;
 	}
 
 	/**
 	 * Remove a connection handler from the list of handlers
 	 * 
-	 * @param cHandler connection handler
+	 * @param cHandlers connection handler list
 	 * @return itself
 	 */
-	public JKQueryAsync removeConnectionHandler(JKConnectionHandler cHandler) {
-		conHandlers.remove(cHandler);
+	public JKQueryAsync removeConnectionHandler(JKConnectionHandler...cHandlers) {
+		if (cHandlers == null) {
+			throw new IllegalArgumentException("list can not be null");
+		}
+		for (int i=0; i < cHandlers.length; i++) {
+			conHandlers.remove(cHandlers[i]);
+		}
 		return this;
 	}
 

@@ -64,6 +64,10 @@ public class JKCmdOptions {
 		parseOptions(args);
 	}
 
+	public String getUsage() {
+		return String.format(USAGE_TEXT, appname);
+	}
+	
 	private void processOptions(String[] args) throws FileNotFoundException, IOException {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];

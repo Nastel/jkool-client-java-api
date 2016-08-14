@@ -17,7 +17,13 @@ package com.jkoolcloud.rest.api.service;
 
 import java.io.IOException;
 
-public class JKRestoreSubscriptionsTask implements Runnable {
+/**
+ * This class implements a task that automatically re-subscribes
+ * all active subscriptions after reconnecting {@link JKQueryAsync}.
+ * 
+ * @author albert
+ */
+public class JKRestoreSubscriptionsTask implements JKGate<JKQueryHandle>, Runnable {
 	JKQueryAsync agent;
 	long timeStamp;
 
@@ -30,10 +36,15 @@ public class JKRestoreSubscriptionsTask implements Runnable {
 	public void run() {
 		try {
 			if (agent.isConnected()) {
-				agent.restoreSubscriptions(timeStamp);
+				agent.restoreSubscriptions(this);
 			}
         } catch (IOException e) {
         	e.printStackTrace();
         }
+	}
+
+	@Override
+	public boolean check(JKQueryHandle handle) {
+		return handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeStamp); 
 	}
 }

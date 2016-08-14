@@ -15,28 +15,11 @@
  */
 package com.jkoolcloud.rest.api.service;
 
-import java.io.IOException;
-
 /**
- * This class implements a task that automatically reconnects
- * a given instance of {@link JKQueryAsync}.
+ * This interface defines a generic way to implement object checkers, gates.
  * 
  * @author albert
  */
-public class JKReconnectTask implements Runnable {
-	JKQueryAsync agent;
-
-	protected JKReconnectTask(JKQueryAsync async) {
-		agent = async;
-	}
-
-	@Override
-	public void run() {
-		try {
-			if (!agent.isConnected()) {
-				agent.connect();
-			}
-        } catch (IOException e) {
-        }
-	}
+public interface JKGate<T> {
+	boolean check(T obj);
 }

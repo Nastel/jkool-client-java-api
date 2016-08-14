@@ -21,6 +21,12 @@ import java.util.concurrent.TimeUnit;
 
 import javax.websocket.CloseReason;
 
+/**
+ * This class listens for WebSocket communication events and recovers
+ * connection and subscriptions using a timer.
+ * 
+ * @author albert
+ */
 public class JKRetryConnectionHandler implements JKConnectionHandler {
 	ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(2, new JKThreadFactory("jk_retry_handler", true));
 

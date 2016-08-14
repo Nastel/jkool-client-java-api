@@ -23,6 +23,12 @@ import javax.json.JsonValue;
 
 import com.jkoolcloud.rest.api.utils.JKUtils;
 
+/**
+ * This class implements a simple {@code JKQueryCallback} with
+ * trace messages.
+ * 
+ * @author albert
+ */
 public class JKTraceQueryCallback implements JKQueryCallback {
 	PrintStream out;
 	String json_path;

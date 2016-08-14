@@ -428,16 +428,35 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		}
 	}
 
+	/**
+	 * Create a new query handle for a given callback instance and
+	 * query.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param callback
+	 *            callback associated with the query
+	 * @return itself
+	 */
 	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
 		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
 
-	protected JKQueryAsync restoreSubscriptions(long timeOpen) throws IOException {
+	/**
+	 * Restore subscriptions (re-subscribe) based on a
+	 * given gate. Subscribe when {@code JKGate<JKQueryHandle>.check(JKQueryHandle)} 
+	 * return true, skip otherwise.
+	 * 
+	 * @param hGate
+	 *            query handle gate check for true or false
+	 * @return itself
+	 */
+	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
 		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
 		for (JKQueryHandle handle: handleList) {
-			if (handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeOpen)) {
+			if (hGate.check(handle)) {
 				// restore subscription
 				callAsync(handle);
 			} else {

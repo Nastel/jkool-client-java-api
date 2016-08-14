@@ -91,7 +91,7 @@ You can also execute a query without a callback in which cases all responses wil
 	...
 	jkQueryAsync.close(); // close connection
 ```
-`MyJKQueryCallback` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call.
+`MyJKQueryCallback.handle()` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call. `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override

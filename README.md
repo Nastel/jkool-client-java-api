@@ -185,7 +185,7 @@ Command line arguments can be specified via a property file, where any command l
 ```sh
 java -jar jkool-java-rest<version>.jar -file cmd.properties -query "get number of events for today"
 ```
-Bleow is an example of a property file containing command line arguments (token should have your jKool API access token):
+Below is a sample property file containing `JKQLCmd` command line arguments (token should have your jKool API access token):
 ```properties
 token=your-access-token
 uri=ws://jkool.jkoolcloud.com/jKool/jkqlasync
@@ -196,9 +196,6 @@ maxrows=100
 retry=0
 #get=jk_response/rows-found
 ```
-
-###Important note
-This sample code showcases some basic examples of using jKool Rest API. jKool can handle very complex application interactions. For example, it is built with the ability to correlate events and track transactions across multiple applications. This can be used for complex tracking and analytics.
 
 ###Streaming with Curl
 Data can also be streamed into jKool using Curl. Below is an example:

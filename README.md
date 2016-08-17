@@ -78,21 +78,21 @@ The next step is to setup the callback handlers (optional but recommended). Defa
 	jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
 ```
-Next execute your query and associate it with a call back:
-```java
-	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s query finished
-	...
-	jkQueryAsync.close(); // close connection
-```
-You can also execute a query without a callback in which cases all responses will be delegated to the default response handlers:
+Next execute the query. Because no callback has been associated, the response will be delegated to the default callback handlers:
 ```java
 	// run query in async mode without a callback (use default response handlers)
 	jkQueryAsync.callAsync("get events", JKQueryHandle.newId(), 50);
 	...
 	jkQueryAsync.close(); // close connection
 ```
-Callbacks not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call. When associating a query with a callback, `MyJKQueryCallback.handle()` is called when a result from the query is received.  `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
+To execute your query and at the same time associate it with a callbback, do the following:
+```java
+	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s query finished
+	...
+	jkQueryAsync.close(); // close connection
+```
+When associating a query with a callback, `MyJKQueryCallback.handle()` is called when a result from the query is received.  `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
 
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
@@ -141,7 +141,7 @@ Cancellation is also issued asynchronously and any responses that are still in t
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
 	...
 	// attempt to cancel subscription to the query results
-	jkQueryAsync.cancelAsync(qhandle);
+	qhandle.cancelAsync(qhandle);
 ```
 ###Subscribing to real-time event streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:

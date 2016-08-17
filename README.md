@@ -52,7 +52,7 @@ The Rest Client will properly format the entity into JSON format and stream it t
 That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
 
 ###Running jKool Queries
-Below is an example of running a JKQL query against a repository associated with a specified access token `yourtoken`:
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see JKQL Documentation here http://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf. You will use the JKQuery helper class in the API to retrieve data. Simply pass in your access token along with the JKQL query.  Below is an example:
 
 ```java
 	JKQuery jkQuery = new JKQuery("yourtoken");
@@ -215,7 +215,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 ```
 ###Query jKool using Curl
 
-Rest can be used to retrieve data out of jKool. To do this, make use of the jKool Query Language (JKQL). Please see JKQL Documentation here http://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf. To use JKQL via Restful Services, pass your repository and repository credentials (username and password) in the request header. Then issue the GET request via the following URL https://jkool.jkoolcloud.com/jKool/jkql passing the JKQL in a 'query' parameter. For instance, to get all activities in your repository, do the following in curl: 
+Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example: 
 
 ```java
 curl -i -H "Content-Type:application/json" -H "username:<username>" -H "password:<password>" -H "repositoryId:<repository identifier>" -X GET https://jkool.jkoolcloud.com/jKool/jkql?query=get%20activities

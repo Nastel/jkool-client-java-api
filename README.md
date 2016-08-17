@@ -187,7 +187,7 @@ Command line arguments can be specified via a property file, where any command l
 ```sh
 java -cp jkool-java-rest-<version>.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
 ```
-Below is a sample property file containing `JKQLCmd` command line arguments (token should have your jKool API access token):
+Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties
 token=your-access-token
 uri=ws://jkool.jkoolcloud.com/jKool/jkqlasync

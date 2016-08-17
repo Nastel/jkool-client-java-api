@@ -1,7 +1,7 @@
 # jKool Streaming & Query API
 
 ###Why jKool Streaming & Query API?
-jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API.
+jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you. 
 
 ###jKool Streaming Concepts and Documentation
 You can find very comprehensive documentation on jKool Data Types and Concepts in our jKool Streaming Guide found here: https://www.jkoolcloud.com/download/jkool-model.pdf. But basically, there are four types of data that can be streamed into jKool. They are:
@@ -198,14 +198,14 @@ retry=0
 ```
 
 ###Streaming with Curl
-Data can also be streamed into jKool using Curl. Below is an example:
+Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:
 
 ```java
 curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
 ###Streaming with Python
-Data can also be streamed into jKool using Python. To do so, you will need to use the Python "Request". Details on the Python Request can be found here - http://docs.python-requests.org/en/latest/user/quickstart/. Below is an example of using it to stream into jKool:
+Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". Details on the Python Request can be found here - http://docs.python-requests.org/en/latest/user/quickstart/. Below is an example of using it to stream into jKool:
 
 ```java
 import requests

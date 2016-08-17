@@ -14,7 +14,7 @@ In addition to the Streaming Guide, this Git repository contains a Swagger yaml 
 
 ###Streaming Examples
 To use this sample code please do the following:
-* Run mvn install on the project. This will generate a jar file (found in the target directory).
+* Run mvn install on the project. This will generate a jar file. This jar file can be found in the target directory. However, please be advised that when running from the command line (as documented below), run from the build directory that Maven will assemble. This build directory will at the same level as the directory you run Maven from. 
 * Import this jar file into your own project in which you wish to stream to jKool. 
 * Please see the sample classes and run them in order to get a good understanding on how to use the helper code. You will be doing the following:
 * Instantiate the `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the proper repository.
@@ -174,7 +174,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 	...
 ```
 ###Running jKool queries from command line
-You can run jKool queries from command line using a helper class `JKQLCmd` below:
+You can run jKool queries from command line using a helper class `JKQLCmd` below. Please run all commands from the build directory that Maven will create.
 ```sh
 	java -cp jkool-java-rest-<version>.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 ```

@@ -92,7 +92,8 @@ You can also execute a query without a callback in which cases all responses wil
 	...
 	jkQueryAsync.close(); // close connection
 ```
-`MyJKQueryCallback.handle()` is called when a result from the query is received. Responses not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call. `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
+Callbacks not associated with any specific query are handled by a default response handler specified by `jkQueryAsync.addDefaultCallbackHandler(...)` call. When associating a query with a callback, `MyJKQueryCallback.handle()` is called when a result from the query is received.  `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
+
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override
@@ -111,7 +112,7 @@ public class MyJKQueryCallback implements JKQueryCallback {
 	}
 }
 ```
-Connection handler can be used to intercept and handle WebSocket connection events such as open, close, error:
+Customized connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:
 ```java
 public class MyConnectionHandler implements JKConnectionHandler {
 	@Override
@@ -174,7 +175,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 	...
 ```
 ###Running jKool queries from command line
-You can run jKool queries from command line using a helper class `JKQLCmd` below. Please run all commands from the build directory that Maven will create.
+You can run jKool queries from command line using a helper class `JKQLCmd` below. Please run all commands from the 'build' directory that Maven will create.
 ```sh
 	java -cp jkool-java-rest-<version>.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 ```

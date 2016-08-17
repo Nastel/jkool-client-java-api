@@ -175,7 +175,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 ###Running jKool queries from command line
 You can run jKool queries from command line using a helper class `JKQLCmd` below:
 ```sh
-	java -jar jkool-java-rest-<version>.jar -token access-token -query "get number of events" -wait 30000
+	java -cp jkool-java-rest.0.1.2-SNAPSHOT.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 ```
 Running message payload searches:
 ```sh

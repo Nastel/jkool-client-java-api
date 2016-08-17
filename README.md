@@ -85,10 +85,10 @@ Next execute the query. Because no callback has been associated, the response wi
 	...
 	jkQueryAsync.close(); // close connection
 ```
-To execute your query and at the same time associate it with a callbback, do the following:
+To execute your query and associate it with a callback, do the following:
 ```java
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s query finished
+	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
 	...
 	jkQueryAsync.close(); // close connection
 ```

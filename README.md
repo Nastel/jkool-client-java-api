@@ -70,12 +70,12 @@ Developers can also invoke JKQL queries asynchronously using callbacks. To do th
 	// retry connection handler
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
 	// trace connection handler
-	jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
+	jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, true));
 ```
-You can then setup default response handlers (optional but recommended). Default response handlers are called for responses not associated with any specific query or subscription. `JKRetryConnectionHandler` automatically reconnects and recovers websocket connection in case of communication failures.
+The next step is to setup the callback handlers (optional but recommended). Default callback handlers are called for responses not associated with any specific query or subscription. 
 ```java
 	// setup a default response handler for responses not associated with any specific query
-	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
+	jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
 ```
 Next execute your query and associate it with a call back:
@@ -221,5 +221,4 @@ Rest can be used to retrieve data natively (without helper classes) out of jKool
 ```java
 curl -i -H "Content-Type:application/json" -H "username:<username>" -H "password:<password>" -H "repositoryId:<repository identifier>" -X GET https://jkool.jkoolcloud.com/jKool/jkql?query=get%20activities
 ```
-### Notes on time stamps
-Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).
+

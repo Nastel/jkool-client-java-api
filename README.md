@@ -63,13 +63,14 @@ In addition to streaming, data can also be retrieved from jKool via Rest. To do 
 All returned JKQL responses are JSON.
 
 ###Running jKool Queries Asynchronously
-Developers can also invoke JKQL queries asynchronously using callbacks. See examples below.
-First setup `JKQueryAsync` connection handler:
+Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. Please note that this example is demonstrating adding a connection handler that will do a trace and a connection handler that will retry the connection every so many milliseconds if it should fail.
 ```java
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+	// retry connection handler
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
-	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
+	// trace connection handler
+	jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 ```
 You can then setup default response handlers (optional but recommended). Default response handlers are called for responses not associated with any specific query or subscription. `JKRetryConnectionHandler` automatically reconnects and recovers websocket connection in case of communication failures.
 ```java

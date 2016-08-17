@@ -179,7 +179,7 @@ You can run jKool queries from command line using a helper class `JKQLCmd` below
 ```
 Running message payload searches:
 ```sh
-	java -cp jkool-java-rest.0.1.2-SNAPSHOT.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -token pMxldK4vZxoI4yQs1VHhASZmusLja9Td -search "failure" -wait 30000
+	java -cp jkool-java-rest.0.1.2-SNAPSHOT.jar;lib/* com.jkoolcloud.rest.api.utils.JKQLCmd -token access-token -search "failure" -wait 30000
 ```
 Command line arguments can be specified via a property file, where any command line argument overrides values specified in the property file:
 ```sh

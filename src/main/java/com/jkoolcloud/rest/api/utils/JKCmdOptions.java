@@ -25,13 +25,24 @@ import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryConstants;
 
 public class JKCmdOptions {
+	public static final String OPTION_TOKEN = "-token";
+	public static final String OPTION_URI = "-uri";
+	public static final String OPTION_QUERY = "-query";
+	public static final String OPTION_TRACE = "-trace";
+	public static final String OPTION_SEARCH = "-search";
+	public static final String OPTION_JPATH = "-jpath";
+	public static final String OPTION_FILE = "-file";
+	public static final String OPTION_WAIT = "-wait";
+	public static final String OPTION_RETRY = "-retry";
+	public static final String OPTION_ROWS = "-rows";
+	
 	public static final String DEFAULT_CMD_NAME = "class";
 	public static final String USAGE_TEXT = "%s options:\n\t"
 			+ "-token access-token\n\t"
 			+ "-query jkql-query\n\t"
 			+ "[-file args-file]\n\t"
 			+ "[-uri jkool service uri]\n\t"
-			+ "[-get json-path]\n\t"
+			+ "[-jpath json-path]\n\t"
 			+ "[-search search-text]\n\t"
 			+ "[-wait wait-ms]\n\t"
 			+ "[-retry retry-ms]\n\t"
@@ -71,62 +82,62 @@ public class JKCmdOptions {
 	private void processOptions(String[] args) throws FileNotFoundException, IOException {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
-			if ("-token".equals(arg)) {
+			if (OPTION_TOKEN.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify access token with -token";
 					return;
 				}
 				token = args[++i];
-			} else if ("-query".equals(arg)) {
+			} else if (OPTION_QUERY.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify query with -query";
 					return;
 				}
 				query = args[++i];
-			} else if ("-get".equals(arg)) {
+			} else if (OPTION_JPATH.equals(arg)) {
 				if ((i+1) == args.length) {
-					usage = "Must specify json path with -get";
+					usage = "Must specify json path with -jpath";
 					return;
 				}
 				json_path = args[++i];
-			} else if ("-search".equals(arg)) {
+			} else if (OPTION_SEARCH.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify search text with -search";
 					return;
 				}
 				search = args[++i];
 				query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
-			} else if ("-uri".equals(arg)) {
+			} else if (OPTION_URI.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify URI with -uri";
 					return;
 				}
 				uri = args[++i];
-			} else if ("-file".equals(arg)) {
+			} else if (OPTION_FILE.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify file name with -file";
 					return;
 				}
 				loadProperties(args[++i]);
-			} else if ("-wait".equals(arg)) {
+			} else if (OPTION_WAIT.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify wait time (ms) -wait";
 					return;
 				}
 				waitTimeMs = Long.parseLong(args[++i]);
-			} else if ("-retry".equals(arg)) {
+			} else if (OPTION_RETRY.equals(arg)) {
 				if ((i+1) == args.length) {
-					usage = "Must specify wait time (ms) -wait";
+					usage = "Must specify retry time (ms) -retry";
 					return;
 				}
 				retryTimeMs = Long.parseLong(args[++i]);
-			} else if ("-rows".equals(arg)) {
+			} else if (OPTION_ROWS.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify maximum rows with -rows";
 					return;
 				}
 				maxRows = Integer.parseInt(args[++i]);
-			} else if ("-trace".equals(arg)) {
+			} else if (OPTION_TRACE.equals(arg)) {
 				if ((i+1) == args.length) {
 					usage = "Must specify true|false with -trace";
 					return;

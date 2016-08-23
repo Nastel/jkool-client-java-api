@@ -46,7 +46,7 @@ public class JKQLCmd {
 			jkQueryAsync.connect();
 			
 			// run query in async mode with a callback
-			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, new JKTraceQueryCallback(System.out, options.json_path, options.trace));
+			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
 			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected

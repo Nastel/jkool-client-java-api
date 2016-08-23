@@ -22,8 +22,8 @@ public interface JKQueryConstants {
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
 	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
-	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://jkool.jkoolcloud.com/jKool/");
-	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "ws://jkool.jkoolcloud.com/jKool/jkqlasync");
+	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jKool/");
+	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jkwebsocket/jkqlasync");
 
 	static final String JK_TOKEN_KEY 	= "token";
 	static final String JK_QUERY_KEY 	= "jk_query";

@@ -196,7 +196,7 @@ trace=true
 wait=15000
 maxrows=100
 retry=0
-#get=jk_response/rows-found
+#jpath=jk_response/rows-found
 ```
 
 ###Streaming with Curl

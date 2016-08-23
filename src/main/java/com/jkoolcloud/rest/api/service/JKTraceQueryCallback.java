@@ -16,6 +16,7 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.io.PrintStream;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.json.JsonObject;
 import javax.json.JsonStructure;
@@ -33,6 +34,11 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	PrintStream out;
 	String json_path;
 	boolean trace = true;
+	Throwable lastError;
+	
+	AtomicLong msgCount = new AtomicLong(0);
+	AtomicLong errCount = new AtomicLong(0);
+	
 	
 	/**
 	 * Create a trace query callback instance
@@ -81,9 +87,12 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
+			lastError = ex;
+			errCount.incrementAndGet();
 			out.println("Error on handle=" + qhandle + ", error=" + ex.getMessage());
 			ex.printStackTrace(out);
 		} else {
+			msgCount.incrementAndGet();
 			if (json_path == null) {
 				out.println(JKUtils.prettyPrint(response));
 			} else {
@@ -99,11 +108,44 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		}
 	}
 	
+	/**
+	 * Enable/disable trace mode
+	 * 
+	 * @param flag trace flag
+	 * 
+	 */
 	public JKTraceQueryCallback setTrace(boolean flag) {
 		this.trace = flag;
 		return this;
 	}
 
+	/**
+	 * Get error count
+	 * 
+	 * @return obtain error count
+	 */
+	public long getErrorCount() {
+		return errCount.get();
+	}
+	
+	/**
+	 * Get received message count
+	 * 
+	 * @return obtain error count
+	 */
+	public long getMsgCount() {
+		return msgCount.get();
+	}
+	
+	/**
+	 * Get last error
+	 * 
+	 * @return last error
+	 */
+	public Throwable getLastError() {
+		return lastError;
+	}
+	
 	@Override
     public void dead(JKQueryHandle qhandle) {
 		if (trace) {

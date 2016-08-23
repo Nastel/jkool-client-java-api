@@ -16,6 +16,7 @@
 package com.jkoolcloud.rest.api.service;
 
 import java.io.PrintStream;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.websocket.CloseReason;
 
@@ -29,7 +30,9 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 	
 	PrintStream out;
 	boolean trace = true;
-	
+	Throwable lastError;
+	AtomicLong errCount = new AtomicLong(0);
+
 	public JKTraceConnectionHandler(PrintStream out) {
 		this(out, true);
 	}
@@ -48,6 +51,8 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 
 	@Override
 	public void error(JKQueryAsync async, Throwable ex) {
+		lastError = ex;
+		errCount.incrementAndGet();
 		if (out != null && trace) {
 			out.println("Connection error: " + async + ", reason=" + ex);
 			ex.printStackTrace(out);
@@ -61,6 +66,29 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 		}
 	}
 	
+	/**
+	 * Get error count
+	 * 
+	 * @return obtain error count
+	 */
+	public long getErrorCount() {
+		return errCount.get();
+	}
+	
+	/**
+	 * Get last error
+	 * 
+	 * @return last error
+	 */
+	public Throwable getLastError() {
+		return lastError;
+	}
+	
+	/**
+	 * Enable/disable trace mode
+	 * 
+	 * @param flag trace flag
+	 */
 	public JKTraceConnectionHandler setTrace(boolean flag) {
 		this.trace = flag;
 		return this;

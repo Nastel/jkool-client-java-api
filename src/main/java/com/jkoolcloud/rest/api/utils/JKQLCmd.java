@@ -31,6 +31,7 @@ public class JKQLCmd {
 			System.exit(-1);
 		}
 		options.print();
+		JKTraceQueryCallback callback = new JKTraceQueryCallback(System.out, options.json_path, options.trace);
 		try {
 			
 			// setup jKool WebSocket connection and connect
@@ -41,7 +42,7 @@ public class JKQLCmd {
 				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
 			}
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
-			jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, options.json_path, options.trace));
+			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();
 			
 			// run query in async mode with a callback
@@ -63,6 +64,8 @@ public class JKQLCmd {
 		} catch (Throwable e) {
 			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
+		} finally {
+			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
 		}
 	}
 }

@@ -17,7 +17,6 @@ package com.jkoolcloud.rest.api.service;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -29,9 +28,6 @@ import java.util.concurrent.ConcurrentMap;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
-import javax.websocket.CloseReason;
-import javax.websocket.Session;
 
 /**
  * This class defines an async way to run jKool queries via WebSockets. Supports
@@ -39,7 +35,7 @@ import javax.websocket.Session;
  * 
  * @author albert
  */
-public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
+public class JKQueryAsync extends JKQuery implements Closeable {
 	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy
 																		// query
 																		// associated
@@ -51,9 +47,10 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 
 	URI webSockUri;
 	JKWSClient socket;
-
+	WSClientHandler wsHandler;
 	Vector<JKQueryHandle> defCallbacks = new Vector<JKQueryHandle>(5, 5);
 	Vector<JKConnectionHandler> conHandlers = new Vector<JKConnectionHandler>(5, 5);
+	
 
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
@@ -70,6 +67,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public JKQueryAsync(URI wsUri, String queryUrl, String token) {
 		super(queryUrl, token);
 		this.webSockUri = wsUri;
+		this.wsHandler = new WSClientHandler(this);
 	}
 
 	/**
@@ -204,14 +202,14 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	public synchronized JKQueryAsync connect() throws IOException {
 		try {
 			if (socket == null) {
-				socket = new JKWSClient(webSockUri, this);
+				socket = new JKWSClient(webSockUri, wsHandler);
 				socket.connect();
 			} else if (!socket.isConnected()) {
 				socket.connect();				
 			}
 			return this;
 		} catch (Throwable ex) {
-			onError(socket, socket.getSession(), ex);
+			wsHandler.onError(socket, socket.getSession(), ex);
 			throw ex;
 		}
 	}
@@ -425,40 +423,6 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 		return SUBID_MAP.get(subid);
 	}
 
-	@Override
-	public void onMessage(JKWSClient client, String message) {
-		JsonReader reader = Json.createReader(new StringReader(message));
-		JsonObject jsonMessage = reader.readObject();
-		String subid = jsonMessage.getString(JKQueryAsync.JK_SUBID_KEY, null);
-		handleResponse(subid, jsonMessage);
-	}
-
-	@Override
-	public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
-		synchronized (conHandlers) {
-			for (JKConnectionHandler ch: conHandlers) {
-				ch.close(this, reason);
-			}
-		}
-	}
-
-	@Override
-	public void onError(JKWSClient client, Session userSession, Throwable ex) {
-		synchronized (conHandlers) {
-			for (JKConnectionHandler ch: conHandlers) {
-				ch.error(this, ex);
-			}
-		}
-	}
-
-	@Override
-	public void onOpen(JKWSClient client, Session userSession) {
-		synchronized (conHandlers) {
-			for (JKConnectionHandler ch: conHandlers) {
-				ch.open(this);
-			}
-		}
-	}
 
 	/**
 	 * Create a new query handle for a given callback instance and

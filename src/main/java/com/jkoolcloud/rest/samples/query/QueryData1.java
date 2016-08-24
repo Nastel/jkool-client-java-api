@@ -15,6 +15,8 @@
  */
 package com.jkoolcloud.rest.samples.query;
 
+import java.util.Properties;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
@@ -29,13 +31,15 @@ import com.jkoolcloud.rest.api.utils.JKCmdOptions;
 public class QueryData1 {
 	public static void main(String[] args) {
 		try {
-			JKCmdOptions options = new JKCmdOptions(args);
+			Properties props = new Properties();
+			props.setProperty(JKCmdOptions.OPTION_URI, JKQuery.JKOOL_QUERY_URL);
+			JKCmdOptions options = new JKCmdOptions(QueryData1.class, args, props);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
-			JKQuery jkRetrieve = new JKQuery(System.getProperty("jk.access.token", options.token));
-			HttpResponse response = jkRetrieve.get(options.query);
+			JKQuery jkQuery = new JKQuery(options.token);
+			HttpResponse response = jkQuery.get(options.query);
 			System.out.println(EntityUtils.toString(response.getEntity()));
 		} catch (Exception e) {
 			e.printStackTrace();

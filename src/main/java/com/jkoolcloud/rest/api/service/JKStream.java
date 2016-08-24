@@ -29,7 +29,6 @@ import com.jkoolcloud.rest.api.model.Trackable;
  * @see JKService
  */
 public class JKStream extends JKService {
-	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
 
 	public JKStream() {
 		this(JKOOL_STREAM_URL, JKOOL_TOKEN);

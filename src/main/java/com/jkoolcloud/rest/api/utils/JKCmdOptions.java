@@ -26,6 +26,17 @@ import com.jkoolcloud.rest.api.service.JKQueryAsync;
 import com.jkoolcloud.rest.api.service.JKQueryConstants;
 
 public class JKCmdOptions {
+	public static final String PROP_URI 		= "uri";
+	public static final String PROP_TOKEN 		= "token";
+	public static final String PROP_QUERY 		= "query";
+	public static final String PROP_TRACE 		= "trace";
+	public static final String PROP_SEARCH 		= "search";
+	public static final String PROP_JPATH 		= "jpath";
+	public static final String PROP_FILE		= "file";
+	public static final String PROP_WAIT		= "wait";
+	public static final String PROP_RETRY		= "retry";
+	public static final String PROP_MAX_ROWS	= "maxrows";
+
 	public static final String OPTION_URI 		= "-uri";
 	public static final String OPTION_TOKEN 	= "-token";
 	public static final String OPTION_QUERY 	= "-query";
@@ -66,8 +77,19 @@ public class JKCmdOptions {
 		parseOptions(args);
 	}
 
+	public JKCmdOptions(String[] args, Properties defProps) {
+		assignDefaults(defProps);
+		parseOptions(args);
+	}
+
 	public JKCmdOptions(String appName, String[] args) {
 		appname = appName;
+		parseOptions(args);
+	}
+
+	public JKCmdOptions(String appName, String[] args, Properties defProps) {
+		appname = appName;
+		assignDefaults(defProps);
 		parseOptions(args);
 	}
 
@@ -76,8 +98,29 @@ public class JKCmdOptions {
 		parseOptions(args);
 	}
 
+	public JKCmdOptions(Class<?> clazz, String[] args, Properties defProps) {
+		appname = clazz.getSimpleName();
+		assignDefaults(defProps);
+		parseOptions(args);
+	}
+
 	public String getUsage() {
 		return String.format(USAGE_TEXT, appname);
+	}
+	
+	private void assignDefaults(Properties props) {
+		uri = props.getProperty(PROP_URI, uri);
+		token = props.getProperty(PROP_TOKEN, token);
+		query = props.getProperty(PROP_TOKEN, query);
+		json_path = props.getProperty(PROP_JPATH, json_path);
+		search = props.getProperty(PROP_SEARCH, search);
+		if (search != null) {
+			query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
+		}
+		waitTimeMs = Long.parseLong(props.getProperty(PROP_WAIT, String.valueOf(waitTimeMs)));
+		retryTimeMs = Long.parseLong(props.getProperty(PROP_RETRY, String.valueOf(retryTimeMs)));
+		maxRows = Integer.parseInt(props.getProperty(PROP_MAX_ROWS, String.valueOf(maxRows)));
+		trace = Boolean.parseBoolean(props.getProperty(PROP_TRACE, String.valueOf(trace)));
 	}
 	
 	private void processOptions(String[] args) throws FileNotFoundException, IOException {
@@ -181,18 +224,7 @@ public class JKCmdOptions {
 	private void loadProperties(String file) throws FileNotFoundException, IOException {
 		Properties props = new Properties();
 		props.load(new FileInputStream(file));
-		uri = props.getProperty("uri", uri);
-		token = props.getProperty("token", token);
-		query = props.getProperty("query", query);
-		json_path = props.getProperty("jpath", json_path);
-		search = props.getProperty("search", search);
-		if (search != null) {
-			query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
-		}
-		waitTimeMs = Long.parseLong(props.getProperty("wait", String.valueOf(waitTimeMs)));
-		retryTimeMs = Long.parseLong(props.getProperty("retry", String.valueOf(retryTimeMs)));
-		maxRows = Integer.parseInt(props.getProperty("maxrows", String.valueOf(maxRows)));
-		trace = Boolean.parseBoolean(props.getProperty("trace", String.valueOf(trace)));
+		assignDefaults(props);
 	}
 
 	public void print() {

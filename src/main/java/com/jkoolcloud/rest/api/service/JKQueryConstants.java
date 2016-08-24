@@ -21,7 +21,7 @@ public interface JKQueryConstants {
 	static final String CONTENT_TYPE = "content-type";
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
-	public static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
+	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
 	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jKool/");
 	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jkwebsocket/jkqlasync");
 
@@ -39,5 +39,6 @@ public interface JKQueryConstants {
 	static final String JK_SUB_QUERY_PREFIX = "subscribe to ";
 	static final String JK_UNSUB_QUERY_PREFIX = "unsubscribe ";	
 
+	static final int DEFAULT_MAX_ROWS = 100;
 	static final String JK_SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 }

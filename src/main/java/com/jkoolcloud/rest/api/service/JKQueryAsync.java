@@ -230,7 +230,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
-	 * Search for events that contain a given string.
+	 * Search for events that contain a given string and a maximum rows of {@link #DEFAULT_MAX_ROWS}.
 	 * 
 	 * @param searchText
 	 *            search text
@@ -238,7 +238,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle searchAsync(String searchText, JKQueryCallback callback) throws IOException {
-		return searchAsync(searchText, 100, callback);
+		return searchAsync(searchText, DEFAULT_MAX_ROWS, callback);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
-	 * Call query in async mode using a callback and a maximum rows of 100.
+	 * Call query in async mode using a callback and a maximum rows of {@link #DEFAULT_MAX_ROWS}.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -264,11 +264,11 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
-		return callAsync(JK_SUB_QUERY_PREFIX + query, 100, callback);
+		return callAsync(JK_SUB_QUERY_PREFIX + query, DEFAULT_MAX_ROWS, callback);
 	}
 
 	/**
-	 * Call query in async mode using a callback and a maximum rows of 100.
+	 * Call query in async mode using a callback and a maximum rows of {@link #DEFAULT_MAX_ROWS}.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -276,7 +276,7 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	 * @throws IOException
 	 */
 	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws IOException {
-		return callAsync(query, 100, callback);
+		return callAsync(query, DEFAULT_MAX_ROWS, callback);
 	}
 
 	/**

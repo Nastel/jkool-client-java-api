@@ -190,7 +190,7 @@ Command line arguments can be specified via a property file, where any command l
 Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties
 token=your-access-token
-uri=ws://jkool.jkoolcloud.com/jKool/jkqlasync
+uri=wss://jkool.jkoolcloud.com/jkwebsocket/jkqlasync
 query=get number of events
 trace=true
 wait=15000

@@ -319,7 +319,39 @@ public class JKQueryAsync extends JKQuery implements JKWSHandler, Closeable {
 	}
 
 	/**
-	 * Call query in async mode using a callback
+	 * Call query in async mode using default callback(s).
+	 * All responses will be tagged with auto generated id and
+	 * routed to all registered default handlers.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @return itself
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 */
+	public JKQueryAsync callAsync(String query) throws IOException {
+		return callAsync(query, JKQueryHandle.newId(query), DEFAULT_MAX_ROWS);
+	}
+
+	/**
+	 * Call query in async mode using default callback(s).
+	 * All responses will be tagged with auto generated id and
+	 * routed to all registered default handlers.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param maxRows
+	 *            maximum rows to return
+	 * @return itself
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 */
+	public JKQueryAsync callAsync(String query, int maxRows) throws IOException {
+		return callAsync(query, JKQueryHandle.newId(query), maxRows);
+	}
+
+	/**
+	 * Call query in async mode using default callback(s).
 	 * All responses will be tagged with given id and
 	 * routed to all registered default handlers.
 	 * 

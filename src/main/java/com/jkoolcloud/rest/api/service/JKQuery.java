@@ -33,22 +33,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
  */
 public class JKQuery extends JKService {
 	HttpClient httpClient = new DefaultHttpClient();
-
-	String jkqlUrlPath;
 	
 	public JKQuery() {
 		super(JKOOL_QUERY_URL, JKOOL_TOKEN);
-		jkqlUrlPath = getServiceUrl() + QUERY_ENDPOINT;
 	}
 
 	public JKQuery(String token) {
 		super(JKOOL_QUERY_URL, token);
-		jkqlUrlPath = getServiceUrl() + QUERY_ENDPOINT;
 	}
 
 	public JKQuery(String endPoint, String token) {
 		super(endPoint, token);
-		jkqlUrlPath = getServiceUrl() + QUERY_ENDPOINT;
 	}
 
 	public Response call(String query) throws JKStreamException {
@@ -60,8 +55,7 @@ public class JKQuery extends JKService {
 	}
 
 	public Response call(String query, int maxRows) throws JKStreamException {
-		return target.path(QUERY_ENDPOINT)
-				.queryParam(QUERY_KEY, query)
+		return target.queryParam(QUERY_KEY, query)
 				.queryParam(JK_MAX_ROWS_KEY, maxRows)
 				.queryParam(JK_TOKEN_KEY, getToken())
 				.request(MediaType.APPLICATION_JSON)
@@ -75,13 +69,13 @@ public class JKQuery extends JKService {
 					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows
 					+ "&" + JK_TOKEN_KEY + "=" + getToken(),
 					"UTF-8");
-			HttpGet request = new HttpGet(jkqlUrlPath + "?" + urlQuery);
+			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			request.addHeader(JK_TOKEN_KEY, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);
 			return response;
 		} catch (Throwable e) {
-			throw new JKStreamException(300, "Failed: path=" + jkqlUrlPath + ", query=" + query, e);
+			throw new JKStreamException(300, "Failed: path=" + getServiceUrl() + ", query=" + query, e);
 		}
 	}
 }

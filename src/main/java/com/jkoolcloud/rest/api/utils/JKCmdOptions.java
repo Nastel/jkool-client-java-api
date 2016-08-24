@@ -68,10 +68,11 @@ public class JKCmdOptions {
 	public String json_path;
 	public String appname = DEFAULT_CMD_NAME;
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
+
 	public boolean trace = false;
-	public long waitTimeMs = 20000;
-	public long retryTimeMs = 0;
-	public int maxRows = 50;
+	public int maxRows = JKQueryConstants.DEFAULT_MAX_ROWS;
+	public long waitTimeMs = JKQueryConstants.DEFAULT_WAIT_TIME;
+	public long retryTimeMs = JKQueryConstants.DEFAULT_RETRY_TIME;
 
 	public JKCmdOptions(String[] args) {
 		parseOptions(args);
@@ -238,8 +239,8 @@ public class JKCmdOptions {
 	@Override
 	public String toString() {
 		String formatted = String.format("%s: uri=\"%s\", " +
-				"query=\"%s\", wait.ms=%d, max.rows=%d, trace=%b",
-		        appname, uri, query, waitTimeMs, maxRows, trace);
+				"query=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b",
+		        appname, uri, query, waitTimeMs, retryTimeMs, maxRows, trace);
 		return formatted;
 	}
 }

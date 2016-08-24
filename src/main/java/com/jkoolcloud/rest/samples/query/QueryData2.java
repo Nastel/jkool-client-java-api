@@ -31,12 +31,13 @@ public class QueryData2 {
 	public static void main(String[] args) {
 		try {
 			Properties props = new Properties();
-			props.setProperty(JKCmdOptions.OPTION_URI, JKQuery.JKOOL_QUERY_URL);
+			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
 			JKCmdOptions options = new JKCmdOptions(QueryData2.class, args, props);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
+			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
 			Response response = jkQuery.call(options.query);
 			System.out.println(response.readEntity(String.class));

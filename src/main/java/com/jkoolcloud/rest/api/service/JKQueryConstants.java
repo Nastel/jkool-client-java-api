@@ -17,12 +17,11 @@ package com.jkoolcloud.rest.api.service;
 
 public interface JKQueryConstants {
 	static final String QUERY_KEY = "query";
-	static final String QUERY_ENDPOINT = "jkql";
 	static final String CONTENT_TYPE = "content-type";
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
 	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
-	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jKool/");
+	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jKool/jkql");
 	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jkwebsocket/jkqlasync");
 
 	static final String JK_TOKEN_KEY 	= "token";
@@ -40,5 +39,7 @@ public interface JKQueryConstants {
 	static final String JK_UNSUB_QUERY_PREFIX = "unsubscribe ";	
 
 	static final int DEFAULT_MAX_ROWS = 100;
+	static final int DEFAULT_WAIT_TIME = 20000;
+	static final int DEFAULT_RETRY_TIME = 0;
 	static final String JK_SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 }

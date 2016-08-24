@@ -72,28 +72,28 @@ Developers can also invoke JKQL queries asynchronously using callbacks. To do th
 	// trace connection handler
 	jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, true));
 ```
-The next step is to setup the callback handlers (optional but recommended). Default callback handlers are called for responses not associated with any specific query or subscription. 
+The next step is to setup default callback handlers (optional but recommended). Default callback handlers are called for responses not associated with any specific query or subscription. 
 ```java
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
 ```
-Next execute the query. Because no callback has been associated, the response will be delegated to the default callback handlers:
+Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this query :
 ```java
 	// run query in async mode without a callback (use default response handlers)
-	jkQueryAsync.callAsync("get events", JKQueryHandle.newId(), 50);
+	jkQueryAsync.callAsync("get number of events for today");
 	...
 	jkQueryAsync.close(); // close connection
 ```
-To execute your query and associate it with a callback, do the following:
+Alternatively you can execute a query with a specific callback instance. All responses associated with this query will be routed to the callback instance specified in the `jkQueryAsync.callAsync(...)` call.
 ```java
+	// run query in async mode with a specific callback
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
 	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
 	...
 	jkQueryAsync.close(); // close connection
 ```
-When associating a query with a callback, `MyJKQueryCallback.handle()` is called when a result from the query is received.  `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
-
+`MyJKQueryCallback.handle()` is called when for every response to the query -- there maybe one or more responses depending on the query. `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override
@@ -105,7 +105,7 @@ public class MyJKQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
-    public void dead(JKQueryHandle qhandle) {
+	public void dead(JKQueryHandle qhandle) {
 		if (trace) {
 			out.println("Dead handle=" + qhandle + ", dead=" + qhandle.isDead());
 		}

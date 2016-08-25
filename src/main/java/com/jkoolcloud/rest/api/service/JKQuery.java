@@ -55,7 +55,7 @@ public class JKQuery extends JKService {
 	}
 
 	public Response call(String query, int maxRows) throws JKStreamException {
-		return target.queryParam(QUERY_KEY, query)
+		return target.queryParam(JK_QUERY_KEY, query)
 				.queryParam(JK_MAX_ROWS_KEY, maxRows)
 				.queryParam(JK_TOKEN_KEY, getToken())
 				.request(MediaType.APPLICATION_JSON)
@@ -65,10 +65,9 @@ public class JKQuery extends JKService {
 
 	public HttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {
-			String urlQuery = URLEncoder.encode(QUERY_KEY + "=" + query
+			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8")
 					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows
-					+ "&" + JK_TOKEN_KEY + "=" + getToken(),
-					"UTF-8");
+					+ "&" + JK_TOKEN_KEY + "=" + getToken();
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			request.addHeader(JK_TOKEN_KEY, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);

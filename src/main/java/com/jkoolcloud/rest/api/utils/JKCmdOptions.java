@@ -28,7 +28,7 @@ import com.jkoolcloud.rest.api.service.JKQueryConstants;
 public class JKCmdOptions {
 	public static final String PROP_URI 		= "uri";
 	public static final String PROP_TOKEN 		= "token";
-	public static final String PROP_QUERY 		= "query";
+	public static final String PROP_QUERY 		= "jk_query";
 	public static final String PROP_TRACE 		= "trace";
 	public static final String PROP_SEARCH 		= "search";
 	public static final String PROP_JPATH 		= "jpath";
@@ -39,7 +39,7 @@ public class JKCmdOptions {
 
 	public static final String OPTION_URI 		= "-uri";
 	public static final String OPTION_TOKEN 	= "-token";
-	public static final String OPTION_QUERY 	= "-query";
+	public static final String OPTION_QUERY 	= "-jk_query";
 	public static final String OPTION_TRACE 	= "-trace";
 	public static final String OPTION_SEARCH 	= "-search";
 	public static final String OPTION_JPATH 	= "-jpath";

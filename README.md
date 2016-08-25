@@ -190,7 +190,7 @@ Command line arguments can be specified via a property file, where any command l
 Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties
 token=your-access-token
-uri=wss://jkool.jkoolcloud.com/jkwebsocket/jkqlasync
+uri=wss://jkool.jkoolcloud.com/jkool-service/jkqlasync
 query=get number of events
 trace=true
 wait=15000
@@ -220,7 +220,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example: 
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X GET https://jkool.jkoolcloud.com/jKool/jkql?query=get%20activities
+curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X GET https://jkool.jkoolcloud.com/jkool-service/jkql?query=get%20activities
 ```
 ### Note on time stamps
 Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

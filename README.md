@@ -177,7 +177,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 ###Running jKool queries from command line
 You can run jKool queries from command line using a helper class `JKQLCmd` below. Please run all commands from the 'build' directory that Maven will create.
 ```sh
-	java -jar ./lib/jkool-java-rest-<version>.jar -token access-token -query "get events" -wait 30000
+	java -jar ./lib/jkool-java-rest-<version>.jar -token access-token -jk_query "get events" -wait 30000
 ```
 Running message payload searches:
 ```sh
@@ -191,7 +191,7 @@ Below is a sample property file containing `JKQLCmd` command line arguments (`to
 ```properties
 token=your-access-token
 uri=wss://jkool.jkoolcloud.com/jkool-service/jkqlasync
-query=get number of events
+jk_query=get number of events
 trace=true
 wait=15000
 maxrows=100
@@ -220,7 +220,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example: 
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X GET https://jkool.jkoolcloud.com/jkool-service/jkql?query=get%20activities
+curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X GET https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20activities
 ```
 ### Note on time stamps
 Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

@@ -220,7 +220,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example: 
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X GET https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20activities
+curl -i -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&token=YOUR-TOKEN'
 ```
 ### Note on time stamps
 Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

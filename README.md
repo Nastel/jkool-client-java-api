@@ -185,7 +185,7 @@ Running message payload searches:
 ```
 Command line arguments can be specified via a property file, where any command line argument overrides values specified in the property file:
 ```sh
-	java -jar ./lib/jkool-java-rest-<version>.jar -file cmd.properties -query "get number of events for today"
+	java -jar ./lib/jkool-java-rest-<version>.jar -file cmd.properties -jk_query "get number of events for today"
 ```
 Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties

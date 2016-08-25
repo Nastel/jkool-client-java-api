@@ -217,7 +217,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 ```
 ###Query jKool using Curl
 
-Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example: 
+Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example. Please note that you also have the option of putting the token in the header instead of specifying it as a parameter. 
 
 ```java
 curl -i -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&token=YOUR-TOKEN'

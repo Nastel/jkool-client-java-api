@@ -69,6 +69,7 @@ public class JKQuery extends JKService {
 					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows
 					+ "&" + JK_TOKEN_KEY + "=" + getToken();
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
+			// optionally, token can be in the header.
 			request.addHeader(JK_TOKEN_KEY, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);

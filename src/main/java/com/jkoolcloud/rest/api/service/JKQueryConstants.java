@@ -16,7 +16,6 @@
 package com.jkoolcloud.rest.api.service;
 
 public interface JKQueryConstants {
-	static final String QUERY_KEY = "query";
 	static final String CONTENT_TYPE = "content-type";
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 

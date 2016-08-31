@@ -16,14 +16,14 @@
 package com.jkoolcloud.rest.api.service;
 
 public interface JKQueryConstants {
-	static final String CONTENT_TYPE = "content-type";
-	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
+	static final String CONTENT_TYPE	= "content-type";
+	static final String JKOOL_TOKEN		= System.getProperty("jkool.api.token");
 
-	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "http://test.jkoolcloud.com:6580/JESL");
-	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url", "http://localhost:8080/jkool-service/jkql");
-	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url", "ws://localhost:8080/jkool-service/jkqlasync");
+	static final String JKOOL_STREAM_URL	= System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
+	static final String JKOOL_QUERY_URL		= System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jkool-service/jkql");
+	static final String JKOOL_WEBSOCK_URL	= System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
 
-	static final String TOKEN_KEY 	= "token";
+	static final String TOKEN_KEY 		= "token";
 	static final String JK_TOKEN_KEY 	= "jk_token";
 	static final String JK_QUERY_KEY 	= "jk_query";
 	static final String JK_SUBID_KEY 	= "jk_subid";
@@ -31,15 +31,15 @@ public interface JKQueryConstants {
 	static final String JK_CALL_KEY 	= "jk_call";
 	static final String JK_RESPONSE_KEY = "jk_response";
 	
-	static final String JK_CALL_CANCEL = "unsubscribe";
+	static final String JK_CALL_CANCEL 	= "unsubscribe";
 	static final String JK_MAX_ROWS_KEY = "jk_maxrows";
 
-	static final String JK_SUB_UUID_PREFIX = "$sub/";
-	static final String JK_SUB_QUERY_PREFIX = "subscribe to ";
-	static final String JK_UNSUB_QUERY_PREFIX = "unsubscribe ";	
+	static final String JK_SUB_UUID_PREFIX		= "$sub/";
+	static final String JK_SUB_QUERY_PREFIX		= "subscribe to ";
+	static final String JK_UNSUB_QUERY_PREFIX	= "unsubscribe ";	
 
-	static final int DEFAULT_MAX_ROWS = 100;
-	static final int DEFAULT_WAIT_TIME = 20000;
+	static final int DEFAULT_MAX_ROWS	= 100;
+	static final int DEFAULT_WAIT_TIME	= 20000;
 	static final int DEFAULT_RETRY_TIME = 0;
 	static final String JK_SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 }

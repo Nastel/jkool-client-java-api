@@ -23,9 +23,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git://github.com/Nastel/jKoolRestClients</connection>
-    <developerConnection>scm:git:git//github.com/Nastel/jKoolRestClients</developerConnection>
-    <url>https://github.com/Nastel/jKoolRestClients</url>
+    <connection>scm:git:git://github.com/Nastel/jkool-client-api</connection>
+    <developerConnection>scm:git:git//github.com/Nastel/jkool-client-api</developerConnection>
+    <url>https://github.com/Nastel/jkool-client-api</url>
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

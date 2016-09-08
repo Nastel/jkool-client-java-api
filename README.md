@@ -4,13 +4,13 @@
 jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you. 
 
 ###jKool Streaming Concepts and Documentation
-You can find very comprehensive documentation on jKool Data Types and Concepts in our jKool Streaming Guide found here: https://www.jkoolcloud.com/download/jkool-model.pdf. But basically, there are four types of data that can be streamed into jKool. They are:
-* Events: Represents a basic time series element containing time, message, severity and other fields associated with event.
-* Activities: Represents a group of events and other activities (e.g. transactions).
-* Snapshots: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
-* Properties: simple metrics (name, value pairs). Properties can be associated with events, activities. 
+You can find very comprehensive documentation on jKool Data Types and Concepts in our [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). There are four types of timeseries data types that can be streamed to jKool. They are:
+* *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
+* *Activity*: Represents a group of events and other activities (e.g. transactions).
+* *Snapshot*: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
+* *Property*: simple metric (name, value pair). Properties can be associated with events, activities and snapshots. 
 
-In addition to the Streaming Guide, this Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
+This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ###Streaming Examples
 To use this sample code please do the following:
@@ -47,12 +47,10 @@ Please note that this example code depicts streaming in real-time. Therefore the
 	Response response = jkSend.post(event);
 	response.close();
 ```
-The Rest Client will properly format the entity into JSON format and stream it to jKool over default `https` protocol.
+The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
-That's it!! Any problems or concerns, please email us at (`support at jkoolcloud.com`).
-
-###Running jKool Queries
-In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see JKQL Documentation here http://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf. You will use the JKQuery helper class in the API to retrieve data. Simply pass in your access token along with the JKQL query.  Below is an example:
+###Running jKool Queries (Synchronously)
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. Simply pass in your access token along with the JKQL query.  Below is an example:
 
 ```java
 	JKQuery jkQuery = new JKQuery("yourtoken");
@@ -62,7 +60,7 @@ In addition to streaming, data can also be retrieved from jKool via Rest. To do 
 ```
 All returned JKQL responses are JSON.
 
-###Running jKool Queries Asynchronously
+###Running jKool Queries (Asynchronously)
 Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. Please note that this example is demonstrating adding a connection handler that will do a trace and a connection handler that will retry the connection every so many milliseconds if it should fail.
 ```java
 	// setup jKool WebSocket connection and connect

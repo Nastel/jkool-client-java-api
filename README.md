@@ -110,6 +110,22 @@ public class MyJKQueryCallback implements JKQueryCallback {
 	}
 }
 ```
+`jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
+Cancelling an active query subscription attempts to stop any streaming traffic associated with a specific subscription.
+Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `addDefaultCallbackHandler()` call.
+```java
+	// run query in async mode with a callback
+	JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
+	...
+	// attempt to cancel subscription to the query results
+	qhandle.cancelAsync(qhandle);
+```
+JKQL queries can aslo be executed using pre-compiled JKQL statements as follows:
+```java
+	JKStatement jkql = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
+	JKQueryHandle qhandle = jkql.call(100); // call with specified max rows for responses
+```
+### Connection Event Handling
 Customized connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:
 ```java
 public class MyConnectionHandler implements JKConnectionHandler {
@@ -130,16 +146,6 @@ public class MyConnectionHandler implements JKConnectionHandler {
 	}
 }
 
-```
-`jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
-Cancelling an active query subscription attempts to stop any streaming traffic associated with a specific subscription.
-Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler specified by `addDefaultCallbackHandler()` call.
-```java
-	// run query in async mode with a callback
-	JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
-	...
-	// attempt to cancel subscription to the query results
-	qhandle.cancelAsync(qhandle);
 ```
 ###Subscribing to real-time event streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:

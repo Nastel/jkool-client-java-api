@@ -71,6 +71,29 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	}
 
 	/**
+	 * Prepare a JQKL query statement with default max rows
+	 * 
+	 * @param query JKQL query
+	 * @param callback associated with this query
+	 * @return {@link JKStatement} instance
+	 */
+	public JKStatement prepare(String query, JKQueryCallback callback) {
+		return new JKStatementImpl(this, query, DEFAULT_MAX_ROWS, callback);
+	}
+	
+	/**
+	 * Prepare a JQKL query statement
+	 * 
+	 * @param query JKQL query
+	 * @param maxRows maximum rows in the response result
+	 * @param callback associated with this query
+	 * @return {@link JKStatement} instance
+	 */
+	public JKStatement prepare(String query, int maxRows, JKQueryCallback callback) {
+		return new JKStatementImpl(this, query, maxRows, callback);
+	}
+	
+	/**
 	 * Obtain service URL for executing async queries
 	 * 
 	 * @return service URL for executing async queries

@@ -71,6 +71,16 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	}
 
 	/**
+	 * Obtain service URL for executing async queries
+	 * 
+	 * @return service URL for executing async queries
+	 */
+	public String getAsyncServiceUrl() {
+		return webSockUri.toString();
+	}
+	
+
+	/**
 	 * Add a default callback handler for responses
 	 * not handled by a specific query handler
 	 * 

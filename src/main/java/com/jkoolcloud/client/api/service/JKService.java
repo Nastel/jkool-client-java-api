@@ -49,10 +49,20 @@ abstract public class JKService implements JKQueryConstants {
 		this.target = rsClient.target(basePath);
 	}
 	
+	/**
+	 * Obtain access token associated with this service
+	 * 
+	 * @return access token associated with this service
+	 */
 	public String getToken() {
 		return token;
 	}
 	
+	/**
+	 * Obtain service URL for executing sync queries
+	 * 
+	 * @return service URL for executing sync queries
+	 */
 	public String getServiceUrl() {
 		return basePath;
 	}

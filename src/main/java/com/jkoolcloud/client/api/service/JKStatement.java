@@ -18,8 +18,7 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 
 /**
- * This interface defines a JKQL statement. All concrete statement implementations must implement
- * this interface.
+ * This interface defines a JKQL statement. All concrete statement implementations must implement this interface.
  * 
  * @author albert
  */
@@ -39,27 +38,32 @@ public interface JKStatement {
 	int getMaxRows();
 
 	/**
-	 * Obtain {@link JKQueryCallback} instance associated with the
-	 * statement
+	 * Obtain {@link JKQueryCallback} instance associated with the statement
 	 * 
 	 * @return {@link JKQueryCallback} instance
 	 */
 	JKQueryCallback getCallback();
-	
+
 	/**
-	 * Call current statement with responses 
-	 * routed to the associated callback.
+	 * Obtain {@link JKQueryAsync} instance associated with the statement
+	 * 
+	 * @return {@link JKQueryAsync} instance
+	 */
+	JKQueryAsync getQueryAsync();
+
+	/**
+	 * Call current statement with responses routed to the associated callback.
 	 * 
 	 * @throws IOException
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle call() throws IOException;
-	
+
 	/**
-	 * Call current statement with responses 
-	 * routed to the associated callback.
+	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @param max rows limit
+	 * @param max
+	 *            rows limit
 	 * @throws IOException
 	 * @return query handle associate with this query
 	 */

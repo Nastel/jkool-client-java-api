@@ -28,14 +28,14 @@ public class JKStatementImpl implements JKStatement {
 	String query;
 	JKQueryCallback callback;
 	JKQueryAsync handle;
-	
+
 	protected JKStatementImpl(JKQueryAsync handle, String query, int maxRows, JKQueryCallback callb) {
 		this.handle = handle;
 		this.query = query;
 		this.maxRows = maxRows;
 		this.callback = callb;
 	}
-	
+
 	@Override
 	public String getQuery() {
 		return query;
@@ -52,10 +52,15 @@ public class JKStatementImpl implements JKStatement {
 	}
 
 	@Override
+	public JKQueryAsync getQueryAsync() {
+		return handle;
+	}
+
+	@Override
 	public JKQueryHandle call() throws IOException {
 		return call(maxRows);
 	}
-	
+
 	@Override
 	public JKQueryHandle call(int maxrows) throws IOException {
 		return handle.callAsync(query, maxrows, callback);

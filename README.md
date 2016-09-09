@@ -14,10 +14,10 @@ This Git repository contains a Swagger yaml file. Open this file in a Swagger Ed
 
 ###Streaming Examples
 To use this sample code please do the following:
-* Run mvn install on the project. This will generate a jar file. This jar file can be found in the target directory. However, please be advised that when running from the command line (as documented below), run from the build directory that Maven will assemble. This build directory will at the same level as the directory you run Maven from. 
-* Import this jar file into your own project in which you wish to stream to jKool. 
-* Please see the sample classes and run them in order to get a good understanding on how to use the helper code. You will be doing the following:
-* Instantiate the `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the proper repository.
+* Run `mvn install` on the project. This will generate `jkool-client-api-<version>` jar file. This jar file can be found in the target directory. Be advised that when running from the command line (as documented below), run from the `build` directory that Maven will assemble. This `build` directory will be at the same level as the directory you run Maven from. 
+* Import `jkool-client-api-<version>` jar file as well as all `lib` depedencies into your own project.
+* See samples to get a good understanding on how to use the this client API.
+* Instantiate the `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```

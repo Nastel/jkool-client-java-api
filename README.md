@@ -120,7 +120,7 @@ Cancellation is also issued asynchronously and any responses that are still in t
 	// attempt to cancel subscription to the query results
 	qhandle.cancelAsync(qhandle);
 ```
-JKQL queries can aslo be executed using pre-compiled JKQL statements as follows:
+JKQL queries can aslo be executed using prepared JKQL statements as follows:
 ```java
 	JKStatement jkql = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
 	JKQueryHandle qhandle = jkql.call(100); // call with specified max rows for responses

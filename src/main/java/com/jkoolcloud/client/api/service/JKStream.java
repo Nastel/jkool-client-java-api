@@ -30,31 +30,59 @@ import com.jkoolcloud.client.api.model.Trackable;
  */
 public class JKStream extends JKService {
 
+	/**
+	 * Create a jKool stream end-point
+	 * with default end-point and access token
+	 * 
+	 */	
 	public JKStream() {
 		this(JKOOL_STREAM_URL, JKOOL_TOKEN);
 	}
 
+	/**
+	 * Create a jKool stream end-point
+	 * 
+	 * @param token security access token
+	 */	
 	public JKStream(String token) {
 		this(JKOOL_STREAM_URL, token);
 	}
 
+	/**
+	 * Create a jKool stream end-point
+	 * 
+	 * @param endPoint service end-point URL
+	 * @param token security access token
+	 */	
 	public JKStream(String endPoint, String token) {
 		super(endPoint, token);
 	}
 
+	/**
+	 * Send a trackable object to jKool end-point
+	 * 
+	 * @param event trackable event
+	 * @throws JKStreamException
+	 */	
 	public Response post(Trackable event) throws JKStreamException {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid event=" + event);
 		}
-		return target.path("event").request().header(TOKEN_KEY, token)
+		return target.path(JK_EVENT_KEY).request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
+	/**
+	 * Send a snapshot object to jKool end-point
+	 * 
+	 * @param event trackable event
+	 * @throws JKStreamException
+	 */	
 	public Response post(Snapshot snapshot) throws JKStreamException {
 		if (!snapshot.isValid()) {
 			throw new JKStreamException(200, "Invalid snapshot=" + snapshot);
 		}
-		return target.path("snapshot").request().header(TOKEN_KEY, token)
+		return target.path(JK_SNAPSHOT_KEY).request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 }

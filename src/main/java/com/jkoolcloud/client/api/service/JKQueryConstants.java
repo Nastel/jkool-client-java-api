@@ -23,6 +23,9 @@ public interface JKQueryConstants {
 	static final String JKOOL_QUERY_URL		= System.getProperty("jkool.query.url", "https://jkool.jkoolcloud.com/jkool-service/jkql");
 	static final String JKOOL_WEBSOCK_URL	= System.getProperty("jkool.websock.url", "wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
 
+	public static String JK_EVENT_KEY = "event";
+	public static String JK_SNAPSHOT_KEY = "snapshot";
+
 	static final String TOKEN_KEY 		= "token";
 	static final String JK_TOKEN_KEY 	= "jk_token";
 	static final String JK_QUERY_KEY 	= "jk_query";

@@ -52,18 +52,42 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	Vector<JKConnectionHandler> conHandlers = new Vector<JKConnectionHandler>(5, 5);
 	
 
+	/**
+	 * Create a jKool asynchronous query service end-point
+	 * 
+	 * @param token security access token
+	 */	
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
 	}
 
+	/**
+	 * Create a jKool asynchronous query service end-point
+	 * 
+	 * @param webSockUrl query service WebSocket URI
+	 * @param token security access token
+	 */	
 	public JKQueryAsync(URI webSockUrl, String token) {
 		this(webSockUrl, JKOOL_QUERY_URL, token);
 	}
 
+	/**
+	 * Create a jKool asynchronous query service end-point
+	 * 
+	 * @param webSockUri query service WebSocket URI
+	 * @param token security access token
+	 */	
 	public JKQueryAsync(String webSockUri, String token) throws URISyntaxException {
 		this(new URI(webSockUri), JKOOL_QUERY_URL, token);
 	}
 
+	/**
+	 * Create a jKool asynchronous query service end-point
+	 * 
+	 * @param wsUri query service WebSocket URI
+	 * @param queryUrl query service Restful URL
+	 * @param token security access token
+	 */	
 	public JKQueryAsync(URI wsUri, String queryUrl, String token) {
 		super(queryUrl, token);
 		this.webSockUri = wsUri;

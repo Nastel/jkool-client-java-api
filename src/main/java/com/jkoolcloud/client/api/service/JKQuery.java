@@ -34,26 +34,88 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class JKQuery extends JKService {
 	HttpClient httpClient = new DefaultHttpClient();
 	
+	/**
+	 * Create a jKool query service end-point
+	 * with default end-point and access token
+	 * 
+	 */	
 	public JKQuery() {
 		super(JKOOL_QUERY_URL, JKOOL_TOKEN);
 	}
 
+	/**
+	 * Create a jKool query service end-point
+	 * with default end-point and access token
+	 * 
+	 * @param token security access token
+	 */	
 	public JKQuery(String token) {
 		super(JKOOL_QUERY_URL, token);
 	}
 
+	/**
+	 * Create a jKool query service end-point
+	 * with default end-point and access token
+	 * 
+	 * @param endPoint URL end-point
+	 * @param token security access token
+	 */	
 	public JKQuery(String endPoint, String token) {
 		super(endPoint, token);
 	}
 
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
 	public Response call(String query) throws JKStreamException {
 		return call(query, DEFAULT_MAX_ROWS);
 	}
 
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
+	public Response call(JKStatement query) throws JKStreamException {
+		return call(query.getQuery(), query.getMaxRows());
+	}
+
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
 	public HttpResponse get(String query) throws JKStreamException {
 		return get(query, DEFAULT_MAX_ROWS);
 	}
 
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
+	public HttpResponse get(JKStatement query) throws JKStreamException {
+		return get(query.getQuery(), query.getMaxRows());
+	}
+
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @param maxRows maximum rows in response
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
 	public Response call(String query, int maxRows) throws JKStreamException {
 		return target.queryParam(JK_QUERY_KEY, query)
 				.queryParam(JK_MAX_ROWS_KEY, maxRows)
@@ -63,6 +125,14 @@ public class JKQuery extends JKService {
 				.get(Response.class);
 	}
 
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param query JKQL query statement
+	 * @param maxRows maximum rows in response
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 */	
 	public HttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {
 			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8")

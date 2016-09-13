@@ -37,10 +37,21 @@ abstract public class JKService implements JKQueryConstants {
 	WebTarget target;
 	ObjectMapper mapper;
 
+	/**
+	 * Create a jKool service end-point
+	 * 
+	 * @param endPoint URL end-point
+	 */	
 	public JKService(String endPoint) {
 		this(endPoint, JKOOL_TOKEN);
 	}
 	
+	/**
+	 * Create a jKool service end-point
+	 * 
+	 * @param endPoint URL end-point
+	 * @param token security access token
+	 */	
 	public JKService(String endPoint, String token) {
 		this.token = token;
 		this.basePath = endPoint;
@@ -56,6 +67,17 @@ abstract public class JKService implements JKQueryConstants {
 	 */
 	public String getToken() {
 		return token;
+	}
+	
+	/**
+	 * Assign a security access token
+	 * 
+	 * @param token security access token
+	 * @return itself
+	 */
+	public JKService setToken(String token) {
+		this.token = token;
+		return this;
 	}
 	
 	/**

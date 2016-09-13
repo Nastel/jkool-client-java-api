@@ -24,7 +24,27 @@ import javax.websocket.CloseReason;
  * @author albert
  */
 public interface JKConnectionHandler {
+	
+	/**
+	 * Called when connection is open
+	 * 
+	 * @param async connection handle
+	 */
 	void open(JKQueryAsync async);
+	
+	/**
+	 * Called when connection encounters an error
+	 * 
+	 * @param async connection handle
+	 * @param ex exception associated with the error
+	 */
 	void error(JKQueryAsync async, Throwable ex);
+	
+	/**
+	 * Called when connection is closed
+	 * 
+	 * @param async connection handle
+	 * @param reason reason why connection was closed
+	 */	
 	void close(JKQueryAsync async, CloseReason reason);
 }

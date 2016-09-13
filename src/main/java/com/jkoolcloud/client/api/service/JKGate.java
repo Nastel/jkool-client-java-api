@@ -21,5 +21,11 @@ package com.jkoolcloud.client.api.service;
  * @author albert
  */
 public interface JKGate<T> {
+	/**
+	 * Run an implementation specific check on a given object
+	 * 
+	 * @param obj object to be checked
+	 * @return true of check was true, false otherwise
+	 */	
 	boolean check(T obj);
 }

@@ -33,8 +33,8 @@ public class JKQueryHandle implements JKQueryConstants {
 
 	final String query, id;
 	final boolean subscribe;
-	final JKQueryCallback callback;
 	final long timeCreated;
+	final JKQueryCallback callback;
 
 	int maxRows;
 	boolean dead = false;
@@ -44,10 +44,23 @@ public class JKQueryHandle implements JKQueryConstants {
 	private final Condition deadCall = aLock.newCondition();
 	private AtomicLong callCount = new AtomicLong(0);
 
+	/**
+	 * Create a jKool query handle
+	 * 
+	 * @param q JKQL query statement
+	 * @param callback associated with the given query
+	 */	
 	public JKQueryHandle(String q, JKQueryCallback callback) {
 		this(q, newId(q), callback);
 	}
 
+	/**
+	 * Create a jKool query handle
+	 * 
+	 * @param q JKQL query statement
+	 * @param id query id associated with the given handle
+	 * @param callback associated with the given query
+	 */	
 	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
 		this.timeCreated = System.currentTimeMillis();
 		this.query = q;
@@ -56,63 +69,139 @@ public class JKQueryHandle implements JKQueryConstants {
 		this.subscribe = isSubscribeQ(q);
 	}
 
+	/**
+	 * Create a unique identifier
+	 * 
+	 * @return a unique identifier
+	 */	
 	public static String newId() {
 		String uuid = UUID.randomUUID().toString();
 		return uuid;
 	}
 
+	/**
+	 * Create a unique identifier for a given query
+	 * 
+	 * @param q JKQL query
+	 * @return a unique identifier
+	 */	
 	public static String newId(String q) {
 		String uuid = UUID.randomUUID().toString();
 		uuid = isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;
 		return uuid;
 	}
 
+	/**
+	 * Determine if a query represents a subscription query
+	 * 
+	 * @param query JKQL query
+	 * @return true if subscribe query, false otherwise
+	 */	
 	public static boolean isSubscribeQ(String query) {
 		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX);
 	}
 
+	/**
+	 * Determine if a handle id represents a subscription query
+	 * 
+	 * @param id JKQL query id
+	 * @return true if subscribe query, false otherwise
+	 */	
 	public static boolean isSubscribeId(String id) {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
 
+	/**
+	 * Determine if current handle id represents a subscription query
+	 * 
+	 * @return true if subscribe query, false otherwise
+	 */	
 	public boolean isSubscribeId() {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
 
+	/**
+	 * Determine if current handle query represents a subscription query
+	 * 
+	 * @return true if subscribe query, false otherwise
+	 */	
 	public boolean isSubscribeQuery() {
 		return subscribe;
 	}
 
+	/**
+	 * Determine if current handle is dead -- meaning all responses
+	 * for this query have been received and consumed.
+	 * 
+	 * @return true if handle is dead, false otherwise
+	 */	
 	public boolean isDead() {
 		return dead;
 	}
 
-
+	/**
+	 * Obtain query associated with the current handle
+	 * 
+	 * @return JKQL query statement
+	 */	
 	public String getQuery() {
 		return query;
 	}
 
+	/**
+	 * Obtain query callback associated with this handle
+	 * 
+	 * @return JKQL query callback handle
+	 */	
 	public JKQueryCallback getCallback() {
 		return callback;
 	}
 
+	/**
+	 * Obtain handle identifier
+	 * 
+	 * @return handle identifier
+	 */	
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Obtain handle create time
+	 * 
+	 * @return handle create time
+	 */	
 	public long getTimeCreated() {
 		return timeCreated;
 	}
 
+	/**
+	 * Set maximum rows for query response
+	 * 
+	 * @param rows maximum rows in response
+	 * @return self
+	 */	
 	public JKQueryHandle setMaxRows(int rows) {
 		this.maxRows = rows;
 		return this;
 	}
 	
+	/**
+	 * Get maximum rows for query response
+	 * 
+	 * @return rows maximum rows in response
+	 */	
 	public int getMaxRows() {
 		return maxRows;
 	}
 	
+	/**
+	 * Await for response until a given date/time
+	 * 
+	 * @param until date/time until to await for response
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 */	
 	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -122,6 +211,11 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Await for response until indefinitely or interrupted
+	 * 
+	 * @throws InterruptedException
+	 */	
 	public void awaitOnCallback() throws InterruptedException {
 		aLock.lock();
 		try {
@@ -131,6 +225,14 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Await for response for a given period of time
+	 * 
+	 * @param time the maximum time to wait
+	 * @param unit the time unit of the time argument
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 */	
 	public boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -140,6 +242,13 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Await for completion until a given date/time
+	 * 
+	 * @param until date/time until to await for completion
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 */	
 	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -149,6 +258,11 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Await for completion until indefinitely or interrupted
+	 * 
+	 * @throws InterruptedException
+	 */	
 	public void awaitOnDead() throws InterruptedException {
 		aLock.lock();
 		try {
@@ -158,6 +272,14 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Await for completion for a given period of time
+	 * 
+	 * @param time the maximum time to wait
+	 * @param unit the time unit of the time argument
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 */	
 	public boolean awaitOnDead(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -167,10 +289,19 @@ public class JKQueryHandle implements JKQueryConstants {
 		}
 	}
 	
+	/**
+	 * Get total number of times the callback was called
+	 * 
+	 * @return number of times the callback was called
+	 */	
 	public long getCallCount() {
 		return callCount.get();
 	}
 
+	/**
+	 * Reset total number of times the callback was called
+	 * 
+	 */	
 	public void resetCallCount() {
 		callCount.set(0);
 	}

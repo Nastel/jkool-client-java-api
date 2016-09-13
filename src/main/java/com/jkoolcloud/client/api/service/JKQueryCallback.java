@@ -24,6 +24,20 @@ import javax.json.JsonObject;
  * @author albert
  */
 public interface JKQueryCallback {
+	/**
+	 * Method called when the callback will no longer be called
+	 * and all responses for this callback has been received.
+	 * 
+	 * @param qhandle connection handle from which message is received
+	 */	
 	void dead(JKQueryHandle qhandle);
+	
+	/**
+	 * Method called when a response to a query is received
+	 * 
+	 * @param qhandle connection handle from which message is received
+	 * @param response JSON response received
+	 * @param ex if not null signifies an exception that occurred
+	 */	
 	void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex);
 }

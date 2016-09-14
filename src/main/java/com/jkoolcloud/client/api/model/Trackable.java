@@ -144,21 +144,49 @@ public abstract class Trackable implements Validated {
 		        && geoAddr != null && (getStartTimeUsec() <= getEndTimeUsec()) && (getElapsedTimeUsec() >= 0);
 	}
 
+	/**
+	 * Add a list of snapshots
+	 *
+	 * @param props
+	 *            list of snapshots
+	 * @return self
+	 */
 	public Trackable addSnapshot(List<Snapshot> snapshots) {
 		this.snapshots.addAll(snapshots);
 		return this;
 	}
 
+	/**
+	 * Add a variable set of snapshots
+	 *
+	 * @param props
+	 *            list of snapshots
+	 * @return self
+	 */
 	public Trackable addSnapshot(Snapshot...snapshots) {
 		this.snapshots.addAll(Arrays.asList(snapshots));
 		return this;
 	}
 
+	/**
+	 * Add a list of properties
+	 *
+	 * @param props
+	 *            list of properties
+	 * @return self
+	 */
 	public Trackable addProperty(List<Property> props) {
 		this.properties.addAll(props);
 		return this;
 	}
 
+	/**
+	 * Add a variable set of properties
+	 *
+	 * @param props
+	 *            list of properties
+	 * @return self
+	 */
 	public Trackable addProperty(Property...props) {
 		addProperty(Arrays.asList(props));
 		return this;

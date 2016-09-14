@@ -37,7 +37,7 @@ public class Snapshot implements Validated {
 	private String category;
 	private String name;
 	private long timeUsec;
-	private List<Property> properties;
+	private List<Property> properties = new ArrayList<Property>();
 	private EventTypes type = EventTypes.SNAPSHOT;
 
 	/**
@@ -80,7 +80,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, List<Property> props) {
 		this(category, name, System.currentTimeMillis());
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, Property... props) {
 		this(category, name, System.currentTimeMillis());
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, long timeMs, List<Property> props) {
 		this(category, name, timeMs);
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, long timeMs, Property... props) {
 		this(category, name, timeMs);
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, Date time, List<Property> props) {
 		this(category, name, time.getTime());
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class Snapshot implements Validated {
 	 */
 	public Snapshot(String category, String name, Date time, Property... props) {
 		this(category, name, time.getTime());
-		setProperties(props);
+		addProperty(props);
 	}
 
 	/**
@@ -246,27 +246,27 @@ public class Snapshot implements Validated {
 	}
 
 	/**
-	 * Assign snapshot properties
+	 * Add snapshot properties
 	 *
 	 * @param props
 	 *            list of properties
 	 * @return self
 	 */
-	public Snapshot setProperties(List<Property> props) {
-		this.properties = new ArrayList<Property>(props);
+	public Snapshot addProperty(List<Property> props) {
+		this.properties.addAll(props);
 		return this;
 	}
 
 	/**
-	 * Assign snapshot properties
+	 * Add snapshot properties
 	 *
 	 * @param props
 	 *            list of properties
 	 * @return self
 	 */
-	public Snapshot setProperties(Property... props) {
+	public Snapshot addProperty(Property... props) {
 		if (props != null) {
-			this.properties = Arrays.asList(props);
+			return addProperty(Arrays.asList(props));
 		}
 		return this;
 	}

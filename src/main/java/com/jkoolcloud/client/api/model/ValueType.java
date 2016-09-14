@@ -22,7 +22,7 @@ package com.jkoolcloud.client.api.model;
  * @version $Revision: 1 $
  */
 public interface ValueType {
-	String VALUE_TYPE_NONE = "none";
+	String VALUE_TYPE_NONE	= "none";
 	
 	// temperature types
 	String VALUE_TYPE_TEMP_F = "temp.f";

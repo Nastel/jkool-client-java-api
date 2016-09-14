@@ -17,6 +17,7 @@
 package com.jkoolcloud.client.api.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -72,7 +73,7 @@ public abstract class Trackable implements Validated {
 	String user = JKUtils.getVMUser();
 
 	List<String> corrId;
-	List<Property> properties;
+	List<Property> properties = new ArrayList<Property>();
 	List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
 	/**
@@ -141,6 +142,26 @@ public abstract class Trackable implements Validated {
 	public boolean isValid() {
 		return eventName != null && appl != null && netAddr != null && server != null && dataCenter != null
 		        && geoAddr != null && (getStartTimeUsec() <= getEndTimeUsec()) && (getElapsedTimeUsec() >= 0);
+	}
+
+	public Trackable addSnapshot(List<Snapshot> snapshots) {
+		this.snapshots.addAll(snapshots);
+		return this;
+	}
+
+	public Trackable addSnapshot(Snapshot...snapshots) {
+		this.snapshots.addAll(Arrays.asList(snapshots));
+		return this;
+	}
+
+	public Trackable addProperty(List<Property> props) {
+		this.properties.addAll(props);
+		return this;
+	}
+
+	public Trackable addProperty(Property...props) {
+		addProperty(Arrays.asList(props));
+		return this;
 	}
 
 	/**
@@ -365,11 +386,6 @@ public abstract class Trackable implements Validated {
 		return snapshots;
 	}
 
-	public Trackable setSnapshots(List<Snapshot> snapshots) {
-		this.snapshots = snapshots;
-		return this;
-	}
-
 	@ApiModelProperty(value = "")
 	@JsonProperty("corrid")
 	public List<String> getCorrId() {
@@ -433,11 +449,6 @@ public abstract class Trackable implements Validated {
 	@JsonProperty("properties")
 	public List<Property> getProperties() {
 		return properties;
-	}
-
-	public Trackable setProperties(List<Property> properties) {
-		this.properties = properties;
-		return this;
 	}
 
 	@JsonIgnore

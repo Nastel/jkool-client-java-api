@@ -17,8 +17,6 @@ package com.jkoolcloud.client.samples.simple;
  */
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.Response;
@@ -46,11 +44,6 @@ public class MovieEvents2 {
 			Property propertyGenre = new Property("MovieGenre", "Drama");
 			Property propertyPrice = new Property("MoviePrice", 10.50, ValueType.VALUE_TYPE_CURRENCY_USD);
 
-			List<Property> properties = new ArrayList<Property>();
-			properties.add(propertyGenre);
-			properties.add(propertyPrice);
-			properties.add(propertyName);
-
 			// Create the Event
 			// Attach it's properties
 			Event event = new Event();
@@ -58,7 +51,7 @@ public class MovieEvents2 {
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setGeoAddr("40.803692,-73.402157")
 					.setSourceUrl("http://www.movies.com").setLocation("New York, NY").setName("Casablanca")
-					.setProperties(properties);
+					.addProperty(propertyName, propertyGenre, propertyPrice);
 
 			// Stream the event (token is the token that was assigned to you
 			// when you purchased jKool.

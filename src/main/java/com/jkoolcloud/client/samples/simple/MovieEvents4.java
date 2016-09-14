@@ -75,7 +75,7 @@ public class MovieEvents4 {
 			propertiesSeaLevel.add(propertySeaLevelMax);
 			propertiesSeaLevel.add(propertySeaLevelMin);
 
-			// Attach the custom fields to snapshots
+			// Attach the custom fields to snapshots (categorized properties)
 			Snapshot snapshotTemp = new Snapshot("Land", "Temperature", propertiesTemp);
 			Snapshot snapshotHumidity = new Snapshot("Land", "Humidity", propertiesHumidity);
 			Snapshot snapshotSeaLevel = new Snapshot("Sea", "SeaLevel", propertiesSeaLevel);
@@ -90,12 +90,6 @@ public class MovieEvents4 {
 			Property propertyPrice = new Property("MoviePrice", 10.50, ValueType.VALUE_TYPE_CURRENCY_USD);
 			Property propertyTime = new Property("MovieTime", "August 3, 2015 at 1PM", ValueType.VALUE_TYPE_TIMESTAMP);
 	
-			List<Property> propertiesMovie = new ArrayList<Property>();
-			propertiesMovie.add(propertyGenre);
-			propertiesMovie.add(propertyPrice);
-			propertiesMovie.add(propertyName);
-			propertiesMovie.add(propertyTime);
-
 			// Create the Event
 			// Attach it's snapshots
 			// Attach it's properties
@@ -109,14 +103,9 @@ public class MovieEvents4 {
 					// This attaches the event to the activity.
 					.setParentTrackId(activity.getTrackingId())
 					// Attach the event's properties
-					.setProperties(propertiesMovie);
-
-			// This attaches the snapshots to the event.
-			List<Snapshot> snapshots = new ArrayList<Snapshot>();
-			snapshots.add(snapshotTemp);
-			snapshots.add(snapshotHumidity);
-			snapshots.add(snapshotSeaLevel);
-			event.setSnapshots(snapshots);
+					.addProperty(propertyGenre, propertyPrice, propertyName, propertyTime) 
+					// Attach the event's snapshots
+					.addSnapshot(snapshotTemp, snapshotHumidity, snapshotSeaLevel);
 
 			// Stream the event (token is the token that was assigned to you
 			// when you purchased jKool.

@@ -75,8 +75,6 @@ public class Snapshot implements Validated {
 	 *            snapshot category
 	 * @param name
 	 *            associated with the snapshot
-	 * @param timeMs
-	 *            timestamp associated with the entity
 	 * @param props
 	 *            a variable list of properties
 	 */
@@ -92,8 +90,6 @@ public class Snapshot implements Validated {
 	 *            snapshot category
 	 * @param name
 	 *            associated with the snapshot
-	 * @param timeMs
-	 *            timestamp associated with the entity
 	 * @param props
 	 *            a variable list of properties
 	 */
@@ -145,12 +141,12 @@ public class Snapshot implements Validated {
 	 *            associated with the snapshot
 	 * @param time
 	 *            timestamp associated with the entity
-	 * @param properties
+	 * @param props
 	 *            a list of properties
 	 */
-	public Snapshot(String category, String name, Date time, List<Property> properties) {
+	public Snapshot(String category, String name, Date time, List<Property> props) {
 		this(category, name, time.getTime());
-		this.properties = properties;
+		setProperties(props);
 	}
 
 	/**
@@ -252,19 +248,19 @@ public class Snapshot implements Validated {
 	/**
 	 * Assign snapshot properties
 	 *
-	 * @param properties
+	 * @param props
 	 *            list of properties
 	 * @return self
 	 */
-	public Snapshot setProperties(List<Property> properties) {
-		this.properties = new ArrayList<Property>(properties);
+	public Snapshot setProperties(List<Property> props) {
+		this.properties = new ArrayList<Property>(props);
 		return this;
 	}
 
 	/**
 	 * Assign snapshot properties
 	 *
-	 * @param properties
+	 * @param props
 	 *            list of properties
 	 * @return self
 	 */

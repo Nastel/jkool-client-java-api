@@ -449,7 +449,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * Cancel a live subscription
 	 * 
 	 * @param handle
-	 *            query handle {@#callAsync(String, JKQueryCallback)}
+	 *            query handle {#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
 	 * @throws IOException
 	 */
@@ -461,8 +461,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * Cancel a live subscription
 	 * 
 	 * @param subid
-	 *            subscription id returned by {@#callAsync(String,
-	 *            JKQueryCallback)}
+	 *            subscription id returned by {#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
 	 * @throws IOException
 	 */
@@ -527,7 +526,6 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param response
 	 *            JSON message response
 	 * @param ex exception
-	 * @return itself
 	 */
 	protected void invokeDefaultHandles(JsonObject response, Throwable ex) {
 		for (JKQueryHandle handle: defCallbacks) {
@@ -539,8 +537,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * Handle async message response
 	 * 
 	 * @param subid
-	 *            subscription id returned by {@#callAsync(String,
-	 *            JKQueryCallback)}
+	 *            subscription id returned by {#callAsync(String, JKQueryCallback)}
 	 * @param response
 	 *            JSON message response
 	 * @return itself

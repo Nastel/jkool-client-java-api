@@ -62,8 +62,8 @@ public interface JKStatement {
 	/**
 	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @param max
-	 *            rows limit
+	 * @param maxRows
+	 *            maximum rows limit in response
 	 * @throws IOException
 	 * @return query handle associate with this query
 	 */

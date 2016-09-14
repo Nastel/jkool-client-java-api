@@ -75,7 +75,7 @@ public class JKStream extends JKService {
 	/**
 	 * Send a snapshot object to jKool end-point
 	 * 
-	 * @param event trackable event
+	 * @param snapshot trackable snapshot
 	 * @throws JKStreamException
 	 */	
 	public Response post(Snapshot snapshot) throws JKStreamException {

@@ -74,7 +74,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	 * Create a trace query callback instance
 	 * 
 	 * @param out output print stream
-	 * @param json_path json path to get from the response
+	 * @param jsonPath json path to get from the response
 	 * @param flag flag
 	 * 
 	 */

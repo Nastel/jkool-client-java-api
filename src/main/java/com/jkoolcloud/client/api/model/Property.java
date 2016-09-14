@@ -56,8 +56,8 @@ public class Property implements Validated {
 	 * 
 	 * @param name property name
 	 * @param value property value
-	 * @param valueType property value type {@link ValueTypes}
-	 * @see ValueTypes
+	 * @param valueType property value type {@link ValueType}
+	 * @see ValueType
 	 */
 	public Property(String name, Object value, String valueType) {
 		this(name, value, getDataType(value), valueType);
@@ -68,9 +68,9 @@ public class Property implements Validated {
 	 * 
 	 * @param name property name
 	 * @param value property value
-	 * @param valueType property value type {@link ValueTypes}
+	 * @param valueType property value type {@link ValueType}
 	 * @param dataType property value data type
-	 * @see ValueTypes
+	 * @see ValueType
 	 */
 	public Property(String name, Object value, String valueType, String dataType) {
 		this.name = name;
@@ -150,9 +150,9 @@ public class Property implements Validated {
 	/**
 	 * Set property value type
 	 * 
-	 * @param valueType property value type {@link ValueTypes}
+	 * @param valueType property value type {@link ValueType}
 	 * @return self
-	 * @see ValueTypes
+	 * @see ValueType
 	 */
 	public Property setValueType(String valueType) {
 		this.valueType = valueType;

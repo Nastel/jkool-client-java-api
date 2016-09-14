@@ -34,10 +34,11 @@ Please note that this example code depicts streaming in real-time. Therefore the
 ```java
 	event.setTime(System.currentTimeMillis()).setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2));
 ```
-Optionally add any user defined defined properties using:
+Optionally add any user defined properties using `Property` class:
 ```java
 	Property customerName = new Property("Name", "John Smith");
 	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
+	Property customerAge = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
 	event.addProperty(customerName, customerAge);
 ```
 Finally, invoke the post method on the `JKStream` object, passing it the event you wish to stream:
@@ -48,8 +49,12 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 		.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 		.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setLocation("New York, NY")
 		.setMsgText("Casablanca is playing.");
+		
+	// create custom properties
 	Property customerName = new Property("Name", "John Smith");
 	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
+	Property customerAge = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
+
 	event.addProperty(customerName, customerAge);
 	Response response = jkSend.post(event);
 	response.close();

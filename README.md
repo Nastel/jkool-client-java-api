@@ -38,8 +38,8 @@ Optionally add any user defined properties using `Property` class:
 ```java
 	Property customerName = new Property("Name", "John Smith");
 	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
-	Property customerAge = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
-	event.addProperty(customerName, customerAge);
+	Property customerTemp = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
+	event.addProperty(customerName, customerAge, customerTemp);
 ```
 Finally, invoke the post method on the `JKStream` object, passing it the event you wish to stream:
 ```java
@@ -53,9 +53,9 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 	// create custom properties
 	Property customerName = new Property("Name", "John Smith");
 	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
-	Property customerAge = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
+	Property customerTemp = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
 
-	event.addProperty(customerName, customerAge);
+	event.addProperty(customerName, customerAge, customerTemp);
 	Response response = jkSend.post(event);
 	response.close();
 ```

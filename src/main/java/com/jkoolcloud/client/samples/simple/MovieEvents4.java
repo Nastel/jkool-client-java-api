@@ -27,6 +27,7 @@ import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Property;
 import com.jkoolcloud.client.api.model.Snapshot;
+import com.jkoolcloud.client.api.model.ValueType;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
@@ -53,22 +54,22 @@ public class MovieEvents4 {
 					.setGeoAddr("40.803692,-73.402157");
 
 			// Create some snapshot custom fields
-			Property propertyTempHigh = new Property("TempHigh", 95, "int");
-			Property propertyTempLow = new Property("TempLow", 83, "int");
+			Property propertyTempHigh = new Property("TempHigh", 95);
+			Property propertyTempLow = new Property("TempLow", 83);
 
 			List<Property> propertiesTemp = new ArrayList<Property>();
 			propertiesTemp.add(propertyTempHigh);
 			propertiesTemp.add(propertyTempLow);
 
-			Property propertyHumidityMax = new Property("HumidityMax", 95, "int" , "guage");
-			Property propertyHumidityMin = new Property("HumidityMin", 74, "int" , "guage");
+			Property propertyHumidityMax = new Property("HumidityMax", 95, ValueType.VALUE_TYPE_GAUGE);
+			Property propertyHumidityMin = new Property("HumidityMin", 74, ValueType.VALUE_TYPE_GAUGE);
 
 			List<Property> propertiesHumidity = new ArrayList<Property>();
 			propertiesHumidity.add(propertyHumidityMax);
 			propertiesHumidity.add(propertyHumidityMin);
 
-			Property propertySeaLevelMax = new Property("SeaLevelMax", 31, "int" , "guage");
-			Property propertySeaLevelMin = new Property("SealevelMin", 29, "int" , "guage");
+			Property propertySeaLevelMax = new Property("SeaLevelMax", 31, ValueType.VALUE_TYPE_GAUGE);
+			Property propertySeaLevelMin = new Property("SealevelMin", 29, ValueType.VALUE_TYPE_GAUGE);
 
 			List<Property> propertiesSeaLevel = new ArrayList<Property>();
 			propertiesSeaLevel.add(propertySeaLevelMax);
@@ -85,10 +86,10 @@ public class MovieEvents4 {
 			propertyName.setType("String");
 			propertyName.setValue("Casablanca");
 
-			Property propertyPrice = new Property("MoviePrice", 10.50, "double", "currency.usd");
 			Property propertyGenre = new Property("MovieGenre", "Drama");
-			Property propertyTime = new Property("MovieTime", "August 3, 2015 at 1PM");
-
+			Property propertyPrice = new Property("MoviePrice", 10.50, ValueType.VALUE_TYPE_CURRENCY_USD);
+			Property propertyTime = new Property("MovieTime", "August 3, 2015 at 1PM", ValueType.VALUE_TYPE_TIMESTAMP);
+	
 			List<Property> propertiesMovie = new ArrayList<Property>();
 			propertiesMovie.add(propertyGenre);
 			propertiesMovie.add(propertyPrice);

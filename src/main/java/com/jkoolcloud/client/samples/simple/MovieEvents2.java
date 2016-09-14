@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Property;
+import com.jkoolcloud.client.api.model.ValueType;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
@@ -42,8 +43,8 @@ public class MovieEvents2 {
 
 			// Create some custom fields
 			Property propertyName = new Property("MovieName", "Casablanca");
-			Property propertyPrice = new Property("MoviePrice", 10.50, "double", "currency.usd");
 			Property propertyGenre = new Property("MovieGenre", "Drama");
+			Property propertyPrice = new Property("MoviePrice", 10.50, ValueType.VALUE_TYPE_CURRENCY_USD);
 
 			List<Property> properties = new ArrayList<Property>();
 			properties.add(propertyGenre);

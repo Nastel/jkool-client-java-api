@@ -22,7 +22,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class a property name=value pair
+ * This class implements a property with name, value, data type & value type.
  * 
  * @author cathy
  */
@@ -35,7 +35,7 @@ public class Property implements Validated {
 	private String valueType;
 
 	/**
-	 * Create a property
+	 * Create an empty property
 	 * 
 	 */
 	public Property() {
@@ -48,7 +48,7 @@ public class Property implements Validated {
 	 * @param value property value
 	 */
 	public Property(String name, Object value) {
-		this(name, value, getDataType(value));
+		this(name, value, ValueType.VALUE_TYPE_NONE, getDataType(value));
 	}
 
 	/**
@@ -56,10 +56,11 @@ public class Property implements Validated {
 	 * 
 	 * @param name property name
 	 * @param value property value
-	 * @param dataType property value data type
+	 * @param valueType property value type {@link ValueTypes}
+	 * @see ValueTypes
 	 */
-	public Property(String name, Object value, String dataType) {
-		this(name, value, dataType, "none");
+	public Property(String name, Object value, String valueType) {
+		this(name, value, getDataType(value), valueType);
 	}
 
 	/**
@@ -67,10 +68,11 @@ public class Property implements Validated {
 	 * 
 	 * @param name property name
 	 * @param value property value
+	 * @param valueType property value type {@link ValueTypes}
 	 * @param dataType property value data type
-	 * @param valueType property value type
+	 * @see ValueTypes
 	 */
-	public Property(String name, Object value, String dataType, String valueType) {
+	public Property(String name, Object value, String valueType, String dataType) {
 		this.name = name;
 		this.value = value;
 		this.dataType = dataType;
@@ -107,8 +109,14 @@ public class Property implements Validated {
 		return dataType;
 	}
 
-	public Property setType(String type) {
-		this.dataType = type;
+	/**
+	 * Set property value data type
+	 * 
+	 * @param dataType property value data type
+	 * @return self
+	 */
+	public Property setType(String dataType) {
+		this.dataType = dataType;
 		return this;
 	}
 
@@ -120,6 +128,12 @@ public class Property implements Validated {
 		return value != null? String.valueOf(value): null;
 	}
 
+	/**
+	 * Set property value
+	 * 
+	 * @param value property value
+	 * @return self
+	 */
 	public Property setValue(Object value) {
 		this.value = value;
 		return this;
@@ -133,6 +147,13 @@ public class Property implements Validated {
 		return valueType;
 	}
 
+	/**
+	 * Set property value type
+	 * 
+	 * @param valueType property value type {@link ValueTypes}
+	 * @return self
+	 * @see ValueTypes
+	 */
 	public Property setValueType(String valueType) {
 		this.valueType = valueType;
 		return this;

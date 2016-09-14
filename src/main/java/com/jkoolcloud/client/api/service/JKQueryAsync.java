@@ -514,7 +514,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 			} else {
 				// remove standard query subscription since none will ever be coming
 				SUBID_MAP.remove(handle.getId());
-				handle.dead();
+				handle.done();
 			}
 		}
 		return this;
@@ -564,7 +564,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
 				SUBID_MAP.remove(qhandle.getId());
-				qhandle.dead();
+				qhandle.done();
 			}
 		}
 	}

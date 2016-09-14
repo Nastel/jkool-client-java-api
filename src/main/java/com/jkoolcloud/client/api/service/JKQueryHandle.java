@@ -37,11 +37,11 @@ public class JKQueryHandle implements JKQueryConstants {
 	final JKQueryCallback callback;
 
 	int maxRows;
-	boolean dead = false;
+	boolean done = false;
 	
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
-	private final Condition deadCall = aLock.newCondition();
+	private final Condition doneCall = aLock.newCondition();
 	private AtomicLong callCount = new AtomicLong(0);
 
 	/**
@@ -130,13 +130,13 @@ public class JKQueryHandle implements JKQueryConstants {
 	}
 
 	/**
-	 * Determine if current handle is dead -- meaning all responses
+	 * Determine if current handle is DONE -- meaning all responses
 	 * for this query have been received and consumed.
 	 * 
-	 * @return true if handle is dead, false otherwise
+	 * @return true if handle is done, false otherwise
 	 */	
-	public boolean isDead() {
-		return dead;
+	public boolean isDone() {
+		return done;
 	}
 
 	/**
@@ -252,7 +252,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
-			return deadCall.awaitUntil(until);
+			return doneCall.awaitUntil(until);
 		} finally {
 			aLock.unlock();
 		}
@@ -263,10 +263,10 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * 
 	 * @throws InterruptedException
 	 */	
-	public void awaitOnDead() throws InterruptedException {
+	public void awaitOnDone() throws InterruptedException {
 		aLock.lock();
 		try {
-			deadCall.await();
+			doneCall.await();
 		} finally {
 			aLock.unlock();
 		}
@@ -280,10 +280,10 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * @return false if the deadline has elapsed upon return, else true
 	 * @throws InterruptedException
 	 */	
-	public boolean awaitOnDead(long time, TimeUnit unit) throws InterruptedException {
+	public boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
 		try {
-			return deadCall.await(time, unit);
+			return doneCall.await(time, unit);
 		} finally {
 			aLock.unlock();
 		}
@@ -330,12 +330,12 @@ public class JKQueryHandle implements JKQueryConstants {
 		        + "\", callback: \"" + callback + "\"}";
 	}
 
-	protected void dead() {
+	protected void done() {
 		aLock.lock();
 		try {
-			dead = true;
-			callback.dead(this);
-			deadCall.signalAll();
+			done = true;
+			callback.done(this);
+			doneCall.signalAll();
 		} finally {
 			aLock.unlock();
 		}

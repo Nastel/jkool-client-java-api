@@ -30,7 +30,7 @@ public interface JKQueryCallback {
 	 * 
 	 * @param qhandle connection handle from which message is received
 	 */	
-	void dead(JKQueryHandle qhandle);
+	void done(JKQueryHandle qhandle);
 	
 	/**
 	 * Method called when a response to a query is received

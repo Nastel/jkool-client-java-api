@@ -147,9 +147,9 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	}
 	
 	@Override
-    public void dead(JKQueryHandle qhandle) {
+    public void done(JKQueryHandle qhandle) {
 		if (trace) {
-			out.println("Dead handle=" + qhandle + ", dead=" + qhandle.isDead());
+			out.println("Dead handle=" + qhandle + ", done=" + qhandle.isDone());
 		}
 	}
 }

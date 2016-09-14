@@ -50,14 +50,14 @@ public class JKQLCmd {
 			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
-				qhandle.awaitOnDead(options.waitTimeMs, TimeUnit.MILLISECONDS);
+				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
 				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
 				qhandle = jkQueryAsync.cancelAsync(qhandle);
 				if (qhandle != null) {
-					qhandle.awaitOnDead(options.waitTimeMs, TimeUnit.MILLISECONDS);
+					qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 				}
 			}
 			jkQueryAsync.close();

@@ -50,9 +50,9 @@ public class MovieEvents3 {
 					.setGeoAddr("40.803692,-73.402157");
 
 			// Create some custom fields
-			Property propertyName = new Property("MovieName", "String", "Casablanca", null);
-			Property propertyPrice = new Property("MoviePrice", "Double", "10.50", null);
-			Property propertyGenre = new Property("MovieGenre", "String", "Drama", null);
+			Property propertyName = new Property("MovieName", "Casablanca");
+			Property propertyPrice = new Property("MoviePrice", 10.50, "double", "currency.usd");
+			Property propertyGenre = new Property("MovieGenre", "Drama");
 
 			List<Property> properties = new ArrayList<Property>();
 			properties.add(propertyGenre);

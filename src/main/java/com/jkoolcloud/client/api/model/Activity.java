@@ -31,26 +31,55 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "")
 public class Activity extends Trackable {
 
+	/**
+	 * Create an activity
+	 * 
+	 */	
 	public Activity() {
 		super();
 		setType(EventTypes.ACTIVITY);
 	}
 
+	/**
+	 * Create an activity
+	 * 
+	 * @param name associated with the entity
+	 */	
 	public Activity(String name) {
 		super(name);
 		setType(EventTypes.ACTIVITY);
 	}
 
+	/**
+	 * Create an activity
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 */	
 	public Activity(String name, String tid) {
 		super(name, tid);
 		setType(EventTypes.ACTIVITY);
 	}
 
+	/**
+	 * Create an activity
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param timeMs timestamp associated with the entity
+	 */	
 	public Activity(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
 		setType(EventTypes.ACTIVITY);
 	}
 
+	/**
+	 * Create an activity
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param time timestamp associated with the entity
+	 */	
 	public Activity(String name, String tid, Date time) {
 		super(name, tid, time);
 		setType(EventTypes.ACTIVITY);

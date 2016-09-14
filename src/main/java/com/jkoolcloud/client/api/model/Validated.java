@@ -21,5 +21,10 @@ package com.jkoolcloud.client.api.model;
  * @author cathy
  */
 public interface Validated {
+	/**
+	 * Check if object is valid
+	 * 
+	 * @return true if valid, false otherwise
+	 */
 	boolean isValid();
 }

@@ -40,26 +40,55 @@ public class Event extends Trackable {
 	String msgMimeType = "text/plain";
 	long msgAgeUsec;
 
+	/**
+	 * Create an event
+	 * 
+	 */	
 	public Event() {
 		super();
 		setType(EventTypes.EVENT);
 	}
 
+	/**
+	 * Create an event
+	 * 
+	 * @param name associated with the entity
+	 */	
 	public Event(String name) {
 		super(name);
 		setType(EventTypes.EVENT);
 	}
 
+	/**
+	 * Create an event
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 */	
 	public Event(String name, String tid) {
 		super(name, tid);
 		setType(EventTypes.EVENT);
 	}
 
+	/**
+	 * Create an event
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param timeMs timestamp associated with the entity
+	 */	
 	public Event(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
 		setType(EventTypes.EVENT);
 	}
 
+	/**
+	 * Create an event
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param time timestamp associated with the entity
+	 */	
 	public Event(String name, String tid, Date time) {
 		super(name, tid, time);
 		setType(EventTypes.EVENT);

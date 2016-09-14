@@ -53,22 +53,22 @@ public class MovieEvents4 {
 					.setGeoAddr("40.803692,-73.402157");
 
 			// Create some snapshot custom fields
-			Property propertyTempHigh = new Property("TempHigh", "int", "95");
-			Property propertyTempLow = new Property("TempLow", "int", "83");
+			Property propertyTempHigh = new Property("TempHigh", 95, "int");
+			Property propertyTempLow = new Property("TempLow", 83, "int");
 
 			List<Property> propertiesTemp = new ArrayList<Property>();
 			propertiesTemp.add(propertyTempHigh);
 			propertiesTemp.add(propertyTempLow);
 
-			Property propertyHumidityMax = new Property("HumidityMax", "String", "95");
-			Property propertyHumidityMin = new Property("HumidityMin", "String", "74");
+			Property propertyHumidityMax = new Property("HumidityMax", 95, "int" , "guage");
+			Property propertyHumidityMin = new Property("HumidityMin", 74, "int" , "guage");
 
 			List<Property> propertiesHumidity = new ArrayList<Property>();
 			propertiesHumidity.add(propertyHumidityMax);
 			propertiesHumidity.add(propertyHumidityMin);
 
-			Property propertySeaLevelMax = new Property("SeaLevelMax", "int", "31");
-			Property propertySeaLevelMin = new Property("SealevelMin", "int", "29");
+			Property propertySeaLevelMax = new Property("SeaLevelMax", 31, "int" , "guage");
+			Property propertySeaLevelMin = new Property("SealevelMin", 29, "int" , "guage");
 
 			List<Property> propertiesSeaLevel = new ArrayList<Property>();
 			propertiesSeaLevel.add(propertySeaLevelMax);
@@ -85,9 +85,9 @@ public class MovieEvents4 {
 			propertyName.setType("String");
 			propertyName.setValue("Casablanca");
 
-			Property propertyPrice = new Property("MoviePrice", "Double", "10.50");
-			Property propertyGenre = new Property("MovieGenre", "String", "Drama");
-			Property propertyTime = new Property("MovieTime", "String", "August 3, 2015 at 1PM");
+			Property propertyPrice = new Property("MoviePrice", 10.50, "double", "currency.usd");
+			Property propertyGenre = new Property("MovieGenre", "Drama");
+			Property propertyTime = new Property("MovieTime", "August 3, 2015 at 1PM");
 
 			List<Property> propertiesMovie = new ArrayList<Property>();
 			propertiesMovie.add(propertyGenre);

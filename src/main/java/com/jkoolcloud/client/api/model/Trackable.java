@@ -29,10 +29,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * This class is a common time series trackable entity, which
- * has time, id and a set of parameters.
+ * This class is a common time series entity for tracking
+ * application activities. The entity has time, id and a set of user defined
+ * parameters {@link Snapshot}.
  * 
- * @author cathy
+ * @author Cathy
  */
 @ApiModel(description = "")
 public abstract class Trackable implements Validated {
@@ -74,29 +75,58 @@ public abstract class Trackable implements Validated {
 	List<Property> properties;
 	List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
+	/**
+	 * Create a time series entity with default attributes
+	 * 
+	 */	
 	public Trackable() {
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 	}
 
+	/**
+	 * Create a time series entity
+	 * 
+	 * @param name associated with the entity
+	 */	
 	public Trackable(String name) {
 		eventName = name;
 		timeUsec = System.currentTimeMillis() * 1000;
 		trackingId = UUID.randomUUID().toString();
 	}
 
+	/**
+	 * Create a time series entity with
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 */	
 	public Trackable(String name, String tid) {
 		eventName = name;
 		trackingId = tid;
 		timeUsec = System.currentTimeMillis() * 1000;
 	}
 
+	/**
+	 * Create a time series entity with
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param timeMs timestamp in milliseconds 
+	 */	
 	public Trackable(String name, String tid, long timeMs) {
 		eventName = name;
 		trackingId = tid;
 		timeUsec = timeMs * 1000;
 	}
 
+	/**
+	 * Create a time series entity with
+	 * 
+	 * @param name associated with the entity
+	 * @param tid tracking id associates with the entity
+	 * @param time timestamp associated with the entity
+	 */	
 	public Trackable(String name, String tid, Date time) {
 		eventName = name;
 		trackingId = tid;

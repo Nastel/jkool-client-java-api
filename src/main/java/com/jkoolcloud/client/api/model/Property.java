@@ -30,29 +30,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Property implements Validated {
 
 	private String name;
-	private String type;
 	private Object value;
+	private String dataType;
 	private String valueType;
 
+	/**
+	 * Create a property
+	 * 
+	 */
 	public Property() {
 	}
 
+	/**
+	 * Create a property
+	 * 
+	 * @param name property name
+	 * @param value property value
+	 */
 	public Property(String name, Object value) {
-		this(name, getDataType(value), value, null);
+		this(name, value, getDataType(value));
 	}
 
-	public Property(String name, Object value, String valueType) {
-		this(name, getDataType(value), value, valueType);
+	/**
+	 * Create a property
+	 * 
+	 * @param name property name
+	 * @param value property value
+	 * @param dataType property value data type
+	 */
+	public Property(String name, Object value, String dataType) {
+		this(name, value, dataType, "none");
 	}
 
-	public Property(String name, String type, String value) {
-		this(name, type, value, null);
-	}
-
-	public Property(String name, String type, Object value, String valueType) {
+	/**
+	 * Create a property
+	 * 
+	 * @param name property name
+	 * @param value property value
+	 * @param dataType property value data type
+	 * @param valueType property value type
+	 */
+	public Property(String name, Object value, String dataType, String valueType) {
 		this.name = name;
-		this.type = type;
 		this.value = value;
+		this.dataType = dataType;
 		this.valueType = valueType;
 	}
 
@@ -62,7 +83,7 @@ public class Property implements Validated {
 	 * @return true if valid, false otherwise
 	 */
 	public boolean isValid() {
-		return name != null && type != null && value != null;
+		return name != null && dataType != null && value != null;
 	}
 
 	/**
@@ -83,11 +104,11 @@ public class Property implements Validated {
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public String getType() {
-		return type;
+		return dataType;
 	}
 
 	public Property setType(String type) {
-		this.type = type;
+		this.dataType = type;
 		return this;
 	}
 
@@ -155,7 +176,8 @@ public class Property implements Validated {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class Property {\n");
 		sb.append("  name: ").append(name).append("\n");
-		sb.append("  type: ").append(type).append("\n");
+		sb.append("  dtype: ").append(dataType).append("\n");
+		sb.append("  vtype: ").append(valueType).append("\n");
 		sb.append("  value: ").append(value).append("\n");
 		sb.append("}\n");
 		return sb.toString();

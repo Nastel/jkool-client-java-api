@@ -33,10 +33,22 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 	Throwable lastError;
 	AtomicLong errCount = new AtomicLong(0);
 
+	/**
+	 * Create a trace connection handler
+	 * with enabled trace flag.
+	 * 
+	 * @param out output print stream
+	 */
 	public JKTraceConnectionHandler(PrintStream out) {
 		this(out, true);
 	}
 	
+	/**
+	 * Create a trace connection handler
+	 * 
+	 * @param out output print stream
+	 * @param flag trace flag
+	 */
 	public JKTraceConnectionHandler(PrintStream out, boolean flag) {
 		this.out = out;
 		setTrace(flag);

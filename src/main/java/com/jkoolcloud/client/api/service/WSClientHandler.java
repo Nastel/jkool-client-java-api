@@ -23,10 +23,21 @@ import javax.json.JsonReader;
 import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
+/**
+ * This class implements a WebSocket message and connection handler.
+ * 
+ * @author albert
+ * @see JKWSHandler
+ */
 class WSClientHandler implements JKWSHandler {
 	
 	JKQueryAsync jkagent;
 	
+	/**
+	 * WebSocket message & connection handler
+	 * 
+	 * @param qagent connection handle
+	 */
 	protected WSClientHandler(JKQueryAsync qagent) {
 		jkagent = qagent;
 	}

@@ -29,21 +29,45 @@ public class JKStreamException extends Exception {
     
 	private int code = 0;
 
+	/**
+	 * jKool stream exception
+	 * 
+	 * @param message exception message
+	 */
 	public JKStreamException(String message) {
 		super(message);
 	}
 
-	public JKStreamException(String message, Throwable e) {
-		super(message, e);
+	/**
+	 * jKool stream exception
+	 * 
+	 * @param message exception message
+	 * @param cause root cause exception
+	 */
+	public JKStreamException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
+	/**
+	 * jKool stream exception
+	 * 
+	 * @param code exception code
+	 * @param message exception message
+	 */
 	public JKStreamException(int code, String message) {
 		super(message);
 		this.code = code;
 	}
 
-	public JKStreamException(int code, String message, Throwable e) {
-		super(message, e);
+	/**
+	 * jKool stream exception
+	 * 
+	 * @param code exception code
+	 * @param message exception message
+	 * @param cause root cause exception
+	 */
+	public JKStreamException(int code, String message, Throwable cause) {
+		super(message, cause);
 		this.code = code;
 	}
 

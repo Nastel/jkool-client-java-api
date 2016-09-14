@@ -85,30 +85,6 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		setTrace(flag);
 	}
 	
-	@Override
-	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
-		if (ex != null) {
-			lastError = ex;
-			errCount.incrementAndGet();
-			out.println("Error: handle=" + qhandle + ", error=" + ex.getMessage());
-			ex.printStackTrace(out);
-		} else {
-			msgCount.incrementAndGet();
-			if (json_path == null) {
-				out.println(JKUtils.prettyPrint(response));
-			} else {
-				JsonValue jsonPath = JKUtils.getJsonValue(json_path, response);
-				if (jsonPath == null) {
-					out.print("\"" + json_path + "\" not found");
-				} else if (jsonPath instanceof JsonStructure){
-					out.println(JKUtils.prettyPrint((JsonStructure)jsonPath));
-				} else {
-					out.format("%s = %s, %s", json_path, jsonPath, jsonPath.getValueType());
-				}
-			}
-		}
-	}
-	
 	/**
 	 * Enable/disable trace mode
 	 * 
@@ -145,6 +121,30 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	 */
 	public Throwable getLastError() {
 		return lastError;
+	}
+	
+	@Override
+	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+		if (ex != null) {
+			lastError = ex;
+			errCount.incrementAndGet();
+			out.println("Error: handle=" + qhandle + ", error=" + ex.getMessage());
+			ex.printStackTrace(out);
+		} else {
+			msgCount.incrementAndGet();
+			if (json_path == null) {
+				out.println(JKUtils.prettyPrint(response));
+			} else {
+				JsonValue jsonPath = JKUtils.getJsonValue(json_path, response);
+				if (jsonPath == null) {
+					out.print("\"" + json_path + "\" not found");
+				} else if (jsonPath instanceof JsonStructure){
+					out.println(JKUtils.prettyPrint((JsonStructure)jsonPath));
+				} else {
+					out.format("%s = %s, %s", json_path, jsonPath, jsonPath.getValueType());
+				}
+			}
+		}
 	}
 	
 	@Override

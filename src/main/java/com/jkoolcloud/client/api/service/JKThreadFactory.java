@@ -24,6 +24,12 @@ class JKThreadFactory implements ThreadFactory {
 	boolean daemon;
 	AtomicLong counter = new AtomicLong(0);
 	
+	/**
+	 * Thread counting thread factory
+	 * 
+	 * @param prefix thread name prefix
+	 * @param daemon flag that defines weather threads are daemon
+	 */
 	public JKThreadFactory(String prefix, boolean daemon) {
 		threadPrefix = prefix;
 	}

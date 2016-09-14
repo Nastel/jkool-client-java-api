@@ -28,6 +28,7 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * This class implements a simple {@code JKQueryCallback} with
  * trace messages.
  * 
+ * @see JKQueryCallback
  * @author albert
  */
 public class JKTraceQueryCallback implements JKQueryCallback {
@@ -89,7 +90,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		if (ex != null) {
 			lastError = ex;
 			errCount.incrementAndGet();
-			out.println("Error on handle=" + qhandle + ", error=" + ex.getMessage());
+			out.println("Error: handle=" + qhandle + ", error=" + ex.getMessage());
 			ex.printStackTrace(out);
 		} else {
 			msgCount.incrementAndGet();
@@ -149,7 +150,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	@Override
     public void done(JKQueryHandle qhandle) {
 		if (trace) {
-			out.println("Dead handle=" + qhandle + ", done=" + qhandle.isDone());
+			out.println("Done: handle=" + qhandle + ", done=" + qhandle.isDone());
 		}
 	}
 }

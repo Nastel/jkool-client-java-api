@@ -99,11 +99,11 @@ Alternatively you can execute a query with a specific callback instance. All res
 ```java
 	// run query in async mode with a specific callback
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-	qhandle.awaitOnDead(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
+	qhandle.awaitOnDone(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
 	...
 	jkQueryAsync.close(); // close connection
 ```
-`MyJKQueryCallback.handle()` is called when for every response to the query -- there maybe one or more responses depending on the query. `MyJKQueryCallback.dead()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
+`MyJKQueryCallback.handle()` is called when for every response to the query -- there maybe one or more responses depending on the query. `MyJKQueryCallback.done()` is called when the handle will never be called again. This happens when the query is cancelled using `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
 	@Override
@@ -115,9 +115,9 @@ public class MyJKQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
-	public void dead(JKQueryHandle qhandle) {
+	public void done(JKQueryHandle qhandle) {
 		if (trace) {
-			out.println("Dead handle=" + qhandle + ", dead=" + qhandle.isDead());
+			out.println("Done handle=" + qhandle + ", done=" + qhandle.isDone());
 		}
 	}
 }

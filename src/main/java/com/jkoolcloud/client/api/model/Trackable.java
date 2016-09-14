@@ -147,7 +147,7 @@ public abstract class Trackable implements Validated {
 	/**
 	 * Add a list of snapshots
 	 *
-	 * @param props
+	 * @param snapshots
 	 *            list of snapshots
 	 * @return self
 	 */
@@ -159,7 +159,7 @@ public abstract class Trackable implements Validated {
 	/**
 	 * Add a variable set of snapshots
 	 *
-	 * @param props
+	 * @param snapshots
 	 *            list of snapshots
 	 * @return self
 	 */

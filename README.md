@@ -17,11 +17,11 @@ To use this sample code please do the following:
 * Run `mvn install` on the project. This will generate `jkool-client-api-<version>` jar file. This jar file can be found in the target directory. Be advised that when running from the command line (as documented below), run from the `build` directory that Maven will assemble. This `build` directory will be at the same level as the directory you run Maven from. 
 * Import `jkool-client-api-<version>` jar file as well as all `lib` depedencies into your own project.
 * See samples to get a good understanding on how to use the this client API.
-* Instantiate the `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the repository associated with the access token.
+* Instantiate `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```
-* Instantiate the object you wish to stream. Then populate all of the fields you wish to stream. For example:
+Create an event and populate the fields you wish to stream. For example:
 ```java
 	Event event = new Event("Casablanca");
 	event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
@@ -34,9 +34,13 @@ Please note that this example code depicts streaming in real-time. Therefore the
 ```java
 	event.setTime(System.currentTimeMillis()).setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2));
 ```
-
-* Finally, invoke the post method on the `jKoolStream` object, passing it the object you wish to stream. For example:
-
+Optionally add any user defined defined properties using:
+```java
+	Property customerName = new Property("Name", "John Smith");
+	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
+	event.addProperty(customerName, customerAge);
+```
+Finally, invoke the post method on the `JKStream` object, passing it the event you wish to stream:
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 	Event event = new Event("Casablanca");
@@ -44,6 +48,9 @@ Please note that this example code depicts streaming in real-time. Therefore the
 		.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 		.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setLocation("New York, NY")
 		.setMsgText("Casablanca is playing.");
+	Property customerName = new Property("Name", "John Smith");
+	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
+	event.addProperty(customerName, customerAge);
 	Response response = jkSend.post(event);
 	response.close();
 ```

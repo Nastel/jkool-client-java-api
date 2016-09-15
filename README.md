@@ -41,6 +41,17 @@ Optionally add any user defined properties using `Property` class:
 	Property customerTemp = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
 	event.addProperty(customerName, customerAge, customerTemp);
 ```
+Properties can be grouped and categorized using `Snapshot` class:
+```java
+	// create a categorized snapshot (envelope)
+	Snapshot customer = new Snapshot("CustomerData", "General");
+	Property customerName = new Property("Name", "John Smith");
+	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
+	Property customerTemp = new Property("Temp", 98.6, ValueType.VALUE_TYPE_TEMP_F);
+	customer.addProperty(customerName, customerAge, customerTemp);
+	// add snapshot to event
+	event.addSnapshot(customer);
+```
 Finally, invoke the post method on the `JKStream` object, passing it the event you wish to stream:
 ```java
 	JKStream jkSend = new JKStream("yourtoken");

@@ -159,6 +159,12 @@ public class MyConnectionHandler implements JKConnectionHandler {
 }
 
 ```
+Connection handlers can be associated with a jKool query connection handle `JKQueryAsync` as follows:
+```java
+	// setup jKool WebSocket connection and connect
+	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
+```
 ###Subscribing to real-time event streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:
 ```java

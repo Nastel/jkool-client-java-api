@@ -1,7 +1,7 @@
 # jKool Streaming & Query API
 jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you. 
 
-###jKool Streaming Concepts and Documentation
+###Concepts and Terminology
 You can find very comprehensive documentation on jKool Data Types and Concepts in our [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). There are four types of timeseries data types that can be streamed to jKool. They are:
 * *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * *Activity*: Represents a group of events and other activities (e.g. transactions).
@@ -10,7 +10,7 @@ You can find very comprehensive documentation on jKool Data Types and Concepts i
 
 This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
-###Building
+###How to build
 To use this sample code please do the following:
 * Run `mvn install` on the project. This will generate `jkool-client-api-<version>` jar file. This jar file can be found in the target directory. Be advised that when running from the command line (as documented below), run from the `build` directory that Maven will assemble. This `build` directory will be at the same level as the directory you run Maven from. 
 * Import `jkool-client-api-<version>` jar file as well as all `lib` depedencies into your own project.

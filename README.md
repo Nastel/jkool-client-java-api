@@ -81,6 +81,8 @@ Developers can also invoke JKQL queries asynchronously using callbacks. To do th
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
 	// trace connection handler
 	jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, true));
+	...
+	jkQueryAsync.connect();
 ```
 The next step is to setup default callback handlers (optional but recommended). Default callback handlers are called for responses not associated with any specific query or subscription. 
 ```java
@@ -164,6 +166,8 @@ Connection handlers can be associated with a jKool query connection handle `JKQu
 	// setup jKool WebSocket connection and connect
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
+	...
+	jkQueryAsync.connect();
 ```
 ###Subscribing to real-time event streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:

@@ -21,8 +21,8 @@ To use this sample code please do the following:
 		<version>0.2.1</version>
 	</dependency>
 ```
-##Getting Started
-Instantiate `JKStream` class. You will need to pass it the access token you received when you signed up for jKool. This token will grant you access to stream and also ensure that the data goes to the repository associated with the access token.
+##Streaming to jKool
+Streaming allows developers to send time series data such as events, metrics, transations, logs over secure jKool cloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```
@@ -87,7 +87,6 @@ In addition to streaming, data can also be retrieved from jKool via Rest. To do 
 	response.close();
 ```
 All returned JKQL responses are JSON.
-
 ###Running jKool Queries (Asynchronously)
 Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. Please note that this example is demonstrating adding a connection handler that will do a trace and a connection handler that will retry the connection every so many milliseconds if it should fail.
 ```java

@@ -42,7 +42,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
 	private final Condition doneCall = aLock.newCondition();
-	private AtomicLong callCount = new AtomicLong(0);
+	private final AtomicLong callCount = new AtomicLong(0);
 
 	/**
 	 * Create a jKool query handle

@@ -1,7 +1,7 @@
 # jKool Streaming & Query API
 jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you. 
 
-##Concepts and Terminology
+## Concepts and Terminology
 You can find very comprehensive documentation on jKool Data Types and Concepts in our [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). There are four types of timeseries data types that can be streamed to jKool. They are:
 * *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * *Activity*: Represents a group of events and other activities (e.g. transactions).
@@ -10,7 +10,7 @@ You can find very comprehensive documentation on jKool Data Types and Concepts i
 
 This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
-##How to build
+## How to build
 To use this sample code please do the following:
 * Run `mvn install` on the project. This will generate `jkool-client-api-<version>` jar file. This jar file can be found in the target directory. Be advised that when running from the command line (as documented below), run from the `build` directory that Maven will assemble. This `build` directory will be at the same level as the directory you run Maven from. 
 * Add the following into your maven pom file:
@@ -21,7 +21,7 @@ To use this sample code please do the following:
 		<version>0.2.1</version>
 	</dependency>
 ```
-##Streaming to jKool
+## Streaming to jKool
 Streaming allows developers to send time series data such as events, metrics, transations, logs over secure jKool cloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
@@ -77,7 +77,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 ```
 The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
-###Running jKool Queries (Synchronously)
+### Running jKool Queries (Synchronously)
 In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. Simply pass in your access token along with the JKQL query.  Below is an example:
 
 ```java
@@ -87,7 +87,8 @@ In addition to streaming, data can also be retrieved from jKool via Rest. To do 
 	response.close();
 ```
 All returned JKQL responses are JSON.
-###Running jKool Queries (Asynchronously)
+
+### Running jKool Queries (Asynchronously)
 Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. This example makes use of two connection handlers: 1) for tracing connection events and 2) for retrying connection during failures.
 ```java
 	// setup jKool WebSocket connection and connect
@@ -184,7 +185,7 @@ Connection handlers can be associated with a jKool query connection handle `JKQu
 	...
 	jkQueryAsync.connect();
 ```
-###Subscribing to real-time event streams
+### Subscribing to real-time event streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptons are based continous queries submitted by the client and run on the jKool servers. The results of the query are emmitted as data becomes available and streamed back to the client call back handler instance of `JKQueryCallback`. See example below:
 ```java
 	// setup jKool WebSocket connection and connect
@@ -215,7 +216,7 @@ The code above is equivalent to the JKQL statement `get events where message con
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
 	...
 ```
-###Running jKool queries from command line
+### Running jKool queries from command line
 You can run jKool queries from command line using a helper class `JKQLCmd` below. Please run all commands from the 'build' directory that Maven will create.
 ```sh
 	java -jar ./lib/jkool-client-api-<version>.jar -token access-token -query "get events" -wait 30000
@@ -240,14 +241,14 @@ retry=0
 #jpath=jk_response/rows-found
 ```
 
-###Streaming with Curl
+### Streaming with Curl
 Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:
 
 ```java
 curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
-###Streaming with Python
+### Streaming with Python
 Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". Details on the Python Request can be found here - http://docs.python-requests.org/en/latest/user/quickstart/. Below is an example of using it to stream into jKool:
 
 ```java
@@ -256,7 +257,7 @@ headers = {'token': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
 r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
-###Query jKool using Curl
+### Query jKool using Curl
 
 Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example. Please note that you also have the option of putting the token in the header instead of specifying it as a parameter. 
 

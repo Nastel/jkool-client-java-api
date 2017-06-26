@@ -19,11 +19,11 @@ import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.rest.api.model.Activity;
-import com.jkoolcloud.rest.api.model.Event;
-import com.jkoolcloud.rest.api.model.EventTypes;
-import com.jkoolcloud.rest.api.model.Property;
-import com.jkoolcloud.rest.api.service.JKStream;
+import com.jkoolcloud.client.api.model.Activity;
+import com.jkoolcloud.client.api.model.Event;
+import com.jkoolcloud.client.api.model.EventTypes;
+import com.jkoolcloud.client.api.model.Property;
+import com.jkoolcloud.client.api.service.JKStream;
 
 @SuppressWarnings("rawtypes")
 public class StreamAirlineData {
@@ -142,8 +142,8 @@ public class StreamAirlineData {
 				  sendEvent.setElapsedTimeUsec(endTime - startTime);		  
 				  sendEvent.setDataCenter((String)line.get("Origin"));
 				  if (! line.get("TaxiOut").equals("NA"))
-					  properties.add(new Property("TaxiOut", "double", line.get("TaxiOut"), null));
-				  sendEvent.setProperties(properties);
+					  properties.add(new Property("TaxiOut", line.get("TaxiOut"),  "double", null));
+				  sendEvent.addProperty(properties);
 				  setCommonFields(line, sendEvent, activityTrackingId, properties, eventTrackingId);
 				  events.add(sendEvent);
 				  
@@ -158,11 +158,11 @@ public class StreamAirlineData {
 				  receiveEvent.setElapsedTimeUsec(endTime - startTime);		
 				  receiveEvent.setDataCenter((String)line.get("Dest"));
 				  if (! line.get("TaxiIn").equals("NA"))
-					  properties.add(new Property("TaxiIn", "double", line.get("TaxiIn"), null));
+					  properties.add(new Property("TaxiIn", line.get("TaxiIn"), "double", null));
 				  if (! line.get("ArrDelay").equals("NA"))
-					  properties.add(new Property("ArrDelay", "double", line.get("ArrDelay"), null));
+					  properties.add(new Property("ArrDelay", line.get("ArrDelay"), "double", null));
 				  setCommonFields(line, receiveEvent, activityTrackingId, properties, eventTrackingId);
-				  receiveEvent.setProperties(properties);
+				  receiveEvent.addProperty(properties);
 				  events.add(receiveEvent);
 				  
 				  
@@ -172,25 +172,25 @@ public class StreamAirlineData {
 				  activity.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-WholeFlight");
 				  properties = new ArrayList<Property>();
 				  if (! line.get("Distance").equals("NA"))
-					  properties.add(new Property("Distance", "double", line.get("Distance"), null));
-				  properties.add(new Property("Cancelled", "string", line.get("Cancelled"), null));
-				  properties.add(new Property("CancellationCode", "string", line.get("CancellationCode"), null));
-				  properties.add(new Property("Diverted", "string", line.get("Diverted"), null));
+					  properties.add(new Property("Distance", line.get("Distance"), "double", null));
+				  properties.add(new Property("Cancelled", line.get("Cancelled"), "string", null));
+				  properties.add(new Property("CancellationCode",  line.get("CancellationCode"), "string", null));
+				  properties.add(new Property("Diverted", line.get("Diverted"), "string",null));
 				  if (! line.get("CarrierDelay").equals("NA"))
-					  properties.add(new Property("CarrierDelay", "double", line.get("CarrierDelay"), null));
+					  properties.add(new Property("CarrierDelay", line.get("CarrierDelay"), "double", null));
 				  if (! line.get("WeatherDelay").equals("NA"))
-					  properties.add(new Property("WeatherDelay", "double", line.get("WeatherDelay"), null));
+					  properties.add(new Property("WeatherDelay", line.get("WeatherDelay"), "double", null));
 				  if (! line.get("NASDelay").equals("NA"))
-					  properties.add(new Property("NASDelay", "double", line.get("NASDelay"), null));
+					  properties.add(new Property("NASDelay", line.get("NASDelay"), "double", null));
 				  if (! line.get("LateAircraftDelay").equals("NA"))
-					  properties.add(new Property("LateAircraftDelay", "double", line.get("LateAircraftDelay"), null));
+					  properties.add(new Property("LateAircraftDelay", line.get("LateAircraftDelay"), "double", null));
 				  if (! line.get("AirTime").equals("NA"))
-					  properties.add(new Property("AirTime", "double", line.get("AirTime"), null));
-				  properties.add(new Property("FlightNum", "string", line.get("FlightNum"), null));
+					  properties.add(new Property("AirTime", line.get("AirTime"), "double", null));
+				  properties.add(new Property("FlightNum", line.get("FlightNum"), "string", null));
 				  if (! line.get("CRSElapsedTime").equals("NA"))
-					  properties.add(new Property("CRSElapsedTime", "double", line.get("CRSElapsedTime"), null));
-				  properties.add(new Property("DayOfWeek", "string", line.get("DayOfWeek"), null));
-				  activity.setProperties(properties);
+					  properties.add(new Property("CRSElapsedTime",  line.get("CRSElapsedTime"),"double",  null));
+				  properties.add(new Property("DayOfWeek", line.get("DayOfWeek"), "string", null));
+				  activity.addProperty(properties);
 				  results.put("events", events);
 				  results.put("activity", activity);
 				  return results;

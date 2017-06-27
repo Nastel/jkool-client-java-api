@@ -135,14 +135,19 @@ public class StreamAirlineData {
 				  Event sendEvent = new Event();
 				  List<Property> properties = new ArrayList<Property>();
 				  sendEvent.setType(EventTypes.SEND);
-				  Long startTime = dateFromString(line, "CRSDepTime");
-				  Long endTime = dateFromString(line, "CRSDepTime");
+				  Long departureStartTime = dateFromString(line, "CRSDepTime");
+				  Long departureEndTime = dateFromString(line, "DepTime");
 				  sendEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Depart");
-				  sendEvent.setStartTime(startTime);
-				  sendEvent.setElapsedTimeUsec(endTime - startTime);		  
+				  sendEvent.setStartTime(departureStartTime);
+				  if (departureEndTime > departureStartTime)
+					  sendEvent.setElapsedTimeUsec((departureEndTime - departureStartTime) * 1000);	
+				  else
+					  sendEvent.setElapsedTimeUsec(0);
 				  sendEvent.setDataCenter((String)line.get("Origin"));
 				  if (! line.get("TaxiOut").equals("NA"))
 					  properties.add(new Property("TaxiOut", line.get("TaxiOut"),  "double", null));
+				  if (! line.get("DepDelay").equals("NA"))
+					  properties.add(new Property("DepDelay", line.get("DepDelay"), "double", null));
 				  sendEvent.addProperty(properties);
 				  setCommonFields(line, sendEvent, activityTrackingId, properties, eventTrackingId);
 				  events.add(sendEvent);
@@ -151,11 +156,14 @@ public class StreamAirlineData {
 				  Event receiveEvent = new Event();
 				  properties = new ArrayList<Property>();
 				  receiveEvent.setType(EventTypes.RECEIVE);
-				  startTime = new Long(dateFromString(line, "CRSDepTime"));
-				  endTime = new Long(dateFromString(line, "CRSDepTime"));
-				  receiveEvent.setStartTime(startTime);
+				  Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime"));
+				  Long arrivalEndTime = new Long(dateFromString(line, "ArrTime"));
+				  receiveEvent.setStartTime(arrivalStartTime);
 				  receiveEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Arrive");
-				  receiveEvent.setElapsedTimeUsec(endTime - startTime);		
+				  if (arrivalEndTime > arrivalStartTime)
+					  receiveEvent.setElapsedTimeUsec((arrivalEndTime - arrivalStartTime) * 1000);		
+				  else
+					  receiveEvent.setElapsedTimeUsec(0);
 				  receiveEvent.setDataCenter((String)line.get("Dest"));
 				  if (! line.get("TaxiIn").equals("NA"))
 					  properties.add(new Property("TaxiIn", line.get("TaxiIn"), "double", null));
@@ -169,6 +177,9 @@ public class StreamAirlineData {
 				  
 				  // Activity
 				  activity.setTrackingId(activityTrackingId.toString());
+				  activity.setStartTime(departureStartTime);
+				  activity.setDataCenter((String)line.get("Origin") + "-" + (String)line.get("Dest"));
+				  activity.setElapsedTimeUsec((arrivalEndTime - departureStartTime) * 1000);
 				  activity.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-WholeFlight");
 				  properties = new ArrayList<Property>();
 				  if (! line.get("Distance").equals("NA"))
@@ -189,6 +200,10 @@ public class StreamAirlineData {
 				  properties.add(new Property("FlightNum", line.get("FlightNum"), "string", null));
 				  if (! line.get("CRSElapsedTime").equals("NA"))
 					  properties.add(new Property("CRSElapsedTime",  line.get("CRSElapsedTime"),"double",  null));
+				  if (! line.get("DepDelay").equals("NA"))
+					  properties.add(new Property("DepDelay", line.get("DepDelay"), "double", null));
+				  if (! line.get("ArrDelay").equals("NA"))
+					  properties.add(new Property("ArrDelay", line.get("ArrDelay"), "double", null));
 				  properties.add(new Property("DayOfWeek", line.get("DayOfWeek"), "string", null));
 				  activity.addProperty(properties);
 				  results.put("events", events);
@@ -211,7 +226,7 @@ public class StreamAirlineData {
 			  String stringDate = (String)line.get("Year") + "-" + String.format("%02d",Integer.parseInt((String)line.get("Month"))) + "-" +  String.format("%02d",Integer.parseInt((String)line.get("DayofMonth")));
 			  timeType = String.format("%04d",Integer.parseInt(((String)line.get(timeType))));
 			  String hours = timeType.substring(0,2);
-			  String minutes = timeType.substring(3,4);
+			  String minutes = timeType.substring(2,4);
 			  String stringTime = stringDate + " " +  hours + ":" + minutes + ":00";
 			  
 			  Date date = format.parse(stringTime);

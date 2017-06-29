@@ -38,7 +38,7 @@ public class StreamAirlineData {
 	
 	public static void main(String[] args) {
 		System.out.println("Initiate Streaming");
-		String results = streamData("airlines.csv");
+		String results = streamData("airlines-wn-504.csv");
 		System.out.println(results);
 	}
 
@@ -139,6 +139,8 @@ public class StreamAirlineData {
 				  Long departureEndTime = dateFromString(line, "DepTime");
 				  sendEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Depart");
 				  sendEvent.setStartTime(departureStartTime);
+			      sendEvent.setServer("server-terminal-" + (String)line.get("Origin") + "-" + (String)line.get("UniqueCarrier"));
+			      sendEvent.setNetAddr("runway-" + (String)line.get("Origin"));
 				  if (departureEndTime > departureStartTime)
 					  sendEvent.setElapsedTimeUsec((departureEndTime - departureStartTime) * 1000);	
 				  else
@@ -165,6 +167,8 @@ public class StreamAirlineData {
 				  else
 					  receiveEvent.setElapsedTimeUsec(0);
 				  receiveEvent.setDataCenter((String)line.get("Dest"));
+			      receiveEvent.setServer("server-terminal-" + (String)line.get("Dest") + "-" + (String)line.get("UniqueCarrier"));
+			      receiveEvent.setNetAddr("runway-" + (String)line.get("Dest"));   
 				  if (! line.get("TaxiIn").equals("NA"))
 					  properties.add(new Property("TaxiIn", line.get("TaxiIn"), "double", null));
 				  if (! line.get("ArrDelay").equals("NA"))
@@ -242,12 +246,10 @@ public class StreamAirlineData {
 	  {
 		  try
 		  {
-		      event.setResource("sky");
+		      event.setResource("resource-sky");
 		      event.setParentTrackId(parentTrackingId.toString());
 		      event.setTrackingId(eventTrackingId.toString());
-		      event.setServer("sky");
 		      event.setAppl((String)line.get("TailNum"));
-
 		  }
 		  catch (Exception e)
 		  {

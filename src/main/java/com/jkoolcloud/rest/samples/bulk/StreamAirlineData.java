@@ -38,7 +38,7 @@ public class StreamAirlineData {
 	
 	public static void main(String[] args) {
 		System.out.println("Initiate Streaming");
-		String results = streamData("airlines-wn-504.csv");
+		String results = streamData("airlines.csv");
 		System.out.println(results);
 	}
 
@@ -183,7 +183,10 @@ public class StreamAirlineData {
 				  activity.setTrackingId(activityTrackingId.toString());
 				  activity.setStartTime(departureStartTime);
 				  activity.setDataCenter((String)line.get("Origin") + "-" + (String)line.get("Dest"));
-				  activity.setElapsedTimeUsec((arrivalEndTime - departureStartTime) * 1000);
+				  if (arrivalEndTime - departureStartTime > 0)
+					  activity.setElapsedTimeUsec((arrivalEndTime - departureStartTime) * 1000);
+				  else
+					  activity.setElapsedTimeUsec(0);
 				  activity.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-WholeFlight");
 				  properties = new ArrayList<Property>();
 				  if (! line.get("Distance").equals("NA"))
@@ -242,6 +245,7 @@ public class StreamAirlineData {
 		  }
 	  }
 	  
+	  @SuppressWarnings({ "unchecked" })
 	  public static void setCommonFields(HashMap line, Event event, UUID parentTrackingId, List<Property>  properties, UUID eventTrackingId)
 	  {
 		  try
@@ -250,6 +254,9 @@ public class StreamAirlineData {
 		      event.setParentTrackId(parentTrackingId.toString());
 		      event.setTrackingId(eventTrackingId.toString());
 		      event.setAppl((String)line.get("TailNum"));
+		      List corrIds = new ArrayList<String>();
+		      corrIds.add((String)line.get("TailNum") + (String)line.get("Year") + (String)line.get("Month") + (String)line.get("DayofMonth"));
+		      event.setCorrId(corrIds);
 		  }
 		  catch (Exception e)
 		  {

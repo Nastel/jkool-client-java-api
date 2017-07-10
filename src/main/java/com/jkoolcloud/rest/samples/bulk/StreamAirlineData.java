@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
@@ -38,7 +39,7 @@ public class StreamAirlineData {
 	
 	public static void main(String[] args) {
 		System.out.println("Initiate Streaming");
-		String results = streamData("airlines.csv");
+		String results = streamData("airlines-corr.csv");
 		System.out.println(results);
 	}
 
@@ -135,8 +136,8 @@ public class StreamAirlineData {
 				  Event sendEvent = new Event();
 				  List<Property> properties = new ArrayList<Property>();
 				  sendEvent.setType(EventTypes.SEND);
-				  Long departureStartTime = dateFromString(line, "CRSDepTime");
-				  Long departureEndTime = dateFromString(line, "DepTime");
+				  Long departureStartTime = dateFromString(line, "CRSDepTime", "Origin");
+				  Long departureEndTime = dateFromString(line, "DepTime", "Origin");
 				  sendEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Depart");
 				  sendEvent.setStartTime(departureStartTime);
 			      sendEvent.setServer("server-terminal-" + (String)line.get("Origin") + "-" + (String)line.get("UniqueCarrier"));
@@ -158,8 +159,8 @@ public class StreamAirlineData {
 				  Event receiveEvent = new Event();
 				  properties = new ArrayList<Property>();
 				  receiveEvent.setType(EventTypes.RECEIVE);
-				  Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime"));
-				  Long arrivalEndTime = new Long(dateFromString(line, "ArrTime"));
+				  Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime", "Dest"));
+				  Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
 				  receiveEvent.setStartTime(arrivalStartTime);
 				  receiveEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Arrive");
 				  if (arrivalEndTime > arrivalStartTime)
@@ -225,11 +226,12 @@ public class StreamAirlineData {
 			  }
 	  }
 	  
-	  public static Long dateFromString(HashMap line, String timeType)
+	  public static Long dateFromString(HashMap line, String timeType, String type)
 	  {
 		  try
 		  {
 			  // Get the date
+			  format.setTimeZone(getTimeZone((String)line.get(type)));
 			  String stringDate = (String)line.get("Year") + "-" + String.format("%02d",Integer.parseInt((String)line.get("Month"))) + "-" +  String.format("%02d",Integer.parseInt((String)line.get("DayofMonth")));
 			  timeType = String.format("%04d",Integer.parseInt(((String)line.get(timeType))));
 			  String hours = timeType.substring(0,2);
@@ -262,6 +264,23 @@ public class StreamAirlineData {
 		  {
 				System.out.println("Error setting common fields:  " + e);
 		  }
+	  }
+	  
+	  public static TimeZone getTimeZone(String airport){
+		  List<String> mdt = Arrays.asList("ABQ", "PHX", "SLC", "ELP");
+		  List<String> edt = Arrays.asList("ATL", "CLT", "DTW","PHL", "PIT");
+		  List<String> pdt = Arrays.asList("LAS", "LAX", "ONT", "SAN", "BUR");
+		  List<String> cdt = Arrays.asList("HOU", "MCI", "MSP", "OKC", "OMA", "STL", "SAT");
+		  if (mdt.contains(airport))
+			  return TimeZone.getTimeZone("America/Phoenix");
+		  else if (edt.contains(airport))
+			  return TimeZone.getTimeZone("America/New_York");
+		  else if (pdt.contains(airport))
+			  return TimeZone.getTimeZone("America/Los_Angeles");
+		  else if (cdt.contains(airport))
+			  return TimeZone.getTimeZone("America/Chicago");
+		  else
+			  return null;
 	  }
 	  
 

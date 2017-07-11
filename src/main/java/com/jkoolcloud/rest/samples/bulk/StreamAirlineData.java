@@ -161,6 +161,13 @@ public class StreamAirlineData {
 				  receiveEvent.setType(EventTypes.RECEIVE);
 				  Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime", "Dest"));
 				  Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
+				  
+				  if (arrivalEndTime > arrivalStartTime)
+					  receiveEvent.setException("LateFlight");
+				  else
+					  receiveEvent.setException("none");
+				  
+				  
 				  receiveEvent.setStartTime(arrivalStartTime);
 				  receiveEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Arrive");
 				  if (arrivalEndTime > arrivalStartTime)

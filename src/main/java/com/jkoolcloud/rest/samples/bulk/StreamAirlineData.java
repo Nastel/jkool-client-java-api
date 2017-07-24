@@ -130,7 +130,7 @@ public class StreamAirlineData {
 
 			  try
 			  {
-				  UUID eventTrackingId = java.util.UUID.randomUUID();
+				  String eventTrackingId = (String)line.get("Month") + (String)line.get("DayofMonth") + (String)line.get("TailNum");
 				  UUID activityTrackingId = java.util.UUID.randomUUID();
 				  // Send Event
 				  Event sendEvent = new Event();
@@ -140,7 +140,7 @@ public class StreamAirlineData {
 				  Long departureEndTime = dateFromString(line, "DepTime", "Origin");
 				  sendEvent.setName((String)line.get("UniqueCarrier") + "-" + (String)line.get("FlightNum") + "-Depart");
 				  sendEvent.setStartTime(departureStartTime);
-			      sendEvent.setServer("server-terminal-" + (String)line.get("Origin") + "-" + (String)line.get("UniqueCarrier"));
+			      sendEvent.setServer("server-terminal-" + (String)line.get("Origin"));
 			      sendEvent.setNetAddr("runway-" + (String)line.get("Origin"));
 				  if (departureEndTime > departureStartTime)
 					  sendEvent.setElapsedTimeUsec((departureEndTime - departureStartTime) * 1000);	
@@ -175,7 +175,7 @@ public class StreamAirlineData {
 				  else
 					  receiveEvent.setElapsedTimeUsec(0);
 				  receiveEvent.setDataCenter((String)line.get("Dest"));
-			      receiveEvent.setServer("server-terminal-" + (String)line.get("Dest") + "-" + (String)line.get("UniqueCarrier"));
+			      receiveEvent.setServer("server-terminal-" + (String)line.get("Dest"));
 			      receiveEvent.setNetAddr("runway-" + (String)line.get("Dest"));   
 				  if (! line.get("TaxiIn").equals("NA"))
 					  properties.add(new Property("TaxiIn", line.get("TaxiIn"), "double", null));
@@ -255,14 +255,14 @@ public class StreamAirlineData {
 	  }
 	  
 	  @SuppressWarnings({ "unchecked" })
-	  public static void setCommonFields(HashMap line, Event event, UUID parentTrackingId, List<Property>  properties, UUID eventTrackingId)
+	  public static void setCommonFields(HashMap line, Event event, UUID parentTrackingId, List<Property>  properties, String eventTrackingId)
 	  {
 		  try
 		  {
 		      event.setResource("resource-sky");
 		      event.setParentTrackId(parentTrackingId.toString());
 		      event.setTrackingId(eventTrackingId.toString());
-		      event.setAppl((String)line.get("TailNum"));
+		      event.setAppl((String)line.get("UniqueCarrier") + "@Terminal@" + event.getDataCenter());
 		      List corrIds = new ArrayList<String>();
 		      corrIds.add((String)line.get("TailNum") + (String)line.get("Year") + (String)line.get("Month") + (String)line.get("DayofMonth"));
 		      event.setCorrId(corrIds);

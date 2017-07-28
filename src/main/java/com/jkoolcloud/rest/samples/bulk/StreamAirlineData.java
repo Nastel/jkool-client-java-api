@@ -152,6 +152,12 @@ public class StreamAirlineData {
 				  if (! line.get("DepDelay").equals("NA"))
 					  properties.add(new Property("DepDelay", line.get("DepDelay"), "double", null));
 				  sendEvent.addProperty(properties);
+				  if (departureEndTime > departureStartTime)
+					  sendEvent.setException("LateFlight");
+				  else
+					  sendEvent.setException("none");
+				  
+				  
 				  setCommonFields(line, sendEvent, activityTrackingId, properties, eventTrackingId);
 				  events.add(sendEvent);
 				  
@@ -262,7 +268,7 @@ public class StreamAirlineData {
 		      event.setResource("resource-sky");
 		      event.setParentTrackId(parentTrackingId.toString());
 		      event.setTrackingId(eventTrackingId.toString());
-		      event.setAppl((String)line.get("UniqueCarrier") + "@Terminal@" + event.getDataCenter());
+		      event.setAppl((String)line.get("UniqueCarrier") + "AtTerminalAt" + event.getDataCenter());
 		      List corrIds = new ArrayList<String>();
 		      corrIds.add((String)line.get("TailNum") + (String)line.get("Year") + (String)line.get("Month") + (String)line.get("DayofMonth"));
 		      event.setCorrId(corrIds);

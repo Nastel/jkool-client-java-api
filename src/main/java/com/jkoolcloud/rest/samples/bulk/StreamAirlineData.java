@@ -24,6 +24,7 @@ import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.EventTypes;
 import com.jkoolcloud.client.api.model.Property;
+import com.jkoolcloud.client.api.model.Severities;
 import com.jkoolcloud.client.api.service.JKStream;
 
 @SuppressWarnings("rawtypes")
@@ -153,7 +154,10 @@ public class StreamAirlineData {
 					  properties.add(new Property("DepDelay", line.get("DepDelay"), "double", null));
 				  sendEvent.addProperty(properties);
 				  if (departureEndTime > departureStartTime)
+				  {
 					  sendEvent.setException("LateFlight");
+					  sendEvent.setSeverity(Severities.ERROR);
+				  }
 				  else
 					  sendEvent.setException("none");
 				  
@@ -169,7 +173,10 @@ public class StreamAirlineData {
 				  Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
 				  
 				  if (arrivalEndTime > arrivalStartTime)
-					  receiveEvent.setException("LateFlight");
+				  {
+					receiveEvent.setException("LateFlight");
+				  	receiveEvent.setSeverity(Severities.ERROR);
+				  }
 				  else
 					  receiveEvent.setException("none");
 				  

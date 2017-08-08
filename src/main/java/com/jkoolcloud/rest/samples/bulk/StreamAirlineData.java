@@ -232,6 +232,15 @@ public class StreamAirlineData {
 					  properties.add(new Property("DepDelay", line.get("DepDelay"), "double", null));
 				  if (! line.get("ArrDelay").equals("NA"))
 					  properties.add(new Property("ArrDelay", line.get("ArrDelay"), "double", null));
+				  if (receiveEvent.getException().equals("LateFlight") || sendEvent.getException().equals("LateFlight"))
+				  {
+					  activity.setException("LateFlight");
+					  activity.setSeverity(Severities.ERROR);
+				  }
+				  else
+				  {
+					  activity.setException("none");
+				  }
 				  properties.add(new Property("DayOfWeek", line.get("DayOfWeek"), "string", null));
 				  activity.addProperty(properties);
 				  results.put("events", events);

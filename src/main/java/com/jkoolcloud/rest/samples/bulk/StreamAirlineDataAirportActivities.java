@@ -247,11 +247,8 @@ public class StreamAirlineDataAirportActivities {
 		  try
 		  {
 		      event.setResource("resource-sky");
-		      //List corrIds = new ArrayList();
 		      event.setTrackingId(eventTrackingId.toString());
 		      event.setAppl((String)line.get("UniqueCarrier") + "AtTerminalAt" + event.getDataCenter());
-		      //corrIds.add(event.getDataCenter() + (String)line.get("Year") + (String)line.get("Month") + (String)line.get("DayofMonth"));
-		      //event.setCorrId(corrIds);
 		  }
 		  catch (Exception e)
 		  {

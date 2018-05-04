@@ -100,6 +100,7 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 	 * Enable/disable trace mode
 	 * 
 	 * @param flag trace flag
+	 * @return self
 	 */
 	public JKTraceConnectionHandler setTrace(boolean flag) {
 		this.trace = flag;

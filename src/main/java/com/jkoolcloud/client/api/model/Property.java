@@ -22,7 +22,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class implements a property with name, value, data type & value type.
+ * This class implements a property with name, value, data and value type.
  * 
  * @author cathy
  */
@@ -89,6 +89,7 @@ public class Property implements Validated {
 	}
 
 	/**
+	 * @return property name
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("name")
@@ -102,6 +103,7 @@ public class Property implements Validated {
 	}
 
 	/**
+	 * @return property data type
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
@@ -121,6 +123,7 @@ public class Property implements Validated {
 	}
 
 	/**
+	 * @return property value
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value")
@@ -138,8 +141,8 @@ public class Property implements Validated {
 		this.value = value;
 		return this;
 	}
-
 	/**
+	 * @return property value type
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value-type")
@@ -162,6 +165,7 @@ public class Property implements Validated {
 	/**
 	 * Obtain the language independent value data type of the property
 	 * 
+	 * @param value for which to determine type
 	 * @return string representation of the value data type
 	 */
 	public static String getDataType(Object value) {

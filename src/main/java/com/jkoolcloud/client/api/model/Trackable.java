@@ -193,6 +193,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return tracking id
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("tracking-id")
@@ -206,6 +207,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return fully qualified source name
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-fqn")
@@ -215,6 +217,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return source URL
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("source-url")
@@ -228,6 +231,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return severity
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("severity")
@@ -241,6 +245,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return event type
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
@@ -254,6 +259,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return process id
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("pid")
@@ -267,6 +273,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return thread id
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("tid")
@@ -280,6 +287,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return completion code
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("comp-code")
@@ -293,6 +301,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return reason code
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("reason-code")
@@ -306,6 +315,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return location
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("location")
@@ -319,6 +329,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return user name
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("user")
@@ -332,6 +343,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return start time in micro-seconds since
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
@@ -339,17 +351,30 @@ public abstract class Trackable implements Validated {
 		return timeUsec;
 	}
 
+	/**
+	 * Set start time in milliseconds
+	 *
+	 * @param timeMs time in milliseconds
+	 * @return self
+	**/
 	public Trackable setTime(long timeMs) {
 		this.timeUsec = timeMs * 1000;
 		return this;
 	}
 
-	public Trackable setTime(Date timeUsec) {
-		this.timeUsec = timeUsec.getTime() * 1000;
+	/**
+	 * Set start time based on a specific date
+	 *
+	 * @param dateTime date and time
+	 * @return self
+	**/
+	public Trackable setTime(Date dateTime) {
+		this.timeUsec = dateTime.getTime() * 1000;
 		return this;
 	}
 
 	/**
+	 * @return start time in microseconds
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("start-time-usec")
@@ -371,6 +396,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return end time in microseconds
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("end-time-usec")
@@ -383,6 +409,7 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
+	 * @return elapsed time in microseconds
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("elapsed-time-usec")
@@ -395,6 +422,9 @@ public abstract class Trackable implements Validated {
 		return this;
 	}
 
+	/**
+	 * @return wait time in microseconds
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("wait-time-usec")
 	public long getWaitTimeUsec() {
@@ -407,13 +437,17 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
-	 **/
+	 * @return list of snapshots, empty list if non
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("snapshots")
 	public List<Snapshot> getSnapshots() {
 		return snapshots;
 	}
 
+	/**
+	 * @return list of correlation ids, empty list if non
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("corrid")
 	public List<String> getCorrId() {
@@ -425,6 +459,9 @@ public abstract class Trackable implements Validated {
 		return this;
 	}
 
+	/**
+	 * @return resource name
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("resource")
 	public String getResource() {
@@ -436,6 +473,9 @@ public abstract class Trackable implements Validated {
 		return this;
 	}
 
+	/**
+	 * @return exception string
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("exception")
 	public String getException() {
@@ -447,6 +487,9 @@ public abstract class Trackable implements Validated {
 		return this;
 	}
 
+	/**
+	 * @return parent tracking id
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("parent-id")
 	public String getParentTrackId() {
@@ -459,7 +502,8 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
-	 **/
+	 * @return operation name
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("operation")
 	public String getName() {
@@ -472,7 +516,8 @@ public abstract class Trackable implements Validated {
 	}
 
 	/**
-	  **/
+	 * @return list of properties, empty list if non
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("properties")
 	public List<Property> getProperties() {

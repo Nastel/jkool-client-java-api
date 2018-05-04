@@ -25,7 +25,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.json.JsonObject;
 
 /**
- * This class implements a query handle which encapsulates an async subscription for query->callback pair.
+ * This class implements a query handle which encapsulates asynchronous 
+ * subscription for query and callback pair.
  * 
  * @author albert
  */
@@ -200,7 +201,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * 
 	 * @param until date/time until to await for response
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
 		aLock.lock();
@@ -214,7 +215,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Await for response until indefinitely or interrupted
 	 * 
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public void awaitOnCallback() throws InterruptedException {
 		aLock.lock();
@@ -231,7 +232,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * @param time the maximum time to wait
 	 * @param unit the time unit of the time argument
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
@@ -247,7 +248,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * 
 	 * @param until date/time until to await for completion
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
 		aLock.lock();
@@ -261,7 +262,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Await for completion until indefinitely or interrupted
 	 * 
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public void awaitOnDone() throws InterruptedException {
 		aLock.lock();
@@ -278,7 +279,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * @param time the maximum time to wait
 	 * @param unit the time unit of the time argument
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException
+	 * @throws InterruptedException if connection is interrupted
 	 */	
 	public boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();

@@ -54,7 +54,7 @@ public interface JKStatement {
 	/**
 	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @throws IOException
+	 * @throws IOException when IO errors occur
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle call() throws IOException;
@@ -64,7 +64,7 @@ public interface JKStatement {
 	 * 
 	 * @param maxRows
 	 *            maximum rows limit in response
-	 * @throws IOException
+	 * @throws IOException when IO errors occur
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle call(int maxRows) throws IOException;

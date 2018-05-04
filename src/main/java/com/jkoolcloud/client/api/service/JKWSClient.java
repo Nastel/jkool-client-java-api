@@ -67,6 +67,8 @@ public class JKWSClient {
 	/**
 	 * Disconnect current connection
 	 * 
+	 * @return self
+	 * @throws IOException on IO errors
 	 */
 	public synchronized JKWSClient disconnect() throws IOException {
 		return disconnect(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));
@@ -76,6 +78,8 @@ public class JKWSClient {
 	 * Disconnect current connection
 	 * 
 	 * @param reason close reason
+	 * @return self
+	 * @throws IOException on connection errors
 	 */
 	public synchronized JKWSClient disconnect(CloseReason reason) throws IOException {
 		if (userSession != null) {
@@ -121,6 +125,7 @@ public class JKWSClient {
 	 *
 	 * @param userSession
 	 *            the userSession which is opened.
+	 * @param ex exception object
 	 */
 	@OnError
 	public void onError(Session userSession, Throwable ex) {
@@ -171,7 +176,7 @@ public class JKWSClient {
 
 	/**
 	 * Send a message async
-	 * @throws IOException 
+	 * @throws IOException during send IO
 	 * 
 	 * @param message text message
 	 * @return itself
@@ -190,7 +195,7 @@ public class JKWSClient {
 	 * 
 	 * @param message text message
 	 * @return itself
-	 * @throws IOException 
+	 * @throws IOException during send IO
 	 *
 	 */
 	public JKWSClient sendMessageSync(String message) throws IOException {

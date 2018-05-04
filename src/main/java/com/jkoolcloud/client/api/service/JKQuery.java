@@ -69,7 +69,7 @@ public class JKQuery extends JKService {
 	 * 
 	 * @param query JKQL query statement
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public Response call(String query) throws JKStreamException {
 		return call(query, DEFAULT_MAX_ROWS);
@@ -80,7 +80,7 @@ public class JKQuery extends JKService {
 	 * 
 	 * @param query JKQL query statement
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public Response call(JKStatement query) throws JKStreamException {
 		return call(query.getQuery(), query.getMaxRows());
@@ -91,7 +91,7 @@ public class JKQuery extends JKService {
 	 * 
 	 * @param query JKQL query statement
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public HttpResponse get(String query) throws JKStreamException {
 		return get(query, DEFAULT_MAX_ROWS);
@@ -102,7 +102,7 @@ public class JKQuery extends JKService {
 	 * 
 	 * @param query JKQL query statement
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public HttpResponse get(JKStatement query) throws JKStreamException {
 		return get(query.getQuery(), query.getMaxRows());
@@ -114,7 +114,7 @@ public class JKQuery extends JKService {
 	 * @param query JKQL query statement
 	 * @param maxRows maximum rows in response
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public Response call(String query, int maxRows) throws JKStreamException {
 		return target.queryParam(JK_QUERY_KEY, query)
@@ -131,7 +131,7 @@ public class JKQuery extends JKService {
 	 * @param query JKQL query statement
 	 * @param maxRows maximum rows in response
 	 * @return object containing JSON response
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */	
 	public HttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {

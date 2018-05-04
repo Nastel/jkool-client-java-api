@@ -86,6 +86,7 @@ public class Activity extends Trackable {
 	}
 
 	/**
+	 * @return activity status string
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("status")

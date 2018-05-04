@@ -89,7 +89,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	 * Enable/disable trace mode
 	 * 
 	 * @param flag trace flag
-	 * 
+	 * @return self
 	 */
 	public JKTraceQueryCallback setTrace(boolean flag) {
 		this.trace = flag;

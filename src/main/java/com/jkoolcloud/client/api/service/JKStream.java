@@ -62,7 +62,8 @@ public class JKStream extends JKService {
 	 * Send a trackable object to jKool end-point
 	 * 
 	 * @param event trackable event
-	 * @throws JKStreamException
+	 * @throws JKStreamException on error during send
+	 * @return response message
 	 */	
 	public Response post(Trackable event) throws JKStreamException {
 		if (!event.isValid()) {
@@ -76,7 +77,8 @@ public class JKStream extends JKService {
 	 * Send a snapshot object to jKool end-point
 	 * 
 	 * @param snapshot trackable snapshot
-	 * @throws JKStreamException
+	 * @throws JKStreamException on error during send
+	 * @return response message
 	 */	
 	public Response post(Snapshot snapshot) throws JKStreamException {
 		if (!snapshot.isValid()) {

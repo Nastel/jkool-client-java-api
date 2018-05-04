@@ -176,8 +176,8 @@ public class Snapshot implements Validated {
 	}
 
 	/**
-	 * /**
-	 **/
+	 * @return category
+	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("category")
 	public String getCategory() {
@@ -197,6 +197,7 @@ public class Snapshot implements Validated {
 	}
 
 	/**
+	 * @return name
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("name")
@@ -217,6 +218,7 @@ public class Snapshot implements Validated {
 	}
 
 	/**
+	 * @return start time in microseconds
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
@@ -230,6 +232,7 @@ public class Snapshot implements Validated {
 	}
 
 	/**
+	 * @return type
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
@@ -238,6 +241,7 @@ public class Snapshot implements Validated {
 	}
 
 	/**
+	 * @return properties list
 	**/
 	@ApiModelProperty(value = "")
 	@JsonProperty("properties")

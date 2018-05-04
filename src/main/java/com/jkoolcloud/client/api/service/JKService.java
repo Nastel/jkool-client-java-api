@@ -95,7 +95,7 @@ abstract public class JKService implements JKQueryConstants {
 	 * 
 	 * @param obj java object instance (non null)
 	 * @return JSON representation of the object
-	 * @throws JKStreamException
+	 * @throws JKStreamException if error occurs during a call
 	 */
 	public String serialize(Object obj) throws JKStreamException {
 		if (obj == null) {

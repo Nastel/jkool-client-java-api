@@ -56,9 +56,21 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * Create a jKool asynchronous query service end-point
 	 * 
 	 * @param token security access token
+	 * @throws URISyntaxException if target URL is invalid
 	 */	
 	public JKQueryAsync(String token) throws URISyntaxException {
 		this(new URI(JKOOL_WEBSOCK_URL), JKOOL_QUERY_URL, token);
+	}
+
+	/**
+	 * Create a jKool asynchronous query service end-point
+	 * 
+	 * @param webSockUri query service WebSocket URI
+	 * @param token security access token
+	 * @throws URISyntaxException if target URL is invalid
+	 */	
+	public JKQueryAsync(String webSockUri, String token) throws URISyntaxException {
+		this(new URI(webSockUri), JKOOL_QUERY_URL, token);
 	}
 
 	/**
@@ -69,16 +81,6 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */	
 	public JKQueryAsync(URI webSockUrl, String token) {
 		this(webSockUrl, JKOOL_QUERY_URL, token);
-	}
-
-	/**
-	 * Create a jKool asynchronous query service end-point
-	 * 
-	 * @param webSockUri query service WebSocket URI
-	 * @param token security access token
-	 */	
-	public JKQueryAsync(String webSockUri, String token) throws URISyntaxException {
-		this(new URI(webSockUri), JKOOL_QUERY_URL, token);
 	}
 
 	/**
@@ -253,8 +255,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	/**
 	 * Close all communication sessions
 	 * 
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 * @return self
+	 * @throws IOException on error during IO
 	 */
 	public synchronized JKQueryAsync connect() throws IOException {
 		try {
@@ -274,7 +276,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	/**
 	 * Close all communication sessions
 	 * 
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	@Override
 	public synchronized void close() throws IOException {
@@ -289,8 +291,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * 
 	 * @param searchText
 	 *            search text
+	 * @param callback handle associated with response handling
 	 * @return query handle associated with the query
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle searchAsync(String searchText, JKQueryCallback callback) throws IOException {
 		return searchAsync(searchText, DEFAULT_MAX_ROWS, callback);
@@ -303,8 +306,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *            search text
 	 * @param maxRows
 	 *            maximum rows to return
+	 * @param callback handle associated with response handling
 	 * @return query handle associated with the query
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
 		return callAsync(String.format(JK_SEARCH_QUERY_PREFIX, searchText), maxRows, callback);
@@ -315,8 +319,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * 
 	 * @param query
 	 *            JKQL query
+	 * @param callback handle associated with response handling
 	 * @return query handle associated with the query
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(JK_SUB_QUERY_PREFIX + query, DEFAULT_MAX_ROWS, callback);
@@ -327,8 +332,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * 
 	 * @param query
 	 *            JKQL query
+	 * @param callback handle associated with response handling
 	 * @return query handle associated with the query
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(query, DEFAULT_MAX_ROWS, callback);
@@ -341,9 +347,10 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *            JKQL query
 	 * @param maxRows
 	 *            maximum rows to return
+	 * @param callback handle associated with response handling
 	 * @return query handle associated with the query
-	 * @throws IOException
-	 * @throws IllegalArgumentException
+	 * @throws IOException on error during IO
+	 * @throws IllegalArgumentException on bad arguments
 	 */
 	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
 		if (callback == null) {
@@ -358,8 +365,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * 
 	 * @param qhandle
 	 *            JKQL query handle
-	 * @throws IOException
-	 * @throws IllegalArgumentException
+	 * @throws IOException on error during IO
+	 * @throws IllegalArgumentException on bad arguments
 	 * @return query handle associated with the query
 	 */
 	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
@@ -381,8 +388,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param query
 	 *            JKQL query
 	 * @return itself
-	 * @throws IOException
-	 * @throws IllegalArgumentException
+	 * @throws IOException on error during IO
+	 * @throws IllegalArgumentException on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query) throws IOException {
 		return callAsync(query, JKQueryHandle.newId(query), DEFAULT_MAX_ROWS);
@@ -398,8 +405,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param maxRows
 	 *            maximum rows to return
 	 * @return itself
-	 * @throws IOException
-	 * @throws IllegalArgumentException
+	 * @throws IOException on error during IO
+	 * @throws IllegalArgumentException on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query, int maxRows) throws IOException {
 		return callAsync(query, JKQueryHandle.newId(query), maxRows);
@@ -417,8 +424,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param maxRows
 	 *            maximum rows to return
 	 * @return itself
-	 * @throws IOException
-	 * @throws IllegalArgumentException
+	 * @throws IOException on error during IO
+	 * @throws IllegalArgumentException on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query, String id, int maxRows) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
@@ -435,7 +442,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * Cancel all active subscriptions
 	 * 
 	 * @return itself
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
 		ArrayList<String> idList = new ArrayList<String>(SUBID_MAP.keySet());
@@ -451,7 +458,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param handle
 	 *            query handle {#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle cancelAsync(JKQueryHandle handle) throws IOException {
 		return cancelAsync(handle.getId());
@@ -463,7 +470,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param subid
 	 *            subscription id returned by {#callAsync(String, JKQueryCallback)}
 	 * @return un-subscription response
-	 * @throws IOException
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryHandle cancelAsync(String subid) throws IOException {
 		if (subid == null) {
@@ -504,6 +511,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @param hGate
 	 *            query handle gate check for true or false
 	 * @return itself
+	 * @throws IOException on error during IO
 	 */
 	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
 		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());

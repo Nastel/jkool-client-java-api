@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package com.jkoolcloud.client.api.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,9 +22,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
- * This class defines a snapshot, which is a collection of properties at a
- * particular moment in time.
+ * This class defines a snapshot, which is a collection of properties at a particular moment in time.
  * 
  * @author cathy
  */
@@ -171,13 +170,14 @@ public class Snapshot implements Validated {
 	 *
 	 * @return true if valid, false otherwise
 	 */
+	@Override
 	public boolean isValid() {
 		return category != null && name != null && (timeUsec > 0) && (properties != null && properties.size() > 0);
 	}
 
 	/**
 	 * @return category
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("category")
 	public String getCategory() {
@@ -198,7 +198,7 @@ public class Snapshot implements Validated {
 
 	/**
 	 * @return name
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("name")
 	public String getName() {
@@ -219,7 +219,7 @@ public class Snapshot implements Validated {
 
 	/**
 	 * @return start time in microseconds
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("time-usec")
 	public long getTimeUsec() {
@@ -233,7 +233,7 @@ public class Snapshot implements Validated {
 
 	/**
 	 * @return type
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public EventTypes getType() {
@@ -242,7 +242,7 @@ public class Snapshot implements Validated {
 
 	/**
 	 * @return properties list
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("properties")
 	public List<Property> getProperties() {

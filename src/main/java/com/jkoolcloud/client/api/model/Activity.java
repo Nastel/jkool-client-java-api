@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * This class defines an activity -- a group of related events, such 
- * as transaction.
+ * This class defines an activity -- a group of related events, such as transaction.
  * 
  * @author cathy
  */
@@ -34,7 +33,7 @@ public class Activity extends Trackable {
 	/**
 	 * Create an activity
 	 * 
-	 */	
+	 */
 	public Activity() {
 		super();
 		setType(EventTypes.ACTIVITY);
@@ -43,8 +42,9 @@ public class Activity extends Trackable {
 	/**
 	 * Create an activity
 	 * 
-	 * @param name associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 */
 	public Activity(String name) {
 		super(name);
 		setType(EventTypes.ACTIVITY);
@@ -53,9 +53,11 @@ public class Activity extends Trackable {
 	/**
 	 * Create an activity
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 */
 	public Activity(String name, String tid) {
 		super(name, tid);
 		setType(EventTypes.ACTIVITY);
@@ -64,10 +66,13 @@ public class Activity extends Trackable {
 	/**
 	 * Create an activity
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 * @param timeMs timestamp associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 * @param timeMs
+	 *            timestamp associated with the entity
+	 */
 	public Activity(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
 		setType(EventTypes.ACTIVITY);
@@ -76,10 +81,13 @@ public class Activity extends Trackable {
 	/**
 	 * Create an activity
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 * @param time timestamp associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 * @param time
+	 *            timestamp associated with the entity
+	 */
 	public Activity(String name, String tid, Date time) {
 		super(name, tid, time);
 		setType(EventTypes.ACTIVITY);
@@ -87,11 +95,11 @@ public class Activity extends Trackable {
 
 	/**
 	 * @return activity status string
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("status")
 	public String getStatus() {
-		return exception == null? "END": "EXCEPTION";
+		return exception == null ? "END" : "EXCEPTION";
 	}
 
 	@Override

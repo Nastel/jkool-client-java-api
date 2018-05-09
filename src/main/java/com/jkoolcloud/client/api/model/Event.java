@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * This class defines an event which has a timestamp and a message.
- * Example: log event.
+ * This class defines an event which has a timestamp and a message. Example: log event.
  * 
  * @author cathy
  */
@@ -43,7 +42,7 @@ public class Event extends Trackable {
 	/**
 	 * Create an event
 	 * 
-	 */	
+	 */
 	public Event() {
 		super();
 		setType(EventTypes.EVENT);
@@ -52,8 +51,9 @@ public class Event extends Trackable {
 	/**
 	 * Create an event
 	 * 
-	 * @param name associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 */
 	public Event(String name) {
 		super(name);
 		setType(EventTypes.EVENT);
@@ -62,9 +62,11 @@ public class Event extends Trackable {
 	/**
 	 * Create an event
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 */
 	public Event(String name, String tid) {
 		super(name, tid);
 		setType(EventTypes.EVENT);
@@ -73,10 +75,13 @@ public class Event extends Trackable {
 	/**
 	 * Create an event
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 * @param timeMs timestamp associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 * @param timeMs
+	 *            timestamp associated with the entity
+	 */
 	public Event(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
 		setType(EventTypes.EVENT);
@@ -85,10 +90,13 @@ public class Event extends Trackable {
 	/**
 	 * Create an event
 	 * 
-	 * @param name associated with the entity
-	 * @param tid tracking id associates with the entity
-	 * @param time timestamp associated with the entity
-	 */	
+	 * @param name
+	 *            associated with the entity
+	 * @param tid
+	 *            tracking id associates with the entity
+	 * @param time
+	 *            timestamp associated with the entity
+	 */
 	public Event(String name, String tid, Date time) {
 		super(name, tid, time);
 		setType(EventTypes.EVENT);
@@ -141,10 +149,11 @@ public class Event extends Trackable {
 	@ApiModelProperty(value = "")
 	@JsonProperty("msg-size")
 	public Integer getMsgSize() {
-		if (msgText != null)
+		if (msgText != null) {
 			return msgText.length();
-		else
+		} else {
 			return 0;
+		}
 	}
 
 	@ApiModelProperty(value = "")

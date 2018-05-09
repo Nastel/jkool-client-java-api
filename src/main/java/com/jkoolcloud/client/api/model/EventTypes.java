@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,11 @@
  */
 package com.jkoolcloud.client.api.model;
 
-
 /**
  * This class defines common event types supported by jKool.
  * 
  * @author cathy
  */
 public enum EventTypes {
-	OTHER, NOOP, CALL, ACTIVITY, EVENT, SNAPSHOT,
-	START, STOP, OPEN, CLOSE, SEND, RECEIVE,
-	INQUIRE, SET, BROWSE, ADD, UPDATE,
-	REMOVE, CLEAR, DATAGRAM;
+	OTHER, NOOP, CALL, ACTIVITY, EVENT, SNAPSHOT, START, STOP, OPEN, CLOSE, SEND, RECEIVE, INQUIRE, SET, BROWSE, ADD, UPDATE, REMOVE, CLEAR, DATAGRAM
 }

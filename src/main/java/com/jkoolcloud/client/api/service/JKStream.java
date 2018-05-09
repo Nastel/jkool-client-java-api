@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,9 @@ import com.jkoolcloud.client.api.model.Trackable;
 public class JKStream extends JKService {
 
 	/**
-	 * Create a jKool stream end-point
-	 * with default end-point and access token
+	 * Create a jKool stream end-point with default end-point and access token
 	 * 
-	 */	
+	 */
 	public JKStream() {
 		this(JKOOL_STREAM_URL, JKOOL_TOKEN);
 	}
@@ -42,8 +41,9 @@ public class JKStream extends JKService {
 	/**
 	 * Create a jKool stream end-point
 	 * 
-	 * @param token security access token
-	 */	
+	 * @param token
+	 *            security access token
+	 */
 	public JKStream(String token) {
 		this(JKOOL_STREAM_URL, token);
 	}
@@ -51,9 +51,11 @@ public class JKStream extends JKService {
 	/**
 	 * Create a jKool stream end-point
 	 * 
-	 * @param endPoint service end-point URL
-	 * @param token security access token
-	 */	
+	 * @param endPoint
+	 *            service end-point URL
+	 * @param token
+	 *            security access token
+	 */
 	public JKStream(String endPoint, String token) {
 		super(endPoint, token);
 	}
@@ -61,10 +63,12 @@ public class JKStream extends JKService {
 	/**
 	 * Send a trackable object to jKool end-point
 	 * 
-	 * @param event trackable event
-	 * @throws JKStreamException on error during send
+	 * @param event
+	 *            trackable event
+	 * @throws JKStreamException
+	 *             on error during send
 	 * @return response message
-	 */	
+	 */
 	public Response post(Trackable event) throws JKStreamException {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid event=" + event);
@@ -76,10 +80,12 @@ public class JKStream extends JKService {
 	/**
 	 * Send a snapshot object to jKool end-point
 	 * 
-	 * @param snapshot trackable snapshot
-	 * @throws JKStreamException on error during send
+	 * @param snapshot
+	 *            trackable snapshot
+	 * @throws JKStreamException
+	 *             on error during send
 	 * @return response message
-	 */	
+	 */
 	public Response post(Snapshot snapshot) throws JKStreamException {
 		if (!snapshot.isValid()) {
 			throw new JKStreamException(200, "Invalid snapshot=" + snapshot);

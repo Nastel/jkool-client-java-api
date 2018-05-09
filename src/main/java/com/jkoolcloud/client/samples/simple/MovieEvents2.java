@@ -1,7 +1,7 @@
 package com.jkoolcloud.client.samples.simple;
 
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,7 @@ import com.jkoolcloud.client.api.service.JKStream;
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events with custom properties.
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD
- * OF HARDCODED VALUES.
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/
 
 public class MovieEvents2 {

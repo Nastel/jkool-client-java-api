@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import javax.json.JsonValue;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
- * This class implements a simple {@code JKQueryCallback} with
- * trace messages.
+ * This class implements a simple {@code JKQueryCallback} with trace messages.
  * 
  * @see JKQueryCallback
  * @author albert
@@ -36,11 +35,10 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	String json_path;
 	boolean trace = true;
 	Throwable lastError;
-	
+
 	AtomicLong msgCount = new AtomicLong(0);
 	AtomicLong errCount = new AtomicLong(0);
-	
-	
+
 	/**
 	 * Create a trace query callback instance
 	 * 
@@ -48,35 +46,41 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	public JKTraceQueryCallback() {
 		this(System.out, true);
 	}
-	
+
 	/**
 	 * Create a trace query callback instance
 	 * 
-	 * @param out output print stream
+	 * @param out
+	 *            output print stream
 	 * 
 	 */
 	public JKTraceQueryCallback(PrintStream out) {
 		this(out, true);
 	}
-	
+
 	/**
 	 * Create a trace query callback instance
 	 * 
-	 * @param out output print stream
-	 * @param flag flag
+	 * @param out
+	 *            output print stream
+	 * @param flag
+	 *            flag
 	 * 
 	 */
 	public JKTraceQueryCallback(PrintStream out, boolean flag) {
 		this.out = out;
 		setTrace(flag);
 	}
-	
+
 	/**
 	 * Create a trace query callback instance
 	 * 
-	 * @param out output print stream
-	 * @param jsonPath json path to get from the response
-	 * @param flag flag
+	 * @param out
+	 *            output print stream
+	 * @param jsonPath
+	 *            json path to get from the response
+	 * @param flag
+	 *            flag
 	 * 
 	 */
 	public JKTraceQueryCallback(PrintStream out, String jsonPath, boolean flag) {
@@ -84,11 +88,12 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		this.json_path = jsonPath;
 		setTrace(flag);
 	}
-	
+
 	/**
 	 * Enable/disable trace mode
 	 * 
-	 * @param flag trace flag
+	 * @param flag
+	 *            trace flag
 	 * @return self
 	 */
 	public JKTraceQueryCallback setTrace(boolean flag) {
@@ -104,7 +109,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	public long getErrorCount() {
 		return errCount.get();
 	}
-	
+
 	/**
 	 * Get received message count
 	 * 
@@ -113,7 +118,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	public long getMsgCount() {
 		return msgCount.get();
 	}
-	
+
 	/**
 	 * Get last error
 	 * 
@@ -122,7 +127,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	public Throwable getLastError() {
 		return lastError;
 	}
-	
+
 	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
@@ -138,17 +143,17 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 				JsonValue jsonPath = JKUtils.getJsonValue(json_path, response);
 				if (jsonPath == null) {
 					out.print("\"" + json_path + "\" not found");
-				} else if (jsonPath instanceof JsonStructure){
-					out.println(JKUtils.prettyPrint((JsonStructure)jsonPath));
+				} else if (jsonPath instanceof JsonStructure) {
+					out.println(JKUtils.prettyPrint((JsonStructure) jsonPath));
 				} else {
 					out.format("%s = %s, %s", json_path, jsonPath, jsonPath.getValueType());
 				}
 			}
 		}
 	}
-	
+
 	@Override
-    public void done(JKQueryHandle qhandle) {
+	public void done(JKQueryHandle qhandle) {
 		if (trace) {
 			out.println("Done: handle=" + qhandle + ", done=" + qhandle.isDone());
 		}

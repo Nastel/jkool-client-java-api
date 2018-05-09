@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.json.JsonObject;
 
 /**
- * This class implements a query handle which encapsulates asynchronous 
- * subscription for query and callback pair.
+ * This class implements a query handle which encapsulates asynchronous subscription for query and callback pair.
  * 
  * @author albert
  */
@@ -39,7 +38,7 @@ public class JKQueryHandle implements JKQueryConstants {
 
 	int maxRows;
 	boolean done = false;
-	
+
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
 	private final Condition doneCall = aLock.newCondition();
@@ -48,9 +47,11 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Create a jKool query handle
 	 * 
-	 * @param q JKQL query statement
-	 * @param callback associated with the given query
-	 */	
+	 * @param q
+	 *            JKQL query statement
+	 * @param callback
+	 *            associated with the given query
+	 */
 	public JKQueryHandle(String q, JKQueryCallback callback) {
 		this(q, newId(q), callback);
 	}
@@ -58,10 +59,13 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Create a jKool query handle
 	 * 
-	 * @param q JKQL query statement
-	 * @param id query id associated with the given handle
-	 * @param callback associated with the given query
-	 */	
+	 * @param q
+	 *            JKQL query statement
+	 * @param id
+	 *            query id associated with the given handle
+	 * @param callback
+	 *            associated with the given query
+	 */
 	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
 		this.timeCreated = System.currentTimeMillis();
 		this.query = q;
@@ -74,7 +78,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Create a unique identifier
 	 * 
 	 * @return a unique identifier
-	 */	
+	 */
 	public static String newId() {
 		String uuid = UUID.randomUUID().toString();
 		return uuid;
@@ -83,9 +87,10 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Create a unique identifier for a given query
 	 * 
-	 * @param q JKQL query
+	 * @param q
+	 *            JKQL query
 	 * @return a unique identifier
-	 */	
+	 */
 	public static String newId(String q) {
 		String uuid = UUID.randomUUID().toString();
 		uuid = isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;
@@ -95,9 +100,10 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Determine if a query represents a subscription query
 	 * 
-	 * @param query JKQL query
+	 * @param query
+	 *            JKQL query
 	 * @return true if subscribe query, false otherwise
-	 */	
+	 */
 	public static boolean isSubscribeQ(String query) {
 		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX);
 	}
@@ -105,9 +111,10 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Determine if a handle id represents a subscription query
 	 * 
-	 * @param id JKQL query id
+	 * @param id
+	 *            JKQL query id
 	 * @return true if subscribe query, false otherwise
-	 */	
+	 */
 	public static boolean isSubscribeId(String id) {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
@@ -116,7 +123,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Determine if current handle id represents a subscription query
 	 * 
 	 * @return true if subscribe query, false otherwise
-	 */	
+	 */
 	public boolean isSubscribeId() {
 		return id.startsWith(JK_SUB_UUID_PREFIX);
 	}
@@ -125,17 +132,16 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Determine if current handle query represents a subscription query
 	 * 
 	 * @return true if subscribe query, false otherwise
-	 */	
+	 */
 	public boolean isSubscribeQuery() {
 		return subscribe;
 	}
 
 	/**
-	 * Determine if current handle is DONE -- meaning all responses
-	 * for this query have been received and consumed.
+	 * Determine if current handle is DONE -- meaning all responses for this query have been received and consumed.
 	 * 
 	 * @return true if handle is done, false otherwise
-	 */	
+	 */
 	public boolean isDone() {
 		return done;
 	}
@@ -144,7 +150,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Obtain query associated with the current handle
 	 * 
 	 * @return JKQL query statement
-	 */	
+	 */
 	public String getQuery() {
 		return query;
 	}
@@ -153,7 +159,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Obtain query callback associated with this handle
 	 * 
 	 * @return JKQL query callback handle
-	 */	
+	 */
 	public JKQueryCallback getCallback() {
 		return callback;
 	}
@@ -162,7 +168,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Obtain handle identifier
 	 * 
 	 * @return handle identifier
-	 */	
+	 */
 	public String getId() {
 		return id;
 	}
@@ -171,7 +177,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * Obtain handle create time
 	 * 
 	 * @return handle create time
-	 */	
+	 */
 	public long getTimeCreated() {
 		return timeCreated;
 	}
@@ -179,30 +185,33 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Set maximum rows for query response
 	 * 
-	 * @param rows maximum rows in response
+	 * @param rows
+	 *            maximum rows in response
 	 * @return self
-	 */	
+	 */
 	public JKQueryHandle setMaxRows(int rows) {
 		this.maxRows = rows;
 		return this;
 	}
-	
+
 	/**
 	 * Get maximum rows for query response
 	 * 
 	 * @return rows maximum rows in response
-	 */	
+	 */
 	public int getMaxRows() {
 		return maxRows;
 	}
-	
+
 	/**
 	 * Await for response until a given date/time
 	 * 
-	 * @param until date/time until to await for response
+	 * @param until
+	 *            date/time until to await for response
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -211,12 +220,13 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Await for response until indefinitely or interrupted
 	 * 
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public void awaitOnCallback() throws InterruptedException {
 		aLock.lock();
 		try {
@@ -225,15 +235,18 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Await for response for a given period of time
 	 * 
-	 * @param time the maximum time to wait
-	 * @param unit the time unit of the time argument
+	 * @param time
+	 *            the maximum time to wait
+	 * @param unit
+	 *            the time unit of the time argument
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -242,14 +255,16 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Await for completion until a given date/time
 	 * 
-	 * @param until date/time until to await for completion
+	 * @param until
+	 *            date/time until to await for completion
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -258,12 +273,13 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Await for completion until indefinitely or interrupted
 	 * 
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public void awaitOnDone() throws InterruptedException {
 		aLock.lock();
 		try {
@@ -272,15 +288,18 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Await for completion for a given period of time
 	 * 
-	 * @param time the maximum time to wait
-	 * @param unit the time unit of the time argument
+	 * @param time
+	 *            the maximum time to wait
+	 * @param unit
+	 *            the time unit of the time argument
 	 * @return false if the deadline has elapsed upon return, else true
-	 * @throws InterruptedException if connection is interrupted
-	 */	
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
 	public boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException {
 		aLock.lock();
 		try {
@@ -289,12 +308,12 @@ public class JKQueryHandle implements JKQueryConstants {
 			aLock.unlock();
 		}
 	}
-	
+
 	/**
 	 * Get total number of times the callback was called
 	 * 
 	 * @return number of times the callback was called
-	 */	
+	 */
 	public long getCallCount() {
 		return callCount.get();
 	}
@@ -302,7 +321,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	/**
 	 * Reset total number of times the callback was called
 	 * 
-	 */	
+	 */
 	public void resetCallCount() {
 		callCount.set(0);
 	}
@@ -318,9 +337,9 @@ public class JKQueryHandle implements JKQueryConstants {
 			JKQueryHandle q2 = (JKQueryHandle) obj;
 			return id.equals(q2.id);
 		} else if (obj instanceof JKQueryCallback) {
-			return this.callback == (JKQueryCallback)obj;
+			return this.callback == (JKQueryCallback) obj;
 		} else if (obj instanceof String) {
-			return id.equals(String.valueOf(obj));			
+			return id.equals(String.valueOf(obj));
 		}
 		return false;
 	}
@@ -328,7 +347,7 @@ public class JKQueryHandle implements JKQueryConstants {
 	@Override
 	public String toString() {
 		return "{" + "class: \"" + this.getClass().getName() + "\", id: \"" + id + "\", query: \"" + query
-		        + "\", callback: \"" + callback + "\"}";
+				+ "\", callback: \"" + callback + "\"}";
 	}
 
 	protected void done() {
@@ -340,7 +359,7 @@ public class JKQueryHandle implements JKQueryConstants {
 		} finally {
 			aLock.unlock();
 		}
-    }
+	}
 
 	protected void handle(JsonObject response, Throwable ex) {
 		aLock.lock();

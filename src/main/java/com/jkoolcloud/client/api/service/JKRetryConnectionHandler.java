@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import java.util.concurrent.TimeUnit;
 import javax.websocket.CloseReason;
 
 /**
- * This class listens for WebSocket communication events and recovers
- * connection and subscriptions using a timer.
+ * This class listens for WebSocket communication events and recovers connection and subscriptions using a timer.
  * 
  * @author albert
  */
 public class JKRetryConnectionHandler implements JKConnectionHandler {
-	ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(2, new JKThreadFactory("jk_retry_handler", true));
+	ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(2,
+			new JKThreadFactory("jk_retry_handler", true));
 
 	long retryTimeout;
 	TimeUnit tunit;
@@ -66,17 +66,17 @@ public class JKRetryConnectionHandler implements JKConnectionHandler {
 		closedState = true;
 		scheduleReconnect(async, reason);
 	}
-	
+
 	public long getErrorCount() {
 		return errorCount;
 	}
-	
+
 	private void scheduleReconnect(JKQueryAsync async, CloseReason reason) {
 		if (reason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE) {
 			scheduledThreadPool.schedule(new JKReconnectTask(async), retryTimeout, tunit);
-		}		
+		}
 	}
-	
+
 	private void scheduleResubscribe(JKQueryAsync async, long time, TimeUnit unit, long timeOpen) {
 		scheduledThreadPool.schedule(new JKRestoreSubscriptionsTask(async, timeOpen), time, tunit);
 	}

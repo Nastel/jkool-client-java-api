@@ -53,7 +53,7 @@ public class JKCmdOptions {
 			+ "-token access-token\n\t"
 			+ "-query jkql-query\n\t"
 			+ "[-file args-file]\n\t"
-			+ "[-uri jkool service uri]\n\t"
+			+ "[-uri jKool service uri]\n\t"
 			+ "[-jpath json-path]\n\t"
 			+ "[-search search-text]\n\t"
 			+ "[-wait wait-ms]\n\t"

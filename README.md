@@ -22,7 +22,7 @@ To use this sample code please do the following:
 	</dependency>
 ```
 ## Streaming to jKool
-Streaming allows developers to send time series data such as events, metrics, transations, logs over secure jKool cloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
+Streaming allows developers to send time series data such as events, metrics, transactions, logs over secure jKoolCloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```

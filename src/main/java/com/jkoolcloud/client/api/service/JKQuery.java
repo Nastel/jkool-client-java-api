@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 /**
  * This class defines a RESTFul way to run jKool queries. Supports standard queries only (does not support
@@ -32,7 +32,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * @author albert
  */
 public class JKQuery extends JKService {
-	HttpClient httpClient = new DefaultHttpClient();
+	HttpClient httpClient = HttpClients.createDefault();
 
 	/**
 	 * Create a jKool query service end-point with default end-point and access token

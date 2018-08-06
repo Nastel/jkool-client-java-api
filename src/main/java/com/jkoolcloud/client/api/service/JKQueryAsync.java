@@ -147,22 +147,6 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	}
 
 	/**
-	 * Remove a callback handler from the list of default handlers
-	 * 
-	 * @param callbacks list of callback handlers
-	 * @return itself
-	 */
-	public JKQueryAsync removeConnectionHandler(JKQueryCallback...callbacks) {
-		if (callbacks == null) {
-			throw new IllegalArgumentException("list can not be null");
-		}
-		for (int i=0; i < callbacks.length; i++) {
-			conHandlers.remove(callbacks[i]);
-		}
-		return this;
-	}
-
-	/**
 	 * Add a connection handler to the list of handlers
 	 * 
 	 * @param cHandlers list of connection handlers

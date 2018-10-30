@@ -30,7 +30,7 @@
     </fileSets>
     <dependencySets>
         <dependencySet>
-            <useProjectArtifact>true</useProjectArtifact>
+            <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,39 +21,40 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.websocket.CloseReason;
 
 /**
- * This class implements a simple {@code JKConnectionHandler} with
- * trace messages.
+ * This class implements a simple {@code JKConnectionHandler} with trace messages.
  * 
  * @author albert
  */
 public class JKTraceConnectionHandler implements JKConnectionHandler {
-	
+
 	PrintStream out;
 	boolean trace = true;
 	Throwable lastError;
 	AtomicLong errCount = new AtomicLong(0);
 
 	/**
-	 * Create a trace connection handler
-	 * with enabled trace flag.
+	 * Create a trace connection handler with enabled trace flag.
 	 * 
-	 * @param out output print stream
+	 * @param out
+	 *            output print stream
 	 */
 	public JKTraceConnectionHandler(PrintStream out) {
 		this(out, true);
 	}
-	
+
 	/**
 	 * Create a trace connection handler
 	 * 
-	 * @param out output print stream
-	 * @param flag trace flag
+	 * @param out
+	 *            output print stream
+	 * @param flag
+	 *            trace flag
 	 */
 	public JKTraceConnectionHandler(PrintStream out, boolean flag) {
 		this.out = out;
 		setTrace(flag);
 	}
-	
+
 	@Override
 	public void open(JKQueryAsync async) {
 		if (out != null && trace) {
@@ -77,7 +78,7 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 			out.println("Connection closed: " + reason + ", handle=" + async);
 		}
 	}
-	
+
 	/**
 	 * Get error count
 	 * 
@@ -86,7 +87,7 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 	public long getErrorCount() {
 		return errCount.get();
 	}
-	
+
 	/**
 	 * Get last error
 	 * 
@@ -95,11 +96,12 @@ public class JKTraceConnectionHandler implements JKConnectionHandler {
 	public Throwable getLastError() {
 		return lastError;
 	}
-	
+
 	/**
 	 * Enable/disable trace mode
 	 * 
-	 * @param flag trace flag
+	 * @param flag
+	 *            trace flag
 	 * @return self
 	 */
 	public JKTraceConnectionHandler setTrace(boolean flag) {

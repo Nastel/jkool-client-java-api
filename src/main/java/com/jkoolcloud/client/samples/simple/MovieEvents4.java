@@ -1,7 +1,7 @@
 package com.jkoolcloud.client.samples.simple;
 
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.client.api.model.Activity;
-import com.jkoolcloud.client.api.model.Event;
-import com.jkoolcloud.client.api.model.Property;
-import com.jkoolcloud.client.api.model.Snapshot;
-import com.jkoolcloud.client.api.model.ValueType;
+import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
- * This example code uses the same data as the prior Movie example code. However
- * it also demonstrates how to make use of Snapshots. In this example, snapshots
- * are being used to capture the weather at the time the movie was playing.
+ * This example code uses the same data as the prior Movie example code. However it also demonstrates how to make use of
+ * Snapshots. In this example, snapshots are being used to capture the weather at the time the movie was playing.
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD
- * OF HARDCODED VALUES.
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/
 
 public class MovieEvents4 {
@@ -88,8 +82,8 @@ public class MovieEvents4 {
 
 			Property propertyGenre = new Property("MovieGenre", "Drama");
 			Property propertyPrice = new Property("MoviePrice", 10.50, ValueType.VALUE_TYPE_CURRENCY_USD);
-			Property propertyTime = new Property("MovieTime", "August 3, 2015 at 1PM", ValueType.VALUE_TYPE_TIMESTAMP);
-	
+			Property propertyTime = new Property("MovieTime", "August 3, 2018 at 1PM", ValueType.VALUE_TYPE_TIMESTAMP);
+
 			// Create the Event
 			// Attach it's snapshots
 			// Attach it's properties
@@ -98,12 +92,11 @@ public class MovieEvents4 {
 			event.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DC1")
 					.setGeoAddr("(40.803692,-73.402157)").setSourceUrl("http://www.movies.com")
-					.setLocation("New York, NY").setName("Cassablanca")
-					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
+					.setLocation("New York, NY").setName("Cassablanca").setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
 					// This attaches the event to the activity.
 					.setParentTrackId(activity.getTrackingId())
 					// Attach the event's properties
-					.addProperty(propertyGenre, propertyPrice, propertyName, propertyTime) 
+					.addProperty(propertyGenre, propertyPrice, propertyName, propertyTime)
 					// Attach the event's snapshots
 					.addSnapshot(snapshotTemp, snapshotHumidity, snapshotSeaLevel);
 

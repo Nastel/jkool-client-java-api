@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,7 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 
 /**
- * This class implements a task that automatically reconnects
- * a given instance of {@link JKQueryAsync}.
+ * This class implements a task that automatically reconnects a given instance of {@link JKQueryAsync}.
  * 
  * @author albert
  */
@@ -36,7 +35,7 @@ public class JKReconnectTask implements Runnable {
 			if (!agent.isConnected()) {
 				agent.connect();
 			}
-        } catch (IOException e) {
-        }
+		} catch (IOException e) {
+		}
 	}
 }

@@ -1,12 +1,12 @@
 # jKool Streaming & Query API
-jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you. 
+jKool Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will be defaulted or automatically computed for you.
 
 ## Concepts and Terminology
 You can find very comprehensive documentation on jKool Data Types and Concepts in our [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). There are four types of timeseries data types that can be streamed to jKool. They are:
 * *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * *Activity*: Represents a group of events and other activities (e.g. transactions).
 * *Snapshot*: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
-* *Property*: simple metric (name, value pair). Properties can be associated with events, activities and snapshots. 
+* *Property*: simple metric (name, value pair). Properties can be associated with events, activities and snapshots.
 
 This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
@@ -22,7 +22,7 @@ To use this sample code please do the following:
 	</dependency>
 ```
 ## Streaming to jKool
-Streaming allows developers to send time series data such as events, metrics, transations, logs over secure jKool cloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
+Streaming allows developers to send time series data such as events, metrics, transactions, logs over secure jKoolCloud interface. You will need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```
@@ -65,7 +65,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 		.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 		.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setLocation("New York, NY")
 		.setMsgText("Casablanca is playing.");
-		
+
 	// create custom properties
 	Property customerName = new Property("Name", "John Smith");
 	Property customerAge = new Property("Age", 26, ValueType.VALUE_TYPE_AGE_YEAR);
@@ -192,11 +192,11 @@ Developers can also subscribe to live data streams using `JKQueryAsync` class. S
 	JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
 	jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
 	jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
-		
+
 	// setup a default response handler for responses not associated with any specific query
 	jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
 	jkQueryAsync.connect(); // connect stream with WebSocket interface
-		
+
 	// run subscription query in async mode with a callback
 	JKQueryHandle qhandle = jkQueryAsync.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
 	...
@@ -259,7 +259,7 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 ```
 ### Query jKool using Curl
 
-Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example. Please note that you also have the option of putting the token in the header instead of specifying it as a parameter. 
+Rest can be used to retrieve data natively (without helper classes) out of jKool uing Curl. Below is an example. Please note that you also have the option of putting the token in the header instead of specifying it as a parameter.
 
 ```java
 curl -i -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-TOKEN'

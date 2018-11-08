@@ -1,7 +1,7 @@
 package com.jkoolcloud.client.samples.simple;
 
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import com.jkoolcloud.client.api.service.JKStream;
  * This example demonstrates how to create a simple movie events
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
- * ***********************************************************************************************************************/
+ ***********************************************************************************************************************/
 
 public class MovieEvent1 {
 
@@ -39,10 +39,11 @@ public class MovieEvent1 {
 			// Create the Event
 			// Attach it's properties
 			Event event = new Event();
-			event.setMsgText("Casablanca is playing.").setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
-			        .setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
-			        .setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
-			        .setLocation("New York, NY").setName("Casablanca");
+			event.setMsgText("Casablanca is playing.").setAppl("WebOrders")
+					.setServer(InetAddress.getLocalHost().getHostName())
+					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
+					.setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2)).setSourceUrl("http://www.movies.com")
+					.setLocation("New York, NY").setName("Casablanca");
 
 			Response response = jkSend.post(event);
 			response.close();

@@ -1,7 +1,7 @@
 package com.jkoolcloud.client.samples.simple;
 
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,10 @@ import com.jkoolcloud.client.api.model.ValueType;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
- * This example demonstrates how to create movie events and attach them to an
- * activity which holds all of the movies playing in a given week.
+ * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies
+ * playing in a given week.
  * 
- * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD
- * OF HARDCODED VALUES.
+ * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/
 
 public class MovieEvents3 {
@@ -62,8 +61,7 @@ public class MovieEvents3 {
 					.setGeoAddr("40.803692,-73.402157").setSourceUrl("http://www.movies.com")
 					.setLocation("New York, NY").setName("Casablanca").setElapsedTimeUsec(TimeUnit.HOURS.toMicros(2))
 					// This attaches the event to the activity.
-					.setParentTrackId(activity.getTrackingId())
-					.addProperty(propertyGenre, propertyPrice, propertyName);
+					.setParentTrackId(activity.getTrackingId()).addProperty(propertyGenre, propertyPrice, propertyName);
 
 			// Stream the event (token is the token that was assigned to you
 			// when you purchased jKool.

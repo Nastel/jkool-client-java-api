@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ public interface JKGate<T> {
 	/**
 	 * Run an implementation specific check on a given object
 	 * 
-	 * @param obj object to be checked
+	 * @param obj
+	 *            object to be checked
 	 * @return true of check was true, false otherwise
-	 */	
+	 */
 	boolean check(T obj);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,12 @@
  */
 package com.jkoolcloud.client.api.model;
 
-import io.swagger.annotations.*;
-
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * This class implements a property with name, value, data and value type.
@@ -44,8 +45,10 @@ public class Property implements Validated {
 	/**
 	 * Create a property
 	 * 
-	 * @param name property name
-	 * @param value property value
+	 * @param name
+	 *            property name
+	 * @param value
+	 *            property value
 	 */
 	public Property(String name, Object value) {
 		this(name, value, ValueType.VALUE_TYPE_NONE, getDataType(value));
@@ -54,9 +57,12 @@ public class Property implements Validated {
 	/**
 	 * Create a property
 	 * 
-	 * @param name property name
-	 * @param value property value
-	 * @param valueType property value type {@link ValueType}
+	 * @param name
+	 *            property name
+	 * @param value
+	 *            property value
+	 * @param valueType
+	 *            property value type {@link ValueType}
 	 * @see ValueType
 	 */
 	public Property(String name, Object value, String valueType) {
@@ -66,10 +72,14 @@ public class Property implements Validated {
 	/**
 	 * Create a property
 	 * 
-	 * @param name property name
-	 * @param value property value
-	 * @param valueType property value type {@link ValueType}
-	 * @param dataType property value data type
+	 * @param name
+	 *            property name
+	 * @param value
+	 *            property value
+	 * @param valueType
+	 *            property value type {@link ValueType}
+	 * @param dataType
+	 *            property value data type
 	 * @see ValueType
 	 */
 	public Property(String name, Object value, String valueType, String dataType) {
@@ -84,13 +94,14 @@ public class Property implements Validated {
 	 *
 	 * @return true if valid, false otherwise
 	 */
+	@Override
 	public boolean isValid() {
 		return name != null && dataType != null && value != null;
 	}
 
 	/**
 	 * @return property name
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("name")
 	public String getName() {
@@ -104,7 +115,7 @@ public class Property implements Validated {
 
 	/**
 	 * @return property data type
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("type")
 	public String getType() {
@@ -114,7 +125,8 @@ public class Property implements Validated {
 	/**
 	 * Set property value data type
 	 * 
-	 * @param dataType property value data type
+	 * @param dataType
+	 *            property value data type
 	 * @return self
 	 */
 	public Property setType(String dataType) {
@@ -124,26 +136,28 @@ public class Property implements Validated {
 
 	/**
 	 * @return property value
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value")
 	public String getValue() {
-		return value != null? String.valueOf(value): null;
+		return value != null ? String.valueOf(value) : null;
 	}
 
 	/**
 	 * Set property value
 	 * 
-	 * @param value property value
+	 * @param value
+	 *            property value
 	 * @return self
 	 */
 	public Property setValue(Object value) {
 		this.value = value;
 		return this;
 	}
+
 	/**
 	 * @return property value type
-	**/
+	 **/
 	@ApiModelProperty(value = "")
 	@JsonProperty("value-type")
 	public String getValueType() {
@@ -153,7 +167,8 @@ public class Property implements Validated {
 	/**
 	 * Set property value type
 	 * 
-	 * @param valueType property value type {@link ValueType}
+	 * @param valueType
+	 *            property value type {@link ValueType}
 	 * @return self
 	 * @see ValueType
 	 */
@@ -165,7 +180,8 @@ public class Property implements Validated {
 	/**
 	 * Obtain the language independent value data type of the property
 	 * 
-	 * @param value for which to determine type
+	 * @param value
+	 *            for which to determine type
 	 * @return string representation of the value data type
 	 */
 	public static String getDataType(Object value) {

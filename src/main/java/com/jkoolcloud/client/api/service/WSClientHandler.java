@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,18 +30,19 @@ import javax.websocket.Session;
  * @see JKWSHandler
  */
 class WSClientHandler implements JKWSHandler {
-	
+
 	JKQueryAsync jkagent;
-	
+
 	/**
 	 * WebSocket message & connection handler
 	 * 
-	 * @param qagent connection handle
+	 * @param qagent
+	 *            connection handle
 	 */
 	protected WSClientHandler(JKQueryAsync qagent) {
 		jkagent = qagent;
 	}
-	
+
 	@Override
 	public void onMessage(JKWSClient client, String message) {
 		JsonReader reader = Json.createReader(new StringReader(message));
@@ -53,7 +54,7 @@ class WSClientHandler implements JKWSHandler {
 	@Override
 	public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
 		synchronized (jkagent.conHandlers) {
-			for (JKConnectionHandler ch: jkagent.conHandlers) {
+			for (JKConnectionHandler ch : jkagent.conHandlers) {
 				ch.close(jkagent, reason);
 			}
 		}
@@ -62,7 +63,7 @@ class WSClientHandler implements JKWSHandler {
 	@Override
 	public void onError(JKWSClient client, Session userSession, Throwable ex) {
 		synchronized (jkagent.conHandlers) {
-			for (JKConnectionHandler ch: jkagent.conHandlers) {
+			for (JKConnectionHandler ch : jkagent.conHandlers) {
 				ch.error(jkagent, ex);
 			}
 		}
@@ -71,9 +72,9 @@ class WSClientHandler implements JKWSHandler {
 	@Override
 	public void onOpen(JKWSClient client, Session userSession) {
 		synchronized (jkagent.conHandlers) {
-			for (JKConnectionHandler ch: jkagent.conHandlers) {
+			for (JKConnectionHandler ch : jkagent.conHandlers) {
 				ch.open(jkagent);
 			}
 		}
-	}	
+	}
 }

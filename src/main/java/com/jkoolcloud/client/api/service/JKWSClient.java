@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
+import javax.websocket.*;
 
 /**
  * This class implements WebSockets communication, message and error handling.
@@ -56,38 +48,41 @@ public class JKWSClient {
 	public synchronized JKWSClient connect() throws IOException {
 		try {
 			if (userSession == null) {
-				container.connectToServer(this, wsUri);		
+				container.connectToServer(this, wsUri);
 			}
 		} catch (Throwable ex) {
 			throw new IOException("Failed to connect: " + wsUri, ex);
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Disconnect current connection
 	 * 
 	 * @return self
-	 * @throws IOException on IO errors
+	 * @throws IOException
+	 *             on IO errors
 	 */
 	public synchronized JKWSClient disconnect() throws IOException {
 		return disconnect(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal disconnect"));
 	}
-	
+
 	/**
 	 * Disconnect current connection
 	 * 
-	 * @param reason close reason
+	 * @param reason
+	 *            close reason
 	 * @return self
-	 * @throws IOException on connection errors
+	 * @throws IOException
+	 *             on connection errors
 	 */
 	public synchronized JKWSClient disconnect(CloseReason reason) throws IOException {
 		if (userSession != null) {
-			userSession.close(reason);	
+			userSession.close(reason);
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Obtain underlying web socket session
 	 *
@@ -96,16 +91,16 @@ public class JKWSClient {
 	public Session getSession() {
 		return userSession;
 	}
-	
+
 	/**
 	 * Determine if client connection is open
 	 *
 	 * @return true if connection, false otherwise
 	 */
 	public boolean isConnected() {
-		return userSession != null? userSession.isOpen(): false;
+		return userSession != null ? userSession.isOpen() : false;
 	}
-	
+
 	/**
 	 * Callback hook for Connection open events.
 	 *
@@ -125,7 +120,8 @@ public class JKWSClient {
 	 *
 	 * @param userSession
 	 *            the userSession which is opened.
-	 * @param ex exception object
+	 * @param ex
+	 *            exception object
 	 */
 	@OnError
 	public void onError(Session userSession, Throwable ex) {
@@ -166,7 +162,8 @@ public class JKWSClient {
 	/**
 	 * register message handler
 	 * 
-	 * @param msgHandler message handler called on message
+	 * @param msgHandler
+	 *            message handler called on message
 	 * @return itself
 	 */
 	private JKWSClient setMessageHandler(JKWSHandler msgHandler) {
@@ -176,9 +173,12 @@ public class JKWSClient {
 
 	/**
 	 * Send a message async
-	 * @throws IOException during send IO
 	 * 
-	 * @param message text message
+	 * @throws IOException
+	 *             during send IO
+	 * 
+	 * @param message
+	 *            text message
 	 * @return itself
 	 */
 	public JKWSClient sendMessageAsync(String message) throws IOException {
@@ -189,13 +189,15 @@ public class JKWSClient {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Send message, synchronous
 	 * 
-	 * @param message text message
+	 * @param message
+	 *            text message
 	 * @return itself
-	 * @throws IOException during send IO
+	 * @throws IOException
+	 *             during send IO
 	 *
 	 */
 	public JKWSClient sendMessageSync(String message) throws IOException {

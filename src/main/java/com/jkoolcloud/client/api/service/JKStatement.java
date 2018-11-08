@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,8 @@ public interface JKStatement {
 	/**
 	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @throws IOException when IO errors occur
+	 * @throws IOException
+	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle call() throws IOException;
@@ -64,7 +65,8 @@ public interface JKStatement {
 	 * 
 	 * @param maxRows
 	 *            maximum rows limit in response
-	 * @throws IOException when IO errors occur
+	 * @throws IOException
+	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle call(int maxRows) throws IOException;

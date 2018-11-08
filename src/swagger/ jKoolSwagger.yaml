@@ -40,7 +40,7 @@ paths:
         type: string
       responses:
         '202':
-          description : Event accepted.    
+          description: Event accepted.
         '400':
           description: Bad Request.
         '401':
@@ -75,7 +75,7 @@ paths:
         '200':
           description: Event streamed properly.
         '202':
-          description : Event accepted.    
+          description: Event accepted.
         '400':
           description: Bad Request.
         '401':

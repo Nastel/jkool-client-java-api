@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 
 /**
- * This class implements a task that automatically re-subscribes
- * all active subscriptions after reconnecting {@link JKQueryAsync}.
+ * This class implements a task that automatically re-subscribes all active subscriptions after reconnecting
+ * {@link JKQueryAsync}.
  * 
  * @author albert
  */
@@ -38,13 +38,13 @@ public class JKRestoreSubscriptionsTask implements JKGate<JKQueryHandle>, Runnab
 			if (agent.isConnected()) {
 				agent.restoreSubscriptions(this);
 			}
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public boolean check(JKQueryHandle handle) {
-		return handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeStamp); 
+		return handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeStamp);
 	}
 }

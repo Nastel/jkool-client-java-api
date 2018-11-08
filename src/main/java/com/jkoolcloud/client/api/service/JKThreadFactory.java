@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 JKOOL, LLC.
+ * Copyright 2014-2018 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,21 +23,23 @@ class JKThreadFactory implements ThreadFactory {
 	String threadPrefix;
 	boolean daemon;
 	AtomicLong counter = new AtomicLong(0);
-	
+
 	/**
 	 * Thread counting thread factory
 	 * 
-	 * @param prefix thread name prefix
-	 * @param daemon flag that defines weather threads are daemon
+	 * @param prefix
+	 *            thread name prefix
+	 * @param daemon
+	 *            flag that defines weather threads are daemon
 	 */
 	public JKThreadFactory(String prefix, boolean daemon) {
 		threadPrefix = prefix;
 	}
-	
+
 	@Override
-    public Thread newThread(Runnable r) {
+	public Thread newThread(Runnable r) {
 		Thread th = new Thread(r, threadPrefix + "/" + counter.incrementAndGet());
 		th.setDaemon(daemon);
-		return th;		
-    }	
+		return th;
+	}
 }

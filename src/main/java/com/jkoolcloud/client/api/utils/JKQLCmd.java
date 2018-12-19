@@ -37,6 +37,9 @@ public class JKQLCmd {
 				jkQueryAsync
 						.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
 			}
+			jkQueryAsync.setTimeZone(options.timezone);
+			jkQueryAsync.setDateFilter(options.daterange);
+			jkQueryAsync.setRepoId(options.repoId);
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();
@@ -61,8 +64,7 @@ public class JKQLCmd {
 			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
 		} finally {
-			System.out
-					.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
+			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
 		}
 	}
 }

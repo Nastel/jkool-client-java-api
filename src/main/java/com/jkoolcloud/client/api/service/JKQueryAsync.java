@@ -159,23 +159,6 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	}
 
 	/**
-	 * Remove a callback handler from the list of default handlers
-	 * 
-	 * @param callbacks
-	 *            list of callback handlers
-	 * @return itself
-	 */
-	public JKQueryAsync removeConnectionHandler(JKQueryCallback... callbacks) {
-		if (callbacks == null) {
-			throw new IllegalArgumentException("list can not be null");
-		}
-		for (int i = 0; i < callbacks.length; i++) {
-			conHandlers.remove(callbacks[i]);
-		}
-		return this;
-	}
-
-	/**
 	 * Add a connection handler to the list of handlers
 	 * 
 	 * @param cHandlers
@@ -384,7 +367,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (callback == null) {
 			throw new IllegalArgumentException("callback can not be null");
 		}
-		JKQueryHandle qhandle = createQueryHandle(query, callback).setMaxRows(maxRows);
+		JKQueryHandle qhandle = createQueryHandle(query, tz, this.dateFilter, this.repoId, callback).setMaxRows(maxRows);
 		return callAsync(qhandle);
 	}
 
@@ -401,8 +384,14 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */
 	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken()).add(JK_QUERY_KEY, qhandle.getQuery())
-				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows()).add(JK_SUBID_KEY, qhandle.getId()).build();
+		JsonObject jsonQuery = jsonBuilder
+				.add(JK_TOKEN_KEY, getToken())
+				.add(JK_QUERY_KEY, qhandle.getQuery())
+				.add(JK_TIME_ZONE_KEY, qhandle.getTimeZone())
+				.add(JK_DATE_KEY, qhandle.getDateRange())
+				.add(JK_REPO_KEY, qhandle.getRepoId())
+				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows())
+				.add(JK_SUBID_KEY, qhandle.getId()).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return qhandle;
@@ -460,8 +449,14 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */
 	public JKQueryAsync callAsync(String query, String id, int maxRows) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder.add(JK_TOKEN_KEY, getToken()).add(JK_QUERY_KEY, query)
-				.add(JK_MAX_ROWS_KEY, maxRows).add(JK_SUBID_KEY, id).build();
+		JsonObject jsonQuery = jsonBuilder
+				.add(JK_TOKEN_KEY, getToken())
+				.add(JK_QUERY_KEY, query)
+				.add(JK_TIME_ZONE_KEY, this.tz)
+				.add(JK_DATE_KEY, this.dateFilter)
+				.add(JK_REPO_KEY, this.repoId)
+				.add(JK_MAX_ROWS_KEY, maxRows)
+				.add(JK_SUBID_KEY, id).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());
 		return this;
@@ -527,7 +522,28 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @return itself
 	 */
 	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(query, callback);
+		JKQueryHandle qhandle = new JKQueryHandle(query, this.tz, this.dateFilter, this.repoId, callback);
+		SUBID_MAP.put(qhandle.getId(), qhandle);
+		return qhandle;
+	}
+
+	/**
+	 * Create a new query handle for a given callback instance and query.
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param tz
+	 *            JKQL query timezone
+	 * @param drange
+	 *            JKQL query date range
+	 * @param repo
+	 *            JKQL query repo (null if default)
+	 * @param callback
+	 *            callback associated with the query
+	 * @return itself
+	 */
+	protected JKQueryHandle createQueryHandle(String query, String tz, String drange, String repo, JKQueryCallback callback) {
+		JKQueryHandle qhandle = new JKQueryHandle(query, tz, drange, repo, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}

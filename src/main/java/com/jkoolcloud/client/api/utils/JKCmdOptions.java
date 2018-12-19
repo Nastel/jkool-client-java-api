@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import com.jkoolcloud.client.api.service.JKQueryAsync;
 import com.jkoolcloud.client.api.service.JKQueryConstants;
@@ -28,6 +29,9 @@ import com.jkoolcloud.client.api.service.JKQueryConstants;
 public class JKCmdOptions {
 	public static final String PROP_URI = "uri";
 	public static final String PROP_TOKEN = "token";
+	public static final String PROP_TZ = "timezone";
+	public static final String PROP_DATE_RANGE = "daterange";
+	public static final String PROP_REPO_NAME = "repo";
 	public static final String PROP_QUERY = "query";
 	public static final String PROP_TRACE = "trace";
 	public static final String PROP_SEARCH = "search";
@@ -64,6 +68,9 @@ public class JKCmdOptions {
 	public String query;
 	public String search;
 	public String token;
+	public String timezone = TimeZone.getDefault().getID();
+	public String daterange = "today";
+	public String repoId = "";
 	public String usage;
 	public String json_path;
 	public String appname = DEFAULT_CMD_NAME;
@@ -112,7 +119,10 @@ public class JKCmdOptions {
 	private void assignDefaults(Properties props) {
 		uri = props.getProperty(PROP_URI, uri);
 		token = props.getProperty(PROP_TOKEN, token);
-		query = props.getProperty(PROP_TOKEN, query);
+		query = props.getProperty(PROP_QUERY, query);
+		timezone = props.getProperty(PROP_TZ, TimeZone.getDefault().getID());
+		daterange = props.getProperty(PROP_DATE_RANGE, daterange);
+		repoId = props.getProperty(PROP_REPO_NAME, repoId);
 		json_path = props.getProperty(PROP_JPATH, json_path);
 		search = props.getProperty(PROP_SEARCH, search);
 		if (search != null) {

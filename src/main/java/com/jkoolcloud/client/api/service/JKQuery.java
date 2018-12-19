@@ -16,6 +16,7 @@
 package com.jkoolcloud.client.api.service;
 
 import java.net.URLEncoder;
+import java.util.TimeZone;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,6 +35,10 @@ import org.apache.http.impl.client.HttpClients;
 public class JKQuery extends JKService {
 	HttpClient httpClient = HttpClients.createDefault();
 
+	String repoId = "";
+	String dateFilter = "today";
+	String tz = TimeZone.getDefault().getID();
+	
 	/**
 	 * Create a jKool query service end-point with default end-point and access token
 	 * 
@@ -64,6 +69,55 @@ public class JKQuery extends JKService {
 		super(endPoint, token);
 	}
 
+	/**
+	 * Set default query timezone
+	 * 
+	 * @param tzone
+	 *            timezone name (e.g. UTC)
+	 * @return self
+	 */
+	public JKQuery setTimeZone(String tzone) {
+		tz = tzone;
+		return this;
+	}
+	
+	/**
+	 * Set default query timezone
+	 * 
+	 * @param tzone
+	 *            timezone
+	 * @return self
+	 */
+	public JKQuery setTimeZone(TimeZone tzone) {
+		tz = tzone.getID();
+		return this;
+	}
+	
+	/**
+	 * Set default date range for queries
+	 * 
+	 * @param dfilter
+	 *            date range (e.g. today)
+	 * @return self
+	 */
+	public JKQuery setDateFilter(String dfilter) {
+		dateFilter = dfilter;
+		return this;
+	}
+	
+	/**
+	 * Set repository id to use for queries
+	 * (provided access token has permission to read specified repository)
+	 * 
+	 * @param repo
+	 *            repository id or null for default.
+	 * @return self
+	 */
+	public JKQuery setRepoId(String repo) {
+		repoId = repo;
+		return this;
+	}
+	
 	/**
 	 * Execute a specific JKQL query
 	 * 
@@ -128,8 +182,45 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String query, int maxRows) throws JKStreamException {
-		return target.queryParam(JK_QUERY_KEY, query).queryParam(JK_MAX_ROWS_KEY, maxRows)
-				.queryParam(JK_TOKEN_KEY, getToken()).request(MediaType.APPLICATION_JSON)
+		target.queryParam(JK_QUERY_KEY, query)
+				.queryParam(JK_TOKEN_KEY, getToken())
+				.queryParam(JK_TIME_ZONE_KEY, tz)
+				.queryParam(JK_DATE_KEY, dateFilter)
+				.queryParam(JK_REPO_KEY, repoId)
+				.queryParam(JK_MAX_ROWS_KEY, maxRows);
+
+		return target.request(MediaType.APPLICATION_JSON)
+				.header(JK_TOKEN_KEY, getToken()).get(Response.class);
+	}
+
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param _query
+	 *            JKQL query statement
+	 * @param _token
+	 *            JKQL access token
+	 * @param _repo
+	 *            repo name (or null if default)
+	 * @param _tz
+	 *            timezone scope for the query
+	 * @param _dfilter
+	 *            time filter or range (e.g. today)
+	 * @param _maxRows
+	 *            maximum rows in response
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 *             if error occurs during a call
+	 */
+	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, int _maxRows) throws JKStreamException {
+		target.queryParam(JK_QUERY_KEY, _query)
+				.queryParam(JK_TOKEN_KEY, _token)
+				.queryParam(JK_TIME_ZONE_KEY, _tz)
+				.queryParam(JK_DATE_KEY, _dfilter)
+				.queryParam(JK_REPO_KEY, repoId)
+				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
+
+		return target.request(MediaType.APPLICATION_JSON)
 				.header(JK_TOKEN_KEY, getToken()).get(Response.class);
 	}
 
@@ -146,8 +237,13 @@ public class JKQuery extends JKService {
 	 */
 	public HttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {
-			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8") + "&" + JK_MAX_ROWS_KEY + "="
-					+ maxRows + "&" + JK_TOKEN_KEY + "=" + getToken();
+			String urlQuery = 
+					JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8")
+					+ "&" + JK_TOKEN_KEY + "=" + getToken()
+					+ "&" + JK_TIME_ZONE_KEY + "=" + tz
+					+ "&" + JK_DATE_KEY + "=" + dateFilter
+					+ "&" + JK_REPO_KEY + "=" + repoId
+					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows;			
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			// optionally, token can be in the header.
 			request.addHeader(JK_TOKEN_KEY, getToken());

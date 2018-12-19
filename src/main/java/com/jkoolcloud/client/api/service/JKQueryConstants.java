@@ -31,13 +31,17 @@ public interface JKQueryConstants {
 	static final String TOKEN_KEY = "token";
 	static final String JK_TOKEN_KEY = "jk_token";
 	static final String JK_QUERY_KEY = "jk_query";
+	static final String JK_MAX_ROWS_KEY = "jk_maxrows";
+	static final String JK_TIME_ZONE_KEY = "jk_tz";
+	static final String JK_REPO_KEY = "jk_repo";
+	static final String JK_DATE_KEY = "jk_date";
+
 	static final String JK_SUBID_KEY = "jk_subid";
 	static final String JK_ERROR_KEY = "jk_error";
 	static final String JK_CALL_KEY = "jk_call";
 	static final String JK_RESPONSE_KEY = "jk_response";
 
 	static final String JK_CALL_CANCEL = "unsubscribe";
-	static final String JK_MAX_ROWS_KEY = "jk_maxrows";
 
 	static final String JK_SUB_UUID_PREFIX = "$sub/";
 	static final String JK_SUB_QUERY_PREFIX = "subscribe to ";

@@ -16,6 +16,7 @@
 package com.jkoolcloud.client.api.service;
 
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -30,8 +31,10 @@ import javax.json.JsonObject;
  * @author albert
  */
 public class JKQueryHandle implements JKQueryConstants {
-
-	final String query, id;
+	public final static String DEFAULT_DATE_RANGE = "today";
+	public final static String DEFAULT_REPO = "";
+	
+	final String query, id, tz, daterange, repo;
 	final boolean subscribe;
 	final long timeCreated;
 	final JKQueryCallback callback;
@@ -53,7 +56,25 @@ public class JKQueryHandle implements JKQueryConstants {
 	 *            associated with the given query
 	 */
 	public JKQueryHandle(String q, JKQueryCallback callback) {
-		this(q, newId(q), callback);
+		this(q, newId(q), TimeZone.getDefault().getID(), DEFAULT_DATE_RANGE, DEFAULT_REPO, callback);
+	}
+
+	/**
+	 * Create a jKool query handle
+	 * 
+	 * @param q
+	 *            JKQL query statement
+	 * @param tz
+	 *            query timezone
+	 * @param drange
+	 *            query date range
+	 * @param rpid
+	 *            query repo id
+	 * @param callback
+	 *            associated with the given query
+	 */
+	public JKQueryHandle(String q, String tz, String drange, String rpid, JKQueryCallback callback) {
+		this(q, newId(q), tz, drange, rpid, callback);
 	}
 
 	/**
@@ -63,13 +84,22 @@ public class JKQueryHandle implements JKQueryConstants {
 	 *            JKQL query statement
 	 * @param id
 	 *            query id associated with the given handle
+	 * @param tz
+	 *            query timezone
+	 * @param drange
+	 *            query date range
+	 * @param rpid
+	 *            query repo id
 	 * @param callback
 	 *            associated with the given query
 	 */
-	public JKQueryHandle(String q, String id, JKQueryCallback callback) {
+	public JKQueryHandle(String q, String id, String tz, String drange, String rpid, JKQueryCallback callback) {
 		this.timeCreated = System.currentTimeMillis();
 		this.query = q;
 		this.id = id;
+		this.tz = tz;
+		this.daterange = drange;
+		this.repo = rpid;
 		this.callback = callback;
 		this.subscribe = isSubscribeQ(q);
 	}
@@ -153,6 +183,33 @@ public class JKQueryHandle implements JKQueryConstants {
 	 */
 	public String getQuery() {
 		return query;
+	}
+
+	/**
+	 * Obtain query timezone
+	 * 
+	 * @return JKQL query timezone
+	 */
+	public String getTimeZone() {
+		return tz;
+	}
+
+	/**
+	 * Obtain query default date range
+	 * 
+	 * @return JKQL query date range
+	 */
+	public String getDateRange() {
+		return daterange;
+	}
+
+	/**
+	 * Obtain query repository id
+	 * 
+	 * @return JKQL query repository id (null if default)
+	 */
+	public String getRepoId() {
+		return repo;
 	}
 
 	/**
@@ -346,7 +403,12 @@ public class JKQueryHandle implements JKQueryConstants {
 
 	@Override
 	public String toString() {
-		return "{" + "class: \"" + this.getClass().getName() + "\", id: \"" + id + "\", query: \"" + query
+		return "{" + "class: \"" + this.getClass().getName()
+				+ "\", id: \"" + id
+				+ "\", query: \"" + query
+				+ "\", timezone: \"" + tz
+				+ "\", daterange: \"" + daterange
+				+ "\", repo: \"" + repo
 				+ "\", callback: \"" + callback + "\"}";
 	}
 

@@ -39,7 +39,7 @@ public class JKQLCmd {
 			}
 			jkQueryAsync.setTimeZone(options.timezone);
 			jkQueryAsync.setDateFilter(options.daterange);
-			jkQueryAsync.setRepoId(options.repoId);
+			jkQueryAsync.setRepoId(options.reponame);
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();

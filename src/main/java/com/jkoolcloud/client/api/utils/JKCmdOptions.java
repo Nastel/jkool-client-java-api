@@ -48,6 +48,9 @@ public class JKCmdOptions {
 	public static final String OPTION_SEARCH = "-search";
 	public static final String OPTION_JPATH = "-jpath";
 	public static final String OPTION_FILE = "-file";
+	public static final String OPTION_TZ = "-tz";
+	public static final String OPTION_DRANGE = "-drange";
+	public static final String OPTION_REPO = "-repo";
 	public static final String OPTION_WAIT = "-wait";
 	public static final String OPTION_RETRY = "-retry";
 	public static final String OPTION_MAX_ROWS = "-maxrows";
@@ -55,14 +58,17 @@ public class JKCmdOptions {
 	public static final String DEFAULT_CMD_NAME = "class";
 	public static final String USAGE_TEXT = "%s options:\n\t"
 			+ "-token access-token\n\t"
-			+ "-query jkql-query\n\t"
+			+ "-query query-statement\n\t"
 			+ "[-file args-file]\n\t"
-			+ "[-uri jKool service uri]\n\t"
+			+ "[-uri query service uri]\n\t"
 			+ "[-jpath json-path]\n\t"
 			+ "[-search search-text]\n\t"
 			+ "[-wait wait-ms]\n\t"
 			+ "[-retry retry-ms]\n\t"
 			+ "[-maxrows max-rows]\n\t"
+			+ "[-repo repo-name]\n\t"
+			+ "[-tz timezone]\n\t"
+			+ "[-drange date-range]\n\t"
 			+ "[-trace true|false]";
 
 	public String query;
@@ -70,7 +76,7 @@ public class JKCmdOptions {
 	public String token;
 	public String timezone = TimeZone.getDefault().getID();
 	public String daterange = "today";
-	public String repoId = "";
+	public String reponame = "";
 	public String usage;
 	public String json_path;
 	public String appname = DEFAULT_CMD_NAME;
@@ -120,9 +126,9 @@ public class JKCmdOptions {
 		uri = props.getProperty(PROP_URI, uri);
 		token = props.getProperty(PROP_TOKEN, token);
 		query = props.getProperty(PROP_QUERY, query);
-		timezone = props.getProperty(PROP_TZ, TimeZone.getDefault().getID());
+		timezone = props.getProperty(PROP_TZ, timezone);
 		daterange = props.getProperty(PROP_DATE_RANGE, daterange);
-		repoId = props.getProperty(PROP_REPO_NAME, repoId);
+		reponame = props.getProperty(PROP_REPO_NAME, reponame);
 		json_path = props.getProperty(PROP_JPATH, json_path);
 		search = props.getProperty(PROP_SEARCH, search);
 		if (search != null) {
@@ -175,6 +181,24 @@ public class JKCmdOptions {
 					return;
 				}
 				loadProperties(args[++i]);
+			} else if (OPTION_TZ.equals(arg)) {
+				if ((i + 1) == args.length) {
+					usage = "Must specify timezone with " + arg;
+					return;
+				}
+				this.timezone = args[++i];
+			} else if (OPTION_DRANGE.equals(arg)) {
+				if ((i + 1) == args.length) {
+					usage = "Must specify date range with " + arg;
+					return;
+				}
+				this.daterange = args[++i];
+			} else if (OPTION_REPO.equals(arg)) {
+				if ((i + 1) == args.length) {
+					usage = "Must specify repo name with " + arg;
+					return;
+				}
+				this.reponame = args[++i];
 			} else if (OPTION_WAIT.equals(arg)) {
 				if ((i + 1) == args.length) {
 					usage = "Must specify wait time (ms) with " + arg;
@@ -255,8 +279,8 @@ public class JKCmdOptions {
 	@Override
 	public String toString() {
 		String formatted = String.format(
-				"%s: uri=\"%s\", " + "query=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b", appname, uri,
-				query, waitTimeMs, retryTimeMs, maxRows, trace);
+				"%s: uri=\"%s\", " + "query=\"%s\", tz=\"%s\", date-range=\"%s\", repo=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b", appname, uri,
+				query, timezone, daterange, reponame, waitTimeMs, retryTimeMs, maxRows, trace);
 		return formatted;
 	}
 }

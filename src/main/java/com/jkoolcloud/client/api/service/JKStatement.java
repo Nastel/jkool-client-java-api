@@ -38,6 +38,34 @@ public interface JKStatement {
 	int getMaxRows();
 
 	/**
+	 * Obtain query timezone
+	 * 
+	 * @return query timezone
+	 */
+	String getTimeZone();
+
+	/**
+	 * Obtain query default date range
+	 * 
+	 * @return query date range
+	 */
+	String getDateRange();
+	
+	/**
+	 * Obtain query repository id
+	 * 
+	 * @return query repository id (null if default)
+	 */
+	String getRepoId();
+
+	/**
+	 * Get trace flag for this handle
+	 * 
+	 * @return true if trace enabled, false otherwise
+	 */
+	boolean isTrace();
+
+	/**
 	 * Obtain {@link JKQueryCallback} instance associated with the statement
 	 * 
 	 * @return {@link JKQueryCallback} instance

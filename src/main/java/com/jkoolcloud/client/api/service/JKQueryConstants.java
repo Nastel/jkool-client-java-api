@@ -35,6 +35,7 @@ public interface JKQueryConstants {
 	static final String JK_TIME_ZONE_KEY = "jk_tz";
 	static final String JK_REPO_KEY = "jk_repo";
 	static final String JK_DATE_KEY = "jk_date";
+	static final String JK_TRACE_KEY = "jk_trace";
 
 	static final String JK_SUBID_KEY = "jk_subid";
 	static final String JK_ERROR_KEY = "jk_error";

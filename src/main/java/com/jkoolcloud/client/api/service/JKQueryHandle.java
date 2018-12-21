@@ -39,8 +39,8 @@ public class JKQueryHandle implements JKQueryConstants {
 	final long timeCreated;
 	final JKQueryCallback callback;
 
-	int maxRows;
-	boolean done = false;
+	int maxRows = 100;
+	boolean done = false, trace = false;
 
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
@@ -261,6 +261,27 @@ public class JKQueryHandle implements JKQueryConstants {
 	}
 
 	/**
+	 * Set trace flag
+	 * 
+	 * @param flag
+	 *            enable or disable trace
+	 * @return self
+	 */
+	public JKQueryHandle setTrace(boolean flag) {
+		this.trace = flag;
+		return this;
+	}
+
+	/**
+	 * Get trace flag for this handle
+	 * 
+	 * @return true if trace enabled, false otherwise
+	 */
+	public boolean isTrace() {
+		return trace;
+	}
+
+	/**
 	 * Await for response until a given date/time
 	 * 
 	 * @param until
@@ -409,6 +430,7 @@ public class JKQueryHandle implements JKQueryConstants {
 				+ "\", timezone: \"" + tz
 				+ "\", daterange: \"" + daterange
 				+ "\", repo: \"" + repo
+				+ "\", trace: \"" + trace
 				+ "\", callback: \"" + callback + "\"}";
 	}
 

@@ -40,13 +40,15 @@ public class JKQLCmd {
 			jkQueryAsync.setTimeZone(options.timezone);
 			jkQueryAsync.setDateFilter(options.daterange);
 			jkQueryAsync.setRepoId(options.reponame);
+			jkQueryAsync.setTrace(options.trace);
+			
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();
 
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
-			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
+			System.out.println("Submitted query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", trace=" + options.trace);
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
 				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);

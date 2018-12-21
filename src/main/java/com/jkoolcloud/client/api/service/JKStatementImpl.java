@@ -26,6 +26,7 @@ public class JKStatementImpl implements JKStatement {
 
 	int maxRows;
 	String query;
+	
 	JKQueryCallback callback;
 	JKQueryAsync handle;
 
@@ -64,5 +65,25 @@ public class JKStatementImpl implements JKStatement {
 	@Override
 	public JKQueryHandle call(int maxrows) throws IOException {
 		return handle.callAsync(query, maxrows, callback);
+	}
+
+	@Override
+	public String getTimeZone() {
+		return handle.getTimeZone();
+	}
+
+	@Override
+	public String getDateRange() {
+		return handle.getDateRange();
+	}
+
+	@Override
+	public String getRepoId() {
+		return handle.getRepoId();
+	}
+
+	@Override
+	public boolean isTrace() {
+		return handle.isTrace();
 	}
 }

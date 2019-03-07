@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -35,20 +36,16 @@ import javax.json.JsonObjectBuilder;
  * @author albert
  */
 public class JKQueryAsync extends JKQuery implements Closeable {
-	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy
-																		// query
-																		// associated
-																		// with
-																		// default
-																		// response
+	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy query associated with default response
 																		// handler
 	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
 
 	URI webSockUri;
 	JKWSClient socket;
 	WSClientHandler wsHandler;
-	Vector<JKQueryHandle> defCallbacks = new Vector<JKQueryHandle>(5, 5);
-	Vector<JKConnectionHandler> conHandlers = new Vector<JKConnectionHandler>(5, 5);
+	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<JKQueryHandle>(5));
+	final Collection<JKConnectionHandler> conHandlers = Collections
+			.synchronizedList(new ArrayList<JKConnectionHandler>(5));
 
 	/**
 	 * Create a jKool asynchronous query service end-point
@@ -227,7 +224,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @return query handle associated with a default response handler
 	 */
 	public List<JKQueryHandle> getAllHandles() {
-		ArrayList<JKQueryHandle> list = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
+		ArrayList<JKQueryHandle> list = new ArrayList<>(SUBID_MAP.values());
 		return list;
 	}
 
@@ -237,7 +234,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @return list of all default subscription handles
 	 */
 	public List<JKQueryHandle> getAllDefaultHandles() {
-		ArrayList<JKQueryHandle> list = new ArrayList<JKQueryHandle>(defCallbacks);
+		ArrayList<JKQueryHandle> list = new ArrayList<>(defCallbacks);
 		return list;
 	}
 
@@ -247,7 +244,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 * @return true if connected, false otherwise
 	 */
 	public synchronized boolean isConnected() {
-		return socket != null ? socket.isConnected() : false;
+		return socket != null && socket.isConnected();
 	}
 
 	/**

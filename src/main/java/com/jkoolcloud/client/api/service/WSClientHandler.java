@@ -31,7 +31,7 @@ import javax.websocket.Session;
  */
 class WSClientHandler implements JKWSHandler {
 
-	JKQueryAsync jkagent;
+	private JKQueryAsync jkagent;
 
 	/**
 	 * WebSocket message & connection handler

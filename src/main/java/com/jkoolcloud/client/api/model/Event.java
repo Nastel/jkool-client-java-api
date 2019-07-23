@@ -141,7 +141,7 @@ public class Event extends Trackable {
 		return msgTag;
 	}
 
-	public Trackable setMsgTag(String msgTag) {
+	public Event setMsgTag(String msgTag) {
 		this.msgTag = msgTag;
 		return this;
 	}

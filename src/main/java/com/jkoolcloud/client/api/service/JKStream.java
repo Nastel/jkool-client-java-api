@@ -19,6 +19,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.jkoolcloud.client.api.model.Dataset;
+import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Snapshot;
 import com.jkoolcloud.client.api.model.Trackable;
 
@@ -92,5 +94,51 @@ public class JKStream extends JKService {
 		}
 		return target.path(JK_SNAPSHOT_KEY).request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
+	}
+	
+	/**
+	 * Create a new {@link Event}
+	 * 
+	 * @return {@link Event}
+	 */
+	public static Event newEvent() {
+		return new Event();
+	}
+	
+	/**
+	 * Create a new {@link Event}
+	 * 
+	 * @param name
+	 *            event name
+	 * @return {@link Event}
+	 */
+	public static Event newEvent(String name) {
+		return new Event(name);
+	}
+	
+	/**
+	 * Create a new {@link Snapshot}
+	 * 
+	 * @param cat
+	 *            category name
+	 * @param name
+	 *            snapshot name
+	 * @return {@link Snapshot}
+	 */
+	public static Snapshot newSnapshot(String cat, String name) {
+		return new Snapshot(cat, name);
+	}
+	
+	/**
+	 * Create a new {@link Dataset}
+	 * 
+	 * @param cat
+	 *            category name
+	 * @param name
+	 *            dataset name
+	 * @return {@link Dataset}
+	 */
+	public static Dataset newDataset(String cat, String name) {
+		return new Dataset(cat, name);
 	}
 }

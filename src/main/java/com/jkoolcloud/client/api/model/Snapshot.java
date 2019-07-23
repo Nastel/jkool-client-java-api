@@ -37,7 +37,8 @@ public class Snapshot implements Validated {
 	private String name;
 	private long timeUsec;
 	private List<Property> properties = new ArrayList<Property>();
-	private EventTypes type = EventTypes.SNAPSHOT;
+
+	protected EventTypes type = EventTypes.SNAPSHOT;
 
 	/**
 	 * Create a snapshot

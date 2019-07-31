@@ -1,5 +1,29 @@
-/bin/
-/.classpath
-/.project
-/target/
-/.settings
+*.class
+*.log
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Eclipse project files
+.project
+.classpath
+/**/.settings/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+/.svn
+/**/target
+/**/classes
+/**/logs
+/**/temp
+
+.idea
+/**/*.iml
+
+/**/_dev
+/**/*_dev.*

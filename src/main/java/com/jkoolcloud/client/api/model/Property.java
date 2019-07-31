@@ -19,15 +19,14 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This class implements a property with name, value, data and value type.
  * 
  * @author cathy
  */
-@ApiModel(description = "")
+@Schema(description = "")
 public class Property implements Validated {
 
 	private String name;
@@ -102,7 +101,7 @@ public class Property implements Validated {
 	/**
 	 * @return property name
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("name")
 	public String getName() {
 		return name;
@@ -116,7 +115,7 @@ public class Property implements Validated {
 	/**
 	 * @return property data type
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("type")
 	public String getType() {
 		return dataType;
@@ -137,7 +136,7 @@ public class Property implements Validated {
 	/**
 	 * @return property value
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("value")
 	public String getValue() {
 		return value != null ? String.valueOf(value) : null;
@@ -158,7 +157,7 @@ public class Property implements Validated {
 	/**
 	 * @return property value type
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("value-type")
 	public String getValueType() {
 		return valueType;

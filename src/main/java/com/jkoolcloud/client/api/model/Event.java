@@ -21,15 +21,14 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This class defines an event which has a timestamp and a message. Example: log event.
  * 
  * @author cathy
  */
-@ApiModel(description = "")
+@Schema(description = "")
 public class Event extends Trackable {
 
 	String msgText;
@@ -102,7 +101,7 @@ public class Event extends Trackable {
 		setType(EventTypes.EVENT);
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("encoding")
 	public String getEncoding() {
 		return msgEncoding;
@@ -113,7 +112,7 @@ public class Event extends Trackable {
 		return this;
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("charset")
 	public String getCharset() {
 		return msgCharset;
@@ -124,7 +123,7 @@ public class Event extends Trackable {
 		return this;
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("msg-text")
 	public String getMsgText() {
 		return msgText;
@@ -135,7 +134,7 @@ public class Event extends Trackable {
 		return this;
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("msg-tag")
 	public String getMsgTag() {
 		return msgTag;
@@ -146,7 +145,7 @@ public class Event extends Trackable {
 		return this;
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("msg-size")
 	public Integer getMsgSize() {
 		if (msgText != null) {
@@ -156,7 +155,7 @@ public class Event extends Trackable {
 		}
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("mime-type")
 	public String getMsgMimeType() {
 		return msgMimeType;
@@ -167,7 +166,7 @@ public class Event extends Trackable {
 		return this;
 	}
 
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("msg-age")
 	public long getMsgAgeUsec() {
 		return msgAgeUsec;

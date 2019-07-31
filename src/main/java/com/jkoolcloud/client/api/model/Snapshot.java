@@ -22,21 +22,20 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This class defines a snapshot, which is a collection of properties at a particular moment in time.
  * 
  * @author cathy
  */
-@ApiModel(description = "")
+@Schema(description = "")
 public class Snapshot implements Validated {
 
 	private String category;
 	private String name;
 	private long timeUsec;
-	private List<Property> properties = new ArrayList<Property>();
+	private List<Property> properties = new ArrayList<>();
 
 	protected EventTypes type = EventTypes.SNAPSHOT;
 
@@ -179,7 +178,7 @@ public class Snapshot implements Validated {
 	/**
 	 * @return category
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("category")
 	public String getCategory() {
 		return category;
@@ -200,7 +199,7 @@ public class Snapshot implements Validated {
 	/**
 	 * @return name
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("name")
 	public String getName() {
 		return name;
@@ -221,7 +220,7 @@ public class Snapshot implements Validated {
 	/**
 	 * @return start time in microseconds
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("time-usec")
 	public long getTimeUsec() {
 		return timeUsec;
@@ -235,7 +234,7 @@ public class Snapshot implements Validated {
 	/**
 	 * @return type
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("type")
 	public EventTypes getType() {
 		return type;
@@ -244,7 +243,7 @@ public class Snapshot implements Validated {
 	/**
 	 * @return properties list
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("properties")
 	public List<Property> getProperties() {
 		return properties;

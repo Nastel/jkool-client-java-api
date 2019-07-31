@@ -19,15 +19,14 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This class defines an activity -- a group of related events, such as transaction.
  * 
  * @author cathy
  */
-@ApiModel(description = "")
+@Schema(description = "")
 public class Activity extends Trackable {
 
 	/**
@@ -96,7 +95,7 @@ public class Activity extends Trackable {
 	/**
 	 * @return activity status string
 	 **/
-	@ApiModelProperty(value = "")
+	@Schema(description = "")
 	@JsonProperty("status")
 	public String getStatus() {
 		return exception == null ? "END" : "EXCEPTION";

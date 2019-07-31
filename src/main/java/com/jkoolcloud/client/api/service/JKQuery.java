@@ -39,7 +39,7 @@ public class JKQuery extends JKService {
 	String repoId = "";
 	String dateRange = "today";
 	String tz = TimeZone.getDefault().getID();
-	
+
 	/**
 	 * Create a jKool query service end-point with default end-point and access token
 	 * 
@@ -117,7 +117,7 @@ public class JKQuery extends JKService {
 		tz = tzone;
 		return this;
 	}
-	
+
 	/**
 	 * Set default query timezone
 	 * 
@@ -129,7 +129,7 @@ public class JKQuery extends JKService {
 		tz = tzone.getID();
 		return this;
 	}
-	
+
 	/**
 	 * Set default date range for queries
 	 * 
@@ -141,10 +141,9 @@ public class JKQuery extends JKService {
 		dateRange = dfilter;
 		return this;
 	}
-	
+
 	/**
-	 * Set repository id to use for queries
-	 * (provided access token has permission to read specified repository)
+	 * Set repository id to use for queries (provided access token has permission to read specified repository)
 	 * 
 	 * @param repo
 	 *            repository id or null for default.
@@ -154,7 +153,7 @@ public class JKQuery extends JKService {
 		repoId = repo;
 		return this;
 	}
-	
+
 	/**
 	 * Set trace mode
 	 * 
@@ -166,7 +165,7 @@ public class JKQuery extends JKService {
 		this.trace = flag;
 		return this;
 	}
-	
+
 	/**
 	 * Execute a specific JKQL query
 	 * 
@@ -231,16 +230,7 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String query, int maxRows) throws JKStreamException {
-		target.queryParam(JK_QUERY_KEY, query)
-				.queryParam(JK_TOKEN_KEY, getToken())
-				.queryParam(JK_TIME_ZONE_KEY, tz)
-				.queryParam(JK_DATE_KEY, dateRange)
-				.queryParam(JK_REPO_KEY, repoId)
-				.queryParam(JK_TRACE_KEY, trace)
-				.queryParam(JK_MAX_ROWS_KEY, maxRows);
-
-		return target.request(MediaType.APPLICATION_JSON)
-				.header(JK_TOKEN_KEY, getToken()).get(Response.class);
+		return call(query, getToken(), repoId, tz, dateRange, trace, maxRows);
 	}
 
 	/**
@@ -257,24 +247,24 @@ public class JKQuery extends JKService {
 	 * @param _dfilter
 	 *            time filter or range (e.g. today)
 	 * @param _trace
-	 *           trace mode
+	 *            trace mode
 	 * @param _maxRows
 	 *            maximum rows in response
 	 * @return object containing JSON response
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace, int _maxRows) throws JKStreamException {
-		target.queryParam(JK_QUERY_KEY, _query)
-				.queryParam(JK_TOKEN_KEY, _token)
-				.queryParam(JK_TIME_ZONE_KEY, _tz)
-				.queryParam(JK_DATE_KEY, _dfilter)
-				.queryParam(JK_REPO_KEY, _repo)
-				.queryParam(JK_TRACE_KEY, _trace)
+	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace,
+			int _maxRows) throws JKStreamException {
+		target.queryParam(JK_QUERY_KEY, _query) //
+				.queryParam(JK_TOKEN_KEY, _token) //
+				.queryParam(JK_TIME_ZONE_KEY, _tz) //
+				.queryParam(JK_DATE_KEY, _dfilter) //
+				.queryParam(JK_REPO_KEY, _repo) //
+				.queryParam(JK_TRACE_KEY, _trace) //
 				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
 
-		return target.request(MediaType.APPLICATION_JSON)
-				.header(JK_TOKEN_KEY, getToken()).get(Response.class);
+		return target.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, _token).get(Response.class);
 	}
 
 	/**
@@ -290,14 +280,13 @@ public class JKQuery extends JKService {
 	 */
 	public HttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {
-			String urlQuery = 
-					JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8")
-					+ "&" + JK_TOKEN_KEY + "=" + getToken()
-					+ "&" + JK_TIME_ZONE_KEY + "=" + tz
-					+ "&" + JK_DATE_KEY + "=" + dateRange
-					+ "&" + JK_REPO_KEY + "=" + repoId
-					+ "&" + JK_TRACE_KEY + "=" + trace
-					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows;			
+			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8") //
+					+ "&" + JK_TOKEN_KEY + "=" + getToken() //
+					+ "&" + JK_TIME_ZONE_KEY + "=" + tz //
+					+ "&" + JK_DATE_KEY + "=" + dateRange //
+					+ "&" + JK_REPO_KEY + "=" + repoId //
+					+ "&" + JK_TRACE_KEY + "=" + trace //
+					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows;
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			// optionally, token can be in the header.
 			request.addHeader(JK_TOKEN_KEY, getToken());

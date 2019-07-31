@@ -15,11 +15,13 @@
  */
 package com.jkoolcloud.client.samples.query;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.client.api.service.JKQuery;
 import com.jkoolcloud.client.api.utils.JKCmdOptions;
 
@@ -43,10 +45,20 @@ public class QueryData2 {
 			
 			int status = res.getStatus();
 		    String json = res.readEntity(String.class);
-		    System.out.println(String.format("Status: %d, JSON Payload: %s", status, json));
+		    if (status == 200) {
+		    	System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
+		    } else {
+		    	System.out.println(String.format("Status: %d %s", status, json));		    	
+		    }
 			res.close();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String formatJson(String input) throws IOException {
+	      ObjectMapper mapper = new ObjectMapper();
+	      Object json = mapper.readValue(input, Object.class);
+	      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);	
 	}
 }

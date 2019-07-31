@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component xmlns="http://maven.apache.org/ASSEMBLY-COMPONENT/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://maven.apache.org/ASSEMBLY-COMPONENT/2.0.0 http://maven.apache.org/xsd/assembly-component-2.0.0.xsd">
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+
     <fileSets>
         <!-- user defined property files -->
         <fileSet>
@@ -9,16 +18,18 @@
                 <include>cmd.properties</include>
             </includes>
             <outputDirectory></outputDirectory>
+            <lineEnding>unix</lineEnding>
         </fileSet>
         <!-- static content -->
         <fileSet>
             <directory>.</directory>
             <includes>
-                <include>LICENSE*</include>
                 <include>README*</include>
+                <include>LICENSE*</include>
                 <include>NOTICE*</include>
             </includes>
             <outputDirectory></outputDirectory>
+            <lineEnding>unix</lineEnding>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}</directory>
@@ -28,12 +39,4 @@
             <outputDirectory></outputDirectory>
         </fileSet>
     </fileSets>
-    <dependencySets>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
-            <outputDirectory>lib</outputDirectory>
-            <unpack>false</unpack>
-        </dependencySet>
-    </dependencySets>
 </component>

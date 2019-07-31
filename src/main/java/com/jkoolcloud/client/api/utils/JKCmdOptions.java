@@ -279,8 +279,8 @@ public class JKCmdOptions {
 	@Override
 	public String toString() {
 		String formatted = String.format("%s: uri=\"%s\", "
-				+ "query=\"%s\", tz=\"%s\", date-range=\"%s\", repo=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b",
-				appname, uri, query, timezone, daterange, reponame, waitTimeMs, retryTimeMs, maxRows, trace);
+				+ "tz=\"%s\", date-range=\"%s\", token=\"%s\", query=\\\"%s\\\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b",
+				appname, uri, timezone, daterange, token, query, waitTimeMs, retryTimeMs, maxRows, trace);
 		return formatted;
 	}
 }

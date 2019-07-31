@@ -39,9 +39,12 @@ public class QueryData2 {
 			}
 			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
-			Response response = jkQuery.call(options.query);
-			System.out.println("Response: " + response.readEntity(String.class));
-			response.close();
+			Response res = jkQuery.call(options.query);
+			
+			int status = res.getStatus();
+		    String json = res.readEntity(String.class);
+		    System.out.println(String.format("Status: %d, JSON Payload: %s", status, json));
+			res.close();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

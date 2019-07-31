@@ -263,7 +263,7 @@ public class JKQuery extends JKService {
 				.queryParam(JK_TRACE_KEY, _trace)
 				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
 
-		return target.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, _token).get(Response.class);
+		return target.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, _token).get();
 	}
 
 	/**

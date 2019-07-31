@@ -231,7 +231,7 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String query, int maxRows) throws JKStreamException {
-		target.queryParam(JK_QUERY_KEY, query)
+		target = target.queryParam(JK_QUERY_KEY, query)
 				.queryParam(JK_TOKEN_KEY, getToken())
 				.queryParam(JK_TIME_ZONE_KEY, tz)
 				.queryParam(JK_DATE_KEY, dateRange)
@@ -265,7 +265,7 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace, int _maxRows) throws JKStreamException {
-		target.queryParam(JK_QUERY_KEY, _query)
+		target = target.queryParam(JK_QUERY_KEY, _query)
 				.queryParam(JK_TOKEN_KEY, _token)
 				.queryParam(JK_TIME_ZONE_KEY, _tz)
 				.queryParam(JK_DATE_KEY, _dfilter)

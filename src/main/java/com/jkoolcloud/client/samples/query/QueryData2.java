@@ -17,6 +17,7 @@ package com.jkoolcloud.client.samples.query;
 
 import java.util.Properties;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.client.api.service.JKQuery;
@@ -27,7 +28,7 @@ import com.jkoolcloud.client.api.utils.JKCmdOptions;
  ***********************************************************************************************************************/
 
 public class QueryData2 {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ProcessingException {
 		try {
 			Properties props = new Properties();
 			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
@@ -39,8 +40,9 @@ public class QueryData2 {
 			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
 			Response response = jkQuery.call(options.query);
-			System.out.println(response.readEntity(String.class));
-		} catch (Exception e) {
+			System.out.println("Response: " + response.readEntity(String.class));
+			response.close();
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}

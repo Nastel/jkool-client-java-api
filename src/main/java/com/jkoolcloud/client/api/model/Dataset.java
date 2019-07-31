@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 JKOOL, LLC.
+ * Copyright 2014-2019 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public class Dataset extends Snapshot {
 		super(category, name);
 		this.type = EventTypes.DATASET;
 	}
-	
+
 	/**
 	 * Create a dataset
 	 * 
@@ -145,7 +145,7 @@ public class Dataset extends Snapshot {
 		this(category, name, time.getTime());
 		addProperty(props);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

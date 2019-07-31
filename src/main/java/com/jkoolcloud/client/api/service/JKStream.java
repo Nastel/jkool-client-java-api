@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 JKOOL, LLC.
+ * Copyright 2014-2019 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class JKStream extends JKService {
 		return target.path(JK_SNAPSHOT_KEY).request().header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
-	
+
 	/**
 	 * Create a new {@link Event}
 	 * 
@@ -104,7 +104,7 @@ public class JKStream extends JKService {
 	public static Event newEvent() {
 		return new Event();
 	}
-	
+
 	/**
 	 * Create a new {@link Event}
 	 * 
@@ -115,7 +115,7 @@ public class JKStream extends JKService {
 	public static Event newEvent(String name) {
 		return new Event(name);
 	}
-	
+
 	/**
 	 * Create a new {@link Snapshot}
 	 * 
@@ -128,7 +128,7 @@ public class JKStream extends JKService {
 	public static Snapshot newSnapshot(String cat, String name) {
 		return new Snapshot(cat, name);
 	}
-	
+
 	/**
 	 * Create a new {@link Dataset}
 	 * 

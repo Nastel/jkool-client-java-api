@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 JKOOL, LLC.
+ * Copyright 2014-2019 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ public class JKUtils {
 	}
 
 	private static Map<String, Boolean> buildConfig(String... options) {
-		Map<String, Boolean> config = new HashMap<String, Boolean>();
+		Map<String, Boolean> config = new HashMap<> ();
 
 		if (options != null) {
 			for (String option : options) {

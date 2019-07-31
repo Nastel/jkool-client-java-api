@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 JKOOL, LLC.
+ * Copyright 2014-2019 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,14 @@ import javax.json.JsonObjectBuilder;
 public class JKQueryAsync extends JKQuery implements Closeable {
 	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy query associated with default response
 																		// handler
-	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<String, JKQueryHandle>();
+	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<> ();
 
 	URI webSockUri;
 	JKWSClient socket;
 	WSClientHandler wsHandler;
-	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<JKQueryHandle>(5));
+	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<> (5));
 	final Collection<JKConnectionHandler> conHandlers = Collections
-			.synchronizedList(new ArrayList<JKConnectionHandler>(5));
+			.synchronizedList(new ArrayList<> (5));
 
 	/**
 	 * Create a jKool asynchronous query service end-point
@@ -471,7 +471,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *             on error during IO
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
-		ArrayList<String> idList = new ArrayList<String>(SUBID_MAP.keySet());
+		ArrayList<String> idList = new ArrayList<> (SUBID_MAP.keySet ());
 		for (String id : idList) {
 			cancelAsync(id);
 		}
@@ -545,7 +545,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *            callback associated with the query
 	 * @return itself
 	 */
-	protected JKQueryHandle createQueryHandle(String query, String tz, String drange, String repo, JKQueryCallback callback) {
+	protected JKQueryHandle createQueryHandle(String query, String tz, String drange, String repo,
+			JKQueryCallback callback) {
 		JKQueryHandle qhandle = new JKQueryHandle(query, tz, drange, repo, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
@@ -562,7 +563,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *             on error during IO
 	 */
 	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
-		ArrayList<JKQueryHandle> handleList = new ArrayList<JKQueryHandle>(SUBID_MAP.values());
+		ArrayList<JKQueryHandle> handleList = new ArrayList<> (SUBID_MAP.values ());
 		for (JKQueryHandle handle : handleList) {
 			if (hGate.check(handle)) {
 				// restore subscription

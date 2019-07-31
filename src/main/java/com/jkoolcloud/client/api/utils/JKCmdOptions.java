@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2018 JKOOL, LLC.
+ * Copyright 2014-2019 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -278,9 +278,9 @@ public class JKCmdOptions {
 
 	@Override
 	public String toString() {
-		String formatted = String.format(
-				"%s: uri=\"%s\", " + "query=\"%s\", tz=\"%s\", date-range=\"%s\", repo=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b", appname, uri,
-				query, timezone, daterange, reponame, waitTimeMs, retryTimeMs, maxRows, trace);
+		String formatted = String.format("%s: uri=\"%s\", "
+				+ "query=\"%s\", tz=\"%s\", date-range=\"%s\", repo=\"%s\", wait.ms=%d, retry.ms=%d, max.rows=%d, trace=%b",
+				appname, uri, query, timezone, daterange, reponame, waitTimeMs, retryTimeMs, maxRows, trace);
 		return formatted;
 	}
 }

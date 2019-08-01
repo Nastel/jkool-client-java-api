@@ -254,13 +254,14 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace, int _maxRows) throws JKStreamException {
-		target = target.queryParam(JK_QUERY_KEY, _query)
-				.queryParam(JK_TOKEN_KEY, _token)
-				.queryParam(JK_TIME_ZONE_KEY, _tz)
-				.queryParam(JK_DATE_KEY, _dfilter)
-				.queryParam(JK_REPO_KEY, _repo)
-				.queryParam(JK_TRACE_KEY, _trace)
+	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace,
+			int _maxRows) throws JKStreamException {
+		target = target.queryParam(JK_QUERY_KEY, _query) //
+				.queryParam(JK_TOKEN_KEY, _token) //
+				.queryParam(JK_TIME_ZONE_KEY, _tz) //
+				.queryParam(JK_DATE_KEY, _dfilter) //
+				.queryParam(JK_REPO_KEY, _repo) //
+				.queryParam(JK_TRACE_KEY, _trace) //
 				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
 
 		return target.request(MediaType.APPLICATION_JSON).header(JK_TOKEN_KEY, _token).get(Response.class);

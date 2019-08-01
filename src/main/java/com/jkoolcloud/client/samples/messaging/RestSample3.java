@@ -20,10 +20,10 @@ import java.util.Arrays;
 
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.client.api.model.CompCodes;
+import com.jkoolcloud.client.api.model.CCode;
 import com.jkoolcloud.client.api.model.Event;
-import com.jkoolcloud.client.api.model.EventTypes;
-import com.jkoolcloud.client.api.model.Severities;
+import com.jkoolcloud.client.api.model.EvType;
+import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
@@ -52,7 +52,7 @@ public class RestSample3 {
 			// messaging queue residing in New York.
 			Event event = new Event();
 			event.setMsgText("OrderId=28372373 shipped.").setSourceUrl("https://www.sample.com/orders/parts")
-					.setSeverity(Severities.INFO).setType(EventTypes.RECEIVE).setCompCode(CompCodes.SUCCESS)
+					.setSeverity(Level.INFO).setType(EvType.RECEIVE).setCompCode(CCode.OK)
 					.setLocation("Charlotte, NC").setUser("system").setElapsedTimeUsec(1578)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("SHIPPING.QUEUE")
 					.setName("ReceiveAndProcessShipping").setAppl("WebShipping").setServer("WebServerNC")

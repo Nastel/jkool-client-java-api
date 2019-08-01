@@ -23,7 +23,7 @@ import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Dataset;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.LogMsg;
-import com.jkoolcloud.client.api.model.Severities;
+import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.model.Snapshot;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
@@ -194,7 +194,7 @@ public class JKStream extends JKService {
 	 * @throws JKStreamException
 	 *             on error during send
 	 */
-	public void log(Severities sev, String msg) throws JKStreamException {
+	public void log(Level sev, String msg) throws JKStreamException {
 		this.post(newLogMsg(sev, msg));
 	}
 	
@@ -207,7 +207,7 @@ public class JKStream extends JKService {
 	 *             on error during send
 	 */
 	public void info(String msg) throws JKStreamException {
-		this.post(newLogMsg(Severities.INFO, msg));
+		this.post(newLogMsg(Level.INFO, msg));
 	}
 	
 	/**
@@ -219,7 +219,7 @@ public class JKStream extends JKService {
 	 *             on error during send
 	 */
 	public void warn(String msg) throws JKStreamException {
-		this.post(newLogMsg(Severities.WARNING, msg));
+		this.post(newLogMsg(Level.WARNING, msg));
 	}
 	
 	/**
@@ -231,7 +231,7 @@ public class JKStream extends JKService {
 	 *             on error during send
 	 */
 	public void error(String msg) throws JKStreamException {
-		this.post(newLogMsg(Severities.ERROR, msg));
+		this.post(newLogMsg(Level.ERROR, msg));
 	}
 	
 	/**
@@ -243,7 +243,7 @@ public class JKStream extends JKService {
 	 *             on error during send
 	 */
 	public void debug(String msg) throws JKStreamException {
-		this.post(newLogMsg(Severities.DEBUG, msg));
+		this.post(newLogMsg(Level.DEBUG, msg));
 	}
 	
 	/**
@@ -275,7 +275,7 @@ public class JKStream extends JKService {
 	 *            log message
 	 * @return {@link LogMsg}
 	 */
-	public static LogMsg newLogMsg(Severities sev, String msg) {
+	public static LogMsg newLogMsg(Level sev, String msg) {
 		return new LogMsg(sev, msg);
 	}
 

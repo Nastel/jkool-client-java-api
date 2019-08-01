@@ -21,10 +21,10 @@ import java.util.Arrays;
 
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.client.api.model.CompCodes;
+import com.jkoolcloud.client.api.model.CCode;
 import com.jkoolcloud.client.api.model.Event;
-import com.jkoolcloud.client.api.model.EventTypes;
-import com.jkoolcloud.client.api.model.Severities;
+import com.jkoolcloud.client.api.model.EvType;
+import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
@@ -53,8 +53,8 @@ public class RestSample1 {
 			// hypothetical
 			// messaging queue residing in New York.
 			Event event = JKStream.newEvent("ReceiveOrder").setMsgText("OrderId=28372373 received.");
-			event.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Severities.INFO)
-					.setType(EventTypes.RECEIVE).setTid(Thread.currentThread().getId()).setCompCode(CompCodes.SUCCESS)
+			event.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Level.INFO)
+					.setType(EvType.RECEIVE).setTid(Thread.currentThread().getId()).setCompCode(CCode.OK)
 					.setLocation("New York, NY").setUser("webuser").setElapsedTimeUsec(3500)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("ORDERS.QUEUE").setWaitTimeUsec(0)
 					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
@@ -73,8 +73,8 @@ public class RestSample1 {
 			// queue residing in Los Angeles
 			// (RestSample2 class)
 			event = JKStream.newEvent("ProcessOrder").setMsgText("Order Processed ProductId=28372373");
-			event.setSeverity(Severities.INFO).setType(EventTypes.SEND).setTid(Thread.currentThread().getId())
-					.setCompCode(CompCodes.SUCCESS).setReasonCode(0).setLocation("New York, NY").setUser("webuser")
+			event.setSeverity(Level.INFO).setType(EvType.SEND).setTid(Thread.currentThread().getId())
+					.setCompCode(CCode.OK).setReasonCode(0).setLocation("New York, NY").setUser("webuser")
 					.setElapsedTimeUsec(0).setCorrId(Arrays.asList("CorrId:123")).setResource("PAYMENT.QUEUE")
 					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")

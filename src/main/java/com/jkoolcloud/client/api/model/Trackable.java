@@ -36,9 +36,9 @@ public abstract class Trackable implements Validated {
 	public static final String DEFAULT_APP_NAME = System.getProperty("jkool.client.appl.name", "java");
 	public static final String DEFAULT_GEOADDR = System.getProperty("jkool.client.geo.addr", "0,0");
 
-	Severities severity = Severities.INFO;
-	EventTypes type = EventTypes.EVENT;
-	CompCodes compCode = CompCodes.SUCCESS;
+	Level severity = Level.INFO;
+	EvType type = EvType.EVENT;
+	CCode compCode = CCode.OK;
 
 	long timeUsec;
 	long startTimeUsec;
@@ -239,11 +239,11 @@ public abstract class Trackable implements Validated {
 	 **/
 	@Schema(description = "")
 	@JsonProperty("severity")
-	public Severities getSeverity() {
+	public Level getSeverity() {
 		return severity;
 	}
 
-	public Trackable setSeverity(Severities severity) {
+	public Trackable setSeverity(Level severity) {
 		this.severity = severity;
 		return this;
 	}
@@ -253,11 +253,11 @@ public abstract class Trackable implements Validated {
 	 **/
 	@Schema(description = "")
 	@JsonProperty("type")
-	public EventTypes getType() {
+	public EvType getType() {
 		return type;
 	}
 
-	public Trackable setType(EventTypes type) {
+	public Trackable setType(EvType type) {
 		this.type = type;
 		return this;
 	}
@@ -295,11 +295,11 @@ public abstract class Trackable implements Validated {
 	 **/
 	@Schema(description = "")
 	@JsonProperty("comp-code")
-	public CompCodes getCompCode() {
+	public CCode getCompCode() {
 		return compCode;
 	}
 
-	public Trackable setCompCode(CompCodes compCode) {
+	public Trackable setCompCode(CCode compCode) {
 		this.compCode = compCode;
 		return this;
 	}

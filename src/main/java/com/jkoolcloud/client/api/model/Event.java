@@ -44,7 +44,7 @@ public class Event extends Trackable {
 	 */
 	public Event() {
 		super();
-		setType(EventTypes.EVENT);
+		setType(EvType.EVENT);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class Event extends Trackable {
 	 */
 	public Event(String name) {
 		super(name);
-		setType(EventTypes.EVENT);
+		setType(EvType.EVENT);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Event extends Trackable {
 	 */
 	public Event(String name, String tid) {
 		super(name, tid);
-		setType(EventTypes.EVENT);
+		setType(EvType.EVENT);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class Event extends Trackable {
 	 */
 	public Event(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
-		setType(EventTypes.EVENT);
+		setType(EvType.EVENT);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Event extends Trackable {
 	 */
 	public Event(String name, String tid, Date time) {
 		super(name, tid, time);
-		setType(EventTypes.EVENT);
+		setType(EvType.EVENT);
 	}
 
 	@Schema(description = "")

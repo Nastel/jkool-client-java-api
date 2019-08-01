@@ -20,6 +20,6 @@ package com.jkoolcloud.client.api.model;
  * 
  * @author cathy
  */
-public enum EventTypes {
+public enum EvType {
 	OTHER, NOOP, CALL, ACTIVITY, EVENT, SNAPSHOT, START, STOP, OPEN, CLOSE, SEND, RECEIVE, INQUIRE, SET, BROWSE, ADD, UPDATE, REMOVE, CLEAR, LOG, DATASET
 }

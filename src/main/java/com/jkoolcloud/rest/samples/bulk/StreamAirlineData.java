@@ -137,7 +137,7 @@ public class StreamAirlineData {
 			// Send Event
 			Event sendEvent = new Event();
 			List<Property> properties = new ArrayList<> ();
-			sendEvent.setType(EventTypes.SEND);
+			sendEvent.setType(EvType.SEND);
 			Long departureStartTime = dateFromString(line, "CRSDepTime", "Origin");
 			Long departureEndTime = dateFromString(line, "DepTime", "Origin");
 			sendEvent.setName((String) line.get("UniqueCarrier") + "-" + (String) line.get("FlightNum") + "-Depart");
@@ -159,7 +159,7 @@ public class StreamAirlineData {
 			sendEvent.addProperty(properties);
 			if (departureEndTime > departureStartTime) {
 				sendEvent.setException("LateFlight");
-				sendEvent.setSeverity(Severities.ERROR);
+				sendEvent.setSeverity(Level.ERROR);
 			} else {
 				sendEvent.setException("none");
 			}
@@ -170,13 +170,13 @@ public class StreamAirlineData {
 			// Receive Event
 			Event receiveEvent = new Event();
 			properties = new ArrayList<> ();
-			receiveEvent.setType(EventTypes.RECEIVE);
+			receiveEvent.setType(EvType.RECEIVE);
 			Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime", "Dest"));
 			Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
 
 			if (arrivalEndTime > arrivalStartTime) {
 				receiveEvent.setException("LateFlight");
-				receiveEvent.setSeverity(Severities.ERROR);
+				receiveEvent.setSeverity(Level.ERROR);
 			} else {
 				receiveEvent.setException("none");
 			}
@@ -246,7 +246,7 @@ public class StreamAirlineData {
 			}
 			if (receiveEvent.getException().equals("LateFlight") || sendEvent.getException().equals("LateFlight")) {
 				activity.setException("LateFlight");
-				activity.setSeverity(Severities.ERROR);
+				activity.setSeverity(Level.ERROR);
 			} else {
 				activity.setException("none");
 			}

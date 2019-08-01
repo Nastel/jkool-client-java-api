@@ -30,7 +30,7 @@ public class Dataset extends Snapshot {
 	 */
 	public Dataset(String category, String name) {
 		super(category, name);
-		this.type = EventTypes.DATASET;
+		this.type = EvType.DATASET;
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Dataset extends Snapshot {
 	 */
 	public Dataset(String category, String name, long timeMs) {
 		super(category, name, timeMs);
-		this.type = EventTypes.DATASET;
+		this.type = EvType.DATASET;
 	}
 
 	/**

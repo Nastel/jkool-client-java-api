@@ -35,7 +35,7 @@ public class Activity extends Trackable {
 	 */
 	public Activity() {
 		super();
-		setType(EventTypes.ACTIVITY);
+		setType(EvType.ACTIVITY);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Activity extends Trackable {
 	 */
 	public Activity(String name) {
 		super(name);
-		setType(EventTypes.ACTIVITY);
+		setType(EvType.ACTIVITY);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class Activity extends Trackable {
 	 */
 	public Activity(String name, String tid) {
 		super(name, tid);
-		setType(EventTypes.ACTIVITY);
+		setType(EvType.ACTIVITY);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Activity extends Trackable {
 	 */
 	public Activity(String name, String tid, long timeMs) {
 		super(name, tid, timeMs);
-		setType(EventTypes.ACTIVITY);
+		setType(EvType.ACTIVITY);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Activity extends Trackable {
 	 */
 	public Activity(String name, String tid, Date time) {
 		super(name, tid, time);
-		setType(EventTypes.ACTIVITY);
+		setType(EvType.ACTIVITY);
 	}
 
 	/**

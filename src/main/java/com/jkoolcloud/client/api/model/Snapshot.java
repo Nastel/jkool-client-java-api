@@ -37,7 +37,7 @@ public class Snapshot implements Validated {
 	private long timeUsec;
 	private List<Property> properties = new ArrayList<>();
 
-	protected EventTypes type = EventTypes.SNAPSHOT;
+	protected EvType type = EvType.SNAPSHOT;
 
 	/**
 	 * Create a snapshot
@@ -236,7 +236,7 @@ public class Snapshot implements Validated {
 	 **/
 	@Schema(description = "")
 	@JsonProperty("type")
-	public EventTypes getType() {
+	public EvType getType() {
 		return type;
 	}
 

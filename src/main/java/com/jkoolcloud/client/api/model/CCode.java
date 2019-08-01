@@ -16,10 +16,10 @@
 package com.jkoolcloud.client.api.model;
 
 /**
- * This class defines common event severities supported by jKool.
+ * This class defines common event completion codes
  * 
  * @author cathy
  */
-public enum Severities {
-	NONE, TRACE, DEBUG, INFO, NOTICE, WARNING, ERROR, FAILURE, CRITICAL, FATAL, HALT
+public enum CCode {
+	OK, WARNING, ERROR
 }

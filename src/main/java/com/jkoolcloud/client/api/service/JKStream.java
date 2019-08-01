@@ -23,6 +23,7 @@ import com.jkoolcloud.client.api.model.Dataset;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Snapshot;
 import com.jkoolcloud.client.api.model.Trackable;
+import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
  * This class implements RESTFull event streaming pipe to jKool
@@ -31,6 +32,15 @@ import com.jkoolcloud.client.api.model.Trackable;
  * @see JKService
  */
 public class JKStream extends JKService {
+	public static final String CLIENT_HOSTNAME = "J-Client-Host-Name";
+	public static final String CLIENT_HOSTADDR = "J-Client-Host-Addr";
+	public static final String CLIENT_RUNTIME = "J-Client-Runtime";
+	public static final String CLIENT_VERSION = "J-Client-Version";
+
+	private static final String VALUE_VERSION = JKStream.class.getPackage().getImplementationVersion();
+	private static final String VALUE_HOSTNAME = JKUtils.VM_HOST;
+	private static final String VALUE_HOSTADDR = JKUtils.VM_NETADDR;
+	private static final String VALUE_VMNAME = JKUtils.VM_NAME;
 
 	/**
 	 * Create a jKool stream end-point with default end-point and access token
@@ -63,7 +73,7 @@ public class JKStream extends JKService {
 	}
 
 	/**
-	 * Send a trackable object to jKool end-point
+	 * Send a {@link Trackable} object to jKool end-point
 	 * 
 	 * @param event
 	 *            trackable event
@@ -75,12 +85,17 @@ public class JKStream extends JKService {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid event=" + event);
 		}
-		return target.path(JK_EVENT_KEY).request().header(TOKEN_KEY, token)
+		return target.path(JK_EVENT_KEY).request()
+				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
+				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
+				.header(CLIENT_RUNTIME, VALUE_VMNAME)
+				.header(CLIENT_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
 	/**
-	 * Send a snapshot object to jKool end-point
+	 * Send a {@link Snapshot}  object to jKool end-point
 	 * 
 	 * @param snapshot
 	 *            trackable snapshot
@@ -92,7 +107,12 @@ public class JKStream extends JKService {
 		if (!snapshot.isValid()) {
 			throw new JKStreamException(200, "Invalid snapshot=" + snapshot);
 		}
-		return target.path(JK_SNAPSHOT_KEY).request().header(TOKEN_KEY, token)
+		return target.path(JK_SNAPSHOT_KEY).request()
+				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
+				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
+				.header(CLIENT_RUNTIME, VALUE_VMNAME)
+				.header(CLIENT_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 

@@ -22,9 +22,9 @@ import java.util.Arrays;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.client.api.model.CompCodes;
+import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.EventTypes;
 import com.jkoolcloud.client.api.model.Severities;
-import com.jkoolcloud.client.api.model.Trackable;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
@@ -52,8 +52,8 @@ public class RestSample1 {
 			// representing a message received in a
 			// hypothetical
 			// messaging queue residing in New York.
-			Trackable event = JKStream.newEvent("ReceiveOrder").setMsgText("OrderId=28372373 received.")
-					.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Severities.INFO)
+			Event event = JKStream.newEvent("ReceiveOrder").setMsgText("OrderId=28372373 received.");
+			event.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Severities.INFO)
 					.setType(EventTypes.RECEIVE).setTid(Thread.currentThread().getId()).setCompCode(CompCodes.SUCCESS)
 					.setLocation("New York, NY").setUser("webuser").setElapsedTimeUsec(3500)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("ORDERS.QUEUE").setWaitTimeUsec(0)
@@ -72,8 +72,8 @@ public class RestSample1 {
 			// messaging queue residing in New York to a hypothetical messaging
 			// queue residing in Los Angeles
 			// (RestSample2 class)
-			event = JKStream.newEvent("ProcessOrder").setMsgText("Order Processed ProductId=28372373")
-					.setSeverity(Severities.INFO).setType(EventTypes.SEND).setTid(Thread.currentThread().getId())
+			event = JKStream.newEvent("ProcessOrder").setMsgText("Order Processed ProductId=28372373");
+			event.setSeverity(Severities.INFO).setType(EventTypes.SEND).setTid(Thread.currentThread().getId())
 					.setCompCode(CompCodes.SUCCESS).setReasonCode(0).setLocation("New York, NY").setUser("webuser")
 					.setElapsedTimeUsec(0).setCorrId(Arrays.asList("CorrId:123")).setResource("PAYMENT.QUEUE")
 					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())

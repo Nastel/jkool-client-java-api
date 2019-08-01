@@ -19,10 +19,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Dataset;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Snapshot;
-import com.jkoolcloud.client.api.model.Trackable;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
@@ -73,7 +73,29 @@ public class JKStream extends JKService {
 	}
 
 	/**
-	 * Send a {@link Trackable} object to jKool end-point
+	 * Send a {@link Activity} object to jKool end-point
+	 * 
+	 * @param activity
+	 *            trackable activity
+	 * @throws JKStreamException
+	 *             on error during send
+	 * @return response message
+	 */
+	public Response post(Activity activity) throws JKStreamException {
+		if (!activity.isValid()) {
+			throw new JKStreamException(200, "Invalid activity=" + activity);
+		}
+		return target.path(JK_ACTIVITY_KEY).request()
+				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
+				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
+				.header(CLIENT_RUNTIME, VALUE_VMNAME)
+				.header(CLIENT_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(activity), MediaType.APPLICATION_JSON));
+	}
+
+	/**
+	 * Send a {@link Event} object to jKool end-point
 	 * 
 	 * @param event
 	 *            trackable event
@@ -81,7 +103,7 @@ public class JKStream extends JKService {
 	 *             on error during send
 	 * @return response message
 	 */
-	public Response post(Trackable event) throws JKStreamException {
+	public Response post(Event event) throws JKStreamException {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid event=" + event);
 		}
@@ -116,6 +138,28 @@ public class JKStream extends JKService {
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 
+	/**
+	 * Send a {@link Dataset}  object to jKool end-point
+	 * 
+	 * @param dataset
+	 *            trackable dataset
+	 * @throws JKStreamException
+	 *             on error during send
+	 * @return response message
+	 */
+	public Response post(Dataset dataset) throws JKStreamException {
+		if (!dataset.isValid()) {
+			throw new JKStreamException(200, "Invalid dataset=" + dataset);
+		}
+		return target.path(JK_DATASET_KEY).request()
+				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
+				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
+				.header(CLIENT_RUNTIME, VALUE_VMNAME)
+				.header(CLIENT_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(dataset), MediaType.APPLICATION_JSON));
+	}
+	
 	/**
 	 * Create a new {@link Event}
 	 * 

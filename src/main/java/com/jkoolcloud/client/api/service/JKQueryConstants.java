@@ -26,7 +26,10 @@ public interface JKQueryConstants {
 			"wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
 
 	public static String JK_EVENT_KEY = "event";
+	public static String JK_ACTIVITY_KEY = "activity";
+	public static String JK_DATASET_KEY = "dataset";
 	public static String JK_SNAPSHOT_KEY = "snapshot";
+	public static String JK_LOG_KEY = "log";
 
 	static final String TOKEN_KEY = "token";
 	static final String JK_TOKEN_KEY = "jk_token";

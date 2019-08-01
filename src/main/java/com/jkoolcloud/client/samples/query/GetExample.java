@@ -17,31 +17,30 @@ package com.jkoolcloud.client.samples.query;
 
 import java.util.Properties;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 import com.jkoolcloud.client.api.service.JKQuery;
 import com.jkoolcloud.client.api.utils.JKCmdOptions;
 
 /**************************************************************************************************************************
- * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.call()}
+ * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.get()}
  ***********************************************************************************************************************/
 
-public class QueryData2 {
-	public static void main(String[] args) throws ProcessingException {
+public class GetExample {
+	public static void main(String[] args) {
 		try {
 			Properties props = new Properties();
 			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
-			JKCmdOptions options = new JKCmdOptions(QueryData2.class, args, props);
+			JKCmdOptions options = new JKCmdOptions(GetExample.class, args, props);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
 			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
-			Response response = jkQuery.call(options.query);
-			System.out.println("Response: " + response.readEntity(String.class));
-			response.close();
+			HttpResponse response = jkQuery.get(options.query);
+			System.out.println(EntityUtils.toString(response.getEntity()));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

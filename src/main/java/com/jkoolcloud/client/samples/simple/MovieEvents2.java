@@ -1,5 +1,3 @@
-package com.jkoolcloud.client.samples.simple;
-
 /*
  * Copyright 2014-2019 JKOOL, LLC.
  *
@@ -15,6 +13,8 @@ package com.jkoolcloud.client.samples.simple;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package com.jkoolcloud.client.samples.simple;
 
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;

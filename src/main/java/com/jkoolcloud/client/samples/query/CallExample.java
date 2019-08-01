@@ -15,34 +15,50 @@
  */
 package com.jkoolcloud.client.samples.query;
 
+import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.client.api.service.JKQuery;
 import com.jkoolcloud.client.api.utils.JKCmdOptions;
 
 /**************************************************************************************************************************
- * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.get()}
+ * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.call()}
  ***********************************************************************************************************************/
 
-public class QueryData1 {
-	public static void main(String[] args) {
+public class CallExample {
+	public static void main(String[] args) throws ProcessingException {
 		try {
 			Properties props = new Properties();
 			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
-			JKCmdOptions options = new JKCmdOptions(QueryData1.class, args, props);
+			JKCmdOptions options = new JKCmdOptions(CallExample.class, args, props);
 			if (options.usage != null) {
 				System.out.println(options.usage);
 				System.exit(-1);
 			}
 			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
-			HttpResponse response = jkQuery.get(options.query);
-			System.out.println(EntityUtils.toString(response.getEntity()));
-		} catch (Exception e) {
+			Response res = jkQuery.call(options.query);
+			
+			int status = res.getStatus();
+		    String json = res.readEntity(String.class);
+		    if (status == 200) {
+		    	System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
+		    } else {
+		    	System.out.println(String.format("Status: %d %s", status, json));		    	
+		    }
+			res.close();
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String formatJson(String input) throws IOException {
+	      ObjectMapper mapper = new ObjectMapper();
+	      Object json = mapper.readValue(input, Object.class);
+	      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);	
 	}
 }

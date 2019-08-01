@@ -22,6 +22,8 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Dataset;
 import com.jkoolcloud.client.api.model.Event;
+import com.jkoolcloud.client.api.model.LogMsg;
+import com.jkoolcloud.client.api.model.Severities;
 import com.jkoolcloud.client.api.model.Snapshot;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
@@ -117,6 +119,28 @@ public class JKStream extends JKService {
 	}
 
 	/**
+	 * Send a {@link LogMsg} object to jKool end-point
+	 * 
+	 * @param event
+	 *            trackable log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 * @return response message
+	 */
+	public Response post(LogMsg event) throws JKStreamException {
+		if (!event.isValid()) {
+			throw new JKStreamException(200, "Invalid logmsg=" + event);
+		}
+		return target.path(JK_LOG_KEY).request()
+				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
+				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
+				.header(CLIENT_RUNTIME, VALUE_VMNAME)
+				.header(CLIENT_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
+				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
+	}
+
+	/**
 	 * Send a {@link Snapshot}  object to jKool end-point
 	 * 
 	 * @param snapshot
@@ -160,6 +184,101 @@ public class JKStream extends JKService {
 				.post(Entity.entity(serialize(dataset), MediaType.APPLICATION_JSON));
 	}
 	
+	/**
+	 * Send an info log message to the stream
+	 * 
+	 * @param sev
+	 *            severity
+	 * @param msg
+	 *            log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 */
+	public void log(Severities sev, String msg) throws JKStreamException {
+		this.post(newLogMsg(sev, msg));
+	}
+	
+	/**
+	 * Send an info log message to the stream
+	 * 
+	 * @param msg
+	 *            log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 */
+	public void info(String msg) throws JKStreamException {
+		this.post(newLogMsg(Severities.INFO, msg));
+	}
+	
+	/**
+	 * Send a warning log message to the stream
+	 * 
+	 * @param msg
+	 *            log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 */
+	public void warn(String msg) throws JKStreamException {
+		this.post(newLogMsg(Severities.WARNING, msg));
+	}
+	
+	/**
+	 * Send an error log message to the stream
+	 * 
+	 * @param msg
+	 *            log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 */
+	public void error(String msg) throws JKStreamException {
+		this.post(newLogMsg(Severities.ERROR, msg));
+	}
+	
+	/**
+	 * Send a debug log message to the stream
+	 * 
+	 * @param msg
+	 *            log message
+	 * @throws JKStreamException
+	 *             on error during send
+	 */
+	public void debug(String msg) throws JKStreamException {
+		this.post(newLogMsg(Severities.DEBUG, msg));
+	}
+	
+	/**
+	 * Create a new {@link LogMsg}
+	 * 
+	 * @return {@link LogMsg}
+	 */
+	public static LogMsg newLogMsg() {
+		return new LogMsg();
+	}
+
+	/**
+	 * Create a new {@link LogMsg}
+	 * 
+	 * @param msg
+	 *            log message
+	 * @return {@link LogMsg}
+	 */
+	public static LogMsg newLogMsg(String msg) {
+		return new LogMsg(msg);
+	}
+
+	/**
+	 * Create a new {@link LogMsg}
+	 * 
+	 * @param sev
+	 *            severity
+	 * @param msg
+	 *            log message
+	 * @return {@link LogMsg}
+	 */
+	public static LogMsg newLogMsg(Severities sev, String msg) {
+		return new LogMsg(sev, msg);
+	}
+
 	/**
 	 * Create a new {@link Event}
 	 * 

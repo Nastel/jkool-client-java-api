@@ -15,7 +15,6 @@
  */
 package com.jkoolcloud.client.samples.simple;
 
-
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 

@@ -243,7 +243,8 @@ rows to return (default is 100). The example above can be implemented as:
 	...
 ```
 ### Running jKool queries from command line
-You can run JKQL queries from command line using a helper class `JKQLCmd` below. Run all commands from the root 'jkool-client-api-<version>' directory.
+You can run JKQL queries from command line using a helper class `JKQLCmd` below. Run all commands from the root 'jkool-client-api-<version>' 
+directory.
 ```sh
 	unix: java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 	win : java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000

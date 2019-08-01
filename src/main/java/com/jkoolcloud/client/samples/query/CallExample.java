@@ -42,23 +42,23 @@ public class CallExample {
 			options.print();
 			JKQuery jkQuery = new JKQuery(options.token);
 			Response res = jkQuery.call(options.query);
-			
+
 			int status = res.getStatus();
-		    String json = res.readEntity(String.class);
-		    if (status == 200) {
-		    	System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
-		    } else {
-		    	System.out.println(String.format("Status: %d %s", status, json));		    	
-		    }
+			String json = res.readEntity(String.class);
+			if (status == 200) {
+				System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
+			} else {
+				System.out.println(String.format("Status: %d %s", status, json));
+			}
 			res.close();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static String formatJson(String input) throws IOException {
-	      ObjectMapper mapper = new ObjectMapper();
-	      Object json = mapper.readValue(input, Object.class);
-	      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);	
+		ObjectMapper mapper = new ObjectMapper();
+		Object json = mapper.readValue(input, Object.class);
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
 	}
 }

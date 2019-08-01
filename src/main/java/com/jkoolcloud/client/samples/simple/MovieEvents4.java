@@ -51,21 +51,21 @@ public class MovieEvents4 {
 			Property propertyTempHigh = new Property("TempHigh", 95);
 			Property propertyTempLow = new Property("TempLow", 83);
 
-			List<Property> propertiesTemp = new ArrayList<> ();
+			List<Property> propertiesTemp = new ArrayList<>();
 			propertiesTemp.add(propertyTempHigh);
 			propertiesTemp.add(propertyTempLow);
 
 			Property propertyHumidityMax = new Property("HumidityMax", 95, ValueType.VALUE_TYPE_GAUGE);
 			Property propertyHumidityMin = new Property("HumidityMin", 74, ValueType.VALUE_TYPE_GAUGE);
 
-			List<Property> propertiesHumidity = new ArrayList<> ();
+			List<Property> propertiesHumidity = new ArrayList<>();
 			propertiesHumidity.add(propertyHumidityMax);
 			propertiesHumidity.add(propertyHumidityMin);
 
 			Property propertySeaLevelMax = new Property("SeaLevelMax", 31, ValueType.VALUE_TYPE_GAUGE);
 			Property propertySeaLevelMin = new Property("SealevelMin", 29, ValueType.VALUE_TYPE_GAUGE);
 
-			List<Property> propertiesSeaLevel = new ArrayList<> ();
+			List<Property> propertiesSeaLevel = new ArrayList<>();
 			propertiesSeaLevel.add(propertySeaLevelMax);
 			propertiesSeaLevel.add(propertySeaLevelMin);
 

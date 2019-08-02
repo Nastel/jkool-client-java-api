@@ -29,10 +29,10 @@
                 <include>NOTICE*</include>
             </includes>
             <outputDirectory></outputDirectory>
-            <lineEnding>${assembly.line.endings}</lineEnding>
+            <lineEnding>crlf</lineEnding>
         </fileSet>
         <fileSet>
-            <directory>crlf</directory>
+            <directory>${project.build.directory}</directory>
             <includes>
                 <include>*.jar</include>
             </includes>

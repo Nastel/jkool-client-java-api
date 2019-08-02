@@ -584,7 +584,7 @@ public abstract class Trackable implements Validated {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class " + this.getClass().getName() + " {\n");
+		sb.append("class ").append(this.getClass().getName()).append(" {\n");
 
 		sb.append("  trackingId: ").append(trackingId).append("\n");
 		sb.append("  sourceUrl: ").append(sourceUrl).append("\n");

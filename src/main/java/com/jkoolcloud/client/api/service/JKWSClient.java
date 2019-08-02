@@ -30,10 +30,10 @@ import javax.websocket.*;
 @ClientEndpoint
 public class JKWSClient {
 
-	URI wsUri;
-	Session userSession;
-	WebSocketContainer container;
-	JKWSHandler messageHandler;
+	private URI wsUri;
+	private Session userSession;
+	private WebSocketContainer container;
+	private JKWSHandler messageHandler;
 
 	public JKWSClient(String uri, JKWSHandler jkh) throws URISyntaxException {
 		this(new URI(uri), jkh);
@@ -98,7 +98,7 @@ public class JKWSClient {
 	 * @return true if connection, false otherwise
 	 */
 	public boolean isConnected() {
-		return userSession != null ? userSession.isOpen() : false;
+		return userSession != null && userSession.isOpen();
 	}
 
 	/**

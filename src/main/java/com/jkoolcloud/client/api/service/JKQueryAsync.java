@@ -40,9 +40,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 																		// handler
 	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<>();
 
-	URI webSockUri;
-	JKWSClient socket;
-	WSClientHandler wsHandler;
+	private URI webSockUri;
+	private JKWSClient socket;
+	private WSClientHandler wsHandler;
 	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
 	final Collection<JKConnectionHandler> conHandlers = Collections.synchronizedList(new ArrayList<>(5));
 
@@ -148,8 +148,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (callbacks == null) {
 			throw new IllegalArgumentException("list can not be null");
 		}
-		for (int i = 0; i < callbacks.length; i++) {
-			defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callbacks[i]));
+		for (JKQueryCallback callback : callbacks) {
+			defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callback));
 		}
 		return this;
 	}
@@ -165,9 +165,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (cHandlers == null) {
 			throw new IllegalArgumentException("list can not be null");
 		}
-		for (int i = 0; i < cHandlers.length; i++) {
-			conHandlers.add(cHandlers[i]);
-		}
+		Collections.addAll(conHandlers, cHandlers);
 		return this;
 	}
 
@@ -182,8 +180,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (cHandlers == null) {
 			throw new IllegalArgumentException("list can not be null");
 		}
-		for (int i = 0; i < cHandlers.length; i++) {
-			conHandlers.remove(cHandlers[i]);
+		for (JKConnectionHandler cHandler : cHandlers) {
+			conHandlers.remove(cHandler);
 		}
 		return this;
 	}

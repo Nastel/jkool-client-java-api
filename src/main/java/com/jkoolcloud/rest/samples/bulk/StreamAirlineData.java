@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -67,16 +68,15 @@ public class StreamAirlineData {
 	public static void processFile(String fileName) {
 
 		BufferedReader br = null;
-		HashMap<String, String> line = new HashMap<>();
+		HashMap<String, String> line;
 		List<String> fieldNames = new ArrayList<>();
 		JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
 
 		try {
-
 			String sCurrentLine;
 			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 			InputStream is = classloader.getResourceAsStream(fileName);
-			br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+			br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
 			// Store the field names. Field names are obtained from the very first line of the .csv file.
 			StringTokenizer st = new StringTokenizer(br.readLine(), ",");
@@ -101,9 +101,8 @@ public class StreamAirlineData {
 				Activity activity = (Activity) results.get("activity");
 
 				// Loop on events
-				for (int i = 0; i < events.size(); i++) {
+				for (Event event : events) {
 					// Get the event
-					Event event = events.get(i);
 					// Stream the event to jKool
 					Response response = jkSend.post(event);
 					response.close();
@@ -171,8 +170,8 @@ public class StreamAirlineData {
 			Event receiveEvent = new Event();
 			properties = new ArrayList<>();
 			receiveEvent.setType(EvType.RECEIVE);
-			Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime", "Dest"));
-			Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
+			Long arrivalStartTime = dateFromString(line, "CRSArrTime", "Dest");
+			Long arrivalEndTime = dateFromString(line, "ArrTime", "Dest");
 
 			if (arrivalEndTime > arrivalStartTime) {
 				receiveEvent.setException("LateFlight");
@@ -288,7 +287,7 @@ public class StreamAirlineData {
 		try {
 			event.setResource("resource-sky");
 			event.setParentTrackId(parentTrackingId.toString());
-			event.setTrackingId(eventTrackingId.toString());
+			event.setTrackingId(eventTrackingId);
 			event.setAppl((String) line.get("UniqueCarrier") + "AtTerminalAt" + event.getDataCenter());
 			List corrIds = new ArrayList<String>();
 			corrIds.add((String) line.get("TailNum") + (String) line.get("Year") + (String) line.get("Month")

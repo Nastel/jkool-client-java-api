@@ -30,7 +30,7 @@ public class LogMsg extends Event {
 	 * 
 	 */
 	public LogMsg() {
-		super("LogEntry");
+		super("LogMsg");
 		this.setType(EvType.LOG);
 	}
 	
@@ -41,7 +41,7 @@ public class LogMsg extends Event {
 	 *            message associated with the event
 	 */
 	public LogMsg(String msg) {
-		super("LogEntry");
+		super("LogMsg");
 		this.setMsgText(msg);
 		this.setType(EvType.LOG);
 	}
@@ -55,7 +55,7 @@ public class LogMsg extends Event {
 	 *            message associated with the event
 	 */
 	public LogMsg(Level sev, String msg) {
-		super("LogEntry");
+		super("LogMsg");
 		this.setMsgText(msg);
 		this.setType(EvType.LOG);
 		this.setSeverity(sev);
@@ -70,7 +70,7 @@ public class LogMsg extends Event {
 	 *            message associated with the event
 	 */
 	public LogMsg(String tag, String msg) {
-		super("LogEntry");
+		super("LogMsg");
 		this.setMsgText(msg);
 		this.setMsgTag(msg);
 		this.setType(EvType.LOG);

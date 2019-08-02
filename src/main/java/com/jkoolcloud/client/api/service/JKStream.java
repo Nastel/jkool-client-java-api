@@ -185,6 +185,21 @@ public class JKStream extends JKService {
 	}
 	
 	/**
+	 * Send an info log message to the stream without throwing back exception.
+	 * 
+	 * @param sev
+	 *            severity
+	 * @param msg
+	 *            log message
+	 */
+	public void xlog(Level sev, String msg) {
+		try {
+			this.post(newLogMsg(sev, msg));
+		} catch (JKStreamException e) {
+		}
+	}
+	
+	/**
 	 * Send an info log message to the stream
 	 * 
 	 * @param sev

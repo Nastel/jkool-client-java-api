@@ -19,12 +19,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.jkoolcloud.client.api.model.Activity;
-import com.jkoolcloud.client.api.model.Dataset;
-import com.jkoolcloud.client.api.model.Event;
-import com.jkoolcloud.client.api.model.LogMsg;
-import com.jkoolcloud.client.api.model.Level;
-import com.jkoolcloud.client.api.model.Snapshot;
+import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
@@ -141,7 +136,7 @@ public class JKStream extends JKService {
 	}
 
 	/**
-	 * Send a {@link Snapshot}  object to jKool end-point
+	 * Send a {@link Snapshot} object to jKool end-point
 	 * 
 	 * @param snapshot
 	 *            trackable snapshot
@@ -163,7 +158,7 @@ public class JKStream extends JKService {
 	}
 
 	/**
-	 * Send a {@link Dataset}  object to jKool end-point
+	 * Send a {@link Dataset} object to jKool end-point
 	 * 
 	 * @param dataset
 	 *            trackable dataset
@@ -183,7 +178,7 @@ public class JKStream extends JKService {
 				.header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(dataset), MediaType.APPLICATION_JSON));
 	}
-	
+
 	/**
 	 * Send an info log message to the stream without throwing back exception.
 	 * 
@@ -198,7 +193,7 @@ public class JKStream extends JKService {
 		} catch (JKStreamException e) {
 		}
 	}
-	
+
 	/**
 	 * Send an info log message to the stream
 	 * 
@@ -212,7 +207,7 @@ public class JKStream extends JKService {
 	public void log(Level sev, String msg) throws JKStreamException {
 		this.post(newLogMsg(sev, msg));
 	}
-	
+
 	/**
 	 * Send an info log message to the stream
 	 * 
@@ -224,7 +219,7 @@ public class JKStream extends JKService {
 	public void info(String msg) throws JKStreamException {
 		this.post(newLogMsg(Level.INFO, msg));
 	}
-	
+
 	/**
 	 * Send a warning log message to the stream
 	 * 
@@ -236,7 +231,7 @@ public class JKStream extends JKService {
 	public void warn(String msg) throws JKStreamException {
 		this.post(newLogMsg(Level.WARNING, msg));
 	}
-	
+
 	/**
 	 * Send an error log message to the stream
 	 * 
@@ -248,7 +243,7 @@ public class JKStream extends JKService {
 	public void error(String msg) throws JKStreamException {
 		this.post(newLogMsg(Level.ERROR, msg));
 	}
-	
+
 	/**
 	 * Send a debug log message to the stream
 	 * 
@@ -260,7 +255,7 @@ public class JKStream extends JKService {
 	public void debug(String msg) throws JKStreamException {
 		this.post(newLogMsg(Level.DEBUG, msg));
 	}
-	
+
 	/**
 	 * Create a new {@link LogMsg}
 	 * 

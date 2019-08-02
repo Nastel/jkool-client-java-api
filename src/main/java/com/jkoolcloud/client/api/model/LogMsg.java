@@ -33,7 +33,7 @@ public class LogMsg extends Event {
 		super("LogMsg");
 		this.setType(EvType.LOG);
 	}
-	
+
 	/**
 	 * Create an log message
 	 * 
@@ -45,7 +45,7 @@ public class LogMsg extends Event {
 		this.setMsgText(msg);
 		this.setType(EvType.LOG);
 	}
-	
+
 	/**
 	 * Create an log message
 	 * 
@@ -60,7 +60,7 @@ public class LogMsg extends Event {
 		this.setType(EvType.LOG);
 		this.setSeverity(sev);
 	}
-	
+
 	/**
 	 * Create an log message
 	 * 
@@ -75,7 +75,7 @@ public class LogMsg extends Event {
 		this.setMsgTag(msg);
 		this.setType(EvType.LOG);
 	}
-	
+
 	/**
 	 * Create an log message
 	 * 

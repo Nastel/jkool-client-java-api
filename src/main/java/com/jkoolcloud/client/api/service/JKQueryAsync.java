@@ -38,14 +38,13 @@ import javax.json.JsonObjectBuilder;
 public class JKQueryAsync extends JKQuery implements Closeable {
 	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy query associated with default response
 																		// handler
-	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<> ();
+	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<>();
 
 	URI webSockUri;
 	JKWSClient socket;
 	WSClientHandler wsHandler;
-	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<> (5));
-	final Collection<JKConnectionHandler> conHandlers = Collections
-			.synchronizedList(new ArrayList<> (5));
+	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
+	final Collection<JKConnectionHandler> conHandlers = Collections.synchronizedList(new ArrayList<>(5));
 
 	/**
 	 * Create a jKool asynchronous query service end-point
@@ -365,8 +364,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 			throw new IllegalArgumentException("callback can not be null");
 		}
 		JKQueryHandle qhandle = createQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback)
-				.setMaxRows(maxRows)
-				.setTrace(this.isTrace());
+				.setMaxRows(maxRows).setTrace(this.isTrace());
 		return callAsync(qhandle);
 	}
 
@@ -471,7 +469,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *             on error during IO
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
-		ArrayList<String> idList = new ArrayList<> (SUBID_MAP.keySet ());
+		ArrayList<String> idList = new ArrayList<>(SUBID_MAP.keySet());
 		for (String id : idList) {
 			cancelAsync(id);
 		}
@@ -563,7 +561,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 *             on error during IO
 	 */
 	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
-		ArrayList<JKQueryHandle> handleList = new ArrayList<> (SUBID_MAP.values ());
+		ArrayList<JKQueryHandle> handleList = new ArrayList<>(SUBID_MAP.values());
 		for (JKQueryHandle handle : handleList) {
 			if (hGate.check(handle)) {
 				// restore subscription

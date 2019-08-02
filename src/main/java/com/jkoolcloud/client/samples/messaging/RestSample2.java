@@ -22,8 +22,8 @@ import java.util.Arrays;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.client.api.model.CCode;
-import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.EvType;
+import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.service.JKStream;
 
@@ -53,8 +53,8 @@ public class RestSample2 {
 			// messaging queue residing in New York.
 			Event event = new Event();
 			event.setMsgText("OrderId=28372373 payment processed.").setSourceUrl("https://www.sample.com/orders/parts")
-					.setSeverity(Level.INFO).setType(EvType.RECEIVE).setCompCode(CCode.OK)
-					.setReasonCode(0).setLocation("Los Angeles, CA").setUser("ebay-proc").setElapsedTimeUsec(45938)
+					.setSeverity(Level.INFO).setType(EvType.RECEIVE).setCompCode(CCode.OK).setReasonCode(0)
+					.setLocation("Los Angeles, CA").setUser("ebay-proc").setElapsedTimeUsec(45938)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("PAYMENT.QUEUE").setWaitTimeUsec(0)
 					.setName("ReceivePayment").setAppl("WebPayments")
 					.setServer(InetAddress.getLocalHost().getHostName())
@@ -74,8 +74,8 @@ public class RestSample2 {
 			// (RestSample2 class)
 			event = new Event();
 			event.setMsgText("Verify ProductId=28372373").setSourceUrl("https://www.sample.com/orders/parts")
-					.setSeverity(Level.INFO).setType(EvType.SEND).setCompCode(CCode.OK)
-					.setReasonCode(0).setLocation("Los Angeles, CA").setUser("webuser").setElapsedTimeUsec(107)
+					.setSeverity(Level.INFO).setType(EvType.SEND).setCompCode(CCode.OK).setReasonCode(0)
+					.setLocation("Los Angeles, CA").setUser("webuser").setElapsedTimeUsec(107)
 					.setCorrId(Arrays.asList("CorrId:123")).setResource("SHIPPING.QUEUE").setName("ProcessPayment")
 					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCCA")

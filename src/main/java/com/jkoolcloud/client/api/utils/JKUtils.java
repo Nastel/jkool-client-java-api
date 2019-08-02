@@ -156,7 +156,7 @@ public class JKUtils {
 	}
 
 	private static Map<String, Boolean> buildConfig(String... options) {
-		Map<String, Boolean> config = new HashMap<> ();
+		Map<String, Boolean> config = new HashMap<>();
 
 		if (options != null) {
 			for (String option : options) {

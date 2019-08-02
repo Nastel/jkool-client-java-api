@@ -32,11 +32,11 @@ import com.jkoolcloud.client.api.service.JKStream;
 @SuppressWarnings("rawtypes")
 public class StreamAirlineData {
 
-	public static final Set<String> JKOOL_EVENT_FIELDS = new HashSet<> (
-		Arrays.asList ("source", "sourceInfo", "sourceUrl", "severity", "type", "typeNo", "pid", "tid", "reasoCode", "location", "user",
-					   "timeUsec", "startTimeUsec", "endTime-Usec", "idCount", "snapCount", "idSet", "msgText", "msgSize", "msgEncoding",
-					   "msgCharset", "corrid", "resource", "msgMimeType", "msgAge", "exception", "msgTag", "waitTimeUsec", "compCode",
-					   "reasonCode"));
+	public static final Set<String> JKOOL_EVENT_FIELDS = new HashSet<>(
+			Arrays.asList("source", "sourceInfo", "sourceUrl", "severity", "type", "typeNo", "pid", "tid", "reasoCode",
+					"location", "user", "timeUsec", "startTimeUsec", "endTime-Usec", "idCount", "snapCount", "idSet",
+					"msgText", "msgSize", "msgEncoding", "msgCharset", "corrid", "resource", "msgMimeType", "msgAge",
+					"exception", "msgTag", "waitTimeUsec", "compCode", "reasonCode"));
 	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 	public String streamingUrl = null;
 
@@ -67,8 +67,8 @@ public class StreamAirlineData {
 	public static void processFile(String fileName) {
 
 		BufferedReader br = null;
-		HashMap<String, String> line = new HashMap<> ();
-		List<String> fieldNames = new ArrayList<> ();
+		HashMap<String, String> line = new HashMap<>();
+		List<String> fieldNames = new ArrayList<>();
 		JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
 
 		try {
@@ -91,7 +91,7 @@ public class StreamAirlineData {
 				eventNo++;
 				System.out.println("Streaming Activity and Events: " + eventNo);
 				String[] vals = sCurrentLine.split(",", -1);
-				line = new HashMap<> ();
+				line = new HashMap<>();
 				for (int i = 0; i < vals.length; i++) {
 					line.put(fieldNames.get(i), vals[i]);
 				}
@@ -126,9 +126,9 @@ public class StreamAirlineData {
 	}
 
 	public static HashMap massageData(HashMap line) {
-		List<Event> events = new ArrayList<> ();
+		List<Event> events = new ArrayList<>();
 		Activity activity = new Activity();
-		HashMap<String, Object> results = new HashMap<> ();
+		HashMap<String, Object> results = new HashMap<>();
 
 		try {
 			String eventTrackingId = (String) line.get("Month") + (String) line.get("DayofMonth")
@@ -136,7 +136,7 @@ public class StreamAirlineData {
 			UUID activityTrackingId = java.util.UUID.randomUUID();
 			// Send Event
 			Event sendEvent = new Event();
-			List<Property> properties = new ArrayList<> ();
+			List<Property> properties = new ArrayList<>();
 			sendEvent.setType(EvType.SEND);
 			Long departureStartTime = dateFromString(line, "CRSDepTime", "Origin");
 			Long departureEndTime = dateFromString(line, "DepTime", "Origin");
@@ -169,7 +169,7 @@ public class StreamAirlineData {
 
 			// Receive Event
 			Event receiveEvent = new Event();
-			properties = new ArrayList<> ();
+			properties = new ArrayList<>();
 			receiveEvent.setType(EvType.RECEIVE);
 			Long arrivalStartTime = new Long(dateFromString(line, "CRSArrTime", "Dest"));
 			Long arrivalEndTime = new Long(dateFromString(line, "ArrTime", "Dest"));
@@ -212,7 +212,7 @@ public class StreamAirlineData {
 			}
 			activity.setName(
 					(String) line.get("UniqueCarrier") + "-" + (String) line.get("FlightNum") + "-WholeFlight");
-			properties = new ArrayList<> ();
+			properties = new ArrayList<>();
 			if (!line.get("Distance").equals("NA")) {
 				properties.add(new Property("Distance", line.get("Distance"), null, "double"));
 			}

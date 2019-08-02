@@ -22,8 +22,8 @@ import java.util.Arrays;
 import javax.ws.rs.core.Response;
 
 import com.jkoolcloud.client.api.model.CCode;
-import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.EvType;
+import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.service.JKStream;
 
@@ -53,11 +53,11 @@ public class RestSample1 {
 			// hypothetical
 			// messaging queue residing in New York.
 			Event event = JKStream.newEvent("ReceiveOrder").setMsgText("OrderId=28372373 received.");
-			event.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Level.INFO)
-					.setType(EvType.RECEIVE).setTid(Thread.currentThread().getId()).setCompCode(CCode.OK)
-					.setLocation("New York, NY").setUser("webuser").setElapsedTimeUsec(3500)
-					.setCorrId(Arrays.asList("CorrId:123")).setResource("ORDERS.QUEUE").setWaitTimeUsec(0)
-					.setAppl("WebOrders").setServer(InetAddress.getLocalHost().getHostName())
+			event.setSourceUrl("https://www.sample.com/orders/parts").setSeverity(Level.INFO).setType(EvType.RECEIVE)
+					.setTid(Thread.currentThread().getId()).setCompCode(CCode.OK).setLocation("New York, NY")
+					.setUser("webuser").setElapsedTimeUsec(3500).setCorrId(Arrays.asList("CorrId:123"))
+					.setResource("ORDERS.QUEUE").setWaitTimeUsec(0).setAppl("WebOrders")
+					.setServer(InetAddress.getLocalHost().getHostName())
 					.setNetAddr(InetAddress.getLocalHost().getHostAddress()).setDataCenter("DCNY")
 					.setGeoAddr("40.803692,-73.402157");
 

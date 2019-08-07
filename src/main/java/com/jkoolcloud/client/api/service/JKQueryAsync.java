@@ -503,8 +503,11 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder
 				.add(JK_TOKEN_KEY, getToken())
-				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX)
+				.add(JK_TIME_ZONE_KEY, getTimeZone())
+				.add(JK_REPO_KEY, getRepoId())
 				.add(JK_MAX_ROWS_KEY, 10)
+				.add(JK_TRACE_KEY, isTrace())
+				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid +"'")
 				.add(JK_SUBID_KEY, subid).build();
 
 		socket.sendMessageAsync(jsonQuery.toString());

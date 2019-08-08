@@ -133,8 +133,12 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		if (ex != null) {
 			lastError = ex;
 			errCount.incrementAndGet();
-			out.println("Error: handle=" + qhandle + ", error=" + ex.getMessage());
-			ex.printStackTrace(out);
+			if (response != null) {
+				out.println(JKUtils.prettyPrint(response));
+			} else {
+				out.println("Error: handle=" + qhandle + ", error=" + ex.getMessage());
+				ex.printStackTrace(out);
+			}
 		} else {
 			msgCount.incrementAndGet();
 			if (json_path == null) {

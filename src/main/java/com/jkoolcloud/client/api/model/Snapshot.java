@@ -278,13 +278,14 @@ public class Snapshot implements Validated {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class Snapshot {\n");
+		sb.append(getClass().getSimpleName()).append(" {\n");
 		sb.append("  type: ").append(type).append("\n");
 		sb.append("  category: ").append(category).append("\n");
 		sb.append("  name: ").append(name).append("\n");
 		sb.append("  timeUsec: ").append(timeUsec).append("\n");
 		sb.append("  properties: ").append(properties).append("\n");
 		sb.append("}\n");
+
 		return sb.toString();
 	}
 }

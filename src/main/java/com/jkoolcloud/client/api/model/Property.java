@@ -214,12 +214,13 @@ public class Property implements Validated {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class Property {\n");
+		sb.append(getClass().getSimpleName()).append(" {\n");
 		sb.append("  name: ").append(name).append("\n");
 		sb.append("  dtype: ").append(dataType).append("\n");
 		sb.append("  vtype: ").append(valueType).append("\n");
 		sb.append("  value: ").append(value).append("\n");
 		sb.append("}\n");
+
 		return sb.toString();
 	}
 }

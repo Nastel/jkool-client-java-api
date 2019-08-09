@@ -584,8 +584,7 @@ public abstract class Trackable implements Validated {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class ").append(this.getClass().getName()).append(" {\n");
-
+		sb.append(getClass().getSimpleName()).append(" {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
 		sb.append("  sourceUrl: ").append(sourceUrl).append("\n");
 		sb.append("  severity: ").append(severity).append("\n");
@@ -603,6 +602,7 @@ public abstract class Trackable implements Validated {
 		sb.append("  elapsedTimeUsec: ").append(elapsedTimeUsec).append("\n");
 		sb.append("  snapshots: ").append(snapshots).append("\n");
 		sb.append("}\n");
+
 		return sb.toString();
 	}
 }

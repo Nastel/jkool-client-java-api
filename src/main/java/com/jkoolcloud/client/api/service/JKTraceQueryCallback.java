@@ -129,6 +129,14 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
+	public void onCall(JKQueryHandle qhandle, JsonObject jsonCall) {
+		if (trace) {
+			out.println("Query JSON: ");
+			out.println(JKUtils.prettyPrint(jsonCall));
+		}
+	}
+
+	@Override
 	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
 			lastError = ex;

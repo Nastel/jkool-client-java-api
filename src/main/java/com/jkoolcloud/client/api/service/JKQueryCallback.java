@@ -32,6 +32,16 @@ public interface JKQueryCallback {
 	void done(JKQueryHandle qhandle);
 
 	/**
+	 * Method called before call/query is executed
+	 * 
+	 * @param qhandle
+	 *            connection handle from which message is received
+	 * @param query
+	 *            JSON query
+	 */
+	void onCall(JKQueryHandle qhandle, JsonObject query);
+
+	/**
 	 * Method called when a response to a query is received
 	 * 
 	 * @param qhandle

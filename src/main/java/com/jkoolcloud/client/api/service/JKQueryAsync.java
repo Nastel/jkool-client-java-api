@@ -389,7 +389,10 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 				.add(JK_TRACE_KEY, qhandle.isTrace())
 				.add(JK_SUBID_KEY, qhandle.getId()).build();
 
-		socket.sendMessageAsync(jsonQuery.toString());
+		if (qhandle.getCallback() != null) {
+			qhandle.getCallback().onCall(qhandle, jsonQuery);
+		}
+		sendJsonQuery(jsonQuery);
 		return qhandle;
 	}
 
@@ -455,10 +458,22 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 				.add(JK_TRACE_KEY, isTrace())
 				.add(JK_SUBID_KEY, id).build();
 
-		socket.sendMessageAsync(jsonQuery.toString());
+		sendJsonQuery(jsonQuery);
 		return this;
 	}
 
+	/**
+	 * Send JSON query via a websocket
+	 * 
+	 * @param jsonQuery json query
+	 * @return websocket client
+	 * @throws IOException
+	 *             on error during IO
+	 */
+	private JKWSClient sendJsonQuery(JsonObject jsonQuery) throws IOException {
+		return socket.sendMessageAsync(jsonQuery.toString());
+	}
+	
 	/**
 	 * Cancel all active subscriptions
 	 * 
@@ -510,7 +525,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid +"'")
 				.add(JK_SUBID_KEY, subid).build();
 
-		socket.sendMessageAsync(jsonQuery.toString());
+		sendJsonQuery(jsonQuery);
 		return SUBID_MAP.get(subid);
 	}
 

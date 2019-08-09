@@ -104,14 +104,14 @@ public class Activity extends Trackable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class Activity {\n");
+		sb.append(getClass().getSimpleName()).append(" {\n");
 		sb.append("  trackingId: ").append(trackingId).append("\n");
 		sb.append("  status: ").append(getStatus()).append("\n");
 		sb.append("  user: ").append(getUser()).append("\n");
 		sb.append("  operation: ").append(getName()).append("\n");
 		sb.append("  timeUsec: ").append(getTimeUsec()).append("\n");
-
 		sb.append("}\n");
+
 		return sb.toString();
 	}
 }

@@ -424,13 +424,13 @@ public class JKQueryHandle implements JKQueryConstants {
 
 	@Override
 	public String toString() {
-		return "{" + "class: \"" + this.getClass().getName()
-				+ "\", id: \"" + id
-				+ "\", query: \"" + query
-				+ "\", timezone: \"" + tz
-				+ "\", daterange: \"" + daterange
-				+ "\", repo: \"" + repo
-				+ "\", trace: \"" + trace
+		return getClass().getSimpleName() + " {" //
+				+ "\", id: \"" + id //
+				+ "\", query: \"" + query //
+				+ "\", timezone: \"" + tz //
+				+ "\", daterange: \"" + daterange //
+				+ "\", repo: \"" + repo //
+				+ "\", trace: \"" + trace //
 				+ "\", callback: \"" + callback + "\"}";
 	}
 

@@ -149,13 +149,14 @@ public class Dataset extends Snapshot {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class Dataset {\n");
+		sb.append(getClass().getSimpleName()).append(" {\n");
 		sb.append("  type: ").append(this.getType()).append("\n");
 		sb.append("  category: ").append(this.getCategory()).append("\n");
 		sb.append("  name: ").append(this.getName()).append("\n");
 		sb.append("  timeUsec: ").append(this.getTimeUsec()).append("\n");
 		sb.append("  properties: ").append(this.getProperties()).append("\n");
 		sb.append("}\n");
+
 		return sb.toString();
 	}
 }

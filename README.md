@@ -196,7 +196,6 @@ public class MyConnectionHandler implements JKConnectionHandler {
 		System.out.println("open: " + async);
 	}
 }
-
 ```
 Connection handlers can be associated with a jKool query connection handle `JKQueryAsync` as follows:
 ```java
@@ -259,7 +258,6 @@ file:
 ```sh
 	unix: java java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
 	win : java java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
-
 ```
 Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties
@@ -282,7 +280,7 @@ curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://
 
 ### Streaming with Python
 Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". 
-Details on the Python Request can be found here - http://docs.python-requests.org/en/latest/user/quickstart/. Below is an example of using 
+Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using 
 it to stream into jKool:
 
 ```java

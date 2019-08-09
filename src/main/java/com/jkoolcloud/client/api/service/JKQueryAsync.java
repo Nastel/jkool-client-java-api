@@ -361,9 +361,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 		if (callback == null) {
 			throw new IllegalArgumentException("callback can not be null");
 		}
-		JKQueryHandle qhandle = createQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback)
+		JKQueryHandle qHandle = createQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback)
 				.setMaxRows(maxRows).setTrace(this.isTrace());
-		return callAsync(qhandle);
+		return callAsync(qHandle);
 	}
 
 	/**
@@ -379,14 +379,14 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */
 	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder
-				.add(JK_TOKEN_KEY, getToken())
-				.add(JK_QUERY_KEY, qhandle.getQuery())
-				.add(JK_TIME_ZONE_KEY, qhandle.getTimeZone())
-				.add(JK_DATE_KEY, qhandle.getDateRange())
-				.add(JK_REPO_KEY, qhandle.getRepoId())
-				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows())
-				.add(JK_TRACE_KEY, qhandle.isTrace())
+		JsonObject jsonQuery = jsonBuilder //
+				.add(JK_TOKEN_KEY, getToken()) //
+				.add(JK_QUERY_KEY, qhandle.getQuery()) //
+				.add(JK_TIME_ZONE_KEY, qhandle.getTimeZone()) //
+				.add(JK_DATE_KEY, qhandle.getDateRange()) //
+				.add(JK_REPO_KEY, qhandle.getRepoId()) //
+				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows()) //
+				.add(JK_TRACE_KEY, qhandle.isTrace()) //
 				.add(JK_SUBID_KEY, qhandle.getId()).build();
 
 		if (qhandle.getCallback() != null) {
@@ -448,14 +448,14 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	 */
 	public JKQueryAsync callAsync(String query, String id, int maxRows) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder
-				.add(JK_TOKEN_KEY, getToken())
-				.add(JK_QUERY_KEY, query)
-				.add(JK_TIME_ZONE_KEY, getTimeZone())
-				.add(JK_DATE_KEY, getDateRange())
-				.add(JK_REPO_KEY, getRepoId())
-				.add(JK_MAX_ROWS_KEY, maxRows)
-				.add(JK_TRACE_KEY, isTrace())
+		JsonObject jsonQuery = jsonBuilder //
+				.add(JK_TOKEN_KEY, getToken()) //
+				.add(JK_QUERY_KEY, query) //
+				.add(JK_TIME_ZONE_KEY, getTimeZone()) //
+				.add(JK_DATE_KEY, getDateRange()) //
+				.add(JK_REPO_KEY, getRepoId()) //
+				.add(JK_MAX_ROWS_KEY, maxRows) //
+				.add(JK_TRACE_KEY, isTrace()) //
 				.add(JK_SUBID_KEY, id).build();
 
 		sendJsonQuery(jsonQuery);
@@ -516,13 +516,13 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 			throw new IllegalArgumentException("subscription id can not be null");
 		}
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		JsonObject jsonQuery = jsonBuilder
-				.add(JK_TOKEN_KEY, getToken())
-				.add(JK_TIME_ZONE_KEY, getTimeZone())
-				.add(JK_REPO_KEY, getRepoId())
-				.add(JK_MAX_ROWS_KEY, 10)
-				.add(JK_TRACE_KEY, isTrace())
-				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid +"'")
+		JsonObject jsonQuery = jsonBuilder //
+				.add(JK_TOKEN_KEY, getToken()) //
+				.add(JK_TIME_ZONE_KEY, getTimeZone()) //
+				.add(JK_REPO_KEY, getRepoId()) //
+				.add(JK_MAX_ROWS_KEY, 10)//
+				.add(JK_TRACE_KEY, isTrace())//
+				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid + "'") //
 				.add(JK_SUBID_KEY, subid).build();
 
 		sendJsonQuery(jsonQuery);
@@ -643,6 +643,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 
 	@Override
 	public String toString() {
-		return "{" + "class: \"" + this.getClass().getSimpleName() + "\", uri: \"" + webSockUri + "\"}";
+		return getClass().getSimpleName() + " {" //
+				+ "\", uri: \"" + webSockUri + "\"}";
 	}
 }

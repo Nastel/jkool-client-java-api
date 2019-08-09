@@ -4,11 +4,11 @@
 
     <groupId>com.jkoolcloud.client.api</groupId>
     <artifactId>jkool-client-api</artifactId>
-    <version>0.2.4</version>
+    <version>0.2.5</version>
     <packaging>jar</packaging>
 
     <name>jkool-client-api</name>
-    <url>http://www.jkoolcloud.com/</url>
+    <url>https://github.com/Nastel/jkool-client-java-api</url>
     <description>jKool Client Query and Streaming API</description>
     <licenses>
         <license>
@@ -16,6 +16,10 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+    <organization>
+        <name>jKool, LLC</name>
+        <url>https://www.jkoolcloud.com/</url>
+    </organization>
     <developers>
         <developer>
             <name>jKool Team</name>
@@ -84,7 +88,7 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>4.1.1.Final</version>
+            <version>4.2.0.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
         <dependency>

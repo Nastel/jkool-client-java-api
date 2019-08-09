@@ -49,6 +49,7 @@ public interface JKQueryConstants {
 
 	static final String JK_SUB_UUID_PREFIX = "$sub/";
 	static final String JK_SUB_QUERY_PREFIX = "subscribe to ";
+	static final String JK_SUB_QUERY_PREFIX2 = "sub to ";
 	static final String JK_UNSUB_QUERY_PREFIX = "unsubscribe from ";
 	static final String JK_SEARCH_QUERY_PREFIX = "get events where message contains \"%s\"";
 

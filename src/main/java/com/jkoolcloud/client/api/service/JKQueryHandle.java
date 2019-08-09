@@ -135,7 +135,8 @@ public class JKQueryHandle implements JKQueryConstants {
 	 * @return true if subscribe query, false otherwise
 	 */
 	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX);
+		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX) 
+				|| query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX2);
 	}
 
 	/**

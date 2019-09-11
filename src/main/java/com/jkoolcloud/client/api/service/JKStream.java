@@ -33,6 +33,8 @@ public class JKStream extends JKService {
 	public static final String CLIENT_HOSTADDR = "J-Client-Host-Addr";
 	public static final String CLIENT_RUNTIME = "J-Client-Runtime";
 	public static final String CLIENT_VERSION = "J-Client-Version";
+	public static final String X_API_KEY = "X-API-Key";
+
 
 	private static final String VALUE_VERSION = JKStream.class.getPackage().getImplementationVersion();
 	private static final String VALUE_HOSTNAME = JKUtils.VM_HOST;
@@ -88,6 +90,7 @@ public class JKStream extends JKService {
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
+				.header(X_API_KEY, token)
 				.post(Entity.entity(serialize(activity), MediaType.APPLICATION_JSON));
 	}
 
@@ -110,6 +113,7 @@ public class JKStream extends JKService {
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
+				.header(X_API_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
@@ -132,6 +136,7 @@ public class JKStream extends JKService {
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
+				.header(X_API_KEY, token)
 				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
 	}
 
@@ -154,6 +159,7 @@ public class JKStream extends JKService {
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
+				.header(X_API_KEY, token)
 				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
 	}
 
@@ -176,6 +182,7 @@ public class JKStream extends JKService {
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
+				.header(X_API_KEY, token)
 				.post(Entity.entity(serialize(dataset), MediaType.APPLICATION_JSON));
 	}
 

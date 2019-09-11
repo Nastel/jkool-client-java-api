@@ -84,14 +84,7 @@ public class JKStream extends JKService {
 		if (!activity.isValid()) {
 			throw new JKStreamException(200, "Invalid activity=" + activity);
 		}
-		return target.path(JK_ACTIVITY_KEY).request()
-				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
-				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
-				.header(CLIENT_RUNTIME, VALUE_VMNAME)
-				.header(CLIENT_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
-				.header(X_API_KEY, token)
-				.post(Entity.entity(serialize(activity), MediaType.APPLICATION_JSON));
+		return post(JK_ACTIVITY_KEY, activity);
 	}
 
 	/**
@@ -107,14 +100,7 @@ public class JKStream extends JKService {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid event=" + event);
 		}
-		return target.path(JK_EVENT_KEY).request()
-				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
-				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
-				.header(CLIENT_RUNTIME, VALUE_VMNAME)
-				.header(CLIENT_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
-				.header(X_API_KEY, token)
-				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
+		return post(JK_EVENT_KEY, event);
 	}
 
 	/**
@@ -130,14 +116,7 @@ public class JKStream extends JKService {
 		if (!event.isValid()) {
 			throw new JKStreamException(200, "Invalid logmsg=" + event);
 		}
-		return target.path(JK_LOG_KEY).request()
-				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
-				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
-				.header(CLIENT_RUNTIME, VALUE_VMNAME)
-				.header(CLIENT_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
-				.header(X_API_KEY, token)
-				.post(Entity.entity(serialize(event), MediaType.APPLICATION_JSON));
+		return post(JK_LOG_KEY, event);
 	}
 
 	/**
@@ -153,14 +132,7 @@ public class JKStream extends JKService {
 		if (!snapshot.isValid()) {
 			throw new JKStreamException(200, "Invalid snapshot=" + snapshot);
 		}
-		return target.path(JK_SNAPSHOT_KEY).request()
-				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
-				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
-				.header(CLIENT_RUNTIME, VALUE_VMNAME)
-				.header(CLIENT_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
-				.header(X_API_KEY, token)
-				.post(Entity.entity(serialize(snapshot), MediaType.APPLICATION_JSON));
+		return post(JK_SNAPSHOT_KEY, snapshot);
 	}
 
 	/**
@@ -176,16 +148,28 @@ public class JKStream extends JKService {
 		if (!dataset.isValid()) {
 			throw new JKStreamException(200, "Invalid dataset=" + dataset);
 		}
-		return target.path(JK_DATASET_KEY).request()
+		return post(JK_DATASET_KEY, dataset);
+	}
+
+	/**
+	 * Post a JSON message to the target
+	 * 
+	 * @param msg
+	 *            JSON message
+	 * @return {@link Response}
+	 * @throws JKStreamException 
+	 */
+	protected Response post(String path, Object obj) throws JKStreamException {
+		return target.path(path).request()
 				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
 				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
 				.header(CLIENT_RUNTIME, VALUE_VMNAME)
 				.header(CLIENT_VERSION, VALUE_VERSION)
 				.header(TOKEN_KEY, token)
 				.header(X_API_KEY, token)
-				.post(Entity.entity(serialize(dataset), MediaType.APPLICATION_JSON));
+				.post(Entity.entity(serialize(obj), MediaType.APPLICATION_JSON));		
 	}
-
+	
 	/**
 	 * Send an info log message to the stream without throwing back exception.
 	 * 
@@ -340,5 +324,5 @@ public class JKStream extends JKService {
 	 */
 	public static Dataset newDataset(String cat, String name) {
 		return new Dataset(cat, name);
-	}
+	}	
 }

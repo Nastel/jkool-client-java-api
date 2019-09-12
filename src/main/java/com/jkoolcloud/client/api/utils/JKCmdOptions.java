@@ -24,7 +24,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 import com.jkoolcloud.client.api.service.JKQueryAsync;
-import com.jkoolcloud.client.api.service.JKQueryConstants;
+import com.jkoolcloud.client.api.service.JKQIConstants;
 
 public class JKCmdOptions {
 	public static final String PROP_URI = "uri";
@@ -83,9 +83,9 @@ public class JKCmdOptions {
 	public String uri = JKQueryAsync.JKOOL_WEBSOCK_URL;
 
 	public boolean trace = false;
-	public int maxRows = JKQueryConstants.DEFAULT_MAX_ROWS;
-	public long waitTimeMs = JKQueryConstants.DEFAULT_WAIT_TIME;
-	public long retryTimeMs = JKQueryConstants.DEFAULT_RETRY_TIME;
+	public int maxRows = JKQIConstants.DEFAULT_MAX_ROWS;
+	public long waitTimeMs = JKQIConstants.DEFAULT_WAIT_TIME;
+	public long retryTimeMs = JKQIConstants.DEFAULT_RETRY_TIME;
 
 	public JKCmdOptions(String[] args) {
 		parseOptions(args);
@@ -132,7 +132,7 @@ public class JKCmdOptions {
 		json_path = props.getProperty(PROP_JPATH, json_path);
 		search = props.getProperty(PROP_SEARCH, search);
 		if (search != null) {
-			query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
+			query = String.format(JKQIConstants.JK_SEARCH_QUERY_PREFIX, search);
 		}
 		waitTimeMs = Long.parseLong(props.getProperty(PROP_WAIT, String.valueOf(waitTimeMs)));
 		retryTimeMs = Long.parseLong(props.getProperty(PROP_RETRY, String.valueOf(retryTimeMs)));
@@ -167,7 +167,7 @@ public class JKCmdOptions {
 					return;
 				}
 				search = args[++i];
-				query = String.format(JKQueryConstants.JK_SEARCH_QUERY_PREFIX, search);
+				query = String.format(JKQIConstants.JK_SEARCH_QUERY_PREFIX, search);
 			} else if (OPTION_URI.equals(arg)) {
 				if ((i + 1) == args.length) {
 					usage = "Must specify URI with " + arg;

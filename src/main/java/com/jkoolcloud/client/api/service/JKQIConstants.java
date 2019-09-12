@@ -15,7 +15,7 @@
  */
 package com.jkoolcloud.client.api.service;
 
-public interface JKQueryConstants {
+public interface JKQIConstants {
 	static final String CONTENT_TYPE = "content-type";
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
@@ -25,13 +25,20 @@ public interface JKQueryConstants {
 	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
 			"wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
 
-	public static String JK_EVENT_KEY = "event";
-	public static String JK_ACTIVITY_KEY = "activity";
-	public static String JK_DATASET_KEY = "dataset";
-	public static String JK_SNAPSHOT_KEY = "snapshot";
-	public static String JK_LOG_KEY = "log";
-
+	// HTTP header keys
+	static final String X_API_KEY = "X-API-Key";
+	static final String X_API_HOSTNAME = "X-API-Host-Name";
+	static final String X_API_HOSTADDR = "X-API-Host-Addr";
+	static final String X_API_RUNTIME = "X-API-Runtime";
+	static final String X_API_VERSION = "X-API-Version";
 	static final String TOKEN_KEY = "token";
+
+	static final String JK_EVENT_KEY = "event";
+	static final String JK_ACTIVITY_KEY = "activity";
+	static final String JK_DATASET_KEY = "dataset";
+	static final String JK_SNAPSHOT_KEY = "snapshot";
+	static final String JK_LOG_KEY = "log";
+
 	static final String JK_TOKEN_KEY = "jk_token";
 	static final String JK_QUERY_KEY = "jk_query";
 	static final String JK_MAX_ROWS_KEY = "jk_maxrows";

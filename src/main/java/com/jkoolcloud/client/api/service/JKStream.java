@@ -29,13 +29,6 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * @see JKService
  */
 public class JKStream extends JKService {
-	public static final String CLIENT_HOSTNAME = "J-Client-Host-Name";
-	public static final String CLIENT_HOSTADDR = "J-Client-Host-Addr";
-	public static final String CLIENT_RUNTIME = "J-Client-Runtime";
-	public static final String CLIENT_VERSION = "J-Client-Version";
-	public static final String X_API_KEY = "X-API-Key";
-
-
 	private static final String VALUE_VERSION = JKStream.class.getPackage().getImplementationVersion();
 	private static final String VALUE_HOSTNAME = JKUtils.VM_HOST;
 	private static final String VALUE_HOSTADDR = JKUtils.VM_NETADDR;
@@ -161,12 +154,12 @@ public class JKStream extends JKService {
 	 */
 	protected Response post(String path, Object obj) throws JKStreamException {
 		return target.path(path).request()
-				.header(CLIENT_HOSTNAME, VALUE_HOSTNAME)
-				.header(CLIENT_HOSTADDR, VALUE_HOSTADDR)
-				.header(CLIENT_RUNTIME, VALUE_VMNAME)
-				.header(CLIENT_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
 				.header(X_API_KEY, token)
+				.header(X_API_HOSTNAME, VALUE_HOSTNAME)
+				.header(X_API_HOSTADDR, VALUE_HOSTADDR)
+				.header(X_API_RUNTIME, VALUE_VMNAME)
+				.header(X_API_VERSION, VALUE_VERSION)
+				.header(TOKEN_KEY, token)
 				.post(Entity.entity(serialize(obj), MediaType.APPLICATION_JSON));		
 	}
 	

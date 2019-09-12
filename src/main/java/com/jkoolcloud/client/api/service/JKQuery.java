@@ -265,8 +265,8 @@ public class JKQuery extends JKService {
 				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
 
 		return target.request(MediaType.APPLICATION_JSON)
+				.header(X_API_KEY, _token)
 				.header(JK_TOKEN_KEY, _token)
-				.header(JKStream.X_API_KEY, _token)
 				.get();
 	}
 
@@ -292,7 +292,7 @@ public class JKQuery extends JKService {
 					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows;
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			// optionally, token can be in the header.
-			request.addHeader(JKStream.X_API_KEY, getToken());
+			request.addHeader(X_API_KEY, getToken());
 			request.addHeader(JK_TOKEN_KEY, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);

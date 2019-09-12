@@ -30,7 +30,7 @@ import javax.json.JsonObject;
  * 
  * @author albert
  */
-public class JKQueryHandle implements JKQueryConstants {
+public class JKQueryHandle implements JKQIConstants {
 	public final static String DEFAULT_DATE_RANGE = "today";
 	public final static String DEFAULT_REPO = "";
 

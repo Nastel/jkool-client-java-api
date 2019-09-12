@@ -27,7 +27,7 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * 
  * @author albert
  */
-abstract public class JKService implements JKQueryConstants {
+abstract public class JKService implements JKQIConstants {
 
 	String token;
 	String basePath;

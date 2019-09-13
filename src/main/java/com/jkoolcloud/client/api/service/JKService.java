@@ -102,13 +102,6 @@ abstract public class JKService implements JKQIConstants {
 	 *             if error occurs during a call
 	 */
 	public String serialize(Object obj) throws JKStreamException {
-		if (obj == null) {
-			throw new JKStreamException(500, "Object must not be null");
-		}
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new JKStreamException(600, "Failed to serialize object: " + e.getMessage(), e);
-		}
+		return JKUtils.serialize(mapper, obj);
 	}
 }

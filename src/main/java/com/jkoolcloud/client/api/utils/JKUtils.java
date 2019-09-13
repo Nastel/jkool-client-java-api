@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.jkoolcloud.client.api.service.JKStreamException;
 
 /**
  * This class implements common API utilities
@@ -132,6 +133,33 @@ public class JKUtils {
 		return VM_NAME;
 	}
 
+	/**
+	 * Serialize an object into JSON format
+	 * 
+	 * @param mapper
+	 *            JSON object mapper instance
+	 * @param obj
+	 *            java object instance (non null)
+	 * @return JSON representation of the object
+	 * @throws JKStreamException
+	 *             if error occurs during a call
+	 */
+	public static String serialize(ObjectMapper mapper, Object obj) throws JKStreamException {
+		if (obj == null) {
+			throw new JKStreamException(500, "Object must not be null");
+		}
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (Throwable e) {
+			throw new JKStreamException(600, "Failed to serialize object", e);
+		}
+	}
+
+	/**
+	 * Create new Object mapper instance for JSON serialization
+	 * 
+	 * @return JSON object mapper
+	 */
 	public static ObjectMapper newObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -155,17 +183,6 @@ public class JKUtils {
 		return stringWriter.toString();
 	}
 
-	private static Map<String, Boolean> buildConfig(String... options) {
-		Map<String, Boolean> config = new HashMap<>();
-
-		if (options != null) {
-			for (String option : options) {
-				config.put(option, true);
-			}
-		}
-		return config;
-	}
-
 	public static JsonValue getJsonValue(String json_path, JsonObject response) {
 		StringTokenizer tk = new StringTokenizer(json_path, "/");
 
@@ -181,5 +198,16 @@ public class JKUtils {
 			}
 		}
 		return rValue;
+	}
+
+	private static Map<String, Boolean> buildConfig(String... options) {
+		Map<String, Boolean> config = new HashMap<>();
+
+		if (options != null) {
+			for (String option : options) {
+				config.put(option, true);
+			}
+		}
+		return config;
 	}
 }

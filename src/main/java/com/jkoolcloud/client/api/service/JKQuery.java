@@ -266,7 +266,7 @@ public class JKQuery extends JKService {
 
 		return target.request(MediaType.APPLICATION_JSON)
 				.header(X_API_KEY, _token)
-				.header(JK_TOKEN_KEY, _token)
+				.header(X_API_TOKEN, _token)
 				.get();
 	}
 
@@ -293,7 +293,7 @@ public class JKQuery extends JKService {
 			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
 			// optionally, token can be in the header.
 			request.addHeader(X_API_KEY, getToken());
-			request.addHeader(JK_TOKEN_KEY, getToken());
+			request.addHeader(X_API_TOKEN, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			HttpResponse response = httpClient.execute(request);
 			return response;

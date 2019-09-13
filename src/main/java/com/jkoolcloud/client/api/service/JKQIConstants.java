@@ -16,7 +16,6 @@
 package com.jkoolcloud.client.api.service;
 
 public interface JKQIConstants {
-	static final String CONTENT_TYPE = "content-type";
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
 	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
@@ -26,12 +25,13 @@ public interface JKQIConstants {
 			"wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
 
 	// HTTP header keys
+	static final String CONTENT_TYPE = "content-type";
 	static final String X_API_KEY = "X-API-Key";
 	static final String X_API_HOSTNAME = "X-API-Host-Name";
 	static final String X_API_HOSTADDR = "X-API-Host-Addr";
 	static final String X_API_RUNTIME = "X-API-Runtime";
 	static final String X_API_VERSION = "X-API-Version";
-	static final String TOKEN_KEY = "token";
+	static final String X_API_TOKEN = "token";
 
 	static final String JK_EVENT_KEY = "event";
 	static final String JK_ACTIVITY_KEY = "activity";

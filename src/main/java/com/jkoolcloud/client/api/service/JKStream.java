@@ -159,7 +159,7 @@ public class JKStream extends JKService {
 				.header(X_API_HOSTADDR, VALUE_HOSTADDR)
 				.header(X_API_RUNTIME, VALUE_VMNAME)
 				.header(X_API_VERSION, VALUE_VERSION)
-				.header(TOKEN_KEY, token)
+				.header(X_API_TOKEN, token)
 				.post(Entity.entity(serialize(obj), MediaType.APPLICATION_JSON));		
 	}
 	

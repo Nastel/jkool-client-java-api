@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import javax.json.Json;
@@ -53,6 +54,11 @@ class WSClientHandler implements JKWSHandler {
 
 	@Override
 	public void onClose(JKWSClient client, Session userSession, CloseReason reason) {
+		try {
+			jkagent.close();
+		} catch (IOException e) {
+		}
+
 		synchronized (jkagent.conHandlers) {
 			for (JKConnectionHandler ch : jkagent.conHandlers) {
 				ch.close(jkagent, reason);

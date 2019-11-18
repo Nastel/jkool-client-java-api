@@ -31,16 +31,16 @@ import com.jkoolcloud.client.api.utils.JKCmdOptions;
 
 public class CallExample {
 	public static void main(String[] args) throws ProcessingException {
-		try {
-			Properties props = new Properties();
-			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
-			JKCmdOptions options = new JKCmdOptions(CallExample.class, args, props);
-			if (options.usage != null) {
-				System.out.println(options.usage);
-				System.exit(-1);
-			}
-			options.print();
-			JKQuery jkQuery = new JKQuery(options.token);
+		Properties props = new Properties();
+		props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
+		JKCmdOptions options = new JKCmdOptions(CallExample.class, args, props);
+		if (options.usage != null) {
+			System.out.println(options.usage);
+			System.exit(-1);
+		}
+		options.print();
+
+		try (JKQuery jkQuery = new JKQuery(options.token)) {
 			Response res = jkQuery.call(options.query);
 
 			int status = res.getStatus();

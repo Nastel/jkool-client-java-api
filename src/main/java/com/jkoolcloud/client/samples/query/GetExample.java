@@ -17,7 +17,7 @@ package com.jkoolcloud.client.samples.query;
 
 import java.util.Properties;
 
-import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 
 import com.jkoolcloud.client.api.service.JKQuery;
@@ -29,18 +29,20 @@ import com.jkoolcloud.client.api.utils.JKCmdOptions;
 
 public class GetExample {
 	public static void main(String[] args) {
-		try {
-			Properties props = new Properties();
-			props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
-			JKCmdOptions options = new JKCmdOptions(GetExample.class, args, props);
-			if (options.usage != null) {
-				System.out.println(options.usage);
-				System.exit(-1);
-			}
-			options.print();
-			JKQuery jkQuery = new JKQuery(options.token);
-			HttpResponse response = jkQuery.get(options.query);
+		Properties props = new Properties();
+		props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
+		JKCmdOptions options = new JKCmdOptions(GetExample.class, args, props);
+		if (options.usage != null) {
+			System.out.println(options.usage);
+			System.exit(-1);
+		}
+		options.print();
+
+		try (JKQuery jkQuery = new JKQuery(options.token)) {
+			CloseableHttpResponse response = jkQuery.get(options.query);
 			System.out.println(EntityUtils.toString(response.getEntity()));
+			EntityUtils.consumeQuietly(response.getEntity());
+			response.close();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

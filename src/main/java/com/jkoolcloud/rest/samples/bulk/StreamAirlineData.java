@@ -70,9 +70,8 @@ public class StreamAirlineData {
 		BufferedReader br = null;
 		HashMap<String, String> line;
 		List<String> fieldNames = new ArrayList<>();
-		JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
 
-		try {
+		try (JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"))) {
 			String sCurrentLine;
 			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 			InputStream is = classloader.getResourceAsStream(fileName);

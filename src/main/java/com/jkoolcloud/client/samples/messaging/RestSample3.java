@@ -43,8 +43,7 @@ import com.jkoolcloud.client.api.service.JKStream;
 public class RestSample3 {
 
 	public static void main(String[] args) {
-		try {
-			JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
+		try (JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"))) {
 
 			// Create the first event which is a message received event
 			// representing a message received in a

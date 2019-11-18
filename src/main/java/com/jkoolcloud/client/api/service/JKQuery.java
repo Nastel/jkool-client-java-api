@@ -15,15 +15,16 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.TimeZone;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 /**
@@ -33,7 +34,7 @@ import org.apache.http.impl.client.HttpClients;
  * @author albert
  */
 public class JKQuery extends JKService {
-	HttpClient httpClient = HttpClients.createDefault();
+	CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	boolean trace = false;
 	String repoId = "";
@@ -201,7 +202,7 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public HttpResponse get(String query) throws JKStreamException {
+	public CloseableHttpResponse get(String query) throws JKStreamException {
 		return get(query, DEFAULT_MAX_ROWS);
 	}
 
@@ -214,7 +215,7 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public HttpResponse get(JKStatement query) throws JKStreamException {
+	public CloseableHttpResponse get(JKStatement query) throws JKStreamException {
 		return get(query.getQuery(), query.getMaxRows());
 	}
 
@@ -264,9 +265,9 @@ public class JKQuery extends JKService {
 				.queryParam(JK_TRACE_KEY, _trace) //
 				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
 
-		return target.request(MediaType.APPLICATION_JSON)
-				.header(X_API_KEY, _token)
-				.header(X_API_TOKEN, _token)
+		return target.request(MediaType.APPLICATION_JSON) //
+				.header(X_API_KEY, _token) //
+				.header(X_API_TOKEN, _token) //
 				.get();
 	}
 
@@ -281,7 +282,7 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public HttpResponse get(String query, int maxRows) throws JKStreamException {
+	public CloseableHttpResponse get(String query, int maxRows) throws JKStreamException {
 		try {
 			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8") //
 					+ "&" + JK_TOKEN_KEY + "=" + getToken() //
@@ -295,10 +296,19 @@ public class JKQuery extends JKService {
 			request.addHeader(X_API_KEY, getToken());
 			request.addHeader(X_API_TOKEN, getToken());
 			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-			HttpResponse response = httpClient.execute(request);
+			CloseableHttpResponse response = httpClient.execute(request);
 			return response;
 		} catch (Throwable e) {
 			throw new JKStreamException(300, "Failed: path=" + getServiceUrl() + ", query=" + query, e);
 		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (httpClient != null) {
+			httpClient.close();
+		}
+
+		super.close();
 	}
 }

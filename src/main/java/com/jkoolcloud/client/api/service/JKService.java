@@ -15,6 +15,9 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -27,7 +30,7 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * 
  * @author albert
  */
-abstract public class JKService implements JKQIConstants {
+abstract public class JKService implements JKQIConstants, Closeable {
 
 	String token;
 	String basePath;
@@ -103,5 +106,16 @@ abstract public class JKService implements JKQIConstants {
 	 */
 	public String serialize(Object obj) throws JKStreamException {
 		return JKUtils.serialize(mapper, obj);
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (rsClient != null) {
+			try {
+				rsClient.close();
+			} catch (Throwable t) {
+				throw new IOException("Failed to close JAX-RS client", t);
+			}
+		}
 	}
 }

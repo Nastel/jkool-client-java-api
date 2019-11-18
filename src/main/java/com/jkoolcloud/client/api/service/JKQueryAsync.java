@@ -15,7 +15,6 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,7 +34,7 @@ import javax.json.JsonObjectBuilder;
  * 
  * @author albert
  */
-public class JKQueryAsync extends JKQuery implements Closeable {
+public class JKQueryAsync extends JKQuery {
 	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy query associated with default response
 																		// handler
 	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<>();
@@ -276,8 +275,9 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	public synchronized void close() throws IOException {
 		if (socket != null) {
 			socket.disconnect();
+			socket = null;
 		}
-		socket = null;
+		super.close();
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 			throw new IllegalArgumentException("callback can not be null");
 		}
 		JKQueryHandle qHandle = createQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback)
-				.setMaxRows(maxRows).setTrace(this.isTrace());
+				.setMaxRows(maxRows).setTrace(isTrace());
 		return callAsync(qHandle);
 	}
 
@@ -465,7 +465,8 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	/**
 	 * Send JSON query via a websocket
 	 * 
-	 * @param jsonQuery json query
+	 * @param jsonQuery
+	 *            json query
 	 * @return websocket client
 	 * @throws IOException
 	 *             on error during IO
@@ -473,7 +474,7 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 	private JKWSClient sendJsonQuery(JsonObject jsonQuery) throws IOException {
 		return socket.sendMessageAsync(jsonQuery.toString());
 	}
-	
+
 	/**
 	 * Cancel all active subscriptions
 	 * 
@@ -643,7 +644,6 @@ public class JKQueryAsync extends JKQuery implements Closeable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " {" //
-				+ "\", uri: \"" + webSockUri + "\"}";
+		return getClass().getSimpleName() + " {" + "\", uri: \"" + webSockUri + "\"}";
 	}
 }

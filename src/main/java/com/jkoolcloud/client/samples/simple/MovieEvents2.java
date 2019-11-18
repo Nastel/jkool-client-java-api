@@ -35,8 +35,7 @@ import com.jkoolcloud.client.api.service.JKStream;
 public class MovieEvents2 {
 
 	public static void main(String[] args) {
-		try {
-			JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"));
+		try (JKStream jkSend = new JKStream(System.getProperty("jk.access.token", "access-token"))) {
 
 			// Create some custom fields
 			Property propertyName = new Property("MovieName", "Casablanca");

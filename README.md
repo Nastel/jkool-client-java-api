@@ -27,7 +27,7 @@ assemble. This `build` directory will be at the same level as the directory you 
 	<dependency>
 		<groupId>com.jkoolcloud.client.api</groupId>
 		<artifactId>jkool-client-api</artifactId>
-		<version>0.2.3</version>
+		<version>0.2.7</version>
 	</dependency>
 ```
 ## Streaming to jKool

@@ -4,7 +4,7 @@
 
     <groupId>com.jkoolcloud.client.api</groupId>
     <artifactId>jkool-client-api</artifactId>
-    <version>0.2.6</version>
+    <version>0.2.7</version>
     <packaging>jar</packaging>
 
     <name>jkool-client-api</name>

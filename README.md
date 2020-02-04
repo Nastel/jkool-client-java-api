@@ -291,11 +291,10 @@ r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, jso
 ```
 ### Query jKool using Curl
 
-Rest can be used to retrieve data natively (without helper classes) out of jKool using Curl. Below is an example. Please note that you also 
-have the option of putting the token in the header instead of specifying it as a parameter.
+Rest can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have query/read permission, streaming tokens don't have query access by default. 
 
 ```java
-curl -i -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-TOKEN'
+curl -i -o resp.out -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-ACCESS-TOKEN'
 ```
 ### Note on time stamps
 Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time 

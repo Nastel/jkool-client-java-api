@@ -15,7 +15,6 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import java.io.IOException;
 import java.io.StringReader;
 
 import javax.json.Json;

@@ -32,7 +32,7 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  */
 public class JKQuery extends JKService {
 	boolean trace = false;
-	String repoId = "";
+	String repoId = null;
 	String dateRange = "today";
 	String tz = TimeZone.getDefault().getID();
 
@@ -214,25 +214,26 @@ public class JKQuery extends JKService {
 	 *            repo name (or null if default)
 	 * @param _tz
 	 *            timezone scope for the query
-	 * @param _dfilter
+	 * @param _drange
 	 *            time filter or range (e.g. today)
 	 * @param _trace
 	 *            trace mode
-	 * @param _maxRows
+	 * @param _mrows
 	 *            maximum rows in response
 	 * @return object containing JSON response
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace,
-			int _maxRows) throws JKStreamException {
+	public Response call(String _query, String _token, String _repo, String _tz, String _drange, boolean _trace,
+			int _mrows) throws JKStreamException {
 		Form qParms = new Form();
 		if (_token != null) qParms.param(JK_TOKEN_KEY, _token);
 		if (_query != null) qParms.param(JK_QUERY_KEY, _query);
-		if (_tz != null) qParms.param(JK_TIME_ZONE_KEY, _tz);
 		if (_repo != null) qParms.param(JK_REPO_KEY, _repo);
+		if (_tz != null) qParms.param(JK_TIME_ZONE_KEY, _tz);
+		if (_drange != null) qParms.param(JK_DATE_KEY, _drange);
 		if (_trace) qParms.param(JK_TRACE_KEY, Boolean.toString(_trace));
-		qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_maxRows));
+		if (_mrows > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_mrows));
 		
 		return target.request(MediaType.APPLICATION_JSON_TYPE) //
 				.header(X_API_KEY, _token) //

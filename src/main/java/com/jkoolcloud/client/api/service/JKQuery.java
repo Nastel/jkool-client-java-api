@@ -15,27 +15,22 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.TimeZone;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
- * This class defines a RESTFul way to run jKool queries. Supports standard queries only (does not support
+ * This class defines a RESTFul way to run JKQL queries. Supports standard queries only (does not support
  * subscriptions)
  * 
  * @author albert
  */
 public class JKQuery extends JKService {
-	CloseableHttpClient httpClient = HttpClients.createDefault();
-
 	boolean trace = false;
 	String repoId = "";
 	String dateRange = "today";
@@ -198,32 +193,6 @@ public class JKQuery extends JKService {
 	 * 
 	 * @param query
 	 *            JKQL query statement
-	 * @return object containing JSON response
-	 * @throws JKStreamException
-	 *             if error occurs during a call
-	 */
-	public CloseableHttpResponse get(String query) throws JKStreamException {
-		return get(query, DEFAULT_MAX_ROWS);
-	}
-
-	/**
-	 * Execute a specific JKQL query
-	 * 
-	 * @param query
-	 *            JKQL query statement
-	 * @return object containing JSON response
-	 * @throws JKStreamException
-	 *             if error occurs during a call
-	 */
-	public CloseableHttpResponse get(JKStatement query) throws JKStreamException {
-		return get(query.getQuery(), query.getMaxRows());
-	}
-
-	/**
-	 * Execute a specific JKQL query
-	 * 
-	 * @param query
-	 *            JKQL query statement
 	 * @param maxRows
 	 *            maximum rows in response
 	 * @return object containing JSON response
@@ -257,58 +226,21 @@ public class JKQuery extends JKService {
 	 */
 	public Response call(String _query, String _token, String _repo, String _tz, String _dfilter, boolean _trace,
 			int _maxRows) throws JKStreamException {
-		target = target.queryParam(JK_QUERY_KEY, _query) //
-				.queryParam(JK_TOKEN_KEY, _token) //
-				.queryParam(JK_TIME_ZONE_KEY, _tz) //
-				.queryParam(JK_DATE_KEY, _dfilter) //
-				.queryParam(JK_REPO_KEY, _repo) //
-				.queryParam(JK_TRACE_KEY, _trace) //
-				.queryParam(JK_MAX_ROWS_KEY, _maxRows);
-
-		return target.request(MediaType.APPLICATION_JSON) //
+		Form qParms = new Form();
+		if (_token != null) qParms.param(JK_TOKEN_KEY, _token);
+		if (_query != null) qParms.param(JK_QUERY_KEY, _query);
+		if (_tz != null) qParms.param(JK_TIME_ZONE_KEY, _tz);
+		if (_repo != null) qParms.param(JK_REPO_KEY, _repo);
+		if (_trace) qParms.param(JK_TRACE_KEY, Boolean.toString(_trace));
+		qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_maxRows));
+		
+		return target.request(MediaType.APPLICATION_JSON_TYPE) //
 				.header(X_API_KEY, _token) //
 				.header(X_API_TOKEN, _token) //
-				.get();
-	}
-
-	/**
-	 * Execute a specific JKQL query
-	 * 
-	 * @param query
-	 *            JKQL query statement
-	 * @param maxRows
-	 *            maximum rows in response
-	 * @return object containing JSON response
-	 * @throws JKStreamException
-	 *             if error occurs during a call
-	 */
-	public CloseableHttpResponse get(String query, int maxRows) throws JKStreamException {
-		try {
-			String urlQuery = JK_QUERY_KEY + "=" + URLEncoder.encode(query, "UTF-8") //
-					+ "&" + JK_TOKEN_KEY + "=" + getToken() //
-					+ "&" + JK_TIME_ZONE_KEY + "=" + tz //
-					+ "&" + JK_DATE_KEY + "=" + dateRange //
-					+ "&" + JK_REPO_KEY + "=" + repoId //
-					+ "&" + JK_TRACE_KEY + "=" + trace //
-					+ "&" + JK_MAX_ROWS_KEY + "=" + maxRows;
-			HttpGet request = new HttpGet(getServiceUrl() + "?" + urlQuery);
-			// optionally, token can be in the header.
-			request.addHeader(X_API_KEY, getToken());
-			request.addHeader(X_API_TOKEN, getToken());
-			request.addHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
-			CloseableHttpResponse response = httpClient.execute(request);
-			return response;
-		} catch (Throwable e) {
-			throw new JKStreamException(300, "Failed: path=" + getServiceUrl() + ", query=" + query, e);
-		}
-	}
-
-	@Override
-	public void close() throws IOException {
-		if (httpClient != null) {
-			httpClient.close();
-		}
-
-		super.close();
+				.header(X_API_HOSTNAME, JKUtils.VM_HOST)
+				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR)
+				.header(X_API_RUNTIME, JKUtils.VM_NAME)
+				.header(X_API_VERSION, this.getClass().getPackage().getImplementationVersion())
+				.post(Entity.form(qParms));
 	}
 }

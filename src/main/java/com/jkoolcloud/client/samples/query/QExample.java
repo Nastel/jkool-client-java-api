@@ -29,11 +29,11 @@ import com.jkoolcloud.client.api.utils.JKCmdOptions;
  * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.call()}
  ***********************************************************************************************************************/
 
-public class CallExample {
+public class QExample {
 	public static void main(String[] args) throws ProcessingException {
 		Properties props = new Properties();
 		props.setProperty(JKCmdOptions.PROP_URI, JKQuery.JKOOL_QUERY_URL);
-		JKCmdOptions options = new JKCmdOptions(CallExample.class, args, props);
+		JKCmdOptions options = new JKCmdOptions(QExample.class, args, props);
 		if (options.usage != null) {
 			System.out.println(options.usage);
 			System.exit(-1);

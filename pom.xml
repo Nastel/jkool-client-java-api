@@ -4,7 +4,7 @@
 
     <groupId>com.jkoolcloud.client.api</groupId>
     <artifactId>jkool-client-api</artifactId>
-    <version>0.2.8</version>
+    <version>0.2.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>jkool-client-api</name>
@@ -72,12 +72,6 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
-        <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>3.6</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-joda -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>

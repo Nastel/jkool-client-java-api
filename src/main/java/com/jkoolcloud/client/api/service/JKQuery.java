@@ -25,8 +25,7 @@ import javax.ws.rs.core.Response;
 import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
- * This class defines a RESTFul way to run JKQL queries. Supports standard queries only (does not support
- * subscriptions)
+ * This class defines a RESTFul way to run JKQL queries. Supports standard queries only (does not support subscriptions)
  * 
  * @author albert
  */
@@ -230,17 +229,18 @@ public class JKQuery extends JKService {
 		if (_token != null) qParms.param(JK_TOKEN_KEY, _token);
 		if (_query != null) qParms.param(JK_QUERY_KEY, _query);
 		if (_tz != null) qParms.param(JK_TIME_ZONE_KEY, _tz);
+		if (_dfilter != null) qParms.param(JK_DATE_KEY, _dfilter);
 		if (_repo != null) qParms.param(JK_REPO_KEY, _repo);
 		if (_trace) qParms.param(JK_TRACE_KEY, Boolean.toString(_trace));
 		qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_maxRows));
-		
+
 		return target.request(MediaType.APPLICATION_JSON_TYPE) //
 				.header(X_API_KEY, _token) //
 				.header(X_API_TOKEN, _token) //
-				.header(X_API_HOSTNAME, JKUtils.VM_HOST)
-				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR)
-				.header(X_API_RUNTIME, JKUtils.VM_NAME)
-				.header(X_API_VERSION, this.getClass().getPackage().getImplementationVersion())
+				.header(X_API_HOSTNAME, JKUtils.VM_HOST) //
+				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
+				.header(X_API_RUNTIME, JKUtils.VM_NAME) //
+				.header(X_API_VERSION, this.getClass().getPackage().getImplementationVersion()) //
 				.post(Entity.form(qParms));
 	}
 }

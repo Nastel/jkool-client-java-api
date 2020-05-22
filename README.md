@@ -12,10 +12,10 @@ streamed to jKool. They are:
 * *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
 * *Activity*: Represents a group of events and other activities (e.g. transactions).
 * *Snapshot*: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
+* *Dataset* : a user defined set of data elements.
 * *Property*: simple metric (name, value pair). Properties can be associated with events, activities and snapshots.
 
-This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field 
-that comprises the above mentioned data.
+This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ## How to build
 To use this sample code please do the following:

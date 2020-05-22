@@ -277,7 +277,6 @@ REST can be used to retrieve data natively (without helper classes) out of your 
 Example using `jk_token` parameter to pass access token: 
 ```java
 curl -i -d "jk_token=access-token&jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
-curl -i -o resp.out -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-ACCESS-TOKEN'
 ```
 Example using (`X-API-Key`) to pass access token: 
 ```java

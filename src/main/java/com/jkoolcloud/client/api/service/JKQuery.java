@@ -30,6 +30,8 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * @author albert
  */
 public class JKQuery extends JKService {
+	public static final String QAPI_CLIENT_VERSION = JKQuery.class.getClass().getPackage().getImplementationVersion();
+	
 	boolean trace = false;
 	String repoId = null;
 	String dateRange = "today";
@@ -240,7 +242,7 @@ public class JKQuery extends JKService {
 				.header(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
 				.header(X_API_RUNTIME, JKUtils.VM_NAME) //
-				.header(X_API_VERSION, this.getClass().getPackage().getImplementationVersion()) //
+				.header(X_API_VERSION, QAPI_CLIENT_VERSION) //
 				.post(Entity.form(qParms));
 	}
 }

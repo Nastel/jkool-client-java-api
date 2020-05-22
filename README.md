@@ -1,4 +1,4 @@
-# JQKL Streaming & Query API
+# JQKL Streaming & Query API Using REST
 JKQL Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will 
 need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you 
 sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the 
@@ -89,7 +89,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 ```
 The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
-### Running JKQL Queries (Synchronously)
+### Running JKQL (Synchronously)
 In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please 
 see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. 
 Simply pass in your access token along with the JKQL query. Below is an example:
@@ -102,7 +102,7 @@ Simply pass in your access token along with the JKQL query. Below is an example:
 ```
 All returned JKQL responses are JSON.
 
-### Running JKQL Queries (Asynchronously)
+### Running JKQL (Asynchronously)
 Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. 
 This example makes use of two connection handlers: 1) for tracing connection events and 2) for retrying connection during failures.
 ```java
@@ -241,8 +241,8 @@ rows to return (default is 100). The example above can be implemented as:
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
 	...
 ```
-### Running JKQL queries from command line
-You can run JKQL queries from command line using a helper class `JKQLCmd` below. Run all commands from the root 'jkool-client-api-<version>' 
+### Running JKQL from command line
+You can run JKQL from command line using a helper class `JKQLCmd` below. Run all commands from the root 'jkool-client-api-<version>' 
 directory.
 ```sh
 	unix: java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
@@ -271,7 +271,7 @@ retry=0
 #jpath=jk_response/rows-found
 ```
 	
-### Running JKQLQueries using Curl
+### Running JKQL using Curl
 
 REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have query/read permission, streaming tokens don't have query access by default. 
 

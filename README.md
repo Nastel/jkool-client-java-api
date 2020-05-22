@@ -25,9 +25,9 @@ assemble. This `build` directory will be at the same level as the directory you 
 * Add the following into your maven pom file:
 ```pom
 	<dependency>
-		<groupId>com.jkoolcloud.client.api</groupId>
-		<artifactId>jkool-client-api</artifactId>
-		<version>0.2.7</version>
+        <groupId>com.jkoolcloud.client.api</groupId>
+        <artifactId>jkool-client-api</artifactId>
+        <version>0.2.9</version>
 	</dependency>
 ```
 ## Streaming to jKool
@@ -272,7 +272,9 @@ retry=0
 ```
 ### Running Queries using Curl
 
-REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have query/read permission, streaming tokens don't have query access by default. 
+REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your 
+token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have 
+query/read permission, streaming tokens don't have query access by default.
 
 Example using `jk_token` parameter to pass access token: 
 ```java
@@ -299,13 +301,14 @@ curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST http
 
 ### Streaming with Python
 Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". 
-Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using it to stream into jKool:
+Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using 
+it to stream into jKool:
 
 ```java
 import requests
 headers = {'token': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
-r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
+resp = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
 
 ### Note on time stamps

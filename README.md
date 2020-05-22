@@ -1,4 +1,4 @@
-# JQKL Streaming & Query API Using REST
+# JKQL Streaming & Query API Using REST
 JKQL Streaming & Query API allows you to stream events, metrics, transactions as well as execute queries against jKool streams. You will 
 need a streaming  "access token” in order to stream & query your data. This token is associated with a repository assigned to you when you 
 sign-up for jKool. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the 

@@ -31,8 +31,7 @@ assemble. This `build` directory will be at the same level as the directory you 
 	</dependency>
 ```
 ## Streaming using over HTTPS
-Streaming allows developers to send time series data such as events, metrics, transactions, logs over secure jKoolCloud interface. You will need your access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository 
-associated with the access token. This token must have streaming permission.
+Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS interface. You will need your access token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access token.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```

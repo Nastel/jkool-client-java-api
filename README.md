@@ -30,10 +30,9 @@ assemble. This `build` directory will be at the same level as the directory you 
 		<version>0.2.7</version>
 	</dependency>
 ```
-## Streaming to jKool
-Streaming allows developers to send time series data such as events, metrics, transactions, logs over secure jKoolCloud interface. You will 
-need your jKool access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository 
-associated with the access token.
+## Streaming using over HTTPS
+Streaming allows developers to send time series data such as events, metrics, transactions, logs over secure jKoolCloud interface. You will need your access token that you received when you signed up for jKool. This token ensures that the your data goes to the repository 
+associated with the access token. This token must have streaming permission.
 ```java
 	JKStream jkSend = new JKStream("yourtoken");
 ```
@@ -205,7 +204,7 @@ Connection handlers can be associated with a jKool query connection handle `JKQu
 	...
 	jkQueryAsync.connect();
 ```
-### Subscribing to real-time event streams
+### Subscribing to Real-time Event Streams
 Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptions are based continuous queries submitted by the 
 client and run on the jKool servers. The results of the query are emitted as data becomes available and streamed back to the client call 
 back handler instance of `JKQueryCallback`. See example below:
@@ -227,7 +226,7 @@ The code above is equivalent to the JKQL statement `subscribe to events where se
 query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams 
 only and never on past data. Use `get` queries to get past data.
 
-### Running JKQL searches on message content
+### Running JKQL Searches on Message Content
 `JKQueryAsync` class provides a helper method to run pattern matches against event message content. See below:
 ```java
 	// run search query in async mode with a callback
@@ -241,9 +240,9 @@ rows to return (default is 100). The example above can be implemented as:
 	JKQueryHandle qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
 	...
 ```
-### Running JKQL from command line
-You can run JKQL from command line using a helper class `JKQLCmd` below. Run all commands from the root 'jkool-client-api-<version>' 
-directory.
+### Running JKQL from Command Line
+You can run JKQL from command line using a helper class `JKQLCmd` below. Run all commands from the root `jkool-client-api-<version>` 
+directory. `JKQLCmd` uses Secure WebSocket/JSON interface to run JKQL.
 ```sh
 	unix: java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 	win : java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
@@ -309,7 +308,5 @@ payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457
 r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
 
-### Note on time stamps
-Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time 
-and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have 
-to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).
+### Note on Timestamps
+Timestamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

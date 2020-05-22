@@ -27,7 +27,7 @@ assemble. This `build` directory will be at the same level as the directory you 
 	<dependency>
 		<groupId>com.jkoolcloud.client.api</groupId>
 		<artifactId>jkool-client-api</artifactId>
-		<version>0.2.9</version>
+		<version>0.2.7</version>
 	</dependency>
 ```
 ## Streaming to jKool
@@ -270,18 +270,37 @@ maxrows=100
 retry=0
 #jpath=jk_response/rows-found
 ```
+### Running Queries using Curl
+
+REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have query/read permission, streaming tokens don't have query access by default. 
+
+Example using `jk_token` parameter to pass access token: 
+```java
+curl -i -d "jk_token=access-token&jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
+curl -i -o resp.out -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-ACCESS-TOKEN'
+```
+Example using (`X-API-Key`) to pass access token: 
+```java
+curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
+```
+Below is a list of supported query parameters: 
+* `jk_token`   -- API access token  (required)
+* `jk_query`   -- JKQL query to run (required)
+* `jk_tz`      -- timezone to be used for timestamps (optional, default is server timezone)
+* `jk_date`    -- default date range (optional, "today" is default)
+* `jk_maxrows` -- maximum rows to be fetched (optional, default is 100)
+* `jk_trace`   -- enable query trace during execution (optional , default is false)
 
 ### Streaming with Curl
 Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:
 
 ```java
-curl -i -H "Content-Type:application/json" -H "token:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example Curl Streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
+curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example curl streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
 ### Streaming with Python
 Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". 
-Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using 
-it to stream into jKool:
+Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using it to stream into jKool:
 
 ```java
 import requests
@@ -289,13 +308,7 @@ headers = {'token': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
 r = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```
-### Query jKool using Curl
 
-Rest can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have query/read permission, streaming tokens don't have query access by default. 
-
-```java
-curl -i -o resp.out -X GET 'https://jkool.jkoolcloud.com/jkool-service/jkql?jk_query=get%20events&jk_token=YOUR-ACCESS-TOKEN'
-```
 ### Note on time stamps
 Time stamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time 
 and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have 

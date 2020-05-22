@@ -270,7 +270,7 @@ maxrows=100
 retry=0
 #jpath=jk_response/rows-found
 ```
-	
+
 ### Running JKQL using Curl
 
 REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your 
@@ -307,7 +307,7 @@ it to stream into jKool:
 
 ```java
 import requests
-headers = {'token': 'YOURTOKEN'}
+headers = {'X-API-Key': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
 resp = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
 ```

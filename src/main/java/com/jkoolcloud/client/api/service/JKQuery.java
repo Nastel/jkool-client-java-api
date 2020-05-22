@@ -30,8 +30,8 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * @author albert
  */
 public class JKQuery extends JKService {
-	public static final String QAPI_CLIENT_VERSION = JKQuery.class.getClass().getPackage().getImplementationVersion();
-	
+	public static final String QAPI_CLIENT_VERSION = JKQuery.class.getPackage().getImplementationVersion();
+
 	boolean trace = false;
 	String repoId = null;
 	String dateRange = "today";

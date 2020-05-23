@@ -286,8 +286,8 @@ Below is a list of supported query parameters:
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
-|`jk_subid`|Yes|None|query request correlator (GUID)|
 |`jk_query`|Yes|None|query statement to run|
+|`jk_subid`|No|Auto|query request correlator (GUID)|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
 |`jk_date`|No|today|date range for the query|
 |`jk_maxrows`|No|100|maximum rows to be fetched|

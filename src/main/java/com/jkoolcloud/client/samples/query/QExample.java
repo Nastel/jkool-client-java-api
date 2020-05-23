@@ -41,8 +41,7 @@ public class QExample {
 		options.print();
 
 		try (JKQuery jkQuery = new JKQuery(options.token)) {
-			Response res = jkQuery.call(options.query);
-
+			Response res = jkQuery.setTrace(options.trace).call(options.query);
 			int status = res.getStatus();
 			String json = res.readEntity(String.class);
 			System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));

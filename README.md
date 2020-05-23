@@ -90,7 +90,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
 ### Running JKQL (Synchronously)
-In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. Simply pass in your access token along with the JKQL query. Below is an example:
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Reference Guide](https://www.nastel.com/wp-content/uploads/2020/03/Nastel_jKQL_User_Guide.pdf). Use the `JKQuery` to run JKQL synchronously. Use your access token along with the JKQL query. Below is an example:
 
 ```java
     JKQuery jkQuery = new JKQuery("yourtoken");
@@ -286,6 +286,7 @@ Below is a list of supported query parameters:
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
+|`jk_subid`|Yes|None|JKQL query correlator (GUID)|
 |`jk_query`|Yes|None|JKQL query to run|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
 |`jk_date`|No|today|date range for the query|
@@ -293,6 +294,78 @@ Below is a list of supported query parameters:
 |`jk_trace`|No|false|enable query trace during execution|
 |`jk_timeout`|No|60000|max query timeout in milliseconds|
 |`jk_range`|No|None|query range for`find` queries only|
+
+Below are common JSON response fields:
+| Field | Description |
+|-----------|---------|
+|`jk_call`|JKQL call verb|
+|`jk_query`|JKQL query associated with the response|
+|`jk_ccode`|JKQL completion code (`SUCCESS, ERROR, WARNING`)|
+|`jk_error`|JKQL error message if query fails|
+|`jk_subid`|JKQL request correlator associated with the request|
+|`jk_elapsed_time`|elapsed time in ms to execute JKQL|
+|`jk_response`|JSON response message containing query result|
+
+Example of a failed response:
+```json
+{
+    "jk_call": "get",
+    "jk_ccode": "ERROR",
+    "jk_subid": "f41194b0-5b09-4464-890b-36fd66c01738",
+    "jk_call_elapsed_ms": 8,
+    "jk_error": "com.nastel.jkool.jkql.admin.JKQLSecurityException: Undefined access token 'X', stmt: get number of logs"
+}
+```
+Example of a successful response:
+```json
+{
+    "jk_call": "get",
+    "jk_ccode": "SUCCESS",
+    "jk_subid": "af302a08-879e-4284-b3f6-67e78b3597ca",
+    "jk_error": "",
+    "jk_call_elapsed_ms": 82,
+    "jk_response": {
+        "rows-found": 473,
+        "row-count": 1,
+        "total-row-count": 1,
+        "data-date-range": "1590206401731372 TO 1590235534877013",
+        "query-date-filter": "1590206400000000 TO 1590292799999999",
+        "timezone": "Eastern Daylight Time",
+        "status": "SUCCESS",
+        "time": 1590235591689588,
+        "item-type": "Log",
+        "colhdr": [
+            "NumberOf"
+        ],
+        "coltype": {
+            "NumberOf": "INTEGER"
+        },
+        "collabel": {
+            "NumberOf": "NumberOf"
+        },
+        "rows": [
+            {
+                "NumberOf": 473
+            }
+        ],
+        "overallStatistics": {
+            "jkql_parse.time.usec": 20,
+            "jkql_statement.count": 1,
+            "json_string.time.usec": 79,
+            "raw_result_post_process.time.usec": 1,
+            "request_wait.time.usec": 8547,
+            "rows_found.count": 473,
+            "rows_returned.count": 1,
+            "solr_request_build.time.usec": 95,
+            "solr_request_elapsed.time.usec": 17000,
+            "solr_request_exec.time.usec": 17649,
+            "solr_request_qtime.time.usec": 0,
+            "solr_result_proc.time.usec": 27,
+            "total_exec.time.usec": 56965
+        }
+    }
+}
+```json
 
 ### Streaming with Curl
 Data can be streamed using `curl`. Below is an example:

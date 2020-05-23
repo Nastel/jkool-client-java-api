@@ -1,9 +1,9 @@
 # JKQL Streaming & Query API Using REST
-JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need 
-"access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with 
-your repository and user profile. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found 
-it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using 
-this Java Helper API, many fields will have default values.
+JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need "access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with your repository and user profile. The API uses HTTP(s) and WebSockets protocols and responses are JSON.
+
+Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. 
+
+Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will have default values.
 
 ## Concepts and Terminology
 You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the following data collection types:
@@ -90,9 +90,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
 ### Running JKQL (Synchronously)
-In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please 
-see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. 
-Simply pass in your access token along with the JKQL query. Below is an example:
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Reference Guide](https://www.nastel.com/wp-content/uploads/2020/03/Nastel_jKQL_User_Guide.pdf). Use the `JKQuery` to run JKQL synchronously. Use your access token along with the JKQL query. Below is an example:
 
 ```java
     JKQuery jkQuery = new JKQuery("yourtoken");
@@ -122,8 +120,7 @@ associated with any specific query or subscription.
     jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
     jkQueryAsync.connect(); // connect stream with WebSocket interface
 ```
-Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this 
-query:
+Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this query:
 ```java
     // run query in async mode without a callback (use default response handlers)
     jkQueryAsync.callAsync("get number of events for today");
@@ -289,13 +286,74 @@ Below is a list of supported query parameters:
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
-|`jk_query`|Yes|None|JKQL query to run|
+|`jk_subid`|Yes|None|query request correlator (GUID)|
+|`jk_query`|Yes|None|query statement to run|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
 |`jk_date`|No|today|date range for the query|
 |`jk_maxrows`|No|100|maximum rows to be fetched|
 |`jk_trace`|No|false|enable query trace during execution|
 |`jk_timeout`|No|60000|max query timeout in milliseconds|
 |`jk_range`|No|None|query range for`find` queries only|
+
+Below are common JSON response fields:
+| Field | Description |
+|-----------|---------|
+|`jk_call`|query call verb|
+|`jk_query`|query associated with the response|
+|`jk_ccode`|query response completion code|
+|`jk_error`|query error message if fails|
+|`jk_subid`|query request correlator associated with the request|
+|`jk_elapsed_time`|elapsed time in ms took to execute the query|
+
+Example of a failed response:
+```json
+{
+    "jk_call": "get",
+    "jk_ccode": "ERROR",
+    "jk_subid": "f41194b0-5b09-4464-890b-36fd66c01738",
+    "jk_call_elapsed_ms": 8,
+    "jk_error": "com.nastel.jkool.jkql.admin.JKQLSecurityException: Undefined access token 'X', stmt: get number of logs"
+}
+```
+Example of a successful response:
+```json
+{
+  "rows-found" : 798,
+  "row-count" : 1,
+  "total-row-count" : 1,
+  "data-date-range" : "1590206401731372 TO 1590248453356930",
+  "query-date-filter" : "1590206400000000 TO 1590292799999999",
+  "timezone" : "Eastern Daylight Time",
+  "status" : "SUCCESS",
+  "time" : 1590248630137306,
+  "item-type" : "Log",
+  "colhdr" : [ "NumberOf" ],
+  "coltype" : {
+    "NumberOf" : "INTEGER"
+  },
+  "collabel" : {
+    "NumberOf" : "NumberOf"
+  },
+  "rows" : [ {
+    "NumberOf" : 798
+  } ],
+  "overallStatistics" : {
+    "jkql_parse.time.usec" : 19,
+    "jkql_statement.count" : 1,
+    "json_string.time.usec" : 46,
+    "raw_result_post_process.time.usec" : 0,
+    "request_wait.time.usec" : 69,
+    "rows_found.count" : 798,
+    "rows_returned.count" : 1,
+    "solr_request_build.time.usec" : 88,
+    "solr_request_elapsed.time.usec" : 11000,
+    "solr_request_exec.time.usec" : 11905,
+    "solr_request_qtime.time.usec" : 0,
+    "solr_result_proc.time.usec" : 12,
+    "total_exec.time.usec" : 47707
+  }
+}
+```
 
 ### Streaming with Curl
 Data can be streamed using `curl`. Below is an example:

@@ -16,6 +16,7 @@
 package com.jkoolcloud.client.api.service;
 
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
@@ -173,7 +174,7 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String query) throws JKStreamException {
-		return call(query, DEFAULT_MAX_ROWS);
+		return call(UUID.randomUUID().toString(), query, DEFAULT_MAX_ROWS);
 	}
 
 	/**
@@ -186,12 +187,14 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(JKStatement query) throws JKStreamException {
-		return call(query.getQuery(), query.getMaxRows());
+		return call(query.getId(), query.getQuery(), query.getMaxRows());
 	}
 
 	/**
 	 * Execute a specific JKQL query
 	 * 
+	 * @param qid
+	 *            JKQL query request id
 	 * @param query
 	 *            JKQL query statement
 	 * @param maxRows
@@ -200,8 +203,8 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(String query, int maxRows) throws JKStreamException {
-		return call(query, getToken(), repoId, tz, dateRange, trace, maxRows);
+	public Response call(String qid, String query, int maxRows) throws JKStreamException {
+		return call(qid, query, getToken(), repoId, tz, dateRange, trace, maxRows);
 	}
 
 	/**
@@ -227,6 +230,34 @@ public class JKQuery extends JKService {
 	 */
 	public Response call(String _query, String _token, String _repo, String _tz, String _drange, boolean _trace,
 			int _mrows) throws JKStreamException {
+		return  call(UUID.randomUUID().toString(), _query, _token, _repo, _tz, _drange, _trace, _mrows);
+	}
+	
+	/**
+	 * Execute a specific JKQL query
+	 * 
+	 * @param _qid
+	 *            JKQL request id
+	 * @param _query
+	 *            JKQL query statement
+	 * @param _token
+	 *            JKQL access token
+	 * @param _repo
+	 *            repo name (or null if default)
+	 * @param _tz
+	 *            timezone scope for the query
+	 * @param _drange
+	 *            time filter or range (e.g. today)
+	 * @param _trace
+	 *            trace mode
+	 * @param _mrows
+	 *            maximum rows in response
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 *             if error occurs during a call
+	 */
+	public Response call(String _qid, String _query, String _token, String _repo, String _tz, String _drange, boolean _trace,
+			int _mrows) throws JKStreamException {
 		Form qParms = new Form();
 		if (_token != null) qParms.param(JK_TOKEN_KEY, _token);
 		if (_query != null) qParms.param(JK_QUERY_KEY, _query);
@@ -235,7 +266,8 @@ public class JKQuery extends JKService {
 		if (_drange != null) qParms.param(JK_DATE_KEY, _drange);
 		if (_trace) qParms.param(JK_TRACE_KEY, Boolean.toString(_trace));
 		if (_mrows > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_mrows));
-
+		qParms.param(JK_SUBID_KEY, _qid);
+		
 		return target.request(MediaType.APPLICATION_JSON_TYPE) //
 				.header(X_API_KEY, _token) //
 				.header(X_API_TOKEN, _token) //

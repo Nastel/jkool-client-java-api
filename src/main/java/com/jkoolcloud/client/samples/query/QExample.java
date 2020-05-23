@@ -45,11 +45,7 @@ public class QExample {
 
 			int status = res.getStatus();
 			String json = res.readEntity(String.class);
-			if (status == 200) {
-				System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
-			} else {
-				System.out.println(String.format("Status: %d %s", status, json));
-			}
+			System.out.println(String.format("Status: %d\nResponse:\n%s", status, formatJson(json)));
 			res.close();
 		} catch (Throwable e) {
 			e.printStackTrace();

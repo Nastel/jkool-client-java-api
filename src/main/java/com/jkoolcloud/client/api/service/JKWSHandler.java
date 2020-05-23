@@ -26,10 +26,7 @@ import javax.websocket.Session;
  */
 public interface JKWSHandler {
 	void onMessage(JKWSClient client, String message);
-
 	void onOpen(JKWSClient client, Session userSession);
-
 	void onClose(JKWSClient client, Session userSession, CloseReason reason);
-
 	void onError(JKWSClient client, Session userSession, Throwable ex);
 }

@@ -16,6 +16,7 @@
 package com.jkoolcloud.client.api.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * This is used to encapsulate JKQL query statements and implements {@link JKStatement} interface.
@@ -25,13 +26,18 @@ import java.io.IOException;
 public class JKStatementImpl implements JKStatement {
 
 	int maxRows;
-	String query;
+	String query, id;
 
 	JKQueryCallback callback;
 	JKQueryAsync handle;
 
 	protected JKStatementImpl(JKQueryAsync handle, String query, int maxRows, JKQueryCallback callb) {
+		this(handle, UUID.randomUUID().toString(), query, maxRows, callb);
+	}
+
+	protected JKStatementImpl(JKQueryAsync handle, String id, String query, int maxRows, JKQueryCallback callb) {
 		this.handle = handle;
+		this.id = id;
 		this.query = query;
 		this.maxRows = maxRows;
 		this.callback = callb;
@@ -40,6 +46,11 @@ public class JKStatementImpl implements JKStatement {
 	@Override
 	public String getQuery() {
 		return query;
+	}
+
+	@Override
+	public String getId() {
+		return id;
 	}
 
 	@Override

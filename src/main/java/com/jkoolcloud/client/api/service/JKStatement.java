@@ -24,6 +24,13 @@ import java.io.IOException;
  */
 public interface JKStatement {
 	/**
+	 * Obtain GUID associated with  the statement
+	 * 
+	 * @return statement GUID
+	 */
+	String getId();
+
+	/**
 	 * Obtain query associated with this statement
 	 * 
 	 * @return query associated with this statement

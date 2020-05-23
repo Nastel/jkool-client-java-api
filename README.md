@@ -6,17 +6,16 @@ it the "swagger" folder. Please be aware the the Swagger yaml file is documentin
 this Java Helper API, many fields will have default values.
 
 ## Concepts and Terminology
-You can find very comprehensive documentation on jKool Data Types and Concepts in our 
-[jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). There are four types of time-series data types that can be 
-streamed to jKool. They are:
-* *Event*: Represents a basic time series element containing time, message, severity and other fields associated with event.
-* *Activity*: Represents a group of events and other activities (e.g. transactions).
-* *Snapshot*: categorized metrics (name, value, type) at a "point in time". Snapshots can be associated with events, activities.
-* *Dataset* : a user defined set of data elements.
-* *Property*: simple metric (name, value pair). Properties can be associated with events, activities and snapshots.
+You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the following data collection types:
+| Type | Description |
+|------|-------------|
+|Event|basic time series element containing time, message, severity and other fields associated with event|
+|Activity|a group of events and other activities (e.g. transactions)|
+|Snapshot|categorized collection of properties (name, value, type) at a "point in time"|
+|Dataset|user defined set of data elements with user defined columns|
+|Property|name, value pair. Properties can be associated with events, activities and snapshots|
 
-This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field 
-that comprises the above mentioned data.
+This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
 
 ## How to build
 To use this sample code please do the following:
@@ -287,14 +286,16 @@ Example using (`X-API-Key`) to pass access token:
 curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
 ```
 Below is a list of supported query parameters: 
-* `jk_token`   -- API access token  (required)
-* `jk_query`   -- JKQL query to run (required)
-* `jk_tz`      -- timezone to be used for timestamps (optional, default is server timezone)
-* `jk_date`    -- default date range (optional, "today" is default)
-* `jk_maxrows` -- maximum rows to be fetched (optional, default is 100)
-* `jk_trace`   -- enable query trace during execution (optional , default is false)
-* `jk_timeout` -- max query timeout in milliseconds (default is 60000 ms)
-* `jk_range`   -- query range (applies to `find` queries only)
+| Parameter | Required | Default| Description |
+|-----------|----------|--------|-------------|
+|`jk_token`|Yes|None|API access token|
+|`jk_query`|Yes|None|JKQL query to run|
+|`jk_tz`|No|Server TZ|timezone to be used for timestamps|
+|`jk_date`|No|today|date range for the query|
+|`jk_maxrows`|No|100|maximum rows to be fetched|
+|`jk_trace`|No|false|enable query trace during execution|
+|`jk_timeout`|No|60000|max query timeout in milliseconds|
+|`jk_range`|No|None|query range for`find` queries only|
 
 ### Streaming with Curl
 Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:

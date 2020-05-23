@@ -278,11 +278,11 @@ token in the HTTP header (`X-API-Key`) as well instead of specifying it as a que
 query/read permission, streaming tokens don't have query access by default.
 
 Example using `jk_token` parameter to pass access token: 
-```java
+```sh
 curl -i -d "jk_token=access-token&jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
 ```
 Example using (`X-API-Key`) to pass access token: 
-```java
+```sh
 curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
 ```
 Below is a list of supported query parameters: 
@@ -298,18 +298,16 @@ Below is a list of supported query parameters:
 |`jk_range`|No|None|query range for`find` queries only|
 
 ### Streaming with Curl
-Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:
+Data can be streamed using `curl`. Below is an example:
 
-```java
+```sh
 curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example curl streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
 ### Streaming with Python
-Data can also be streamed natively (without helper classes) into jKool using Python. To do so, you will need to use the Python "Request". 
-Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example of using 
-it to stream into jKool:
+Streaming data using Python "requests" object. Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example:
 
-```java
+```python
 import requests
 headers = {'X-API-Key': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
@@ -317,6 +315,4 @@ resp = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, 
 ```
 
 ### Note on Timestamps
-Timestamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time 
-and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have 
-to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).
+Timestamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

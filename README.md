@@ -286,8 +286,8 @@ Below is a list of supported query parameters:
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
-|`jk_subid`|Yes|None|JKQL query correlator (GUID)|
-|`jk_query`|Yes|None|JKQL query to run|
+|`jk_subid`|Yes|None|query request correlator (GUID)|
+|`jk_query`|Yes|None|query statement to run|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
 |`jk_date`|No|today|date range for the query|
 |`jk_maxrows`|No|100|maximum rows to be fetched|
@@ -298,13 +298,13 @@ Below is a list of supported query parameters:
 Below are common JSON response fields:
 | Field | Description |
 |-----------|---------|
-|`jk_call`|JKQL call verb|
-|`jk_query`|JKQL associated with the response|
-|`jk_ccode`|JKQL response completion code|
-|`jk_error`|JKQL error message if query fails|
-|`jk_subid`|JKQL request correlator associated with the request|
-|`jk_elapsed_time`|elapsed time in ms to execute JKQL|
-|`jk_response`|JSON response message containing query result|
+|`jk_call`|query call verb|
+|`jk_query`|query associated with the response|
+|`jk_ccode`|query response completion code|
+|`jk_error`|query error message if fails|
+|`jk_subid`|query request correlator associated with the request|
+|`jk_elapsed_time`|elapsed time in ms took to execute the query|
+|`jk_response`|response message containing query result (JSON)|
 
 Example of a failed response:
 ```json

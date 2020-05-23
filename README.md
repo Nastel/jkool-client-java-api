@@ -305,7 +305,7 @@ curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST http
 ```
 
 ### Streaming with Python
-Streaming data using Python "requests" object. Details on the Python Request can be found [here](http://docs.python-requests.org/en/latest/user/quickstart/). Below is an example:
+Streaming data using Python "requests" object. Below is an example:
 
 ```python
 import requests

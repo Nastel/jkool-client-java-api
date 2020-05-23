@@ -304,7 +304,6 @@ Below are common JSON response fields:
 |`jk_error`|query error message if fails|
 |`jk_subid`|query request correlator associated with the request|
 |`jk_elapsed_time`|elapsed time in ms took to execute the query|
-|`jk_response`|response message containing query result (JSON)|
 
 Example of a failed response:
 ```json

@@ -1,9 +1,9 @@
 # JKQL Streaming & Query API Using REST
-JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need 
-"access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with 
-your repository and user profile. Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found 
-it the "swagger" folder. Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using 
-this Java Helper API, many fields will have default values.
+JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need "access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with your repository and user profile. The API uses HTTP(s) and WebSockets protocols and responses are JSON.
+
+Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. 
+
+Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will have default values.
 
 ## Concepts and Terminology
 You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the following data collection types:
@@ -90,9 +90,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
 
 ### Running JKQL (Synchronously)
-In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please 
-see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. 
-Simply pass in your access token along with the JKQL query. Below is an example:
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Documentation](https://www.jkoolcloud.com/download/jKQL%20User%20Guide.pdf). Use the `JKQuery` to run JKQL queries synchronously. Simply pass in your access token along with the JKQL query. Below is an example:
 
 ```java
     JKQuery jkQuery = new JKQuery("yourtoken");
@@ -122,8 +120,7 @@ associated with any specific query or subscription.
     jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
     jkQueryAsync.connect(); // connect stream with WebSocket interface
 ```
-Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this 
-query:
+Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this query:
 ```java
     // run query in async mode without a callback (use default response handlers)
     jkQueryAsync.callAsync("get number of events for today");

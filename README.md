@@ -299,8 +299,8 @@ Below are common JSON response fields:
 | Field | Description |
 |-----------|---------|
 |`jk_call`|JKQL call verb|
-|`jk_query`|JKQL query associated with the response|
-|`jk_ccode`|JKQL completion code (`SUCCESS, ERROR, WARNING`)|
+|`jk_query`|JKQL associated with the response|
+|`jk_ccode`|JKQL response completion code|
 |`jk_error`|JKQL error message if query fails|
 |`jk_subid`|JKQL request correlator associated with the request|
 |`jk_elapsed_time`|elapsed time in ms to execute JKQL|
@@ -319,53 +319,42 @@ Example of a failed response:
 Example of a successful response:
 ```json
 {
-    "jk_call": "get",
-    "jk_ccode": "SUCCESS",
-    "jk_subid": "af302a08-879e-4284-b3f6-67e78b3597ca",
-    "jk_error": "",
-    "jk_call_elapsed_ms": 82,
-    "jk_response": {
-        "rows-found": 473,
-        "row-count": 1,
-        "total-row-count": 1,
-        "data-date-range": "1590206401731372 TO 1590235534877013",
-        "query-date-filter": "1590206400000000 TO 1590292799999999",
-        "timezone": "Eastern Daylight Time",
-        "status": "SUCCESS",
-        "time": 1590235591689588,
-        "item-type": "Log",
-        "colhdr": [
-            "NumberOf"
-        ],
-        "coltype": {
-            "NumberOf": "INTEGER"
-        },
-        "collabel": {
-            "NumberOf": "NumberOf"
-        },
-        "rows": [
-            {
-                "NumberOf": 473
-            }
-        ],
-        "overallStatistics": {
-            "jkql_parse.time.usec": 20,
-            "jkql_statement.count": 1,
-            "json_string.time.usec": 79,
-            "raw_result_post_process.time.usec": 1,
-            "request_wait.time.usec": 8547,
-            "rows_found.count": 473,
-            "rows_returned.count": 1,
-            "solr_request_build.time.usec": 95,
-            "solr_request_elapsed.time.usec": 17000,
-            "solr_request_exec.time.usec": 17649,
-            "solr_request_qtime.time.usec": 0,
-            "solr_result_proc.time.usec": 27,
-            "total_exec.time.usec": 56965
-        }
-    }
+  "rows-found" : 798,
+  "row-count" : 1,
+  "total-row-count" : 1,
+  "data-date-range" : "1590206401731372 TO 1590248453356930",
+  "query-date-filter" : "1590206400000000 TO 1590292799999999",
+  "timezone" : "Eastern Daylight Time",
+  "status" : "SUCCESS",
+  "time" : 1590248630137306,
+  "item-type" : "Log",
+  "colhdr" : [ "NumberOf" ],
+  "coltype" : {
+    "NumberOf" : "INTEGER"
+  },
+  "collabel" : {
+    "NumberOf" : "NumberOf"
+  },
+  "rows" : [ {
+    "NumberOf" : 798
+  } ],
+  "overallStatistics" : {
+    "jkql_parse.time.usec" : 19,
+    "jkql_statement.count" : 1,
+    "json_string.time.usec" : 46,
+    "raw_result_post_process.time.usec" : 0,
+    "request_wait.time.usec" : 69,
+    "rows_found.count" : 798,
+    "rows_returned.count" : 1,
+    "solr_request_build.time.usec" : 88,
+    "solr_request_elapsed.time.usec" : 11000,
+    "solr_request_exec.time.usec" : 11905,
+    "solr_request_qtime.time.usec" : 0,
+    "solr_result_proc.time.usec" : 12,
+    "total_exec.time.usec" : 47707
+  }
 }
-```json
+```
 
 ### Streaming with Curl
 Data can be streamed using `curl`. Below is an example:

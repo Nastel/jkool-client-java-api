@@ -293,6 +293,8 @@ Below is a list of supported query parameters:
 * `jk_date`    -- default date range (optional, "today" is default)
 * `jk_maxrows` -- maximum rows to be fetched (optional, default is 100)
 * `jk_trace`   -- enable query trace during execution (optional , default is false)
+* `jk_timeout` -- max query timeout in milliseconds (default is 60000 ms)
+* `jk_range`   -- query range (applies to `find` queries only)
 
 ### Streaming with Curl
 Data can also be streamed natively (without helper classes) into jKool using Curl. Below is an example:

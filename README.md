@@ -292,8 +292,9 @@ Below is a list of supported query parameters:
 |`jk_date`|No|today|date range for the query|
 |`jk_maxrows`|No|100|maximum rows to be fetched|
 |`jk_trace`|No|false|enable query trace during execution|
-|`jk_timeout`|No|60000|max query timeout in milliseconds|
+|`jk_timeout`|No|60000|max query timeout in ms|
 |`jk_range`|No|None|query range for`find` queries only|
+|`jk_slow`|No|5000|Time in ms beyond which query is considered slow|
 
 Below are common JSON response fields:
 | Field | Description |
@@ -302,16 +303,16 @@ Below are common JSON response fields:
 |`jk_query`|query associated with the response|
 |`jk_ccode`|query response completion code|
 |`jk_error`|query error message if fails|
-|`jk_subid`|query request correlator associated with the request|
-|`jk_elapsed_time`|elapsed time in ms took to execute the query|
+|`jk_subid`|query correlator associated with the request|
+|`jk_elapsed_ms`|elapsed time to execute the query (ms)|
 
 Example of a failed response:
 ```json
 {
     "jk_call": "get",
     "jk_ccode": "ERROR",
+    "jk_elapsed_ms": 8,
     "jk_subid": "f41194b0-5b09-4464-890b-36fd66c01738",
-    "jk_call_elapsed_ms": 8,
     "jk_error": "com.nastel.jkool.jkql.admin.JKQLSecurityException: Undefined access token 'X', stmt: get number of logs"
 }
 ```

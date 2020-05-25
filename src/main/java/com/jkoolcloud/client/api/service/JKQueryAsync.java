@@ -29,6 +29,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import com.jkoolcloud.client.api.utils.JKUtils;
+
 /**
  * This class defines an async way to run jKool queries via WebSockets. Supports standard queries and subscriptions.
  * 
@@ -387,7 +389,12 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_REPO_KEY, qhandle.getRepoId()) //
 				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows()) //
 				.add(JK_TRACE_KEY, qhandle.isTrace()) //
-				.add(JK_SUBID_KEY, qhandle.getId()).build();
+				.add(JK_SUBID_KEY, qhandle.getId()) //
+				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
+				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
+				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
+				.add(X_API_VERSION, QAPI_CLIENT_VERSION) //
+				.build();
 
 		if (qhandle.getCallback() != null) {
 			qhandle.getCallback().onCall(qhandle, jsonQuery);
@@ -456,7 +463,12 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_REPO_KEY, getRepoId()) //
 				.add(JK_MAX_ROWS_KEY, maxRows) //
 				.add(JK_TRACE_KEY, isTrace()) //
-				.add(JK_SUBID_KEY, id).build();
+				.add(JK_SUBID_KEY, id) //
+				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
+				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
+				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
+				.add(X_API_VERSION, QAPI_CLIENT_VERSION) //
+			.build();
 
 		sendJsonQuery(jsonQuery);
 		return this;
@@ -524,7 +536,12 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_MAX_ROWS_KEY, 10)//
 				.add(JK_TRACE_KEY, isTrace())//
 				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid + "'") //
-				.add(JK_SUBID_KEY, subid).build();
+				.add(JK_SUBID_KEY, subid) //
+				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
+				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
+				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
+				.add(X_API_VERSION, QAPI_CLIENT_VERSION) //
+				.build();
 
 		sendJsonQuery(jsonQuery);
 		return SUBID_MAP.get(subid);

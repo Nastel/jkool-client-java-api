@@ -31,9 +31,7 @@ assemble. This `build` directory will be at the same level as the directory you 
     </dependency>
 ```
 ## Streaming using over HTTPS
-Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS interface. You will need 
-your access token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access 
-token.
+Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS. You will need your access token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access token.
 ```java
     JKStream jkSend = new JKStream("yourtoken");
 ```
@@ -87,7 +85,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
     Response response = jkSend.post(event);
     response.close();
 ```
-The Client API formats the entity into JSON format and streams it to jKool over default `https` protocol.
+The `JKStream` formats the `event` into JSON and sends it to https://data.jkoolcloud.com/JESL.
 
 ### Running JKQL (Synchronously)
 In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Reference Guide](https://www.nastel.com/wp-content/uploads/2020/03/Nastel_jKQL_User_Guide.pdf). Use the `JKQuery` to run JKQL synchronously. Use your access token along with the JKQL query. Below is an example:

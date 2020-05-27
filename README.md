@@ -240,19 +240,16 @@ rows to return (default is 100). The example above can be implemented as:
 You can run JKQL from command line using a helper class `JKQLCmd` below. Run all commands from the root `jkool-client-api-<version>` 
 directory. `JKQLCmd` uses Secure WebSocket/JSON interface to run JKQL.
 ```sh
-    unix: java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
-    win : java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
+    java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -query "get events" -wait 30000
 ```
-Running message payload searches:
+Running message content searches:
 ```sh
-    unix: java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -search "failure" -wait 30000
-    win : java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -search "failure" -wait 30000
+    java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -token access-token -search "failure" -wait 30000
 ```
 Command line arguments can be specified via a property file, where any command line argument overrides values specified in the property 
 file:
 ```sh
-    unix: java java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
-    win : java java -cp ./*;./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
+    java java -cp ./*:./lib/* com.jkoolcloud.client.api.utils.JKQLCmd -file cmd.properties -query "get number of events for today"
 ```
 Below is a sample property file containing `JKQLCmd` command line arguments (`token` should have your jKool API access token):
 ```properties

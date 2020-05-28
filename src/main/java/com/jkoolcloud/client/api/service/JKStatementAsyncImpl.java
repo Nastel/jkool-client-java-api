@@ -47,12 +47,12 @@ public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatement
 	}
 
 	@Override
-	public JKQueryHandle call() throws IOException {
-		return call(maxRows);
+	public JKQueryHandle callAsync() throws IOException {
+		return callAsync(maxRows);
 	}
 
 	@Override
-	public JKQueryHandle call(int maxrows) throws IOException {
+	public JKQueryHandle callAsync(int maxrows) throws IOException {
 		return ((JKQueryAsync)handle).callAsync(query, maxrows, callback);
 	}
 }

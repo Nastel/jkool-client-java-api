@@ -45,7 +45,7 @@ public interface JKStatementAsync extends JKStatement {
 	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
-	JKQueryHandle call() throws IOException;
+	JKQueryHandle callAsync() throws IOException;
 
 	/**
 	 * Call current statement with responses routed to the associated callback.
@@ -56,5 +56,5 @@ public interface JKStatementAsync extends JKStatement {
 	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
-	JKQueryHandle call(int maxRows) throws IOException;
+	JKQueryHandle callAsync(int maxRows) throws IOException;
 }

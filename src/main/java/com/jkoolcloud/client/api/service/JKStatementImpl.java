@@ -15,7 +15,10 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import javax.ws.rs.core.Response;
 
 /**
  * This is used to encapsulate JKQL query statements and implements {@link JKStatement} interface.
@@ -80,5 +83,10 @@ public class JKStatementImpl implements JKStatement {
 	@Override
 	public JKQuery getJKQuery() {
 		return handle;
+	}
+
+	@Override
+	public Response call() throws IOException, JKStreamException {
+		return handle.call(this);
 	}
 }

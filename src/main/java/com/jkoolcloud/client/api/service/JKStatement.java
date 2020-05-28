@@ -15,6 +15,9 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.IOException;
+import javax.ws.rs.core.Response;
+
 /**
  * This interface defines a JKQL statement. All concrete statement implementations must implement this interface.
  * 
@@ -76,4 +79,13 @@ public interface JKStatement {
 	 * @return true if trace enabled, false otherwise
 	 */
 	boolean isTrace();
+	
+	/**
+	 * Call current statement and wait for response
+	 * 
+	 * @throws IOException
+	 *             when IO errors occur
+	 * @return query handle associate with this query
+	 */
+	Response call() throws IOException, JKStreamException ;
 }

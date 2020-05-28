@@ -253,13 +253,13 @@ public class JKQuery extends JKService {
 		if (query.getMaxRows() > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(query.getMaxRows()));
 		qParms.param(JK_SUBID_KEY, query.getId());
 		
-		return target.request(MediaType.APPLICATION_JSON_TYPE) //
-				.header(X_API_KEY, getToken()) //
-				.header(X_API_TOKEN, getToken()) //
-				.header(X_API_HOSTNAME, JKUtils.VM_HOST) //
-				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
-				.header(X_API_RUNTIME, JKUtils.VM_NAME) //
-				.header(X_API_VERSION, QAPI_CLIENT_VERSION) //
+		return target.request(MediaType.APPLICATION_JSON_TYPE)
+				.header(X_API_KEY, getToken()) 
+				.header(X_API_TOKEN, getToken())
+				.header(X_API_HOSTNAME, JKUtils.VM_HOST)
+				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR)
+				.header(X_API_RUNTIME, JKUtils.VM_NAME)
+				.header(X_API_VERSION, QAPI_CLIENT_VERSION)
 				.post(Entity.form(qParms));
 	}
 }

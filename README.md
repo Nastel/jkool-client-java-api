@@ -168,8 +168,8 @@ specified by `addDefaultCallbackHandler()` call.
 ```
 JKQL queries can also be executed using prepared JKQL statements as follows:
 ```java
-    JKStatement jkql = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
-    JKQueryHandle qhandle = jkql.call(100); // call with specified max rows for responses
+    JKStatementAsync jkql = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
+    JKQueryHandle qhandle = jkql.callAsync(100); // call with specified max rows for responses
 ```
 ### Connection Event Handling
 Customized connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:

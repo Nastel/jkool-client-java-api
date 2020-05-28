@@ -108,10 +108,10 @@ public class JKQueryAsync extends JKQuery {
 	 *            JKQL query
 	 * @param callback
 	 *            associated with this query
-	 * @return {@link JKStatement} instance
+	 * @return {@link JKStatementAsync} instance
 	 */
-	public JKStatement prepare(String query, JKQueryCallback callback) {
-		return new JKStatementImpl(this, query, DEFAULT_MAX_ROWS, callback);
+	public JKStatementAsync prepare(String query, JKQueryCallback callback) {
+		return new JKStatementAsyncImpl(this, query, DEFAULT_MAX_ROWS, callback);
 	}
 
 	/**
@@ -123,10 +123,10 @@ public class JKQueryAsync extends JKQuery {
 	 *            maximum rows in the response result
 	 * @param callback
 	 *            associated with this query
-	 * @return {@link JKStatement} instance
+	 * @return {@link JKStatementAsync} instance
 	 */
-	public JKStatement prepare(String query, int maxRows, JKQueryCallback callback) {
-		return new JKStatementImpl(this, query, maxRows, callback);
+	public JKStatementAsync prepare(String query, int maxRows, JKQueryCallback callback) {
+		return new JKStatementAsyncImpl(this, query, maxRows, callback);
 	}
 
 	/**

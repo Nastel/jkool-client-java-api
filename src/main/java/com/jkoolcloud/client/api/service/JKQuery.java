@@ -165,16 +165,42 @@ public class JKQuery extends JKService {
 	}
 
 	/**
-	 * Execute a specific JKQL query
+	 * Prepare a JQKL query statement with default max rows
 	 * 
 	 * @param query
-	 *            JKQL query statement
-	 * @return object containing JSON response
-	 * @throws JKStreamException
-	 *             if error occurs during a call
+	 *            JKQL query
+	 * @return {@link JKStatement} instance
 	 */
-	public Response call(String query) throws JKStreamException {
-		return call(UUID.randomUUID().toString(), query, DEFAULT_MAX_ROWS);
+	public JKStatement prepare(String query) {
+		return new JKStatementImpl(this, query, DEFAULT_MAX_ROWS);
+	}
+
+	/**
+	 * Prepare a JQKL query statement
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @param maxRows
+	 *            maximum rows in the response result
+	 * @return {@link JKStatement} instance
+	 */
+	public JKStatement prepare(String query, int maxRows) {
+		return new JKStatementImpl(this, query, maxRows);
+	}
+
+	/**
+	 * Prepare a JQKL query statement
+	 * 
+	 * @param id
+	 *            JKQL query id
+	 * @param query
+	 *            JKQL query
+	 * @param maxRows
+	 *            maximum rows in the response result
+	 * @return {@link JKStatement} instance
+	 */
+	public JKStatement prepare(String id, String query, int maxRows) {
+		return new JKStatementImpl(this, id, query, maxRows);
 	}
 
 	/**
@@ -186,8 +212,8 @@ public class JKQuery extends JKService {
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(JKStatement query) throws JKStreamException {
-		return call(query.getId(), query.getQuery(), query.getMaxRows());
+	public Response call(String query) throws JKStreamException {
+		return call(prepare(UUID.randomUUID().toString(), query, DEFAULT_MAX_ROWS));
 	}
 
 	/**
@@ -204,73 +230,32 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(String qid, String query, int maxRows) throws JKStreamException {
-		return call(qid, query, getToken(), repoId, tz, dateRange, trace, maxRows);
+		return call(prepare(qid, query, maxRows));
 	}
 
 	/**
 	 * Execute a specific JKQL query
 	 * 
-	 * @param _query
+	 * @param query
 	 *            JKQL query statement
-	 * @param _token
-	 *            JKQL access token
-	 * @param _repo
-	 *            repo name (or null if default)
-	 * @param _tz
-	 *            timezone scope for the query
-	 * @param _drange
-	 *            time filter or range (e.g. today)
-	 * @param _trace
-	 *            trace mode
-	 * @param _mrows
-	 *            maximum rows in response
 	 * @return object containing JSON response
 	 * @throws JKStreamException
 	 *             if error occurs during a call
 	 */
-	public Response call(String _query, String _token, String _repo, String _tz, String _drange, boolean _trace,
-			int _mrows) throws JKStreamException {
-		return  call(UUID.randomUUID().toString(), _query, _token, _repo, _tz, _drange, _trace, _mrows);
-	}
-	
-	/**
-	 * Execute a specific JKQL query
-	 * 
-	 * @param _qid
-	 *            JKQL request id
-	 * @param _query
-	 *            JKQL query statement
-	 * @param _token
-	 *            JKQL access token
-	 * @param _repo
-	 *            repo name (or null if default)
-	 * @param _tz
-	 *            timezone scope for the query
-	 * @param _drange
-	 *            time filter or range (e.g. today)
-	 * @param _trace
-	 *            trace mode
-	 * @param _mrows
-	 *            maximum rows in response
-	 * @return object containing JSON response
-	 * @throws JKStreamException
-	 *             if error occurs during a call
-	 */
-	public Response call(String _qid, String _query, String _token, String _repo, String _tz, String _drange, boolean _trace,
-			int _mrows) throws JKStreamException {
+	public Response call(JKStatement query) throws JKStreamException {
 		Form qParms = new Form();
-		if (_token != null) qParms.param(JK_TOKEN_KEY, _token);
-		if (_query != null) qParms.param(JK_QUERY_KEY, _query);
-		if (_repo != null) qParms.param(JK_REPO_KEY, _repo);
-		if (_tz != null) qParms.param(JK_TIME_ZONE_KEY, _tz);
-		if (_drange != null) qParms.param(JK_DATE_KEY, _drange);
-		if (_trace) qParms.param(JK_TRACE_KEY, Boolean.toString(_trace));
-		if (_mrows > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(_mrows));
-		qParms.param(JK_SUBID_KEY, _qid);
+		if (getToken() != null) qParms.param(JK_TOKEN_KEY, getToken());
+		if (query.getQuery() != null) qParms.param(JK_QUERY_KEY, query.getQuery());
+		if (query.getRepoId() != null) qParms.param(JK_REPO_KEY, query.getRepoId());
+		if (query.getTimeZone() != null) qParms.param(JK_TIME_ZONE_KEY, query.getTimeZone());
+		if (query.getDateRange() != null) qParms.param(JK_DATE_KEY, query.getDateRange());
+		if (query.isTrace()) qParms.param(JK_TRACE_KEY, Boolean.toString(query.isTrace()));
+		if (query.getMaxRows() > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(query.getMaxRows()));
+		qParms.param(JK_SUBID_KEY, query.getId());
 		
 		return target.request(MediaType.APPLICATION_JSON_TYPE) //
-				.header(X_API_KEY, _token) //
-				.header(X_API_TOKEN, _token) //
+				.header(X_API_KEY, getToken()) //
+				.header(X_API_TOKEN, getToken()) //
 				.header(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
 				.header(X_API_RUNTIME, JKUtils.VM_NAME) //

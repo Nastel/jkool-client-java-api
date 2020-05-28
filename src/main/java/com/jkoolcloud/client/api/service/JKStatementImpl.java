@@ -15,7 +15,6 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -27,20 +26,20 @@ public class JKStatementImpl implements JKStatement {
 
 	int maxRows;
 	String query, id;
+	JKQuery handle;
 
-	JKQueryCallback callback;
-	JKQueryAsync handle;
-
-	protected JKStatementImpl(JKQueryAsync handle, String query, int maxRows, JKQueryCallback callb) {
-		this(handle, UUID.randomUUID().toString(), query, maxRows, callb);
+	protected JKStatementImpl() {
 	}
 
-	protected JKStatementImpl(JKQueryAsync handle, String id, String query, int maxRows, JKQueryCallback callb) {
+	protected JKStatementImpl(JKQuery handle, String query, int maxRows) {
+		this(handle, UUID.randomUUID().toString(), query, maxRows);
+	}
+
+	protected JKStatementImpl(JKQuery handle, String id, String query, int maxRows) {
 		this.handle = handle;
 		this.id = id;
 		this.query = query;
 		this.maxRows = maxRows;
-		this.callback = callb;
 	}
 
 	@Override
@@ -56,26 +55,6 @@ public class JKStatementImpl implements JKStatement {
 	@Override
 	public int getMaxRows() {
 		return maxRows;
-	}
-
-	@Override
-	public JKQueryCallback getCallback() {
-		return callback;
-	}
-
-	@Override
-	public JKQueryAsync getQueryAsync() {
-		return handle;
-	}
-
-	@Override
-	public JKQueryHandle call() throws IOException {
-		return call(maxRows);
-	}
-
-	@Override
-	public JKQueryHandle call(int maxrows) throws IOException {
-		return handle.callAsync(query, maxrows, callback);
 	}
 
 	@Override
@@ -96,5 +75,10 @@ public class JKStatementImpl implements JKStatement {
 	@Override
 	public boolean isTrace() {
 		return handle.isTrace();
+	}
+
+	@Override
+	public JKQuery getJKQuery() {
+		return handle;
 	}
 }

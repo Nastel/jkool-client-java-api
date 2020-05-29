@@ -27,6 +27,7 @@ public interface JKQIConstants {
 	// HTTP header keys
 	static final String CONTENT_TYPE = "content-type";
 	static final String X_API_KEY = "X-API-Key";
+	static final String X_REFERER = "Referer";
 	static final String X_API_HOSTNAME = "X-API-Host-Name";
 	static final String X_API_HOSTADDR = "X-API-Host-Addr";
 	static final String X_API_RUNTIME = "X-API-Runtime";

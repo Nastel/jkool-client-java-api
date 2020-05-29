@@ -20,6 +20,8 @@ import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
+import com.jkoolcloud.client.api.utils.JKUtils;
+
 /**
  * This is used to encapsulate JKQL query statements and implements {@link JKStatement} interface.
  * 
@@ -27,7 +29,9 @@ import javax.ws.rs.core.Response;
  */
 public class JKStatementImpl implements JKStatement {
 
-	int maxRows;
+	int maxRows = 100;
+	boolean trace = false;
+	String referrer = JKUtils.VM_NETADDR;
 	String query, id;
 	JKQuery handle;
 
@@ -43,6 +47,7 @@ public class JKStatementImpl implements JKStatement {
 		this.id = id;
 		this.query = query;
 		this.maxRows = maxRows;
+		this.trace = handle.isTrace();
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class JKStatementImpl implements JKStatement {
 
 	@Override
 	public boolean isTrace() {
-		return handle.isTrace();
+		return trace;
 	}
 
 	@Override
@@ -86,7 +91,30 @@ public class JKStatementImpl implements JKStatement {
 	}
 
 	@Override
+	public String getReferrer() {
+		return referrer;
+	}
+
+	@Override
+	public JKStatement setReferrer(String ref) {
+		this.referrer = ref;
+		return this;
+	}
+
+	@Override
+	public JKStatement setTrace(boolean flag) {
+		this.trace = flag;
+		return this;
+	}
+
+	@Override
 	public Response call() throws IOException, JKStreamException {
 		return handle.call(this);
+	}
+
+	@Override
+	public JKStatement setMaxRows(int mrows) {
+		this.maxRows = mrows;
+		return this;
 	}
 }

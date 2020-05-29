@@ -16,7 +16,6 @@
 package com.jkoolcloud.client.api.service;
 
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,10 +33,9 @@ public class JKQueryHandle implements JKQIConstants {
 	public final static String DEFAULT_DATE_RANGE = "today";
 	public final static String DEFAULT_REPO = "";
 
-	final String query, id, tz, daterange, repo;
+	final JKStatementAsync query;
 	final boolean subscribe;
 	final long timeCreated;
-	final JKQueryCallback callback;
 
 	int maxRows = 100;
 	boolean done = false, trace = false;
@@ -50,58 +48,16 @@ public class JKQueryHandle implements JKQIConstants {
 	/**
 	 * Create a jKool query handle
 	 * 
-	 * @param q
+	 * @param stmt
 	 *            JKQL query statement
 	 * @param callback
 	 *            associated with the given query
 	 */
-	public JKQueryHandle(String q, JKQueryCallback callback) {
-		this(q, newId(q), TimeZone.getDefault().getID(), DEFAULT_DATE_RANGE, DEFAULT_REPO, callback);
-	}
-
-	/**
-	 * Create a jKool query handle
-	 * 
-	 * @param q
-	 *            JKQL query statement
-	 * @param tz
-	 *            query timezone
-	 * @param drange
-	 *            query date range
-	 * @param rpid
-	 *            query repo id
-	 * @param callback
-	 *            associated with the given query
-	 */
-	public JKQueryHandle(String q, String tz, String drange, String rpid, JKQueryCallback callback) {
-		this(q, newId(q), tz, drange, rpid, callback);
-	}
-
-	/**
-	 * Create a jKool query handle
-	 * 
-	 * @param q
-	 *            JKQL query statement
-	 * @param id
-	 *            query id associated with the given handle
-	 * @param tz
-	 *            query timezone
-	 * @param drange
-	 *            query date range
-	 * @param rpid
-	 *            query repo id
-	 * @param callback
-	 *            associated with the given query
-	 */
-	public JKQueryHandle(String q, String id, String tz, String drange, String rpid, JKQueryCallback callback) {
+	public JKQueryHandle(JKStatementAsync stmt) {
 		this.timeCreated = System.currentTimeMillis();
-		this.query = q;
-		this.id = id;
-		this.tz = tz;
-		this.daterange = drange;
-		this.repo = rpid;
-		this.callback = callback;
-		this.subscribe = isSubscribeQ(q);
+		this.query = stmt;
+		this.trace = query.isTrace();
+		this.subscribe = isSubscribeQ(query.getQuery());
 	}
 
 	/**
@@ -156,7 +112,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return true if subscribe query, false otherwise
 	 */
 	public boolean isSubscribeId() {
-		return id.startsWith(JK_SUB_UUID_PREFIX);
+		return query.getId().startsWith(JK_SUB_UUID_PREFIX);
 	}
 
 	/**
@@ -183,16 +139,25 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return JKQL query statement
 	 */
 	public String getQuery() {
+		return query.getQuery();
+	}
+
+	/**
+	 * Obtain query associated with the current handle
+	 * 
+	 * @return JKQL query {@link JKStatementAsync}
+	 */
+	public JKStatementAsync getQueryStatement() {
 		return query;
 	}
 
 	/**
-	 * Obtain query timezone
+	 * Obtain query TimeZone
 	 * 
-	 * @return JKQL query timezone
+	 * @return JKQL query TimeZone
 	 */
 	public String getTimeZone() {
-		return tz;
+		return query.getTimeZone();
 	}
 
 	/**
@@ -201,7 +166,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return JKQL query date range
 	 */
 	public String getDateRange() {
-		return daterange;
+		return query.getDateRange();
 	}
 
 	/**
@@ -210,7 +175,16 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return JKQL query repository id (null if default)
 	 */
 	public String getRepoId() {
-		return repo;
+		return query.getRepoId();
+	}
+
+	/**
+	 * Obtain referrer name
+	 * 
+	 * @return name of the query referrer
+	 */
+	public String getReferrer() {
+		return query.getReferrer();
 	}
 
 	/**
@@ -219,7 +193,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return JKQL query callback handle
 	 */
 	public JKQueryCallback getCallback() {
-		return callback;
+		return query.getCallback();
 	}
 
 	/**
@@ -228,7 +202,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return handle identifier
 	 */
 	public String getId() {
-		return id;
+		return query.getId();
 	}
 
 	/**
@@ -407,18 +381,18 @@ public class JKQueryHandle implements JKQIConstants {
 
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return query.getId().hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof JKQueryHandle) {
 			JKQueryHandle q2 = (JKQueryHandle) obj;
-			return id.equals(q2.id);
+			return query.getId().equals(q2.query.getId());
 		} else if (obj instanceof JKQueryCallback) {
-			return this.callback == (JKQueryCallback) obj;
+			return this.query.getCallback() == (JKQueryCallback) obj;
 		} else if (obj instanceof String) {
-			return id.equals(String.valueOf(obj));
+			return query.getId().equals(String.valueOf(obj));
 		}
 		return false;
 	}
@@ -426,20 +400,21 @@ public class JKQueryHandle implements JKQIConstants {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " {" //
-				+ "\", id: \"" + id //
-				+ "\", query: \"" + query //
-				+ "\", timezone: \"" + tz //
-				+ "\", daterange: \"" + daterange //
-				+ "\", repo: \"" + repo //
-				+ "\", trace: \"" + trace //
-				+ "\", callback: \"" + callback + "\"}";
+				+ "id: \"" + query.getId() //
+				+ "\", query: \"" + query.getQuery() //
+				+ "\", timezone: \"" + query.getTimeZone() //
+				+ "\", daterange: \"" + query.getDateRange() //
+				+ "\", repo: \"" + query.getRepoId() //
+				+ "\", referrer: \"" + query.getReferrer() //
+				+ "\", trace: \"" + query.isTrace() //
+				+ "\", callback: \"" + query.getCallback() + "\"}";
 	}
 
 	protected void done() {
 		aLock.lock();
 		try {
 			done = true;
-			callback.done(this);
+			query.getCallback().done(this);
 			doneCall.signalAll();
 		} finally {
 			aLock.unlock();
@@ -450,7 +425,7 @@ public class JKQueryHandle implements JKQIConstants {
 		aLock.lock();
 		try {
 			callCount.incrementAndGet();
-			callback.handle(this, response, ex);
+			query.getCallback().handle(this, response, ex);
 			calledBack.signalAll();
 		} finally {
 			aLock.unlock();

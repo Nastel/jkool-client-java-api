@@ -150,7 +150,7 @@ public class JKQueryAsync extends JKQuery {
 			throw new IllegalArgumentException("list can not be null");
 		}
 		for (JKQueryCallback callback : callbacks) {
-			defCallbacks.add(new JKQueryHandle(DEFAULT_QUERY, callback));
+			defCallbacks.add(new JKQueryHandle(prepare(DEFAULT_QUERY, callback)));
 		}
 		return this;
 	}
@@ -363,8 +363,7 @@ public class JKQueryAsync extends JKQuery {
 		if (callback == null) {
 			throw new IllegalArgumentException("callback can not be null");
 		}
-		JKQueryHandle qHandle = createQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback)
-				.setMaxRows(maxRows).setTrace(isTrace());
+		JKQueryHandle qHandle = createQueryHandle(query, maxRows, callback);
 		return callAsync(qHandle);
 	}
 
@@ -390,6 +389,7 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_MAX_ROWS_KEY, qhandle.getMaxRows()) //
 				.add(JK_TRACE_KEY, qhandle.isTrace()) //
 				.add(JK_SUBID_KEY, qhandle.getId()) //
+				.add(X_REFERER, qhandle.getReferrer()) //
 				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
 				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
@@ -557,7 +557,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @return itself
 	 */
 	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(query, getTimeZone(), getDateRange(), getRepoId(), callback);
+		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, callback));
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
@@ -567,19 +567,14 @@ public class JKQueryAsync extends JKQuery {
 	 * 
 	 * @param query
 	 *            JKQL query
-	 * @param tz
-	 *            JKQL query timezone
-	 * @param drange
-	 *            JKQL query date range
-	 * @param repo
-	 *            JKQL query repo (null if default)
+	 * @param maxRows
+	 *            JKQL query max rows
 	 * @param callback
 	 *            callback associated with the query
 	 * @return itself
 	 */
-	protected JKQueryHandle createQueryHandle(String query, String tz, String drange, String repo,
-			JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(query, tz, drange, repo, callback);
+	protected JKQueryHandle createQueryHandle(String query, int maxRows, JKQueryCallback callback) {
+		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, callback));
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
@@ -661,6 +656,6 @@ public class JKQueryAsync extends JKQuery {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " {" + "\", uri: \"" + webSockUri + "\"}";
+		return getClass().getSimpleName() + " {uri: \"" + webSockUri + "\", socket: \"" + socket + "\"}";
 	}
 }

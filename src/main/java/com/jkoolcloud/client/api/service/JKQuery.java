@@ -254,6 +254,7 @@ public class JKQuery extends JKService {
 		qParms.param(JK_SUBID_KEY, query.getId());
 		
 		return target.request(MediaType.APPLICATION_JSON_TYPE)
+				.header(X_REFERER, query.getReferrer()) 
 				.header(X_API_KEY, getToken()) 
 				.header(X_API_TOKEN, getToken())
 				.header(X_API_HOSTNAME, JKUtils.VM_HOST)

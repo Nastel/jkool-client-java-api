@@ -19,7 +19,8 @@ import java.io.IOException;
 import javax.ws.rs.core.Response;
 
 /**
- * This interface defines a JKQL statement. All concrete statement implementations must implement this interface.
+ * This interface defines a JKQL statement. All concrete statement
+ * implementations must implement this interface.
  * 
  * @author albert
  */
@@ -32,7 +33,7 @@ public interface JKStatement {
 	JKQuery getJKQuery();
 
 	/**
-	 * Obtain GUID associated with  the statement
+	 * Obtain GUID associated with the statement
 	 * 
 	 * @return statement GUID
 	 */
@@ -53,9 +54,17 @@ public interface JKStatement {
 	int getMaxRows();
 
 	/**
-	 * Obtain query timezone
+	 * Set max rows limit for returned responses
 	 * 
-	 * @return query timezone
+	 * @param mrows maximum row count
+	 * @return {@link JKStatement} instance
+	 */
+	JKStatement setMaxRows(int mrows);
+
+	/**
+	 * Obtain query TimeZone
+	 * 
+	 * @return query TimeZone
 	 */
 	String getTimeZone();
 
@@ -74,18 +83,40 @@ public interface JKStatement {
 	String getRepoId();
 
 	/**
+	 * Set statement Referrer (original URL/IP of app issuing the statement)
+	 * 
+	 * @param ref name of the referrer
+	 * @return {@link JKStatement} instance
+	 */
+	JKStatement setReferrer(String ref);
+
+	/**
+	 * Obtain statement Referrer (original URL/IP of app issuing the statement)
+	 * 
+	 * @return URL or IP of the original referrer
+	 */
+	String getReferrer();
+
+	/**
 	 * Get trace flag for this handle
 	 * 
 	 * @return true if trace enabled, false otherwise
 	 */
 	boolean isTrace();
-	
+
+	/**
+	 * Set trace flag for this handle
+	 * 
+	 * @param flag trace flag
+	 * @return {@link JKStatement} instance
+	 */
+	JKStatement setTrace(boolean flag);
+
 	/**
 	 * Call current statement and wait for response
 	 * 
-	 * @throws IOException
-	 *             when IO errors occur
+	 * @throws IOException when IO errors occur
 	 * @return query handle associate with this query
 	 */
-	Response call() throws IOException, JKStreamException ;
+	Response call() throws IOException, JKStreamException;
 }

@@ -495,9 +495,9 @@ public class JKQueryAsync extends JKQuery {
 	 *             on error during IO
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
-		ArrayList<String> idList = new ArrayList<>(SUBID_MAP.keySet());
-		for (String id : idList) {
-			cancelAsync(id);
+		ArrayList<JKQueryHandle> idList = new ArrayList<>(SUBID_MAP.values());
+		for (JKQueryHandle handle : idList) {
+			cancelAsync(handle);
 		}
 		return this;
 	}
@@ -512,39 +512,29 @@ public class JKQueryAsync extends JKQuery {
 	 *             on error during IO
 	 */
 	public JKQueryHandle cancelAsync(JKQueryHandle handle) throws IOException {
-		return cancelAsync(handle.getId());
-	}
-
-	/**
-	 * Cancel a live subscription
-	 * 
-	 * @param subid
-	 *            subscription id returned by {#callAsync(String, JKQueryCallback)}
-	 * @return un-subscription response
-	 * @throws IOException
-	 *             on error during IO
-	 */
-	public JKQueryHandle cancelAsync(String subid) throws IOException {
-		if (subid == null) {
-			throw new IllegalArgumentException("subscription id can not be null");
+		if (handle == null) {
+			throw new IllegalArgumentException("handle id can not be null");
 		}
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder //
 				.add(JK_TOKEN_KEY, getToken()) //
 				.add(JK_TIME_ZONE_KEY, getTimeZone()) //
 				.add(JK_REPO_KEY, getRepoId()) //
-				.add(JK_MAX_ROWS_KEY, 10)//
+				.add(JK_MAX_ROWS_KEY, handle.getMaxRows())//
 				.add(JK_TRACE_KEY, isTrace())//
-				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + subid + "'") //
-				.add(JK_SUBID_KEY, subid) //
+				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + handle.getMsgId() + "'") //
+				.add(JK_SUBID_KEY, handle.getId()) //
 				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
 				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
 				.add(X_API_VERSION, QAPI_CLIENT_VERSION) //
 				.build();
 
+		if (handle.getCallback() != null) {
+			handle.getCallback().onCall(handle, jsonQuery);
+		}
 		sendJsonQuery(jsonQuery);
-		return SUBID_MAP.get(subid);
+		return SUBID_MAP.get(handle.getId());
 	}
 
 	/**
@@ -621,20 +611,22 @@ public class JKQueryAsync extends JKQuery {
 	/**
 	 * Handle async message response
 	 * 
-	 * @param subid
+	 * @param subId
 	 *            subscription id returned by {#callAsync(String, JKQueryCallback)}
 	 * @param response
 	 *            JSON message response
 	 * @return itself
 	 */
-	protected JKQueryAsync handleResponse(String subid, JsonObject response) {
+	protected JKQueryAsync handleResponse(String subId, JsonObject response) {
 		String qerror = response.getString(JKQueryAsync.JK_ERROR_KEY, null);
 		Throwable ex = ((qerror != null && !qerror.trim().isEmpty()) ? new JKStreamException(100, qerror) : null);
-		JKQueryHandle qhandle = (subid != null ? SUBID_MAP.get(subid) : null);
+		JKQueryHandle qhandle = (subId != null ? SUBID_MAP.get(subId) : null);
 		String callName = response.getString(JKQueryAsync.JK_CALL_KEY, "");
+		String msgId = response.getString(JKQueryAsync.JK_MSGID_KEY, null);
 
 		try {
 			if (qhandle != null) {
+				qhandle.setMsgId(msgId != null? msgId: subId);
 				qhandle.handle(response, ex);
 			} else if (defCallbacks.size() > 0) {
 				invokeDefaultHandles(response, ex);

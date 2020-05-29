@@ -141,6 +141,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 		if (ex != null) {
 			lastError = ex;
 			errCount.incrementAndGet();
+			out.println("\nOn Error(" + errCount.get() + "):");
 			if (response != null) {
 				out.println(JKUtils.prettyPrint(response));
 			} else {
@@ -149,6 +150,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 			}
 		} else {
 			msgCount.incrementAndGet();
+			out.println("\nOn Response(" + msgCount.get() + "):");
 			if (json_path == null) {
 				out.println(JKUtils.prettyPrint(response));
 			} else {

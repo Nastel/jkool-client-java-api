@@ -48,6 +48,7 @@ public interface JKQIConstants {
 	static final String JK_DATE_KEY = "jk_date";
 	static final String JK_TRACE_KEY = "jk_trace";
 
+	static final String JK_MSGID_KEY  = "jk_msg_id";
 	static final String JK_SUBID_KEY = "jk_subid";
 	static final String JK_ERROR_KEY = "jk_error";
 	static final String JK_CALL_KEY = "jk_call";

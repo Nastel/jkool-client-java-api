@@ -37,6 +37,7 @@ public class JKQueryHandle implements JKQIConstants {
 	final boolean subscribe;
 	final long timeCreated;
 
+	String _msg_id;		// server side subscription id 
 	int maxRows = 100;
 	boolean done = false, trace = false;
 
@@ -379,6 +380,10 @@ public class JKQueryHandle implements JKQIConstants {
 		callCount.set(0);
 	}
 
+	public String getMsgId() {
+		return this._msg_id != null? this._msg_id: this.getId();
+	}
+	
 	@Override
 	public int hashCode() {
 		return query.getId().hashCode();
@@ -410,6 +415,11 @@ public class JKQueryHandle implements JKQIConstants {
 				+ "\", callback: \"" + query.getCallback() + "\"}";
 	}
 
+	protected JKQueryHandle setMsgId(String id) {
+		this._msg_id = id;
+		return this;
+	}
+	
 	protected void done() {
 		aLock.lock();
 		try {

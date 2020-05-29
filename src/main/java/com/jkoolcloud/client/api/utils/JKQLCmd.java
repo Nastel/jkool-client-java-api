@@ -32,11 +32,12 @@ public class JKQLCmd {
 				System.getProperty("jk.access.token", options.token))) {
 			// setup jKool WebSocket connection and connect
 			if (options.retryTimeMs > 0) {
-				jkQueryAsync
-						.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
+				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
 			}
-			jkQueryAsync.setTimeZone(options.timezone).setDateFilter(options.daterange).setRepoId(options.reponame)
-					.setTrace(options.trace);
+			jkQueryAsync.setTimeZone(options.timezone)
+				.setDateFilter(options.daterange)
+				.setRepoId(options.reponame)
+				.setTrace(options.trace);
 
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
@@ -44,15 +45,14 @@ public class JKQLCmd {
 
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
-			System.out.println(
-					"Running query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", trace=" + options.trace);
+			System.out.println("Running query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", trace=" + options.trace);
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
 				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
-				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId());
+				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", mid=" + qhandle.getMsgId());
 				qhandle = jkQueryAsync.cancelAsync(qhandle);
 				if (qhandle != null) {
 					qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);

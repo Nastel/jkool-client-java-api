@@ -46,12 +46,11 @@ public interface JKStatementAsync extends JKStatement {
 	 * @return query handle associate with this query
 	 */
 	JKQueryHandle callAsync() throws IOException;
-
+	
 	/**
 	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @param maxRows
-	 *            maximum rows limit in response
+	 * @param maxRows maximum number 
 	 * @throws IOException
 	 *             when IO errors occur
 	 * @return query handle associate with this query

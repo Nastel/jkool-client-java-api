@@ -140,7 +140,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * 
 	 * @return JKQL query {@link JKStatementAsync}
 	 */
-	public JKStatementAsync getQueryStatement() {
+	public JKStatementAsync getStatement() {
 		return query;
 	}
 

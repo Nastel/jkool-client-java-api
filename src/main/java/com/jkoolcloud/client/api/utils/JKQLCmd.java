@@ -17,7 +17,11 @@ package com.jkoolcloud.client.api.utils;
 
 import java.util.concurrent.TimeUnit;
 
-import com.jkoolcloud.client.api.service.*;
+import com.jkoolcloud.client.api.service.JKQueryAsync;
+import com.jkoolcloud.client.api.service.JKQueryHandle;
+import com.jkoolcloud.client.api.service.JKRetryConnectionHandler;
+import com.jkoolcloud.client.api.service.JKTraceConnectionHandler;
+import com.jkoolcloud.client.api.service.JKTraceQueryCallback;
 
 public class JKQLCmd {
 	public static void main(String[] args) {
@@ -28,8 +32,8 @@ public class JKQLCmd {
 		}
 		options.print();
 		JKTraceQueryCallback callback = new JKTraceQueryCallback(System.out, options.json_path, options.trace);
-		try (JKQueryAsync jkQueryAsync = new JKQueryAsync(System.getProperty("jk.ws.uri", options.uri),
-				System.getProperty("jk.access.token", options.token))) {
+		try (JKQueryAsync jkQueryAsync = new JKQueryAsync(System.getProperty("jk.ws.uri", options.uri), System.getProperty("jk.access.token", options.token))) 
+		{
 			// setup jKool WebSocket connection and connect
 			if (options.retryTimeMs > 0) {
 				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
@@ -42,18 +46,19 @@ public class JKQLCmd {
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();
+			
 
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
-			System.out.println("Running query=" + qhandle.getQuery());
-			System.out.println("Prepared statement=" + qhandle.getQueryStatement());
+			System.out.println("Running query=[" + qhandle.getQuery() + "]");
+			System.out.println("Prepared statement=[" + qhandle.getStatement() + "]");
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
 				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
-				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", mid=" + qhandle.getLastMsgId());
+				System.out.println("Cancelling query=[" + qhandle.getQuery() + "], id=" + qhandle.getId() + ", mid=" + qhandle.getLastMsgId());
 				qhandle = jkQueryAsync.cancelAsync(qhandle);
 				if (qhandle != null) {
 					qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
@@ -64,6 +69,6 @@ public class JKQLCmd {
 			e.printStackTrace();
 		} finally {
 			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
-		}
+		} 
 	}
 }

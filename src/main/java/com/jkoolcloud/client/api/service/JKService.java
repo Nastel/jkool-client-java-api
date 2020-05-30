@@ -30,7 +30,7 @@ import com.jkoolcloud.client.api.utils.JKUtils;
  * 
  * @author albert
  */
-abstract public class JKService implements JKQIConstants, Closeable {
+abstract public class JKService implements JKQIConstants, Closeable, AutoCloseable {
 
 	String token;
 	String basePath;

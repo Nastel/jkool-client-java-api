@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +40,7 @@ public class JKQueryHandle implements JKQIConstants {
 
 	String _msg_id;		// server side subscription id 
 	int maxRows = 100;
-	boolean done = false, trace = false;
+	boolean trace = false;
 
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
@@ -123,15 +124,6 @@ public class JKQueryHandle implements JKQIConstants {
 	 */
 	public boolean isSubscribeQuery() {
 		return subscribe;
-	}
-
-	/**
-	 * Determine if current handle is DONE -- meaning all responses for this query have been received and consumed.
-	 * 
-	 * @return true if handle is done, false otherwise
-	 */
-	public boolean isDone() {
-		return done;
 	}
 
 	/**
@@ -319,7 +311,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @throws InterruptedException
 	 *             if connection is interrupted
 	 */
-	public boolean awaitOnDeadUntil(Date until) throws InterruptedException {
+	public boolean awaitOnDoneUntil(Date until) throws InterruptedException {
 		aLock.lock();
 		try {
 			return doneCall.awaitUntil(until);
@@ -380,8 +372,25 @@ public class JKQueryHandle implements JKQIConstants {
 		callCount.set(0);
 	}
 
-	public String getMsgId() {
+	/**
+	 * Obtain last msg id associated with the handle. Only
+	 * available after first response on this handle is received.
+	 * 
+	 * @return msg id of last response
+	 */
+	public String getLastMsgId() {
 		return this._msg_id != null? this._msg_id: this.getId();
+	}
+	
+	/**
+	 * Cancel a live subscription
+	 * 
+	 * @return query handle associated with subscription
+	 * @throws IOException
+	 *             on error during IO
+	 */
+	public JKQueryHandle cancelAsync() throws IOException {
+		return this.query.getQueryAsync().cancelAsync(this);
 	}
 	
 	@Override
@@ -415,7 +424,7 @@ public class JKQueryHandle implements JKQIConstants {
 				+ "\", callback: \"" + query.getCallback() + "\"}";
 	}
 
-	protected JKQueryHandle setMsgId(String id) {
+	protected JKQueryHandle setLastMsgId(String id) {
 		this._msg_id = id;
 		return this;
 	}
@@ -423,7 +432,6 @@ public class JKQueryHandle implements JKQIConstants {
 	protected void done() {
 		aLock.lock();
 		try {
-			done = true;
 			query.getCallback().done(this);
 			doneCall.signalAll();
 		} finally {

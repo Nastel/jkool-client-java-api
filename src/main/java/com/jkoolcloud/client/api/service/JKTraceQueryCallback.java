@@ -169,7 +169,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	@Override
 	public void done(JKQueryHandle qhandle) {
 		if (trace) {
-			out.println("Done: handle=" + qhandle + ", done=" + qhandle.isDone());
+			out.println("Done: handle=" + qhandle);
 		}
 	}
 }

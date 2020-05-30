@@ -45,14 +45,15 @@ public class JKQLCmd {
 
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
-			System.out.println("Running query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", trace=" + options.trace);
+			System.out.println("Running query=" + qhandle.getQuery());
+			System.out.println("Prepared statement=" + qhandle.getQueryStatement());
 			if (!qhandle.isSubscribeQuery()) {
 				// standard query only one response expected
 				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
-				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", mid=" + qhandle.getMsgId());
+				System.out.println("Cancelling query=\"" + qhandle.getQuery() + "\", id=" + qhandle.getId() + ", mid=" + qhandle.getLastMsgId());
 				qhandle = jkQueryAsync.cancelAsync(qhandle);
 				if (qhandle != null) {
 					qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
@@ -62,8 +63,7 @@ public class JKQLCmd {
 			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
 		} finally {
-			System.out
-					.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
+			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
 		}
 	}
 }

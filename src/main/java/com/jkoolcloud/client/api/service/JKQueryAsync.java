@@ -41,9 +41,10 @@ public class JKQueryAsync extends JKQuery {
 																		// handler
 	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<>();
 
-	private URI webSockUri;
+	private URI wsURI;
 	private JKWSClient socket;
 	private WSClientHandler wsHandler;
+	
 	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
 	final Collection<JKConnectionHandler> conHandlers = Collections.synchronizedList(new ArrayList<>(5));
 
@@ -97,7 +98,7 @@ public class JKQueryAsync extends JKQuery {
 	 */
 	public JKQueryAsync(URI wsUri, String queryUrl, String token) {
 		super(queryUrl, token);
-		this.webSockUri = wsUri;
+		this.wsURI = wsUri;
 		this.wsHandler = new WSClientHandler(this);
 	}
 
@@ -135,7 +136,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @return service URL for executing async queries
 	 */
 	public String getAsyncServiceUrl() {
-		return webSockUri.toString();
+		return wsURI.toString();
 	}
 
 	/**
@@ -255,7 +256,7 @@ public class JKQueryAsync extends JKQuery {
 	public synchronized JKQueryAsync connect() throws IOException {
 		try {
 			if (socket == null) {
-				socket = new JKWSClient(webSockUri, wsHandler);
+				socket = new JKWSClient(wsURI, wsHandler);
 				socket.connect();
 			} else if (!socket.isConnected()) {
 				socket.connect();
@@ -507,7 +508,7 @@ public class JKQueryAsync extends JKQuery {
 	 * 
 	 * @param handle
 	 *            query handle {#callAsync(String, JKQueryCallback)}
-	 * @return un-subscription response
+	 * @return query handle associated with subscription
 	 * @throws IOException
 	 *             on error during IO
 	 */
@@ -522,7 +523,7 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_REPO_KEY, getRepoId()) //
 				.add(JK_MAX_ROWS_KEY, handle.getMaxRows())//
 				.add(JK_TRACE_KEY, isTrace())//
-				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + handle.getMsgId() + "'") //
+				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + handle.getLastMsgId() + "'") //
 				.add(JK_SUBID_KEY, handle.getId()) //
 				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
@@ -626,18 +627,18 @@ public class JKQueryAsync extends JKQuery {
 
 		try {
 			if (qhandle != null) {
-				qhandle.setMsgId(msgId != null? msgId: subId);
+				qhandle.setLastMsgId(msgId != null? msgId: subId);
 				qhandle.handle(response, ex);
 			} else if (defCallbacks.size() > 0) {
 				invokeDefaultHandles(response, ex);
 			}
 			return this;
 		} finally {
-			cleanHandlers(callName, qhandle);
+			complete(callName, qhandle);
 		}
 	}
 
-	private void cleanHandlers(String callName, JKQueryHandle qhandle) {
+	private void complete(String callName, JKQueryHandle qhandle) {
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
 				SUBID_MAP.remove(qhandle.getId());
@@ -648,6 +649,6 @@ public class JKQueryAsync extends JKQuery {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " {uri: \"" + webSockUri + "\", socket: \"" + socket + "\"}";
+		return getClass().getSimpleName() + " {uri: \"" + wsURI + "\", socket: \"" + socket + "\"}";
 	}
 }

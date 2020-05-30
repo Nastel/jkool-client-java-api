@@ -51,6 +51,21 @@ public class JKStatementImpl implements JKStatement {
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName()
+				+ " {id: \"" + getId()
+				+ "\", handle: \"" + getJKQuery()
+				+ "\", query: \"" + getQuery()
+				+ "\", time.zone: \"" + getTimeZone()
+				+ "\", date.range: \"" + getDateRange()
+				+ "\", referrer: \"" + getReferrer()
+				+ "\", repo.id: \"" + getRepoId()
+				+ "\", trace: \"" + isTrace()
+				+ "\", max.rows: \"" + getMaxRows()
+				+ "\"}";
+	}
+
+	@Override
 	public String getQuery() {
 		return query;
 	}

@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.client.api.utils;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import com.jkoolcloud.client.api.service.JKQueryAsync;
@@ -50,6 +51,7 @@ public class JKQLCmd {
 
 			// run query in async mode with a callback
 			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
+			Runtime.getRuntime().addShutdownHook(new VMStop(qhandle));
 			System.out.println("Running query=[" + qhandle.getQuery() + "]");
 			System.out.println("Prepared statement=[" + qhandle.getStatement() + "]");
 			if (!qhandle.isSubscribeQuery()) {
@@ -70,5 +72,28 @@ public class JKQLCmd {
 		} finally {
 			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
 		} 
+	}
+}
+
+class VMStop extends Thread {
+	JKQueryHandle handle;
+	
+	protected VMStop(JKQueryHandle h) {
+		handle = h;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			if (handle.isSubscribeQuery()) {
+				System.out.println("VM Stopping. Cancel subscription on handle= " + handle);
+				handle.cancelAsync();
+				handle.awaitOnDone(5000, TimeUnit.MILLISECONDS);
+			}
+			System.out.println("VM Stopping. Closing handle=" + handle);
+			handle.getStatement().getQueryAsync().close();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

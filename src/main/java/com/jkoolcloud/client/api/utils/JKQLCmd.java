@@ -86,7 +86,7 @@ class VMStop extends Thread {
 	public void run() {
 		try {
 			if (handle.isSubscribeQuery()) {
-				System.out.println("VM Stopping. Cancel subscription on handle= " + handle);
+				System.out.println("VM Stopping. Cancel subscription on handle=" + handle);
 				handle.cancelAsync();
 				handle.awaitOnDone(5000, TimeUnit.MILLISECONDS);
 			}

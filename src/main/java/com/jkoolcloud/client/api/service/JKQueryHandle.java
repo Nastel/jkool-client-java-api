@@ -39,8 +39,6 @@ public class JKQueryHandle implements JKQIConstants {
 	final long timeCreated;
 
 	String _msg_id;		// server side subscription id 
-	int maxRows = 100;
-	boolean trace = false;
 
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
@@ -58,7 +56,6 @@ public class JKQueryHandle implements JKQIConstants {
 	public JKQueryHandle(JKStatementAsync stmt) {
 		this.timeCreated = System.currentTimeMillis();
 		this.query = stmt;
-		this.trace = query.isTrace();
 		this.subscribe = isSubscribeQ(query.getQuery());
 	}
 
@@ -208,36 +205,12 @@ public class JKQueryHandle implements JKQIConstants {
 	}
 
 	/**
-	 * Set maximum rows for query response
-	 * 
-	 * @param rows
-	 *            maximum rows in response
-	 * @return self
-	 */
-	public JKQueryHandle setMaxRows(int rows) {
-		this.maxRows = rows;
-		return this;
-	}
-
-	/**
 	 * Get maximum rows for query response
 	 * 
 	 * @return rows maximum rows in response
 	 */
 	public int getMaxRows() {
-		return maxRows;
-	}
-
-	/**
-	 * Set trace flag
-	 * 
-	 * @param flag
-	 *            enable or disable trace
-	 * @return self
-	 */
-	public JKQueryHandle setTrace(boolean flag) {
-		this.trace = flag;
-		return this;
+		return query.getMaxRows();
 	}
 
 	/**
@@ -246,7 +219,7 @@ public class JKQueryHandle implements JKQIConstants {
 	 * @return true if trace enabled, false otherwise
 	 */
 	public boolean isTrace() {
-		return trace;
+		return query.isTrace();
 	}
 
 	/**

@@ -34,8 +34,11 @@ public class JKStatementImpl implements JKStatement {
 	String referrer = JKUtils.VM_NETADDR;
 	String query, id;
 	JKQuery handle;
+	boolean subscribe;
+	final long timeCreated;
 
 	protected JKStatementImpl() {
+		timeCreated = System.currentTimeMillis();
 	}
 
 	protected JKStatementImpl(JKQuery handle, String query, int maxRows) {
@@ -43,11 +46,18 @@ public class JKStatementImpl implements JKStatement {
 	}
 
 	protected JKStatementImpl(JKQuery handle, String id, String query, int maxRows) {
+		timeCreated = System.currentTimeMillis();
 		this.handle = handle;
 		this.id = id;
 		this.query = query;
 		this.maxRows = maxRows;
+		this.subscribe = JKUtils.isSubscribeQ(query);
 		this.trace = handle.isTrace();
+	}
+
+	@Override
+	public long getTimeCreated() {
+		return timeCreated;
 	}
 
 	@Override
@@ -63,6 +73,16 @@ public class JKStatementImpl implements JKStatement {
 				+ "\", trace: \"" + isTrace()
 				+ "\", max.rows: \"" + getMaxRows()
 				+ "\"}";
+	}
+
+	@Override
+	public boolean isSubscribeId() {
+		return getId().startsWith(JKQIConstants.JK_SUB_UUID_PREFIX);
+	}
+
+	@Override
+	public boolean isSubscribe() {
+		return subscribe;
 	}
 
 	@Override

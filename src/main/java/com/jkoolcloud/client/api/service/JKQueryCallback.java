@@ -29,7 +29,15 @@ public interface JKQueryCallback {
 	 * @param qhandle
 	 *            connection handle from which message is received
 	 */
-	void done(JKQueryHandle qhandle);
+	void onDone(JKStatementAsync qhandle);
+
+	/**
+	 * Method called when the callback will no longer be called because statement is closed
+	 * 
+	 * @param qhandle
+	 *            connection handle from which message is received
+	 */
+	void onClose(JKStatementAsync qhandle);
 
 	/**
 	 * Method called before call/query is executed
@@ -39,7 +47,7 @@ public interface JKQueryCallback {
 	 * @param query
 	 *            JSON query
 	 */
-	void onCall(JKQueryHandle qhandle, JsonObject query);
+	void onCall(JKStatementAsync qhandle, JsonObject query);
 
 	/**
 	 * Method called when a response to a query is received
@@ -51,5 +59,5 @@ public interface JKQueryCallback {
 	 * @param ex
 	 *            if not null signifies an exception that occurred
 	 */
-	void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex);
+	void onResponse(JKStatementAsync qhandle, JsonObject response, Throwable ex);
 }

@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import com.jkoolcloud.client.api.service.JKQueryAsync;
-import com.jkoolcloud.client.api.service.JKQueryHandle;
 import com.jkoolcloud.client.api.service.JKRetryConnectionHandler;
+import com.jkoolcloud.client.api.service.JKStatementAsync;
 import com.jkoolcloud.client.api.service.JKTraceConnectionHandler;
 import com.jkoolcloud.client.api.service.JKTraceQueryCallback;
 
@@ -35,7 +35,7 @@ public class JKQLCmd {
 		JKTraceQueryCallback callback = new JKTraceQueryCallback(System.out, options.json_path, options.trace);
 		try (JKQueryAsync jkQueryAsync = new JKQueryAsync(System.getProperty("jk.ws.uri", options.uri), System.getProperty("jk.access.token", options.token))) 
 		{
-			// setup jKool WebSocket connection and connect
+			// setup WebSocket connection and connect
 			if (options.retryTimeMs > 0) {
 				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
 			}
@@ -50,11 +50,11 @@ public class JKQLCmd {
 			
 
 			// run query in async mode with a callback
-			JKQueryHandle qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
+			JKStatementAsync qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
 			Runtime.getRuntime().addShutdownHook(new VMStop(qhandle));
 			System.out.println("Running query=[" + qhandle.getQuery() + "]");
-			System.out.println("Prepared statement=[" + qhandle.getStatement() + "]");
-			if (!qhandle.isSubscribeQuery()) {
+			System.out.println("Prepared statement=[" + qhandle + "]");
+			if (!qhandle.isSubscribe()) {
 				// standard query only one response expected
 				qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
 			} else {
@@ -76,23 +76,23 @@ public class JKQLCmd {
 }
 
 class VMStop extends Thread {
-	JKQueryHandle handle;
+	JKStatementAsync handle;
 	
-	protected VMStop(JKQueryHandle h) {
+	protected VMStop(JKStatementAsync h) {
 		handle = h;
 	}
 	
 	@Override
 	public void run() {
 		try {
-			if (handle.isSubscribeQuery()) {
+			if (handle.isSubscribe()) {
 				System.out.println("VM Stopping. Cancel subscription on handle=" + handle);
 				handle.cancelAsync();
 				handle.awaitOnDone(5000, TimeUnit.MILLISECONDS);
 			}
 			System.out.println("VM Stopping. Closing handle=" + handle);
 			handle.close();
-			handle.getStatement().getQueryAsync().close();
+			handle.getQueryAsync().close();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}

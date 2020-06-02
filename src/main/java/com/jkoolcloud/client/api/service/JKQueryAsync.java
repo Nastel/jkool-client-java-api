@@ -40,13 +40,13 @@ import com.jkoolcloud.client.api.utils.JKUtils;
 public class JKQueryAsync extends JKQuery {
 	private static final String DEFAULT_QUERY = "SUBSCRIBE TO ORPHANS"; // dummy query associated with default response
 																		// handler
-	private final ConcurrentMap<String, JKQueryHandle> SUBID_MAP = new ConcurrentHashMap<>();
+	private final ConcurrentMap<String, JKStatementAsyncImpl> SUBID_MAP = new ConcurrentHashMap<>();
 
 	private URI wsURI;
 	private JKWSClient socket;
 	private WSClientHandler wsHandler;
 	
-	final Collection<JKQueryHandle> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
+	final Collection<JKStatementAsyncImpl> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
 	final Collection<JKConnectionHandler> conHandlers = Collections.synchronizedList(new ArrayList<>(5));
 
 	/**
@@ -152,7 +152,7 @@ public class JKQueryAsync extends JKQuery {
 			throw new IllegalArgumentException("list can not be null");
 		}
 		for (JKQueryCallback callback : callbacks) {
-			defCallbacks.add(new JKQueryHandle(prepare(DEFAULT_QUERY, callback)));
+			defCallbacks.add((JKStatementAsyncImpl)prepare(DEFAULT_QUERY, callback));
 		}
 		return this;
 	}
@@ -214,7 +214,7 @@ public class JKQueryAsync extends JKQuery {
 	 *            subscription id
 	 * @return query handle associated with subscription id
 	 */
-	public JKQueryHandle getHandle(String id) {
+	public JKStatementAsync getHandle(String id) {
 		return SUBID_MAP.get(id);
 	}
 
@@ -223,8 +223,8 @@ public class JKQueryAsync extends JKQuery {
 	 * 
 	 * @return query handle associated with a default response handler
 	 */
-	public List<JKQueryHandle> getAllHandles() {
-		ArrayList<JKQueryHandle> list = new ArrayList<>(SUBID_MAP.values());
+	public List<JKStatementAsync> getAllHandles() {
+		ArrayList<JKStatementAsync> list = new ArrayList<>(SUBID_MAP.values());
 		return list;
 	}
 
@@ -233,8 +233,8 @@ public class JKQueryAsync extends JKQuery {
 	 * 
 	 * @return list of all default subscription handles
 	 */
-	public List<JKQueryHandle> getAllDefaultHandles() {
-		ArrayList<JKQueryHandle> list = new ArrayList<>(defCallbacks);
+	public List<JKStatementAsync> getAllDefaultHandles() {
+		ArrayList<JKStatementAsync> list = new ArrayList<>(defCallbacks);
 		return list;
 	}
 
@@ -295,7 +295,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryHandle searchAsync(String searchText, JKQueryCallback callback) throws IOException {
+	public JKStatementAsync searchAsync(String searchText, JKQueryCallback callback) throws IOException {
 		return searchAsync(searchText, DEFAULT_MAX_ROWS, callback);
 	}
 
@@ -312,7 +312,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryHandle searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
+	public JKStatementAsync searchAsync(String searchText, int maxRows, JKQueryCallback callback) throws IOException {
 		return callAsync(String.format(JK_SEARCH_QUERY_PREFIX, searchText), maxRows, callback);
 	}
 
@@ -327,7 +327,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryHandle subAsync(String query, JKQueryCallback callback) throws IOException {
+	public JKStatementAsync subAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(JK_SUB_QUERY_PREFIX + query, DEFAULT_MAX_ROWS, callback);
 	}
 
@@ -342,7 +342,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryHandle callAsync(String query, JKQueryCallback callback) throws IOException {
+	public JKStatementAsync callAsync(String query, JKQueryCallback callback) throws IOException {
 		return callAsync(query, DEFAULT_MAX_ROWS, callback);
 	}
 
@@ -361,11 +361,11 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IllegalArgumentException
 	 *             on bad arguments
 	 */
-	public JKQueryHandle callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
+	public JKStatementAsync callAsync(String query, int maxRows, JKQueryCallback callback) throws IOException {
 		if (callback == null) {
 			throw new IllegalArgumentException("callback can not be null");
 		}
-		JKQueryHandle qHandle = createQueryHandle(query, maxRows, callback);
+		JKStatementAsync qHandle = createQueryHandle(query, maxRows, callback);
 		return callAsync(qHandle);
 	}
 
@@ -380,7 +380,7 @@ public class JKQueryAsync extends JKQuery {
 	 *             on bad arguments
 	 * @return query handle associated with the query
 	 */
-	public JKQueryHandle callAsync(JKQueryHandle qhandle) throws IOException {
+	public JKStatementAsync callAsync(JKStatementAsync qhandle) throws IOException {
 		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder //
 				.add(JK_TOKEN_KEY, getToken()) //
@@ -440,8 +440,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Call query in async mode using default callback(s). All responses will be tagged with given id and routed to all
-	 * registered default handlers.
+	 * Call query in async mode using default callback(s). 
+	 * All responses will be tagged with given id and routed to all registered default handlers.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -484,8 +484,8 @@ public class JKQueryAsync extends JKQuery {
 	 *             on error during IO
 	 */
 	public JKQueryAsync closeAll() throws IOException {
-		ArrayList<JKQueryHandle> idList = new ArrayList<>(SUBID_MAP.values());
-		for (JKQueryHandle handle : idList) {
+		ArrayList<JKStatementAsync> idList = new ArrayList<>(SUBID_MAP.values());
+		for (JKStatementAsync handle : idList) {
 			try { handle.close(); }
 			catch (Throwable e) {}
 		}
@@ -500,8 +500,8 @@ public class JKQueryAsync extends JKQuery {
 	 *             on error during IO
 	 */
 	public JKQueryAsync cancelAsyncAll() throws IOException {
-		ArrayList<JKQueryHandle> idList = new ArrayList<>(SUBID_MAP.values());
-		for (JKQueryHandle handle : idList) {
+		ArrayList<JKStatementAsync> idList = new ArrayList<>(SUBID_MAP.values());
+		for (JKStatementAsync handle : idList) {
 			cancelAsync(handle);
 		}
 		return this;
@@ -516,7 +516,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryHandle cancelAsync(JKQueryHandle handle) throws IOException {
+	public JKStatementAsync cancelAsync(JKStatementAsync handle) throws IOException {
 		if (handle == null) {
 			throw new IllegalArgumentException("handle id can not be null");
 		}
@@ -527,7 +527,7 @@ public class JKQueryAsync extends JKQuery {
 				.add(JK_REPO_KEY, getRepoId()) //
 				.add(JK_MAX_ROWS_KEY, handle.getMaxRows())//
 				.add(JK_TRACE_KEY, isTrace())//
-				.add(JK_QUERY_KEY, JKQueryHandle.JK_UNSUB_QUERY_PREFIX + "'" + handle.getLastMsgId() + "'") //
+				.add(JK_QUERY_KEY, JKQIConstants.JK_UNSUB_QUERY_PREFIX + "'" + handle.getLastMsgId() + "'") //
 				.add(JK_SUBID_KEY, handle.getId()) //
 				.add(X_API_HOSTNAME, JKUtils.VM_HOST) //
 				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
@@ -548,7 +548,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @param handle
 	 *            query handle
 	 */
-	public void close(JKQueryHandle handle) {
+	public void close(JKStatementAsync handle) {
 		SUBID_MAP.remove(handle.getId());
 	}
 
@@ -562,9 +562,9 @@ public class JKQueryAsync extends JKQuery {
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
-		ArrayList<JKQueryHandle> handleList = new ArrayList<>(SUBID_MAP.values());
-		for (JKQueryHandle handle : handleList) {
+	public JKQueryAsync restoreSubscriptions(JKGate<JKStatementAsync> hGate) throws IOException {
+		ArrayList<JKStatementAsync> handleList = new ArrayList<>(SUBID_MAP.values());
+		for (JKStatementAsync handle : handleList) {
 			if (hGate.check(handle)) {
 				// restore subscription
 				callAsync(handle);
@@ -590,8 +590,8 @@ public class JKQueryAsync extends JKQuery {
 	 *            callback associated with the query
 	 * @return itself
 	 */
-	protected JKQueryHandle createQueryHandle(String query, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, callback));
+	protected JKStatementAsync createQueryHandle(String query, JKQueryCallback callback) {
+		JKStatementAsyncImpl qhandle = (JKStatementAsyncImpl) prepare(query, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
@@ -607,8 +607,8 @@ public class JKQueryAsync extends JKQuery {
 	 *            callback associated with the query
 	 * @return itself
 	 */
-	protected JKQueryHandle createQueryHandle(String query, int maxRows, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, maxRows, callback));
+	protected JKStatementAsync createQueryHandle(String query, int maxRows, JKQueryCallback callback) {
+		JKStatementAsyncImpl qhandle = (JKStatementAsyncImpl) prepare(query, maxRows, callback);
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
 	}
@@ -648,8 +648,8 @@ public class JKQueryAsync extends JKQuery {
 	 *            exception
 	 */
 	protected void invokeDefaultHandles(JsonObject response, Throwable ex) {
-		for (JKQueryHandle handle : defCallbacks) {
-			handle.handle(response, ex);
+		for (JKStatementAsyncImpl stmt : defCallbacks) {
+			stmt.onResponse(response, ex);
 		}
 	}
 
@@ -665,14 +665,12 @@ public class JKQueryAsync extends JKQuery {
 	protected JKQueryAsync handleResponse(String subId, JsonObject response) {
 		String qerror = response.getString(JKQueryAsync.JK_ERROR_KEY, null);
 		Throwable ex = ((qerror != null && !qerror.trim().isEmpty()) ? new JKStreamException(100, qerror) : null);
-		JKQueryHandle qhandle = (subId != null ? SUBID_MAP.get(subId) : null);
+		JKStatementAsyncImpl qhandle = (subId != null ? SUBID_MAP.get(subId) : null);
 		String callName = response.getString(JKQueryAsync.JK_CALL_KEY, "");
-		String msgId = response.getString(JKQueryAsync.JK_MSGID_KEY, null);
 
 		try {
 			if (qhandle != null) {
-				qhandle.setLastMsgId(msgId != null? msgId: subId);
-				qhandle.handle(response, ex);
+				qhandle.onResponse(response, ex);
 			} else if (defCallbacks.size() > 0) {
 				invokeDefaultHandles(response, ex);
 			}
@@ -682,10 +680,10 @@ public class JKQueryAsync extends JKQuery {
 		}
 	}
 
-	private void complete(String callName, JKQueryHandle qhandle) {
+	private void complete(String callName, JKStatementAsyncImpl qhandle) {
 		if (qhandle != null) {
-			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
-				qhandle.done();
+			if (!qhandle.isSubscribe() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
+				qhandle.onDone();
 			}
 		}
 	}

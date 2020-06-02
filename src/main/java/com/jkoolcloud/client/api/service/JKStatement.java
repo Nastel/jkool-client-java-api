@@ -16,6 +16,7 @@
 package com.jkoolcloud.client.api.service;
 
 import java.io.IOException;
+
 import javax.ws.rs.core.Response;
 
 /**
@@ -25,6 +26,16 @@ import javax.ws.rs.core.Response;
  * @author albert
  */
 public interface JKStatement {
+	public final static String DEFAULT_DATE_RANGE = "today";
+	public final static String DEFAULT_REPO = "";
+
+	/**
+	 * Obtain statement create time
+	 * 
+	 * @return statement create time
+	 */
+	long getTimeCreated();
+	
 	/**
 	 * Obtain {@link JKQuery} instance associated with the statement
 	 * 
@@ -98,14 +109,28 @@ public interface JKStatement {
 	String getReferrer();
 
 	/**
-	 * Get trace flag for this handle
+	 * Determine if current statement id represents a subscription query
+	 * 
+	 * @return true if subscribe query, false otherwise
+	 */
+	boolean isSubscribeId();
+
+	/**
+	 * Determine if current statement query represents a subscription query
+	 * 
+	 * @return true if subscribe query, false otherwise
+	 */
+	public boolean isSubscribe();
+	
+	/**
+	 * Get trace flag for this statement
 	 * 
 	 * @return true if trace enabled, false otherwise
 	 */
 	boolean isTrace();
 
 	/**
-	 * Set trace flag for this handle
+	 * Set trace flag for this statement
 	 * 
 	 * @param flag trace flag
 	 * @return {@link JKStatement} instance
@@ -116,7 +141,7 @@ public interface JKStatement {
 	 * Call current statement and wait for response
 	 * 
 	 * @throws IOException when IO errors occur
-	 * @return query handle associate with this query
+	 * @return query statement associate with this query
 	 */
-	Response call() throws IOException, JKStreamException;
+	Response call() throws IOException, JKStreamException;	
 }

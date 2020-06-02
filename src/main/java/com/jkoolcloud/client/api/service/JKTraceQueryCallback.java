@@ -129,7 +129,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
-	public void onCall(JKQueryHandle qhandle, JsonObject jsonCall) {
+	public void onCall(JKStatementAsync qhandle, JsonObject jsonCall) {
 		if (trace) {
 			out.println("Query JSON: ");
 			out.println(JKUtils.prettyPrint(jsonCall));
@@ -137,7 +137,7 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
-	public void handle(JKQueryHandle qhandle, JsonObject response, Throwable ex) {
+	public void onResponse(JKStatementAsync qhandle, JsonObject response, Throwable ex) {
 		if (ex != null) {
 			lastError = ex;
 			errCount.incrementAndGet();
@@ -167,9 +167,16 @@ public class JKTraceQueryCallback implements JKQueryCallback {
 	}
 
 	@Override
-	public void done(JKQueryHandle qhandle) {
+	public void onDone(JKStatementAsync qhandle) {
 		if (trace) {
 			out.println("Done: handle=" + qhandle);
+		}
+	}
+
+	@Override
+	public void onClose(JKStatementAsync qhandle) {
+		if (trace) {
+			out.println("Closed: handle=" + qhandle);
 		}
 	}
 }

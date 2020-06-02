@@ -23,7 +23,7 @@ import java.io.IOException;
  * 
  * @author albert
  */
-public class JKRestoreSubscriptionsTask implements JKGate<JKQueryHandle>, Runnable {
+public class JKRestoreSubscriptionsTask implements JKGate<JKStatementAsync>, Runnable {
 	JKQueryAsync agent;
 	long timeStamp;
 
@@ -44,7 +44,7 @@ public class JKRestoreSubscriptionsTask implements JKGate<JKQueryHandle>, Runnab
 	}
 
 	@Override
-	public boolean check(JKQueryHandle handle) {
-		return handle.isSubscribeQuery() && (handle.getTimeCreated() <= timeStamp);
+	public boolean check(JKStatementAsync handle) {
+		return handle.isSubscribe() && (handle.getTimeCreated() <= timeStamp);
 	}
 }

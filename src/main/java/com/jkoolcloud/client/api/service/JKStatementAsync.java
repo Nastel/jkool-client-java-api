@@ -15,7 +15,10 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This interface defines a JKQL statement supporting async calls. 
@@ -23,7 +26,7 @@ import java.io.IOException;
  * 
  * @author albert
  */
-public interface JKStatementAsync extends JKStatement {
+public interface JKStatementAsync extends JKStatement, Closeable, AutoCloseable {
 	/**
 	 * Obtain {@link JKQueryCallback} instance associated with the statement
 	 * 
@@ -45,7 +48,7 @@ public interface JKStatementAsync extends JKStatement {
 	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
-	JKQueryHandle callAsync() throws IOException;
+	JKStatementAsync callAsync() throws IOException;
 	
 	/**
 	 * Call current statement with responses routed to the associated callback.
@@ -55,5 +58,98 @@ public interface JKStatementAsync extends JKStatement {
 	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
-	JKQueryHandle callAsync(int maxRows) throws IOException;
+	JKStatementAsync callAsync(int maxRows) throws IOException;
+	
+	/**
+	 * Cancel a live subscription
+	 * 
+	 * @return query handle associated with subscription
+	 * @throws IOException
+	 *             on error during IO
+	 */
+	JKStatementAsync cancelAsync() throws IOException;
+
+	/**
+	 * Obtain last msg id associated with the handle. Only
+	 * available after first response on this handle is received.
+	 * 
+	 * @return msg id of last response
+	 */
+	String getLastMsgId();
+	
+	/**
+	 * Get total number of times the callback was called
+	 * 
+	 * @return number of times the callback was called
+	 */
+	long getCallCount();
+	/**
+	 * Reset total number of times the callback was called
+	 * 
+	 */
+	void resetStats();	
+
+	/**
+	 * Await for response until a given date/time
+	 * 
+	 * @param until
+	 *            date/time until to await for response
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	boolean awaitOnCallbackUntil(Date until) throws InterruptedException;
+
+	/**
+	 * Await for response until indefinitely or interrupted
+	 * 
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	void awaitOnCallback() throws InterruptedException;
+
+	/**
+	 * Await for response for a given period of time
+	 * 
+	 * @param time
+	 *            the maximum time to wait
+	 * @param unit
+	 *            the time unit of the time argument
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException;
+
+	/**
+	 * Await for completion until a given date/time
+	 * 
+	 * @param until
+	 *            date/time until to await for completion
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	boolean awaitOnDoneUntil(Date until) throws InterruptedException;
+
+	/**
+	 * Await for completion until indefinitely or interrupted
+	 * 
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	void awaitOnDone() throws InterruptedException;
+
+	/**
+	 * Await for completion for a given period of time
+	 * 
+	 * @param time
+	 *            the maximum time to wait
+	 * @param unit
+	 *            the time unit of the time argument
+	 * @return false if the deadline has elapsed upon return, else true
+	 * @throws InterruptedException
+	 *             if connection is interrupted
+	 */
+	boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException;	
 }

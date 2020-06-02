@@ -16,7 +16,14 @@
 package com.jkoolcloud.client.api.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.json.JsonObject;
 
 /**
  * This is used to encapsulate Async JKQL query statements and implements {@link JKStatementAsync} interface.
@@ -25,7 +32,15 @@ import java.util.UUID;
  */
 public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatementAsync {
 
+	String _msg_id;		// server side subscription id 
 	JKQueryCallback callback;
+
+	
+	private final ReentrantLock aLock = new ReentrantLock();
+	private final Condition calledBack = aLock.newCondition();
+	private final Condition doneCall = aLock.newCondition();
+	private final AtomicLong callCount = new AtomicLong(0);
+
 
 	protected JKStatementAsyncImpl(JKQueryAsync handle, String query, int maxRows, JKQueryCallback callb) {
 		this(handle, UUID.randomUUID().toString(), query, maxRows, callb);
@@ -47,12 +62,136 @@ public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatement
 	}
 
 	@Override
-	public JKQueryHandle callAsync() throws IOException {
+	public JKStatementAsync callAsync() throws IOException {
 		return callAsync(maxRows);
 	}
 
 	@Override
-	public JKQueryHandle callAsync(int maxrows) throws IOException {
+	public JKStatementAsync callAsync(int maxrows) throws IOException {
 		return ((JKQueryAsync)handle).callAsync(query, maxrows, callback);
 	}
+	
+	@Override
+	public JKStatementAsync cancelAsync() throws IOException {
+		return ((JKQueryAsync)handle).cancelAsync(this);
+	}
+
+	@Override
+	public boolean awaitOnCallbackUntil(Date until) throws InterruptedException {
+		aLock.lock();
+		try {
+			return calledBack.awaitUntil(until);
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public void awaitOnCallback() throws InterruptedException {
+		aLock.lock();
+		try {
+			calledBack.await();
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public boolean awaitOnCallback(long time, TimeUnit unit) throws InterruptedException {
+		aLock.lock();
+		try {
+			return calledBack.await(time, unit);
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public boolean awaitOnDoneUntil(Date until) throws InterruptedException {
+		aLock.lock();
+		try {
+			return doneCall.awaitUntil(until);
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public void awaitOnDone() throws InterruptedException {
+		aLock.lock();
+		try {
+			doneCall.await();
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException {
+		aLock.lock();
+		try {
+			return doneCall.await(time, unit);
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	@Override
+	public long getCallCount() {
+		return callCount.get();
+	}
+
+	@Override
+	public void resetStats() {
+		callCount.set(0);
+	}	
+	
+	@Override
+	public String getLastMsgId() {
+		return this._msg_id != null? this._msg_id: this.getId();
+	}
+	
+	@Override
+	public void close() throws IOException {
+		this.getQueryAsync().close(this);
+		this.onClose();
+	}
+
+	protected void onDone() {
+		aLock.lock();
+		try {
+			callback.onDone(this);
+			doneCall.signalAll();
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	protected void onClose() {
+		aLock.lock();
+		try {
+			callback.onClose(this);
+			doneCall.signalAll();
+		} finally {
+			aLock.unlock();
+		}
+	}
+
+	protected void onResponse(JsonObject response, Throwable ex) {
+		aLock.lock();
+		try {
+			callCount.incrementAndGet();
+			String msgId = response.getString(JKQueryAsync.JK_MSGID_KEY, null);
+			setLastMsgId(msgId != null? msgId: getId());
+			callback.onResponse(this, response, ex);
+			calledBack.signalAll();
+		} finally {
+			aLock.unlock();
+		}
+	}	
+	
+	private JKStatementAsync setLastMsgId(String id) {
+		this._msg_id = id;
+		return this;
+	}	
 }

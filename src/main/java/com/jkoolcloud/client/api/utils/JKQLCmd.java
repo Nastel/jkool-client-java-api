@@ -91,6 +91,7 @@ class VMStop extends Thread {
 				handle.awaitOnDone(5000, TimeUnit.MILLISECONDS);
 			}
 			System.out.println("VM Stopping. Closing handle=" + handle);
+			handle.close();
 			handle.getStatement().getQueryAsync().close();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();

@@ -477,16 +477,19 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Send JSON query via a websocket
+	 * Close all active handles
 	 * 
-	 * @param jsonQuery
-	 *            json query
-	 * @return websocket client
+	 * @return itself
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	private JKWSClient sendJsonQuery(JsonObject jsonQuery) throws IOException {
-		return socket.sendMessageAsync(jsonQuery.toString());
+	public JKQueryAsync closeAll() throws IOException {
+		ArrayList<JKQueryHandle> idList = new ArrayList<>(SUBID_MAP.values());
+		for (JKQueryHandle handle : idList) {
+			try { handle.close(); }
+			catch (Throwable e) {}
+		}
+		return this;
 	}
 
 	/**
@@ -540,6 +543,45 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
+	 * Close query handle
+	 * 
+	 * @param handle
+	 *            query handle
+	 */
+	public void close(JKQueryHandle handle) {
+		SUBID_MAP.remove(handle.getId());
+	}
+
+	/**
+	 * Restore subscriptions (re-subscribe) based on a given gate. Subscribe when
+	 * {@code JKGate<JKQueryHandle>.check(JKQueryHandle)} return true, skip otherwise.
+	 * 
+	 * @param hGate
+	 *            query handle gate check for true or false
+	 * @return itself
+	 * @throws IOException
+	 *             on error during IO
+	 */
+	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
+		ArrayList<JKQueryHandle> handleList = new ArrayList<>(SUBID_MAP.values());
+		for (JKQueryHandle handle : handleList) {
+			if (hGate.check(handle)) {
+				// restore subscription
+				callAsync(handle);
+			} else {
+				// remove standard query subscription since none will ever be coming
+				handle.close();
+			}
+		}
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " {uri: \"" + wsURI + "\", socket: \"" + socket + "\"}";
+	}
+
+	/**
 	 * Create a new query handle for a given callback instance and query.
 	 * 
 	 * @param query
@@ -572,37 +614,16 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Close query handle
+	 * Send JSON query via a WebSocket
 	 * 
-	 * @param handle
-	 *            query handle
-	 */
-	public void close(JKQueryHandle handle) {
-		SUBID_MAP.remove(handle.getId());
-	}
-
-	/**
-	 * Restore subscriptions (re-subscribe) based on a given gate. Subscribe when
-	 * {@code JKGate<JKQueryHandle>.check(JKQueryHandle)} return true, skip otherwise.
-	 * 
-	 * @param hGate
-	 *            query handle gate check for true or false
-	 * @return itself
+	 * @param jsonQuery
+	 *            JSON query
+	 * @return WebSocket client
 	 * @throws IOException
 	 *             on error during IO
 	 */
-	public JKQueryAsync restoreSubscriptions(JKGate<JKQueryHandle> hGate) throws IOException {
-		ArrayList<JKQueryHandle> handleList = new ArrayList<>(SUBID_MAP.values());
-		for (JKQueryHandle handle : handleList) {
-			if (hGate.check(handle)) {
-				// restore subscription
-				callAsync(handle);
-			} else {
-				// remove standard query subscription since none will ever be coming
-				handle.close();
-			}
-		}
-		return this;
+	private JKWSClient sendJsonQuery(JsonObject jsonQuery) throws IOException {
+		return socket.sendMessageAsync(jsonQuery.toString());
 	}
 
 	/**
@@ -667,10 +688,5 @@ public class JKQueryAsync extends JKQuery {
 				qhandle.done();
 			}
 		}
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + " {uri: \"" + wsURI + "\", socket: \"" + socket + "\"}";
 	}
 }

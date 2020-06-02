@@ -18,13 +18,14 @@ package com.jkoolcloud.client.api.service;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.json.JsonObject;
+
+import com.jkoolcloud.client.api.utils.JKUtils;
 
 /**
  * This class implements a query handle which encapsulates asynchronous subscription for query and callback pair.
@@ -54,56 +55,10 @@ public class JKQueryHandle implements JKQIConstants, Closeable, AutoCloseable {
 	 * @param callback
 	 *            associated with the given query
 	 */
-	public JKQueryHandle(JKStatementAsync stmt) {
+	protected JKQueryHandle(JKStatementAsync stmt) {
 		this.timeCreated = System.currentTimeMillis();
 		this.query = stmt;
-		this.subscribe = isSubscribeQ(query.getQuery());
-	}
-
-	/**
-	 * Create a unique identifier
-	 * 
-	 * @return a unique identifier
-	 */
-	public static String newId() {
-		String uuid = UUID.randomUUID().toString();
-		return uuid;
-	}
-
-	/**
-	 * Create a unique identifier for a given query
-	 * 
-	 * @param q
-	 *            JKQL query
-	 * @return a unique identifier
-	 */
-	public static String newId(String q) {
-		String uuid = UUID.randomUUID().toString();
-		uuid = isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;
-		return uuid;
-	}
-
-	/**
-	 * Determine if a query represents a subscription query
-	 * 
-	 * @param query
-	 *            JKQL query
-	 * @return true if subscribe query, false otherwise
-	 */
-	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX) 
-				|| query.toLowerCase().startsWith(JK_SUB_QUERY_PREFIX2);
-	}
-
-	/**
-	 * Determine if a handle id represents a subscription query
-	 * 
-	 * @param id
-	 *            JKQL query id
-	 * @return true if subscribe query, false otherwise
-	 */
-	public static boolean isSubscribeId(String id) {
-		return id.startsWith(JK_SUB_UUID_PREFIX);
+		this.subscribe = JKUtils.isSubscribeQ(query.getQuery());
 	}
 
 	/**

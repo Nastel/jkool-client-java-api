@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.jkoolcloud.client.api.service.JKQIConstants;
 import com.jkoolcloud.client.api.service.JKStreamException;
 
 /**
@@ -131,6 +132,29 @@ public class JKUtils {
 	 */
 	public static String getVMName() {
 		return VM_NAME;
+	}
+
+	/**
+	 * Determine if a query represents a subscription query
+	 * 
+	 * @param query
+	 *            JKQL query
+	 * @return true if subscribe query, false otherwise
+	 */
+	public static boolean isSubscribeQ(String query) {
+		return query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX) 
+				|| query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX2);
+	}
+
+	/**
+	 * Determine if a handle id represents a subscription query
+	 * 
+	 * @param id
+	 *            JKQL query id
+	 * @return true if subscribe query, false otherwise
+	 */
+	public static boolean isSubscribeId(String id) {
+		return id.startsWith(JKQIConstants.JK_SUB_UUID_PREFIX);
 	}
 
 	/**

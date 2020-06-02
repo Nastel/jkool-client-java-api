@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -417,7 +418,7 @@ public class JKQueryAsync extends JKQuery {
 	 *             on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query) throws IOException {
-		return callAsync(query, JKQueryHandle.newId(query), DEFAULT_MAX_ROWS);
+		return callAsync(query, newId(query), DEFAULT_MAX_ROWS);
 	}
 
 	/**
@@ -435,7 +436,7 @@ public class JKQueryAsync extends JKQuery {
 	 *             on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query, int maxRows) throws IOException {
-		return callAsync(query, JKQueryHandle.newId(query), maxRows);
+		return callAsync(query, newId(query), maxRows);
 	}
 
 	/**
@@ -602,6 +603,19 @@ public class JKQueryAsync extends JKQuery {
 			}
 		}
 		return this;
+	}
+
+	/**
+	 * Create a unique identifier for a given query
+	 * 
+	 * @param q
+	 *            JKQL query
+	 * @return a unique identifier
+	 */
+	protected static String newId(String q) {
+		String uuid = UUID.randomUUID().toString();
+		uuid = JKUtils.isSubscribeQ(q) ? JK_SUB_UUID_PREFIX + uuid : uuid;
+		return uuid;
 	}
 
 	/**

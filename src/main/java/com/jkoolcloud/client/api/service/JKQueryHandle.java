@@ -15,6 +15,7 @@
  */
 package com.jkoolcloud.client.api.service;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
@@ -30,7 +31,7 @@ import javax.json.JsonObject;
  * 
  * @author albert
  */
-public class JKQueryHandle implements JKQIConstants {
+public class JKQueryHandle implements JKQIConstants, Closeable, AutoCloseable {
 	public final static String DEFAULT_DATE_RANGE = "today";
 	public final static String DEFAULT_REPO = "";
 
@@ -46,7 +47,7 @@ public class JKQueryHandle implements JKQIConstants {
 	private final AtomicLong callCount = new AtomicLong(0);
 
 	/**
-	 * Create a jKool query handle
+	 * Create a JKQL query handle
 	 * 
 	 * @param stmt
 	 *            JKQL query statement
@@ -366,6 +367,23 @@ public class JKQueryHandle implements JKQIConstants {
 		return this.query.getQueryAsync().cancelAsync(this);
 	}
 	
+	/**
+	 * Call query associated with the handle
+	 * 
+	 * @throws IOException
+	 *             on error during IO
+	 * @return query handle associated with the query
+	 */
+	public JKQueryHandle callAsync() throws IOException {
+		return this.query.getQueryAsync().callAsync(this);
+	}
+
+	@Override
+	public void close() throws IOException {
+		this.query.getQueryAsync().close(this);
+		this.done();
+	}
+
 	@Override
 	public int hashCode() {
 		return query.getId().hashCode();

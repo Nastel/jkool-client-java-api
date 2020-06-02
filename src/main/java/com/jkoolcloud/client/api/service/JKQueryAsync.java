@@ -565,9 +565,19 @@ public class JKQueryAsync extends JKQuery {
 	 * @return itself
 	 */
 	protected JKQueryHandle createQueryHandle(String query, int maxRows, JKQueryCallback callback) {
-		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, callback));
+		JKQueryHandle qhandle = new JKQueryHandle(prepare(query, maxRows, callback));
 		SUBID_MAP.put(qhandle.getId(), qhandle);
 		return qhandle;
+	}
+
+	/**
+	 * Close query handle
+	 * 
+	 * @param handle
+	 *            query handle
+	 */
+	public void close(JKQueryHandle handle) {
+		SUBID_MAP.remove(handle.getId());
 	}
 
 	/**
@@ -588,8 +598,7 @@ public class JKQueryAsync extends JKQuery {
 				callAsync(handle);
 			} else {
 				// remove standard query subscription since none will ever be coming
-				SUBID_MAP.remove(handle.getId());
-				handle.done();
+				handle.close();
 			}
 		}
 		return this;
@@ -641,7 +650,6 @@ public class JKQueryAsync extends JKQuery {
 	private void complete(String callName, JKQueryHandle qhandle) {
 		if (qhandle != null) {
 			if (!qhandle.isSubscribeQuery() || callName.equalsIgnoreCase(JK_CALL_CANCEL)) {
-				SUBID_MAP.remove(qhandle.getId());
 				qhandle.done();
 			}
 		}

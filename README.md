@@ -102,38 +102,41 @@ All returned JKQL responses are JSON.
 Developers can also invoke JKQL queries asynchronously using callbacks. To do this, make use of the `JKQueryAsync`. Below is an example. 
 This example makes use of two connection handlers: 1) for tracing connection events and 2) for retrying connection during failures.
 ```java
-    // setup jKool WebSocket connection and connect
+    // setup WebSocket connection and connect
     JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // retry connection handler
-    jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
+    jkQuery.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
     // trace connection handler
-    jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, true));
+    jkQuery.addConnectionHandler(new JKTraceConnectionHandler(System.out, true));
     ...
-    jkQueryAsync.connect();
+    jkQuery.connect();
 ```
 The next step is to setup default callback handlers (optional but recommended). Default callback handlers are called for responses not 
 associated with any specific query or subscription. 
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // setup a default response handler for responses not associated with any specific query
-    jkQueryAsync.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
-    jkQueryAsync.connect(); // connect stream with WebSocket interface
+    jkQuery.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
+    jkQuery.connect(); // connect stream with WebSocket interface
 ```
 Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this query:
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // run query in async mode without a callback (use default response handlers)
-    jkQueryAsync.callAsync("get number of events for today");
+    jkQuery.callAsync("get number of events for today");
     ...
-    jkQueryAsync.close(); // close connection
+    jkQuery.close(); // close connection
 ```
 Alternatively you can execute a query with a specific callback instance. All responses associated with this query will be routed to the 
-callback instance specified in the `jkQueryAsync.callAsync(...)` call.
+callback instance specified in the `JKQueryAsync.callAsync(...)` call.
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // run query in async mode with a specific callback
-    JKStatementAsync query = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+    JKStatementAsync query = jkQuery.callAsync("get events", new MyJKQueryCallback());
     query.awaitOnDone(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
     ...
     query.close(); // close query statement
-    jkQueryAsync.close(); // close connection
+    jkQuery.close(); // close connection
 ```
 `MyJKQueryCallback.onResponse()` is called when for every response to the query -- there maybe one or more responses depending on the query. 
 `MyJKQueryCallback.onClose()` is called when the handle is closed due to `JKStatementAsync.close()`. 
@@ -169,15 +172,17 @@ Cancelling an active query subscription attempts to stop any streaming traffic a
 Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler 
 specified by `addDefaultCallbackHandler()` call.
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // run query in async mode with a callback
-    JKStatementAsync qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQuery.callAsync("get number of events for today", new MyJKQueryCallback());
     ...
     // attempt to cancel subscription to the query results
     qhandle.cancelAsync(qhandle);
 ```
 JKQL queries can also be executed using prepared JKQL statements as follows:
 ```java
-    JKStatementAsync query = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+    JKStatementAsync query = jkQuery.prepare("get number of events for today", new MyJKQueryCallback());
    query.callAsync(100); // call with specified max rows for responses
    query.awaitOnDone(10000, TimeUnit.MILLISECONDS); // wait for completion for 10 seconds
 ```
@@ -215,17 +220,17 @@ Developers can also subscribe to live data streams using `JKQueryAsync` class. S
 client and run on the jKool servers. The results of the query are emitted as data becomes available and streamed back to the client call 
 back handler instance of `JKQueryCallback`. See example below:
 ```java
-    // setup jKool WebSocket connection and connect
+    // setup WebSocket connection and connect
     JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
-    jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
-    jkQueryAsync.addConnectionHandler(new MyConnectionHandler());
+    jkQuery.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
+    jkQuery.addConnectionHandler(new MyConnectionHandler());
 
     // setup a default response handler for responses not associated with any specific query
-    jkQueryAsync.addDefaultCallbackHandler(new MyJKQueryCallback());
-    jkQueryAsync.connect(); // connect stream with WebSocket interface
+    jkQuery.addDefaultCallbackHandler(new MyJKQueryCallback());
+    jkQuery.connect(); // connect stream with WebSocket interface
 
     // run subscription query in async mode with a callback
-    JKStatementAsync qhandle = jkQueryAsync.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQuery.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
     ...
 ```
 The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams only and never on past data. Use `get` queries to get past data.
@@ -233,14 +238,18 @@ The code above is equivalent to the JKQL statement `subscribe to events where se
 ### Running JKQL Searches on Message Content
 `JKQueryAsync` class provides a helper method to run pattern matches against event message content. See below:
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+    ...
     // run search query in async mode with a callback
-    JKStatementAsync qhandle = jkQueryAsync.searchAsync("failure", 10, new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQuery.searchAsync("failure", 10, new MyJKQueryCallback());
     ...
 ```
 The code above is equivalent to the JKQL statement `get events where message contains "failure"`, where 10 is the maximum number of matching rows to return (default is 100). The example above can be implemented as:
 ```java
+    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+    ...
     // run query in async mode with a callback
-    JKStatementAsync qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQuery.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
     ...
 ```
 ### Running JKQL from Command Line

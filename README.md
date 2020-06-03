@@ -181,13 +181,13 @@ specified by `addDefaultCallbackHandler()` call.
 ```
 JKQL queries can also be executed using prepared JKQL statements as follows:
 ```java
-    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
-    JKStatementAsync query = jkQuery.prepare("get number of events for today", new MyJKQueryCallback());
+   JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
+   JKStatementAsync query = jkQuery.prepare("get number of events for today", new MyJKQueryCallback());
    query.callAsync(100); // call with specified max rows for responses
    query.awaitOnDone(10000, TimeUnit.MILLISECONDS); // wait for completion for 10 seconds
 ```
 ### Connection Event Handling
-Customized connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:
+Connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:
 ```java
 public class MyConnectionHandler implements JKConnectionHandler {
     @Override
@@ -207,7 +207,7 @@ public class MyConnectionHandler implements JKConnectionHandler {
     }
 }
 ```
-Connection handlers can be associated with a jKool query connection handle `JKQueryAsync` as follows:
+Connection handlers can be associated with a JKQL connection handle `JKQueryAsync` as follows:
 ```java
     // setup jKool WebSocket connection and connect
     JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");

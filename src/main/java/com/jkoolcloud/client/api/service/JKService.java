@@ -108,6 +108,15 @@ abstract public class JKService implements JKQIConstants, Closeable, AutoCloseab
 		return JKUtils.serialize(mapper, obj);
 	}
 
+	/**
+	 * Determine if current handle is connected
+	 * 
+	 * @return true if connected, false otherwise
+	 */
+	public boolean isConnected() {
+		return rsClient != null;
+	}
+	
 	@Override
 	public void close() throws IOException {
 		if (rsClient != null) {

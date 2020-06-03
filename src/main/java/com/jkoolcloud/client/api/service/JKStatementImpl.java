@@ -152,4 +152,9 @@ public class JKStatementImpl implements JKStatement {
 		this.maxRows = mrows;
 		return this;
 	}
+
+	@Override
+	public boolean isConnected() {
+		return handle.isConnected();
+	}
 }

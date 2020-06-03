@@ -109,6 +109,13 @@ public interface JKStatement {
 	String getReferrer();
 
 	/**
+	 * Determine if current statement is associated with a valid connection
+	 * 
+	 * @return true if connected, false otherwise
+	 */
+	boolean isConnected();
+
+	/**
 	 * Determine if current statement id represents a subscription query
 	 * 
 	 * @return true if subscribe query, false otherwise

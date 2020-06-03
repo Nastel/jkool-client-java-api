@@ -85,16 +85,17 @@ class VMStop extends Thread {
 	@Override
 	public void run() {
 		try {
-			if (handle.isSubscribe()) {
+			if (handle.isConnected() && handle.isSubscribe()) {
 				System.out.println("VM Stopping. Cancel subscription on handle=" + handle);
 				handle.cancelAsync();
 				handle.awaitOnDone(5000, TimeUnit.MILLISECONDS);
 			}
-			System.out.println("VM Stopping. Closing handle=" + handle);
 			handle.close();
 			handle.getQueryAsync().close();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
+		} finally {
+			System.out.println("VM Stopped. Handle=" + handle + ", handle.count=" + handle.getQueryAsync().getHandleCount());			
 		}
 	}
 }

@@ -243,6 +243,7 @@ public class JKQueryAsync extends JKQuery {
 	 * 
 	 * @return true if connected, false otherwise
 	 */
+	@Override
 	public synchronized boolean isConnected() {
 		return socket != null && socket.isConnected();
 	}
@@ -269,12 +270,6 @@ public class JKQueryAsync extends JKQuery {
 		}
 	}
 
-	/**
-	 * Close all communication sessions
-	 * 
-	 * @throws IOException
-	 *             on error during IO
-	 */
 	@Override
 	public synchronized void close() throws IOException {
 		if (socket != null) {
@@ -623,7 +618,11 @@ public class JKQueryAsync extends JKQuery {
 	 *             on error during IO
 	 */
 	private JKWSClient sendJsonQuery(JsonObject jsonQuery) throws IOException {
-		return socket.sendMessageAsync(jsonQuery.toString());
+		if (socket != null) {
+			return socket.sendMessageAsync(jsonQuery.toString());
+		} else {
+			throw new IllegalStateException("Connection closed");
+		}
 	}
 
 	/**

@@ -129,18 +129,20 @@ Alternatively you can execute a query with a specific callback instance. All res
 callback instance specified in the `jkQueryAsync.callAsync(...)` call.
 ```java
     // run query in async mode with a specific callback
-    JKQueryHandle qhandle = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
-    qhandle.awaitOnDone(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
+    JKStatementAsync query = jkQueryAsync.callAsync("get events", new MyJKQueryCallback());
+    query.awaitOnDone(10000, TimeUnit.MILLISECONDS); // optional wait 10s for query to finish
     ...
+    query.close(); // close query statement
     jkQueryAsync.close(); // close connection
 ```
-`MyJKQueryCallback.handle()` is called when for every response to the query -- there maybe one or more responses depending on the query. 
-`MyJKQueryCallback.done()` is called when the handle will never be called again. This happens when the query is cancelled using 
+`MyJKQueryCallback.onResponse()` is called when for every response to the query -- there maybe one or more responses depending on the query. 
+`MyJKQueryCallback.onClose()` is called when the handle is closed due to `JKStatementAsync.close()`. 
+`MyJKQueryCallback.onDone()` is called when the handle will never be called again. This happens when the query is cancelled using 
 `JKQueryAsync.cancelAsync()` call or when all responses associated with a specific query have been delivered.
 ```java
 public class MyJKQueryCallback implements JKQueryCallback {
     @Override
-    public void handle(JKQueryHandle qHandle, JsonObject response, Throwable ex) {
+    public void onResponse(JKStatementAsync qHandle, JsonObject response, Throwable ex) {
         System.out.println("response: handle=" + qHandle + ", response=" + response);
         if (ex != null) {
             System.out.println("error: handle=" + qHandle + ", error=" + ex);
@@ -148,28 +150,36 @@ public class MyJKQueryCallback implements JKQueryCallback {
     }
 
     @Override
-    public void done(JKQueryHandle qHandle) {
+    public void onClose(JKStatementAsync qHandle) {
         if (trace) {
-            out.println("Done handle=" + qHandle + ", done=" + qHandle.isDone());
+            out.println("Closed handle=" + qHandle);
+        }
+    }
+
+    @Override
+    public void onDone(JKStatementAsync qHandle) {
+        if (trace) {
+            out.println("Done handle=" + qHandle);
         }
     }
 }
 ```
-`jkQueryAsync.callAsync()` returns a query handler (instance of `JKQueryHandle`), which can be used later to cancel subscriptions.
+`jkQueryAsync.callAsync()` returns a query statement (instance of `JKStatementAsync`), which can be used later to cancel subscriptions.
 Cancelling an active query subscription attempts to stop any streaming traffic associated with a specific subscription.
 Cancellation is also issued asynchronously and any responses that are still in transit will be routed to the default response handler 
 specified by `addDefaultCallbackHandler()` call.
 ```java
     // run query in async mode with a callback
-    JKQueryHandle qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQueryAsync.callAsync("get number of events for today", new MyJKQueryCallback());
     ...
     // attempt to cancel subscription to the query results
     qhandle.cancelAsync(qhandle);
 ```
 JKQL queries can also be executed using prepared JKQL statements as follows:
 ```java
-    JKStatementAsync jkql = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
-    JKQueryHandle qhandle = jkql.callAsync(100); // call with specified max rows for responses
+    JKStatementAsync query = jkQueryAsync.prepare("get number of events for today", new MyJKQueryCallback());
+   query.callAsync(100); // call with specified max rows for responses
+   query.awaitOnDone(10000, TimeUnit.MILLISECONDS); // wait for completion for 10 seconds
 ```
 ### Connection Event Handling
 Customized connection handlers can be used to intercept and handle WebSocket connection events such as open, close, error:
@@ -215,25 +225,22 @@ back handler instance of `JKQueryCallback`. See example below:
     jkQueryAsync.connect(); // connect stream with WebSocket interface
 
     // run subscription query in async mode with a callback
-    JKQueryHandle qhandle = jkQueryAsync.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQueryAsync.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
     ...
 ```
-The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the 
-query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams 
-only and never on past data. Use `get` queries to get past data.
+The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams only and never on past data. Use `get` queries to get past data.
 
 ### Running JKQL Searches on Message Content
 `JKQueryAsync` class provides a helper method to run pattern matches against event message content. See below:
 ```java
     // run search query in async mode with a callback
-    JKQueryHandle qhandle = jkQueryAsync.searchAsync("failure", 10, new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQueryAsync.searchAsync("failure", 10, new MyJKQueryCallback());
     ...
 ```
-The code above is equivalent to the JKQL statement `get events where message contains "failure"`, where 10 is the maximum number of matching 
-rows to return (default is 100). The example above can be implemented as:
+The code above is equivalent to the JKQL statement `get events where message contains "failure"`, where 10 is the maximum number of matching rows to return (default is 100). The example above can be implemented as:
 ```java
     // run query in async mode with a callback
-    JKQueryHandle qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
+    JKStatementAsync qhandle = jkQueryAsync.callAsync("get events where message contains \"failure\"", 10, new MyJKQueryCallback());
     ...
 ```
 ### Running JKQL from Command Line

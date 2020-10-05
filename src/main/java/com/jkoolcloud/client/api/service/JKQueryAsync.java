@@ -465,7 +465,7 @@ public class JKQueryAsync extends JKQuery {
 				.add(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
 				.add(X_API_RUNTIME, JKUtils.VM_NAME) //
 				.add(X_API_VERSION, QAPI_CLIENT_VERSION) //
-			.build();
+				.build();
 
 		sendJsonQuery(jsonQuery);
 		return this;
@@ -663,7 +663,7 @@ public class JKQueryAsync extends JKQuery {
 	 */
 	protected JKQueryAsync handleResponse(String subId, JsonObject response) {
 		String qerror = response.getString(JKQueryAsync.JK_ERROR_KEY, null);
-		Throwable ex = ((qerror != null && !qerror.trim().isEmpty()) ? new JKStreamException(100, qerror) : null);
+		Throwable ex = !isEmpty(qerror) ? new JKStreamException(100, qerror) : null;
 		JKStatementAsyncImpl qhandle = (subId != null ? SUBID_MAP.get(subId) : null);
 		String callName = response.getString(JKQueryAsync.JK_CALL_KEY, "");
 

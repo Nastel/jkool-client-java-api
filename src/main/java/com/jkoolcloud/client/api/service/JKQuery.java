@@ -219,6 +219,21 @@ public class JKQuery extends JKService {
 	/**
 	 * Execute a specific JKQL query
 	 * 
+	 * @param query
+	 *            JKQL query statement
+	 * @param maxRows
+	 *            maximum rows in response
+	 * @return object containing JSON response
+	 * @throws JKStreamException
+	 *             if error occurs during a call
+	 */
+	public Response call(String query, int maxRows) throws JKStreamException {
+		return call(prepare(UUID.randomUUID().toString(), query, maxRows));
+	}
+
+	/**
+	 * Execute a specific JKQL query.
+	 * 
 	 * @param qid
 	 *            JKQL query request id
 	 * @param query
@@ -243,24 +258,39 @@ public class JKQuery extends JKService {
 	 *             if error occurs during a call
 	 */
 	public Response call(JKStatement query) throws JKStreamException {
+		if (isEmpty(query.getQuery())) {
+			throw new JKStreamException("Call has no query defined");
+		}
+
 		Form qParms = new Form();
-		if (getToken() != null) qParms.param(JK_TOKEN_KEY, getToken());
-		if (query.getQuery() != null) qParms.param(JK_QUERY_KEY, query.getQuery());
-		if (query.getRepoId() != null) qParms.param(JK_REPO_KEY, query.getRepoId());
-		if (query.getTimeZone() != null) qParms.param(JK_TIME_ZONE_KEY, query.getTimeZone());
-		if (query.getDateRange() != null) qParms.param(JK_DATE_KEY, query.getDateRange());
-		if (query.isTrace()) qParms.param(JK_TRACE_KEY, Boolean.toString(query.isTrace()));
-		if (query.getMaxRows() > 0) qParms.param(JK_MAX_ROWS_KEY, Integer.toString(query.getMaxRows()));
-		qParms.param(JK_SUBID_KEY, query.getId());
-		
-		return target.request(MediaType.APPLICATION_JSON_TYPE)
-				.header(X_REFERER, query.getReferrer()) 
-				.header(X_API_KEY, getToken()) 
-				.header(X_API_TOKEN, getToken())
-				.header(X_API_HOSTNAME, JKUtils.VM_HOST)
-				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR)
-				.header(X_API_RUNTIME, JKUtils.VM_NAME)
-				.header(X_API_VERSION, QAPI_CLIENT_VERSION)
+		if (!isEmpty(getToken())) qParms.param(JK_TOKEN_KEY, getToken());
+		qParms.param(JK_QUERY_KEY, query.getQuery());
+		qParms.param(JK_REPO_KEY, !isEmpty(query.getRepoId()) ? query.getRepoId() : repoId);
+		qParms.param(JK_TIME_ZONE_KEY, !isEmpty(query.getTimeZone()) ? query.getTimeZone() : tz);
+		qParms.param(JK_DATE_KEY, !isEmpty(query.getDateRange()) ? query.getDateRange() : dateRange);
+		qParms.param(JK_TRACE_KEY, Boolean.toString(query.isTrace()));
+		qParms.param(JK_MAX_ROWS_KEY, Integer.toString(query.getMaxRows() > 0 ? query.getMaxRows() : DEFAULT_MAX_ROWS));
+		qParms.param(JK_SUBID_KEY, !isEmpty(query.getId()) ? query.getId() : UUID.randomUUID().toString());
+
+		return target.request(MediaType.APPLICATION_JSON_TYPE) //
+				.header(X_REFERER, query.getReferrer()) //
+				.header(X_API_KEY, getToken()) //
+				.header(X_API_TOKEN, getToken()) //
+				.header(X_API_HOSTNAME, JKUtils.VM_HOST) //
+				.header(X_API_HOSTADDR, JKUtils.VM_NETADDR) //
+				.header(X_API_RUNTIME, JKUtils.VM_NAME) //
+				.header(X_API_VERSION, QAPI_CLIENT_VERSION) //
 				.post(Entity.form(qParms));
+	}
+
+	/**
+	 * Checks if string is empty.
+	 * 
+	 * @param str
+	 *            string to check
+	 * @return {@code true} if string has meaningful value, {@code false} - otherwise
+	 */
+	protected static boolean isEmpty(String str) {
+		return str == null || str.trim().isEmpty();
 	}
 }

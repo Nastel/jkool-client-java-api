@@ -1,12 +1,16 @@
 # JKQL Streaming & Query API Using REST
-JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need "access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with your repository and user profile. The API uses HTTP(s) and WebSockets protocols and responses are JSON.
+JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need 
+"access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with 
+your repository and user profile. The API uses HTTP(s) and WebSockets protocols and responses are JSON.
 
-Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder. 
+Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder.
 
-Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, many fields will have default values.
+Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API, 
+many fields will have default values.
 
 ## Concepts and Terminology
-You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the following data collection types:
+You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the 
+following data collection types:
 | Type | Description |
 |------|-------------|
 |Event|basic time series element containing time, message, severity and other fields associated with event|
@@ -15,7 +19,8 @@ You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/dow
 |Dataset|user defined set of data elements with user defined columns|
 |Property|name, value pair. Properties can be associated with events, activities and snapshots|
 
-This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field that comprises the above mentioned data.
+This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field 
+that comprises the above mentioned data.
 
 ## How to build
 To use this sample code please do the following:
@@ -27,11 +32,12 @@ assemble. This `build` directory will be at the same level as the directory you 
     <dependency>
         <groupId>com.jkoolcloud.client.api</groupId>
         <artifactId>jkool-client-api</artifactId>
-        <version>0.2.9</version>
+        <version>0.3</version>
     </dependency>
 ```
 ## Streaming using over HTTPS
-Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS. You will need your access token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access token.
+Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS. You will need your access 
+token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access token.
 ```java
     JKStream jkSend = new JKStream("yourtoken");
 ```
@@ -88,7 +94,9 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
 The `JKStream` formats the `event` into JSON and sends it to https://data.jkoolcloud.com/JESL.
 
 ### Running JKQL (Synchronously)
-In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please see [JKQL Reference Guide](https://www.nastel.com/wp-content/uploads/2020/03/Nastel_jKQL_User_Guide.pdf). Use the `JKQuery` to run JKQL synchronously. Use your access token along with the JKQL query. Below is an example:
+In addition to streaming, data can also be retrieved from jKool via Rest. To do this, make use of the jKool Query Language (JKQL). Please 
+see [JKQL Reference Guide](https://www.nastel.com/wp-content/uploads/2020/03/Nastel_jKQL_User_Guide.pdf). Use the `JKQuery` to run JKQL 
+synchronously. Use your access token along with the JKQL query. Below is an example:
 
 ```java
     JKQuery jkQuery = new JKQuery("yourtoken");
@@ -119,7 +127,8 @@ associated with any specific query or subscription.
     jkQuery.addDefaultCallbackHandler(new JKTraceQueryCallback(System.out, true));
     jkQuery.connect(); // connect stream with WebSocket interface
 ```
-Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this query:
+Next execute your query. All response will be delegated to all default callback handlers, because no callback has been associated with this 
+query:
 ```java
     JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     // run query in async mode without a callback (use default response handlers)
@@ -233,7 +242,9 @@ back handler instance of `JKQueryCallback`. See example below:
     JKStatementAsync qhandle = jkQuery.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
     ...
 ```
-The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams only and never on past data. Use `get` queries to get past data.
+The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the 
+query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams 
+only and never on past data. Use `get` queries to get past data.
 
 ### Running JKQL Searches on Message Content
 `JKQueryAsync` class provides a helper method to run pattern matches against event message content. See below:
@@ -244,7 +255,8 @@ The code above is equivalent to the JKQL statement `subscribe to events where se
     JKStatementAsync qhandle = jkQuery.searchAsync("failure", 10, new MyJKQueryCallback());
     ...
 ```
-The code above is equivalent to the JKQL statement `get events where message contains "failure"`, where 10 is the maximum number of matching rows to return (default is 100). The example above can be implemented as:
+The code above is equivalent to the JKQL statement `get events where message contains "failure"`, where 10 is the maximum number of matching 
+rows to return (default is 100). The example above can be implemented as:
 ```java
     JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
     ...
@@ -385,4 +397,6 @@ resp = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, 
 ```
 
 ### Note on Timestamps
-Timestamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).
+Timestamp fields such as `time-usec`, `start-time-usec` and `end-time-usec` are measured in microseconds (usec.), between the current time 
+and midnight, January 1, 1970 UTC. Most language environments don't return such time in microsecond precision, in which case you would have 
+to compute it by obtaining current time in milliseconds and convert to microseconds (e.g. `System.currentTimeMillis() * 1000`).

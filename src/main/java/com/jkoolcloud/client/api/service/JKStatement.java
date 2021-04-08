@@ -20,8 +20,7 @@ import java.io.IOException;
 import javax.ws.rs.core.Response;
 
 /**
- * This interface defines a JKQL statement. All concrete statement
- * implementations must implement this interface.
+ * This interface defines a JKQL statement. All concrete statement implementations must implement this interface.
  * 
  * @author albert
  */
@@ -35,7 +34,7 @@ public interface JKStatement {
 	 * @return statement create time
 	 */
 	long getTimeCreated();
-	
+
 	/**
 	 * Obtain {@link JKQuery} instance associated with the statement
 	 * 
@@ -67,8 +66,9 @@ public interface JKStatement {
 	/**
 	 * Set max rows limit for returned responses
 	 * 
-	 * @param mrows maximum row count
-	 * @return {@link JKStatement} instance
+	 * @param mrows
+	 *            maximum row count
+	 * @return this statement instance
 	 */
 	JKStatement setMaxRows(int mrows);
 
@@ -96,8 +96,9 @@ public interface JKStatement {
 	/**
 	 * Set statement Referrer (original URL/IP of app issuing the statement)
 	 * 
-	 * @param ref name of the referrer
-	 * @return {@link JKStatement} instance
+	 * @param ref
+	 *            name of the referrer
+	 * @return this statement instance
 	 */
 	JKStatement setReferrer(String ref);
 
@@ -128,7 +129,7 @@ public interface JKStatement {
 	 * @return true if subscribe query, false otherwise
 	 */
 	public boolean isSubscribe();
-	
+
 	/**
 	 * Get trace flag for this statement
 	 * 
@@ -139,16 +140,21 @@ public interface JKStatement {
 	/**
 	 * Set trace flag for this statement
 	 * 
-	 * @param flag trace flag
-	 * @return {@link JKStatement} instance
+	 * @param flag
+	 *            trace flag
+	 * @return this statement instance
 	 */
 	JKStatement setTrace(boolean flag);
 
 	/**
 	 * Call current statement and wait for response
-	 * 
-	 * @throws IOException when IO errors occur
+	 *
 	 * @return query statement associate with this query
+	 *
+	 * @throws IOException
+	 *             when IO errors occur
+	 * @throws com.jkoolcloud.client.api.service.JKStreamException
+	 *             if error occurs during a call
 	 */
-	Response call() throws IOException, JKStreamException;	
+	Response call() throws IOException, JKStreamException;
 }

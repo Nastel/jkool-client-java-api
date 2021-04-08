@@ -147,22 +147,26 @@ public class JKStream extends JKService {
 	/**
 	 * Post a JSON message to the target
 	 * 
-	 * @param msg
-	 *            JSON message
-	 * @return {@link Response}
-	 * @throws JKStreamException 
+	 * @param path
+	 *            path to send post to
+	 * @param obj
+	 *            object to be sent over post
+	 * @return response instance for this post
+	 * 
+	 * @throws JKStreamException
+	 *             on error during send
 	 */
 	protected Response post(String path, Object obj) throws JKStreamException {
-		return target.path(path).request()
-				.header(X_API_KEY, token)
-				.header(X_API_HOSTNAME, VALUE_HOSTNAME)
-				.header(X_API_HOSTADDR, VALUE_HOSTADDR)
-				.header(X_API_RUNTIME, VALUE_VMNAME)
-				.header(X_API_VERSION, VALUE_VERSION)
-				.header(X_API_TOKEN, token)
-				.post(Entity.entity(serialize(obj), MediaType.APPLICATION_JSON));		
+		return target.path(path).request() //
+				.header(X_API_KEY, token) //
+				.header(X_API_HOSTNAME, VALUE_HOSTNAME) //
+				.header(X_API_HOSTADDR, VALUE_HOSTADDR) //
+				.header(X_API_RUNTIME, VALUE_VMNAME) //
+				.header(X_API_VERSION, VALUE_VERSION) //
+				.header(X_API_TOKEN, token) //
+				.post(Entity.entity(serialize(obj), MediaType.APPLICATION_JSON));
 	}
-	
+
 	/**
 	 * Send an info log message to the stream without throwing back exception.
 	 * 
@@ -317,5 +321,5 @@ public class JKStream extends JKService {
 	 */
 	public static Dataset newDataset(String cat, String name) {
 		return new Dataset(cat, name);
-	}	
+	}
 }

@@ -20,8 +20,9 @@ import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.websocket.CloseReason;
-import javax.websocket.Session;
+
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.Session;
 
 /**
  * This class implements a WebSocket message and connection handler.

@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.websocket.CloseReason;
+import jakarta.websocket.CloseReason;
 
 /**
  * This class listens for WebSocket communication events and recovers connection and subscriptions using a timer.

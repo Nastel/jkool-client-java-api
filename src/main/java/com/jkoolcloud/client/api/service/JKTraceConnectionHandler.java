@@ -18,7 +18,7 @@ package com.jkoolcloud.client.api.service;
 import java.io.PrintStream;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.websocket.CloseReason;
+import jakarta.websocket.CloseReason;
 
 /**
  * This class implements a simple {@code JKConnectionHandler} with trace messages.

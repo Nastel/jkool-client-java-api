@@ -15,8 +15,8 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import javax.websocket.CloseReason;
-import javax.websocket.Session;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.Session;
 
 /**
  * This interface defines handling of messages and other WebSocket events.
@@ -26,7 +26,10 @@ import javax.websocket.Session;
  */
 public interface JKWSHandler {
 	void onMessage(JKWSClient client, String message);
+
 	void onOpen(JKWSClient client, Session userSession);
+
 	void onClose(JKWSClient client, Session userSession, CloseReason reason);
+
 	void onError(JKWSClient client, Session userSession, Throwable ex);
 }

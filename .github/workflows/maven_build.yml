@@ -60,7 +60,7 @@ jobs:
   #        with:
   #          token: ${{ secrets.GITHUB_TOKEN }}
   #          owner: Nastel
-  #          packageName: com.jkoolcloud.client.api.jkool-client-api<
+  #          packageName: com.jkoolcloud.client.api.jkool-client-api
   #          minAge: 30s
   #        continue-on-error: true
 

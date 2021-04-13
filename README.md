@@ -23,8 +23,8 @@ This Git repository contains a Swagger yaml file. Open this file in a Swagger Ed
 that comprises the above mentioned data.
 
 ## How to build
-To use this sample code please do the following:
-* Maven build configurations: 
+To use this sample code please do one of the following:
+* Build this project on your own by using these Maven build configurations: 
   * To build the project, run maven goals `clean package`
   * To build the project and install to local repo, run maven goals `clean install`
   * To make distributable release assemblies use one of profiles: `pack-bin` or `pack-all`:

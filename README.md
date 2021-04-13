@@ -24,9 +24,16 @@ that comprises the above mentioned data.
 
 ## How to build
 To use this sample code please do the following:
-* Run `mvn install` on the project. This will generate `jkool-client-api-<version>` jar file. This jar file can be found in the target 
-directory. Be advised that when running from the command line (as documented below), run from the `build` directory that Maven will 
-assemble. This `build` directory will be at the same level as the directory you run Maven from.
+* Maven build configurations: 
+  * To build the project, run maven goals `clean package`
+  * To build the project and install to local repo, run maven goals `clean install`
+  * To make distributable release assemblies use one of profiles: `pack-bin` or `pack-all`:
+      * containing only binary (including `test` package) distribution: run `mvn -P pack-bin`
+      * containing binary (including `test` package), `source` and `javadoc` distribution: run `mvn -P pack-all`
+  * To make maven required `source` and `javadoc` packages, use profile `pack-maven`
+  * To make maven central compliant release having `source`, `javadoc` and all signed packages, use `maven-release` profile
+
+  Release assemblies are built to `/build` directory.
 * Add the following into your maven pom file:
 ```pom
     <dependency>

@@ -136,12 +136,34 @@
             </properties>
         </profile>
         <profile>
+            <id>pack-maven</id>
+            <properties>
+                <maven.source.skip>false</maven.source.skip>
+                <maven.javadoc.skip>false</maven.javadoc.skip>
+            </properties>
+        </profile>
+        <profile>
             <id>maven-release</id>
             <properties>
+                <maven.source.skip>false</maven.source.skip>
+                <maven.javadoc.skip>false</maven.javadoc.skip>
                 <gpg.skip>false</gpg.skip>
             </properties>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -269,6 +291,8 @@
                         <arg>--pinentry-mode</arg>
                         <arg>loopback</arg>
                     </gpgArguments>
+                    <keyname>${gpg.keyname}</keyname>
+                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
                 </configuration>
                 <executions>
                     <execution>
@@ -296,7 +320,6 @@
                 <configuration>
                     <serverId>oss.sonatype.org</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <!--<description>${project.version}</description>-->
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
                 <executions>
@@ -305,7 +328,6 @@
                         <phase>deploy</phase>
                         <goals>
                             <goal>deploy</goal>
-                            <!--<goal>release</goal>-->
                         </goals>
                     </execution>
                 </executions>

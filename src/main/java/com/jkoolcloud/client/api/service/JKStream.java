@@ -145,12 +145,12 @@ public class JKStream extends JKService {
 	}
 
 	/**
-	 * Post a JSON message to the target
+	 * Post a JSON message to the target RESTFull API path.
 	 * 
 	 * @param path
-	 *            path to send post to
+	 *            RESTFull API path to post message
 	 * @param obj
-	 *            object to be sent over post
+	 *            object to serialize as JSON message and send
 	 * @return response instance for this post
 	 * 
 	 * @throws JKStreamException

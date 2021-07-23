@@ -319,6 +319,7 @@ Below is a list of supported query parameters:
 |`jk_query`|Yes|None|query statement to run|
 |`jk_subid`|No|Auto|query request correlator (GUID)|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
+|`jk_locale`|No|Server Locale|locale to be used for date/time and number formats|
 |`jk_date`|No|today|date range for the query|
 |`jk_maxrows`|No|100|maximum rows to be fetched|
 |`jk_trace`|No|false|enable query trace during execution|

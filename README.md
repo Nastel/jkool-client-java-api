@@ -39,7 +39,7 @@ To use this sample code please do one of the following:
     <dependency>
         <groupId>com.jkoolcloud.client.api</groupId>
         <artifactId>jkool-client-api</artifactId>
-        <version>0.3.2</version>
+        <version>0.3.3</version>
     </dependency>
 ```
 ## Streaming using over HTTPS

@@ -17,7 +17,7 @@ package com.jkoolcloud.client.api.service;
 
 import java.io.IOException;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 /**
  * This interface defines a JKQL statement. All concrete statement implementations must implement this interface.

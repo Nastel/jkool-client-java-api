@@ -18,12 +18,12 @@ package com.jkoolcloud.client.api.service;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Form;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 /**
  * This class defines a RESTFul way to run JKQL queries. Supports standard queries only (does not support subscriptions)
@@ -263,7 +263,9 @@ public class JKQuery extends JKService {
 		}
 
 		Form qParms = new Form();
-		if (!isEmpty(getToken())) qParms.param(JK_TOKEN_KEY, getToken());
+		if (!isEmpty(getToken())) {
+			qParms.param(JK_TOKEN_KEY, getToken());
+		}
 		qParms.param(JK_QUERY_KEY, query.getQuery());
 		qParms.param(JK_REPO_KEY, !isEmpty(query.getRepoId()) ? query.getRepoId() : repoId);
 		qParms.param(JK_TIME_ZONE_KEY, !isEmpty(query.getTimeZone()) ? query.getTimeZone() : tz);

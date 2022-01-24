@@ -18,13 +18,13 @@ package com.jkoolcloud.client.samples.messaging;
 
 import java.util.Arrays;
 
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.model.CCode;
 import com.jkoolcloud.client.api.model.EvType;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Level;
 import com.jkoolcloud.client.api.service.JKStream;
+
+import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
  * In this example, we will demonstrate Rest API usage. This example will demonstrate two advanced aspects of jKool: 1)

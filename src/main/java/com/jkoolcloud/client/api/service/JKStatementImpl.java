@@ -18,9 +18,9 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.ws.rs.core.Response;
 
 /**
  * This is used to encapsulate JKQL query statements and implements {@link JKStatement} interface.

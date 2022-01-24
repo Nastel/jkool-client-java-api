@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.service.JKStream;
+
+import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
  * This example code uses the same data as the prior Movie example code. However it also demonstrates how to make use of

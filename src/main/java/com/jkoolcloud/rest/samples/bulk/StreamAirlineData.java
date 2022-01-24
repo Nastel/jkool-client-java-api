@@ -25,10 +25,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.service.JKStream;
+
+import jakarta.ws.rs.core.Response;
 
 @SuppressWarnings("rawtypes")
 public class StreamAirlineData {

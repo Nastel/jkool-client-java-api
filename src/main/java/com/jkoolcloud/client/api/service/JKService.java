@@ -18,12 +18,12 @@ package com.jkoolcloud.client.api.service;
 import java.io.Closeable;
 import java.io.IOException;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
 
 /**
  * This class defines a common way to communicate with jKool via RESTFull interface.
@@ -116,7 +116,7 @@ abstract public class JKService implements JKQIConstants, Closeable, AutoCloseab
 	public boolean isConnected() {
 		return rsClient != null;
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		if (rsClient != null) {

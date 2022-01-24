@@ -18,13 +18,13 @@ package com.jkoolcloud.client.samples.simple;
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.model.Activity;
 import com.jkoolcloud.client.api.model.Event;
 import com.jkoolcloud.client.api.model.Property;
 import com.jkoolcloud.client.api.model.ValueType;
 import com.jkoolcloud.client.api.service.JKStream;
+
+import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
  * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies

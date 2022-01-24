@@ -15,12 +15,12 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 /**
  * This class implements RESTFull event streaming pipe to jKool

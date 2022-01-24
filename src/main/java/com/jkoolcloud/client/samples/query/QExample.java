@@ -18,12 +18,12 @@ package com.jkoolcloud.client.samples.query;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jkoolcloud.client.api.service.JKQuery;
 import com.jkoolcloud.client.api.utils.JKCmdOptions;
+
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
  * This example demonstrates how to retrieve data from jKool via JKQL using {@code jKoolQuery.call()}

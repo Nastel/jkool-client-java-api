@@ -19,6 +19,7 @@ many fields will have default values.
 
 You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the
 following data collection types:
+
 | Type | Description |
 |------|-------------|
 |Event|basic time series element containing time, message, severity and other fields associated with event|
@@ -376,6 +377,7 @@ Example using (`X-API-Key`) to pass access token:
 curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
 ```
 Below is a list of supported query parameters: 
+
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
@@ -391,6 +393,7 @@ Below is a list of supported query parameters:
 |`jk_slow`|No|5000|Time in ms beyond which query is considered slow|
 
 Below are common JSON response fields:
+
 | Field | Description |
 |-----------|---------|
 |`jk_call`|query call verb|

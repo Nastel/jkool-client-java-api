@@ -2,7 +2,9 @@
 
 -----------------------
 
-**NOTE:** `jkool-client-api` version `0.3.3` migrated from `javax.ws.rs` to `jakarta.ws.rs` API.
+**NOTE:** `jkool-client-api` version `0.3.3` migrated from `javax.ws.rs` (Java EE) to `jakarta.ws.rs` (Jakarta EE) API.
+
+Latest Java EE compliant `jkool-client-api` version is `0.3.2`.
 
 -----------------------
 

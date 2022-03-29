@@ -383,6 +383,7 @@ Below is a list of supported query parameters:
 | Parameter | Required | Default| Description |
 |-----------|----------|--------|-------------|
 |`jk_token`|Yes|None|API access token|
+|`jk_repo`|No|None|Repository to fetch data from (Required if token references none or multiple repositories)|
 |`jk_query`|Yes|None|query statement to run|
 |`jk_subid`|No|Auto|query request correlator (GUID)|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|

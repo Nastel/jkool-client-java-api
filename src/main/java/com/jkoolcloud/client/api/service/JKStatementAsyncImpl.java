@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * This is used to encapsulate Async JKQL query statements and implements {@link JKStatementAsync} interface.
@@ -32,15 +32,13 @@ import javax.json.JsonObject;
  */
 public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatementAsync {
 
-	String _msg_id;		// server side subscription id 
+	String _msg_id; // server side subscription id
 	JKQueryCallback callback;
 
-	
 	private final ReentrantLock aLock = new ReentrantLock();
 	private final Condition calledBack = aLock.newCondition();
 	private final Condition doneCall = aLock.newCondition();
 	private final AtomicLong callCount = new AtomicLong(0);
-
 
 	protected JKStatementAsyncImpl(JKQueryAsync handle, String query, int maxRows, JKQueryCallback callb) {
 		this(handle, UUID.randomUUID().toString(), query, maxRows, callb);
@@ -68,12 +66,12 @@ public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatement
 
 	@Override
 	public JKStatementAsync callAsync(int maxrows) throws IOException {
-		return ((JKQueryAsync)handle).callAsync(query, maxrows, callback);
+		return ((JKQueryAsync) handle).callAsync(query, maxrows, callback);
 	}
-	
+
 	@Override
 	public JKStatementAsync cancelAsync() throws IOException {
-		return ((JKQueryAsync)handle).cancelAsync(this);
+		return ((JKQueryAsync) handle).cancelAsync(this);
 	}
 
 	@Override
@@ -144,13 +142,13 @@ public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatement
 	@Override
 	public void resetStats() {
 		callCount.set(0);
-	}	
-	
+	}
+
 	@Override
 	public String getLastMsgId() {
-		return this._msg_id != null? this._msg_id: this.getId();
+		return this._msg_id != null ? this._msg_id : this.getId();
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		this.getQueryAsync().close(this);
@@ -182,16 +180,16 @@ public class JKStatementAsyncImpl extends JKStatementImpl implements JKStatement
 		try {
 			callCount.incrementAndGet();
 			String msgId = response.getString(JKQueryAsync.JK_MSGID_KEY, null);
-			setLastMsgId(msgId != null? msgId: getId());
+			setLastMsgId(msgId != null ? msgId : getId());
 			callback.onResponse(this, response, ex);
 			calledBack.signalAll();
 		} finally {
 			aLock.unlock();
 		}
-	}	
-	
+	}
+
 	private JKStatementAsync setLastMsgId(String id) {
 		this._msg_id = id;
 		return this;
-	}	
+	}
 }

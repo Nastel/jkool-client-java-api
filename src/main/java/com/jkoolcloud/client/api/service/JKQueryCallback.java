@@ -15,7 +15,7 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 /**
  * Implementations of this interface defines a query response callback for async queries.

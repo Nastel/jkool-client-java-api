@@ -18,11 +18,11 @@ package com.jkoolcloud.client.api.service;
 import java.io.PrintStream;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.json.JsonObject;
-import javax.json.JsonStructure;
-import javax.json.JsonValue;
-
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.json.JsonObject;
+import jakarta.json.JsonStructure;
+import jakarta.json.JsonValue;
 
 /**
  * This class implements a simple {@code JKQueryCallback} with trace messages.

@@ -18,19 +18,15 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-
 import com.jkoolcloud.client.api.utils.JKUtils;
+
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 /**
  * This class defines an async way to run jKool queries via WebSockets. Supports standard queries and subscriptions.
@@ -45,7 +41,7 @@ public class JKQueryAsync extends JKQuery {
 	private URI wsURI;
 	private JKWSClient socket;
 	private WSClientHandler wsHandler;
-	
+
 	final Collection<JKStatementAsyncImpl> defCallbacks = Collections.synchronizedList(new ArrayList<>(5));
 	final Collection<JKConnectionHandler> conHandlers = Collections.synchronizedList(new ArrayList<>(5));
 
@@ -152,7 +148,7 @@ public class JKQueryAsync extends JKQuery {
 			throw new IllegalArgumentException("list can not be null");
 		}
 		for (JKQueryCallback callback : callbacks) {
-			defCallbacks.add((JKStatementAsyncImpl)prepare(DEFAULT_QUERY, callback));
+			defCallbacks.add((JKStatementAsyncImpl) prepare(DEFAULT_QUERY, callback));
 		}
 		return this;
 	}
@@ -435,8 +431,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Call query in async mode using default callback(s). 
-	 * All responses will be tagged with given id and routed to all registered default handlers.
+	 * Call query in async mode using default callback(s). All responses will be tagged with given id and routed to all
+	 * registered default handlers.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -481,8 +477,10 @@ public class JKQueryAsync extends JKQuery {
 	public JKQueryAsync closeAll() throws IOException {
 		ArrayList<JKStatementAsync> idList = new ArrayList<>(SUBID_MAP.values());
 		for (JKStatementAsync handle : idList) {
-			try { handle.close(); }
-			catch (Throwable e) {}
+			try {
+				handle.close();
+			} catch (Throwable e) {
+			}
 		}
 		return this;
 	}

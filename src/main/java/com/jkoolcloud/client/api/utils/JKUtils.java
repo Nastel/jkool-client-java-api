@@ -23,16 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.json.*;
-import javax.json.JsonValue.ValueType;
-import javax.json.stream.JsonGenerator;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.jkoolcloud.client.api.service.JKQIConstants;
 import com.jkoolcloud.client.api.service.JKStreamException;
+
+import jakarta.json.*;
+import jakarta.json.stream.JsonGenerator;
 
 /**
  * This class implements common API utilities
@@ -142,7 +141,7 @@ public class JKUtils {
 	 * @return true if subscribe query, false otherwise
 	 */
 	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX) 
+		return query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX)
 				|| query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX2);
 	}
 
@@ -215,7 +214,7 @@ public class JKUtils {
 		while (tk.hasMoreTokens()) {
 			String key = tk.nextToken();
 			rValue = value.get(key);
-			if (rValue == null || (rValue.getValueType() != ValueType.OBJECT)) {
+			if (rValue == null || (rValue.getValueType() != JsonValue.ValueType.OBJECT)) {
 				break;
 			} else {
 				value = (JsonObject) rValue;

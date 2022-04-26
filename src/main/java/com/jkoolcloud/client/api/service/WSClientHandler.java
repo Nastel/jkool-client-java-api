@@ -17,10 +17,9 @@ package com.jkoolcloud.client.api.service;
 
 import java.io.StringReader;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Session;
 

@@ -9,12 +9,12 @@ Latest Java EE compliant `jkool-client-api` version is `0.3.2`.
 -----------------------
 
 JKQL Streaming & Query API allows you to send events, metrics, transactions to and run queries against your data repository. You will need
-"access token” with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with
+"access token" with streaming permission to store data and "access token" with query permission to run queries. Tokens are associated with
 your repository and user profile. The API uses HTTP(s) and WebSockets protocols and responses are JSON.
 
 Other language bindings can be generated with the Swagger Code Generator using the Swagger yaml file found it the "swagger" folder.
 
-Please be aware the the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API,
+Please be aware the Swagger yaml file is documenting every field that can be passed via Restful API. When using this Java Helper API,
 many fields will have default values.
 
 ## Concepts and Terminology
@@ -31,7 +31,7 @@ following data collection types:
 |Property|name, value pair. Properties can be associated with events, activities and snapshots|
 
 This Git repository contains a Swagger yaml file. Open this file in a Swagger Editor and you will have detailed documentation of each field
-that comprises the above mentioned data.
+that comprises the above-mentioned data.
 
 ## How to build
 
@@ -53,7 +53,7 @@ To use this sample code please do one of the following:
     <dependency>
         <groupId>com.jkoolcloud.client.api</groupId>
         <artifactId>jkool-client-api</artifactId>
-        <version>0.3.3</version>
+        <version>0.4.0</version>
     </dependency>
 ```
 
@@ -76,7 +76,7 @@ Create an event and populate the fields you wish to stream. For example:
             .setMsgText("Casablanca is playing.");
 ```
 
-Please note that this example code depicts streaming in real-time. Therefore the start date of the event will default to the current
+Please note that this example code depicts streaming in real-time. Therefore, the start date of the event will default to the current
 date/time and the end date will default to the start date plus the elapsed time. You can however control start/end dates. For example:
 
 ```java
@@ -158,7 +158,7 @@ This example makes use of two connection handlers: 1) for tracing connection eve
     jkQuery.connect();
 ```
 
-The next step is to setup default callback handlers (optional but recommended). Default callback handlers are called for responses not
+The next step is to set up default callback handlers (optional but recommended). Default callback handlers are called for responses not
 associated with any specific query or subscription.
 
 ```java
@@ -367,7 +367,7 @@ retry=0
 
 REST can be used to retrieve data natively (without helper classes) out of your repository using `curl`. Note that you can specify your
 token in the HTTP header (`X-API-Key`) as well instead of specifying it as a query parameter (`jk_token`). Access tokens must have
-query/read permission, streaming tokens don't have query access by default.
+`query`/`read` permission, streaming tokens don't have query access by default.
 
 Example using `jk_token` parameter to pass access token:
 

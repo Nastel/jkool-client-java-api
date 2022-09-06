@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import java.net.URI;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import com.jkoolcloud.client.api.service.JKQueryAsync;
 import com.jkoolcloud.client.api.service.JKQIConstants;
+import com.jkoolcloud.client.api.service.JKQueryAsync;
 
 public class JKCmdOptions {
 	public static final String PROP_URI = "uri";

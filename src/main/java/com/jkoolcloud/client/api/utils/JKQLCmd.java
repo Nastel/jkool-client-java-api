@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,7 @@ package com.jkoolcloud.client.api.utils;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import com.jkoolcloud.client.api.service.JKQueryAsync;
-import com.jkoolcloud.client.api.service.JKRetryConnectionHandler;
-import com.jkoolcloud.client.api.service.JKStatementAsync;
-import com.jkoolcloud.client.api.service.JKTraceConnectionHandler;
-import com.jkoolcloud.client.api.service.JKTraceQueryCallback;
+import com.jkoolcloud.client.api.service.*;
 
 public class JKQLCmd {
 	public static void main(String[] args) {
@@ -33,21 +29,19 @@ public class JKQLCmd {
 		}
 		options.print();
 		JKTraceQueryCallback callback = new JKTraceQueryCallback(System.out, options.json_path, options.trace);
-		try (JKQueryAsync jkQueryAsync = new JKQueryAsync(System.getProperty("jk.ws.uri", options.uri), System.getProperty("jk.access.token", options.token))) 
-		{
+		try (JKQueryAsync jkQueryAsync = new JKQueryAsync(System.getProperty("jk.ws.uri", options.uri),
+				System.getProperty("jk.access.token", options.token))) {
 			// setup WebSocket connection and connect
 			if (options.retryTimeMs > 0) {
-				jkQueryAsync.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
+				jkQueryAsync
+						.addConnectionHandler(new JKRetryConnectionHandler(options.retryTimeMs, TimeUnit.MILLISECONDS));
 			}
-			jkQueryAsync.setTimeZone(options.timezone)
-				.setDateFilter(options.daterange)
-				.setRepoId(options.reponame)
-				.setTrace(options.trace);
+			jkQueryAsync.setTimeZone(options.timezone).setDateFilter(options.daterange).setRepoId(options.reponame)
+					.setTrace(options.trace);
 
 			jkQueryAsync.addConnectionHandler(new JKTraceConnectionHandler(System.out, options.trace));
 			jkQueryAsync.addDefaultCallbackHandler(callback);
 			jkQueryAsync.connect();
-			
 
 			// run query in async mode with a callback
 			JKStatementAsync qhandle = jkQueryAsync.callAsync(options.query, options.maxRows, callback);
@@ -60,7 +54,8 @@ public class JKQLCmd {
 			} else {
 				// streaming query, so lets collect responses until timeout
 				Thread.sleep(options.waitTimeMs);
-				System.out.println("Cancelling query=[" + qhandle.getQuery() + "], id=" + qhandle.getId() + ", mid=" + qhandle.getLastMsgId());
+				System.out.println("Cancelling query=[" + qhandle.getQuery() + "], id=" + qhandle.getId() + ", mid="
+						+ qhandle.getLastMsgId());
 				qhandle = jkQueryAsync.cancelAsync(qhandle);
 				if (qhandle != null) {
 					qhandle.awaitOnDone(options.waitTimeMs, TimeUnit.MILLISECONDS);
@@ -70,18 +65,19 @@ public class JKQLCmd {
 			System.err.println("Failed to execute: " + options.toString());
 			e.printStackTrace();
 		} finally {
-			System.out.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
-		} 
+			System.out
+					.println("Stats: msg.recvd=" + callback.getMsgCount() + ", err.count=" + callback.getErrorCount());
+		}
 	}
 }
 
 class VMStop extends Thread {
 	JKStatementAsync handle;
-	
+
 	protected VMStop(JKStatementAsync h) {
 		handle = h;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -95,7 +91,8 @@ class VMStop extends Thread {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("VM Stopped. Handle=" + handle + ", handle.count=" + handle.getQueryAsync().getHandleCount());			
+			System.out.println(
+					"VM Stopped. Handle=" + handle + ", handle.count=" + handle.getQueryAsync().getHandleCount());
 		}
 	}
 }

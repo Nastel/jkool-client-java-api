@@ -15,11 +15,12 @@
  */
 package com.jkoolcloud.client.api.utils;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.TimeZone;
 
@@ -264,7 +265,7 @@ public class JKCmdOptions {
 
 	private void loadProperties(String file) throws FileNotFoundException, IOException {
 		Properties props = new Properties();
-		props.load(new FileInputStream(file));
+		props.load(Files.newInputStream(Paths.get(file)));
 		assignDefaults(props);
 	}
 

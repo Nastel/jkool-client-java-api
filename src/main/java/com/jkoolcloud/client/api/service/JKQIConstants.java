@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public interface JKQIConstants {
 	static final String JK_DATE_KEY = "jk_date";
 	static final String JK_TRACE_KEY = "jk_trace";
 
-	static final String JK_MSGID_KEY  = "jk_msg_id";
+	static final String JK_MSGID_KEY = "jk_msg_id";
 	static final String JK_SUBID_KEY = "jk_subid";
 	static final String JK_ERROR_KEY = "jk_error";
 	static final String JK_CALL_KEY = "jk_call";

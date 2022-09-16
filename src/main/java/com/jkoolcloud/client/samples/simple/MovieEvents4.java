@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ import com.jkoolcloud.client.api.model.*;
 import com.jkoolcloud.client.api.service.JKStream;
 
 /**************************************************************************************************************************
- * This example code uses the same data as the prior Movie example code. However it also demonstrates how to make use of
- * Snapshots. In this example, snapshots are being used to capture the weather at the time the movie was playing.
+ * This example code uses the same data as the prior Movie example code. However, it also demonstrates how to make use
+ * of Snapshots. In this example, snapshots are being used to capture the weather at the time the movie was playing.
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2014-2021 JKOOL, LLC.
+  ~ Copyright 2014-2022 JKOOL, LLC.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
     <groupId>com.jkoolcloud.client.api</groupId>
     <artifactId>jkool-client-api</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.2.1</version>
     <packaging>jar</packaging>
 
     <name>jkool-client-api</name>
@@ -97,26 +97,25 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
-            <version>2.13.1</version>
+            <version>2.13.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
-            <version>5.0.1.Final</version>
+            <version>5.0.4.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>2.1.12</version>
+            <version>2.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.tyrus</groupId>
-            <artifactId>tyrus-container-grizzly-client</artifactId>
-            <version>2.0.1</version>
+            <artifactId>tyrus-client</artifactId>
+            <version>2.0.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.glassfish/javax.json -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
@@ -237,6 +236,33 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>clean-build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <skip>${assembly.skipAssembly}</skip>
+                            <filesets>
+                                <fileset>
+                                    <directory>${release.deploy.dir}</directory>
+                                    <includes>
+                                        <include>${release.deploy.finalName}/</include>
+                                        <include>${release.deploy.finalName}.*</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
@@ -263,24 +289,8 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${release.deploy.dir}</directory>
-                            <includes>
-                                <include>${release.deploy.finalName}/</include>
-                                <include>${release.deploy.finalName}.*</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.2</version>
                 <configuration>
                     <archive>
                         <!--<index>true</index>-->

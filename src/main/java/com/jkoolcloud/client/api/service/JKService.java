@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,7 +116,7 @@ abstract public class JKService implements JKQIConstants, Closeable, AutoCloseab
 	public boolean isConnected() {
 		return rsClient != null;
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		if (rsClient != null) {

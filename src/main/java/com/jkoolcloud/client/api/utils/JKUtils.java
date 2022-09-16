@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ public class JKUtils {
 	 * @return true if subscribe query, false otherwise
 	 */
 	public static boolean isSubscribeQ(String query) {
-		return query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX) 
+		return query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX)
 				|| query.toLowerCase().startsWith(JKQIConstants.JK_SUB_QUERY_PREFIX2);
 	}
 
@@ -215,7 +215,7 @@ public class JKUtils {
 		while (tk.hasMoreTokens()) {
 			String key = tk.nextToken();
 			rValue = value.get(key);
-			if (rValue == null || (rValue.getValueType() != ValueType.OBJECT)) {
+			if (rValue == null || (rValue.getValueType() != JsonValue.ValueType.OBJECT)) {
 				break;
 			} else {
 				value = (JsonObject) rValue;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 JKOOL, LLC.
+ * Copyright 2014-2022 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -263,7 +263,9 @@ public class JKQuery extends JKService {
 		}
 
 		Form qParms = new Form();
-		if (!isEmpty(getToken())) qParms.param(JK_TOKEN_KEY, getToken());
+		if (!isEmpty(getToken())) {
+			qParms.param(JK_TOKEN_KEY, getToken());
+		}
 		qParms.param(JK_QUERY_KEY, query.getQuery());
 		qParms.param(JK_REPO_KEY, !isEmpty(query.getRepoId()) ? query.getRepoId() : repoId);
 		qParms.param(JK_TIME_ZONE_KEY, !isEmpty(query.getTimeZone()) ? query.getTimeZone() : tz);

@@ -57,7 +57,7 @@ To use this sample code please do one of the following:
     </dependency>
 ```
 
-## Streaming using over HTTPS
+## Streaming over HTTPS
 
 Streaming allows developers to send time series data such as events, metrics, transactions, logs using JSON/HTTPS. You will need your access
 token with streaming permission. This token ensures that the streaming data goes to the repository associated with the access token.

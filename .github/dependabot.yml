@@ -6,7 +6,7 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10  
     ignore:
-      - dependency-name: "resteasy"
+      - dependency-name: "resteasy*"
         versions: ["6.2.x"]        
   - package-ecosystem: "github-actions"
     directory: "/"

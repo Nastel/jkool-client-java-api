@@ -8,6 +8,9 @@ updates:
     ignore:
       - dependency-name: "org.jboss.resteasy:resteasy*"
         versions: "[6.1.x,)"
+      # Maven plugins
+      - dependency-name: "org.apache.maven.plugins:maven-assembly-plugin"
+        versions: "[3.1.1,)"  
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

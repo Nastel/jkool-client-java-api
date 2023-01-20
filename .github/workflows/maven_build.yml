@@ -28,17 +28,18 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ 8, 11, 15 ]
+        java-version: [ 8, 11, 17 ]
 
     outputs:
       pom-version: ${{ steps.get-pom-version.outputs.pom-version }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java-version }}
+          distribution: 'zulu'
       - name: Build with Maven
         run: mvn -B clean package --file pom.xml --no-transfer-progress
       - name: Get POM version
@@ -46,36 +47,22 @@ jobs:
         run: |
           VERSION=$( mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout --file pom.xml --no-transfer-progress )
           echo "Found project version: $VERSION"
-          echo "::set-output name=pom-version::$VERSION"
+          echo "pom-version=$VERSION" >> $GITHUB_OUTPUT
 
-  #  cleanup:
-  #    needs: build
-  #    runs-on: ubuntu-latest
-  #    continue-on-error: true
-  #    if: ${{ contains(needs.build.outputs.pom-version, 'SNAPSHOT') }}
-  #
-  #    steps:
-  #      - name: Remove jkool-client-api package assets
-  #        uses: abrkn/delete-old-github-package-versions@v1
-  #        with:
-  #          token: ${{ secrets.GITHUB_TOKEN }}
-  #          owner: Nastel
-  #          packageName: com.jkoolcloud.client.api.jkool-client-api
-  #          minAge: 30s
-  #        continue-on-error: true
 
   publish-snapshot:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ contains(needs.build.outputs.pom-version, 'SNAPSHOT') }}
+    if: ${{ contains(needs.build.outputs.pom-version, 'SNAPSHOT')  && github.event_name != 'pull_request' }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up settings.xml for OSS
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 8
+          distribution: 'zulu'
           server-id: oss.sonatype.org
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD

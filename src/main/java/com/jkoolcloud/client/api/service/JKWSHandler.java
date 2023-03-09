@@ -15,8 +15,8 @@
  */
 package com.jkoolcloud.client.api.service;
 
-import jakarta.websocket.CloseReason;
-import jakarta.websocket.Session;
+import javax.websocket.CloseReason;
+import javax.websocket.Session;
 
 /**
  * This interface defines handling of messages and other WebSocket events.

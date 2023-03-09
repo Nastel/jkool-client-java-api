@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import jakarta.websocket.*;
+import javax.websocket.*;
 
 /**
  * This class implements WebSockets communication, message and error handling.

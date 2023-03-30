@@ -17,6 +17,7 @@ package com.jkoolcloud.client.api.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URI;
 import java.nio.file.Files;
@@ -265,7 +266,9 @@ public class JKCmdOptions {
 
 	private void loadProperties(String file) throws FileNotFoundException, IOException {
 		Properties props = new Properties();
-		props.load(Files.newInputStream(Paths.get(file)));
+		try (InputStream fis = Files.newInputStream(Paths.get(file))) {
+			props.load(fis);
+		}
 		assignDefaults(props);
 	}
 

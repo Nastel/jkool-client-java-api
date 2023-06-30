@@ -20,7 +20,7 @@
 
     <groupId>com.jkoolcloud.client.api</groupId>
     <artifactId>jkool-client-api</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.4.2</version>
     <packaging>jar</packaging>
 
     <name>jkool-client-api</name>
@@ -167,7 +167,7 @@
                 <jdk>[11,)</jdk>
             </activation>
             <properties>
-                <resteasy.version>6.2.1.Final</resteasy.version>
+                <resteasy.version>6.2.4.Final</resteasy.version>
             </properties>
         </profile>
 

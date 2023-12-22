@@ -19,7 +19,7 @@ many fields will have default values.
 
 ## Concepts and Terminology
 
-You can find more info in [jKool Streaming Guide](https://www.jkoolcloud.com/download/jkool-model.pdf). JKQL streaming supports the
+You can find more info in [jKool Streaming Guide](https://www.meshiq.com/download/jkool-model.pdf). JKQL streaming supports the
 following data collection types:
 
 | Type | Description |

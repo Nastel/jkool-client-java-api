@@ -3,14 +3,14 @@ info:
   version: 1.0.0
   title: jKool API
   description: jKool API
-  termsOfService: 'https://www.jkoolcloud.com/company/terms-conditions/'
+  termsOfService: 'https://www.meshiq.com/company/terms-conditions/'
   contact:
-    name: Charley Rich
-    email: crich@jkoolcloud.com
-    url: www.jkoolcloud.com
+    name: Richard Nikula
+    email: rnikula@meshiq.com
+    url: www.meshiq.com
   license:
     name: jKool
-    url: 'https://www.jkoolcloud.com/company/privacy-policy/'
+    url: 'https://www.meshiq.com/company/privacy-policy/'
 host: 'stream.meshiq.com:443'
 basePath: /JESL
 schemes:

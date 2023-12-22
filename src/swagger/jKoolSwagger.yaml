@@ -11,7 +11,7 @@ info:
   license:
     name: jKool
     url: 'https://www.jkoolcloud.com/company/privacy-policy/'
-host: 'data.jkoolcloud.com:6580'
+host: 'stream.meshiq.com:443'
 basePath: /JESL
 schemes:
   - http
@@ -27,17 +27,17 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: event
-        description: the event
-        required: true
-        in: body
-        schema:
-          $ref: '#/definitions/event'
-      - name: token
-        in: header
-        description: token to be passed as a header
-        required: true
-        type: string
+        - name: event
+          description: the event
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/event'
+        - name: token
+          in: header
+          description: token to be passed as a header
+          required: true
+          type: string
       responses:
         '202':
           description: Event accepted.
@@ -46,13 +46,13 @@ paths:
         '401':
           description: Unauthorized.
         '405':
-          description: Method not allowed.          
+          description: Method not allowed.
         '500':
           description: Internal Server Error.
         '501':
-          description: Not implemented.           
+          description: Not implemented.
         default:
-          description: Bad Request. 
+          description: Bad Request.
   /activity:
     post:
       description: Creates an activity
@@ -60,17 +60,17 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: activity
-        description: the activity
-        required: true
-        in: body
-        schema:
-          $ref: '#/definitions/activity'
-      - name: token
-        in: header
-        description: token to be passed as a header
-        required: true
-        type: string
+        - name: activity
+          description: the activity
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/activity'
+        - name: token
+          in: header
+          description: token to be passed as a header
+          required: true
+          type: string
       responses:
         '200':
           description: Event streamed properly.
@@ -81,13 +81,13 @@ paths:
         '401':
           description: Unauthorized.
         '405':
-          description: Method not allowed.          
+          description: Method not allowed.
         '500':
           description: Internal Server Error.
         '501':
-          description: Not implemented.          
-        default: 
-          description: Bad Request. 
+          description: Not implemented.
+        default:
+          description: Bad Request.
 definitions:
   event:
     required:
@@ -190,8 +190,8 @@ definitions:
       snapshots:
         type: array
         items:
-         $ref: '#/definitions/snapshot'
-        description: List of categorized custom fields for this event.  
+          $ref: '#/definitions/snapshot'
+        description: List of categorized custom fields for this event.
   snapshot:
     required:
       - name
@@ -226,13 +226,13 @@ definitions:
       - value
     type: object
     properties:
-       name:
+      name:
         type: string
         description: Name of the custom field.
-       type:
+      type:
         type: string
         description: Data type of the custom field.
-       value:
+      value:
         type: string
         description: Value of custom field.
   activity:

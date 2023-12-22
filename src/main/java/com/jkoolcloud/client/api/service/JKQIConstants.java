@@ -18,7 +18,7 @@ package com.jkoolcloud.client.api.service;
 public interface JKQIConstants {
 	static final String JKOOL_TOKEN = System.getProperty("jkool.api.token");
 
-	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://data.jkoolcloud.com/JESL");
+	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://stream.meshiq.com");
 	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url",
 			"https://jkool.jkoolcloud.com/jkool-service/jkql");
 	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",

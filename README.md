@@ -354,7 +354,7 @@ Below is a sample property file containing `JKQLCmd` command line arguments (`to
 
 ```properties
 token=your-access-token
-uri=wss://jkool.jkoolcloud.com/jkool-service/jkqlasync
+uri=wss://xray.meshiq.com/jkool-service/jkqlasync
 query=get number of events
 trace=true
 wait=15000
@@ -372,11 +372,11 @@ token in the HTTP header (`X-API-Key`) as well instead of specifying it as a que
 Example using `jk_token` parameter to pass access token:
 
 ```sh
-curl -i -d "jk_token=access-token&jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
+curl -i -d "jk_token=access-token&jk_query=get number of events" -X POST https://xray.meshiq.com/jkool-service/jkql
 ```
 Example using (`X-API-Key`) to pass access token: 
 ```sh
-curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://jkool.jkoolcloud.com/jkool-service/jkql
+curl -i -H "X-API-Key: Access-Token" -d "jk_query=get number of events" -X POST https://xray.meshiq.com/jkool-service/jkql
 ```
 Below is a list of supported query parameters: 
 

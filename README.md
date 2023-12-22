@@ -125,7 +125,7 @@ Finally, invoke the post method on the `JKStream` object, passing it the event y
     response.close();
 ```
 
-The `JKStream` formats the `event` into JSON and sends it to https://data.jkoolcloud.com/JESL.
+The `JKStream` formats the `event` into JSON and sends it to https://stream.meshiq.com.
 
 ### Running JKQL (Synchronously)
 
@@ -468,7 +468,7 @@ Example of a successful response:
 Data can be streamed using `curl`. Below is an example:
 
 ```sh
-curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST https://data.jkoolcloud.com/JESL/event -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example curl streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
+curl -i -H "Content-Type:application/json" -H "X-API-Key:YOURTOKEN" -X POST https://stream.meshiq.com -d '{"operation":"streamingwithcurl","type":"EVENT","start-time-usec":1457524800000000,"end-time-usec":1457524800000000,"msg-text":"Example curl streaming","source-fqn":"APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053"}'
 ```
 
 ### Streaming with Python
@@ -479,7 +479,7 @@ Streaming data using Python "requests" object. Below is an example:
 import requests
 headers = {'X-API-Key': 'YOURTOKEN'}
 payload={'operation':'streamingwithpython','type':'EVENT','start-time-usec':1457524800000000,'end-time-usec':1457524800000000,'msg-text':'Example Python Streaming','source-fqn':'APPL=TestingCurl#SERVER=CurlServer100#NETADDR=11.0.0.2#DATACENTER=DC1#GEOADDR=52.52437,13.41053'}
-resp = requests.post('https://data.jkoolcloud.com/JESL/event', headers=headers, json=payload)
+resp = requests.post('https://stream.meshiq.com', headers=headers, json=payload)
 ```
 
 ### Note on Timestamps

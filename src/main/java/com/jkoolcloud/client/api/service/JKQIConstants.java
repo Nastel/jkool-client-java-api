@@ -20,9 +20,9 @@ public interface JKQIConstants {
 
 	static final String JKOOL_STREAM_URL = System.getProperty("jkool.stream.url", "https://stream.meshiq.com");
 	static final String JKOOL_QUERY_URL = System.getProperty("jkool.query.url",
-			"https://jkool.jkoolcloud.com/jkool-service/jkql");
+			"https://xray.meshiq.com/jkool-service/jkql");
 	static final String JKOOL_WEBSOCK_URL = System.getProperty("jkool.websock.url",
-			"wss://jkool.jkoolcloud.com/jkool-service/jkqlasync");
+			"wss://xray.meshiq.com/jkool-service/jkqlasync");
 
 	// HTTP header keys
 	static final String CONTENT_TYPE = "content-type";

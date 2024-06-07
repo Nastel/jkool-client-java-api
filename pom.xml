@@ -199,6 +199,7 @@
                     <verbose>${maven.compiler.verbose}</verbose>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <release>${maven.compiler.target}</release>
                     <debuglevel>${maven.compiler.debuglevel}</debuglevel>
                     <fork>${maven.compiler.fork}</fork>
                 </configuration>
@@ -229,7 +230,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
-                    <failOnError>false</failOnError>
+                    <failOnError>true</failOnError>
                     <doclint>all</doclint>
                 </configuration>
                 <executions>

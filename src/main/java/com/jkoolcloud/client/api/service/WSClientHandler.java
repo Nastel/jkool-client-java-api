@@ -17,7 +17,8 @@ package com.jkoolcloud.client.api.service;
 
 import java.io.StringReader;
 
-import jakarta.json.Json;
+import com.jkoolcloud.client.api.utils.JKUtils;
+
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.websocket.CloseReason;
@@ -45,7 +46,7 @@ class WSClientHandler implements JKWSHandler {
 
 	@Override
 	public void onMessage(JKWSClient client, String message) {
-		JsonReader reader = Json.createReader(new StringReader(message));
+		JsonReader reader = JKUtils.jsonProvider.createReader(new StringReader(message));
 		JsonObject jsonMessage = reader.readObject();
 		String subid = jsonMessage.getString(JKQueryAsync.JK_SUBID_KEY, null);
 		jkagent.handleResponse(subid, jsonMessage);

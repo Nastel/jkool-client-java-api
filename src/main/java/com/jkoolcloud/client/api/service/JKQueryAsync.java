@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.jkoolcloud.client.api.utils.JKUtils;
 
-import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 
@@ -372,7 +371,7 @@ public class JKQueryAsync extends JKQuery {
 	 * @return query handle associated with the query
 	 */
 	public JKStatementAsync callAsync(JKStatementAsync qhandle) throws IOException {
-		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObjectBuilder jsonBuilder = JKUtils.jsonProvider.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder //
 				.add(JK_TOKEN_KEY, getToken()) //
 				.add(JK_QUERY_KEY, qhandle.getQuery()) //
@@ -447,7 +446,7 @@ public class JKQueryAsync extends JKQuery {
 	 *             on bad arguments
 	 */
 	public JKQueryAsync callAsync(String query, String id, int maxRows) throws IOException {
-		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObjectBuilder jsonBuilder = JKUtils.jsonProvider.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder //
 				.add(JK_TOKEN_KEY, getToken()) //
 				.add(JK_QUERY_KEY, query) //
@@ -513,7 +512,7 @@ public class JKQueryAsync extends JKQuery {
 		if (handle == null) {
 			throw new IllegalArgumentException("handle id can not be null");
 		}
-		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+		JsonObjectBuilder jsonBuilder = JKUtils.jsonProvider.createObjectBuilder();
 		JsonObject jsonQuery = jsonBuilder //
 				.add(JK_TOKEN_KEY, getToken()) //
 				.add(JK_TIME_ZONE_KEY, getTimeZone()) //

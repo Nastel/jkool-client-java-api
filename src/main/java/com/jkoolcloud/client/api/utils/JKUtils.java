@@ -31,6 +31,7 @@ import com.jkoolcloud.client.api.service.JKQIConstants;
 import com.jkoolcloud.client.api.service.JKStreamException;
 
 import jakarta.json.*;
+import jakarta.json.spi.JsonProvider;
 import jakarta.json.stream.JsonGenerator;
 
 /**
@@ -64,6 +65,8 @@ public class JKUtils {
 	 * JVM runtime name
 	 */
 	public static final String VM_NAME = ManagementFactory.getRuntimeMXBean().getName();
+
+	public static final JsonProvider jsonProvider = JsonProvider.provider();
 
 	static {
 		try {
@@ -198,7 +201,7 @@ public class JKUtils {
 	public static String jsonFormat(JsonStructure json, String... options) {
 		StringWriter stringWriter = new StringWriter();
 		Map<String, Boolean> config = buildConfig(options);
-		JsonWriterFactory writerFactory = Json.createWriterFactory(config);
+		JsonWriterFactory writerFactory = jsonProvider.createWriterFactory(config);
 		JsonWriter jsonWriter = writerFactory.createWriter(stringWriter);
 
 		jsonWriter.write(json);

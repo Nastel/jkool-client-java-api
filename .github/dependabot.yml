@@ -8,7 +8,7 @@ updates:
 #        ignore:
     # Maven plugins
 #        - dependency-name: "org.apache.maven.plugins:maven-assembly-plugin"
-#          versions: "[3.1.1,)"
+#          versions: ">=3.1.1"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

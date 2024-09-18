@@ -31,7 +31,7 @@ public class JKRetryConnectionHandler implements JKConnectionHandler {
 			new JKThreadFactory("jk_retry_handler", true));
 
 	long retryTimeout;
-	TimeUnit tunit;
+	TimeUnit tUnit;
 
 	long errorCount = 0;
 	long timeClose, timeOpen, timeError;
@@ -39,7 +39,7 @@ public class JKRetryConnectionHandler implements JKConnectionHandler {
 
 	public JKRetryConnectionHandler(long retryTime, TimeUnit unit) {
 		retryTimeout = retryTime;
-		tunit = unit;
+		tUnit = unit;
 	}
 
 	@Override
@@ -73,11 +73,11 @@ public class JKRetryConnectionHandler implements JKConnectionHandler {
 
 	private void scheduleReconnect(JKQueryAsync async, CloseReason reason) {
 		if (reason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE) {
-			scheduledThreadPool.schedule(new JKReconnectTask(async), retryTimeout, tunit);
+			scheduledThreadPool.schedule(new JKReconnectTask(async), retryTimeout, tUnit);
 		}
 	}
 
 	private void scheduleResubscribe(JKQueryAsync async, long time, TimeUnit unit, long timeOpen) {
-		scheduledThreadPool.schedule(new JKRestoreSubscriptionsTask(async, timeOpen), time, tunit);
+		scheduledThreadPool.schedule(new JKRestoreSubscriptionsTask(async, timeOpen), time, tUnit);
 	}
 }

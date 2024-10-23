@@ -260,7 +260,7 @@ public class JKQueryAsync extends JKQuery {
 			}
 			return this;
 		} catch (Throwable ex) {
-			wsHandler.onError(socket, socket.getSession(), ex);
+			wsHandler.onError(socket, socket == null ? null : socket.getSession(), ex);
 			throw ex;
 		}
 	}

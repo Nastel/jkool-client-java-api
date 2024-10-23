@@ -3,8 +3,11 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "daily"
-    open-pull-requests-limit: 10  
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: "Europe/Vilnius"
+    open-pull-requests-limit: 10
     ignore:
       - dependency-name: "org.jboss.resteasy:resteasy*"
         versions: "[6.1.x,)"
@@ -15,4 +18,4 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 10  
+    open-pull-requests-limit: 10

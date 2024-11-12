@@ -143,13 +143,13 @@
         </profile>
 
         <profile>
-            <id>pack-bin</id>
+            <id>pack-assembly</id>
             <properties>
                 <assembly.skipAssembly>false</assembly.skipAssembly>
             </properties>
         </profile>
         <profile>
-            <id>pack-all</id>
+            <id>pack-assembly-full</id>
             <properties>
                 <maven.source.skip>false</maven.source.skip>
                 <maven.javadoc.skip>false</maven.javadoc.skip>
@@ -157,14 +157,14 @@
             </properties>
         </profile>
         <profile>
-            <id>pack-maven</id>
+            <id>pack-sources-and-javadocs</id>
             <properties>
                 <maven.source.skip>false</maven.source.skip>
                 <maven.javadoc.skip>false</maven.javadoc.skip>
             </properties>
         </profile>
         <profile>
-            <id>maven-release</id>
+            <id>final-release</id>
             <properties>
                 <maven.source.skip>false</maven.source.skip>
                 <maven.javadoc.skip>false</maven.javadoc.skip>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This interface defines a JKQL statement supporting async calls. 
- * All concrete statement implementations must implement this interface.
+ * This interface defines a JKQL statement supporting async calls. All concrete statement implementations must implement this interface.
  * 
  * @author albert
  */
@@ -49,17 +48,18 @@ public interface JKStatementAsync extends JKStatement, Closeable, AutoCloseable 
 	 * @return query handle associate with this query
 	 */
 	JKStatementAsync callAsync() throws IOException;
-	
+
 	/**
 	 * Call current statement with responses routed to the associated callback.
 	 * 
-	 * @param maxRows maximum number 
+	 * @param maxRows
+	 *            maximum number
 	 * @throws IOException
 	 *             when IO errors occur
 	 * @return query handle associate with this query
 	 */
 	JKStatementAsync callAsync(int maxRows) throws IOException;
-	
+
 	/**
 	 * Cancel a live subscription
 	 * 
@@ -70,24 +70,24 @@ public interface JKStatementAsync extends JKStatement, Closeable, AutoCloseable 
 	JKStatementAsync cancelAsync() throws IOException;
 
 	/**
-	 * Obtain last msg id associated with the handle. Only
-	 * available after first response on this handle is received.
+	 * Obtain last msg id associated with the handle. Only available after first response on this handle is received.
 	 * 
 	 * @return msg id of last response
 	 */
 	String getLastMsgId();
-	
+
 	/**
 	 * Get total number of times the callback was called
 	 * 
 	 * @return number of times the callback was called
 	 */
 	long getCallCount();
+
 	/**
 	 * Reset total number of times the callback was called
 	 * 
 	 */
-	void resetStats();	
+	void resetStats();
 
 	/**
 	 * Await for response until a given date/time
@@ -151,5 +151,5 @@ public interface JKStatementAsync extends JKStatement, Closeable, AutoCloseable 
 	 * @throws InterruptedException
 	 *             if connection is interrupted
 	 */
-	boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException;	
+	boolean awaitOnDone(long time, TimeUnit unit) throws InterruptedException;
 }

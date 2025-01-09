@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import com.jkoolcloud.client.api.utils.JKUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * This class is a common time series entity for tracking application activities. The entity has time, id and a set of
- * user defined parameters {@link Snapshot}.
+ * This class is a common time series entity for tracking application activities. The entity has time, id and a set of user defined
+ * parameters {@link Snapshot}.
  * 
  * @author Cathy
  */

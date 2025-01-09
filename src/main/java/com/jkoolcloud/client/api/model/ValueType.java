@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package com.jkoolcloud.client.api.model;
 
 /**
- * This interface defines a list of user defined value types, which qualify the intended use of properties values see
- * {@link Property} and {@link Snapshot}.
+ * This interface defines a list of user defined value types, which qualify the intended use of properties values see {@link Property} and
+ * {@link Snapshot}.
  * 
  * @version $Revision: 1 $
  */

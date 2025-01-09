@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ import com.jkoolcloud.client.api.service.JKStream;
 import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies
- * playing in a given week.
+ * This example demonstrates how to create movie events and attach them to an activity which holds all of the movies playing in a given
+ * week.
  * 
  * WHEN USING THIS API IN REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/

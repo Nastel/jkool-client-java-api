@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -396,8 +396,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Call query in async mode using default callback(s). All responses will be tagged with auto generated id and
-	 * routed to all registered default handlers.
+	 * Call query in async mode using default callback(s). All responses will be tagged with auto generated id and routed to all registered
+	 * default handlers.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -412,8 +412,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Call query in async mode using default callback(s). All responses will be tagged with auto generated id and
-	 * routed to all registered default handlers.
+	 * Call query in async mode using default callback(s). All responses will be tagged with auto generated id and routed to all registered
+	 * default handlers.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -430,8 +430,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Call query in async mode using default callback(s). All responses will be tagged with given id and routed to all
-	 * registered default handlers.
+	 * Call query in async mode using default callback(s). All responses will be tagged with given id and routed to all registered default
+	 * handlers.
 	 * 
 	 * @param query
 	 *            JKQL query
@@ -545,8 +545,8 @@ public class JKQueryAsync extends JKQuery {
 	}
 
 	/**
-	 * Restore subscriptions (re-subscribe) based on a given gate. Subscribe when
-	 * {@code JKGate<JKQueryHandle>.check(JKQueryHandle)} return true, skip otherwise.
+	 * Restore subscriptions (re-subscribe) based on a given gate. Subscribe when {@code JKGate<JKQueryHandle>.check(JKQueryHandle)} return
+	 * true, skip otherwise.
 	 * 
 	 * @param hGate
 	 *            query handle gate check for true or false

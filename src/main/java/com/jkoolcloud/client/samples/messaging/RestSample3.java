@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,17 +27,16 @@ import com.jkoolcloud.client.api.service.JKStream;
 import jakarta.ws.rs.core.Response;
 
 /**************************************************************************************************************************
- * In this example, we will demonstrate Rest API usage. This example will demonstrate two advanced aspects of jKool: 1)
- * How to make use of the many pre-defined fields jKool uses to store DevOps data. 2) Correlating events - in this
- * example, instead of grouping events via the activity, we will rely on jKool to deduce associations via the correlator
- * id's.
+ * In this example, we will demonstrate Rest API usage. This example will demonstrate two advanced aspects of jKool: 1) How to make use of
+ * the many pre-defined fields jKool uses to store DevOps data. 2) Correlating events - in this example, instead of grouping events via the
+ * activity, we will rely on jKool to deduce associations via the correlator id's.
  *
- * In this example we are portraying three messaging queues residing in three different data center locations throughout
- * the United States. As messages are passed from one data center to the next data center, associations within the data
- * are maintained via the "correlator id's".
+ * In this example we are portraying three messaging queues residing in three different data center locations throughout the United States.
+ * As messages are passed from one data center to the next data center, associations within the data are maintained via the "correlator
+ * id's".
  *
- * Although this example does not demonstrate it, properties and/or snapshots could be added. WHEN USING THIS API IN
- * REAL CODE, YOU WILL USE APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
+ * Although this example does not demonstrate it, properties and/or snapshots could be added. WHEN USING THIS API IN REAL CODE, YOU WILL USE
+ * APPLICATION VARIABLES INSTEAD OF HARDCODED VALUES.
  ***********************************************************************************************************************/
 
 public class RestSample3 {

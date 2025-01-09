@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2023 JKOOL, LLC.
+ * Copyright 2014-2025 JKOOL, LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,7 @@ package com.jkoolcloud.client.api.service;
 import java.io.IOException;
 
 /**
- * This class implements a task that automatically re-subscribes all active subscriptions after reconnecting
- * {@link JKQueryAsync}.
+ * This class implements a task that automatically re-subscribes all active subscriptions after reconnecting {@link JKQueryAsync}.
  * 
  * @author albert
  */

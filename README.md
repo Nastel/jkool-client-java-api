@@ -46,9 +46,9 @@ To use this sample code please do one of the following:
 * Build this project on your own by using these Maven build configurations:
     * To build the project, run Maven goals `clean package`
     * To build the project and install to local repo, run Maven goals `clean install`
-    * To make distributable release assemblies use one of profiles: `pack-assembly` or `pack-assembly-full`:
+    * To make distributable release assemblies use one of profiles: `pack-assembly` or `pack-assembly-src_doc`:
         * containing only binary (including `test` package) distribution: run `mvn -P pack-assembly`
-        * containing binary (including `test` package), `source` and `javadoc` distribution: run `mvn -P pack-assembly-full`
+        * containing binary (including `test` package), `source` and `javadoc` distribution: run `mvn -P pack-assembly-src_doc`
     * To make Maven required `source` and `javadoc` packages, use profile `pack-sources-and-javadocs`
     * To make Maven central compliant release having `source`, `javadoc` and all signed packages, use `final-release` profile
 

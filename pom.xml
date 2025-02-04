@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2014-2023 JKOOL, LLC.
+  ~ Copyright 2014-2025 JKOOL, LLC.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -149,7 +149,7 @@
             </properties>
         </profile>
         <profile>
-            <id>pack-assembly-full</id>
+            <id>pack-assembly-src_doc</id>
             <properties>
                 <maven.source.skip>false</maven.source.skip>
                 <maven.javadoc.skip>false</maven.javadoc.skip>
@@ -281,6 +281,10 @@
                             <rules>
                                 <dependencyConvergence/>
                                 <banDuplicatePomDependencyVersions/>
+                                <requireSameVersions/>
+                                <requireUpperBoundDeps/>
+                                <!-- <banDynamicVersions/>-->
+                                <!-- <requireReleaseDeps/>-->
                             </rules>
                             <fail>true</fail>
                         </configuration>

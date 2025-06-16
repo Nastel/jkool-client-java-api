@@ -91,7 +91,7 @@
 
         <build.assemblies.attach>false</build.assemblies.attach>
 
-        <jackson.version>2.19.0</jackson.version>
+        <jackson.version>2.19.1</jackson.version>
         <resteasy.version>6.2.12.Final</resteasy.version>
         <swagger.version>2.2.32</swagger.version>
         <tyrus.version>2.2.0</tyrus.version>

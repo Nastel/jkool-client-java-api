@@ -8,7 +8,9 @@ updates:
       time: "05:00"
       timezone: "Europe/Vilnius" 
     open-pull-requests-limit: 10
-#        ignore:
+    ignore:
+      - dependency-name: "org.jboss.resteasy:resteasy*"
+        versions: ">=7.0"
     # Maven plugins
 #        - dependency-name: "org.apache.maven.plugins:maven-assembly-plugin"
 #          versions: ">=3.1.1"

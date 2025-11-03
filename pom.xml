@@ -50,13 +50,9 @@
         <url>https://github.com/Nastel/jkool-client-java-api</url>
     </scm>
     <distributionManagement>
-        <repository>
-            <id>oss.sonatype.org</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
         <snapshotRepository>
-            <id>oss.sonatype.org</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>ossrh-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -175,7 +171,7 @@
 
     <repositories>
         <repository>
-            <id>oss.sonatype.org-snapshot</id>
+            <id>ossrh-snapshots</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
             <releases>
                 <enabled>false</enabled>
@@ -368,23 +364,23 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>oss.sonatype.org</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                  <publishingServerId>central</publishingServerId>
+                  <autoPublish>true</autoPublish>
+                  <!-- <verbose>true</verbose> -->
                 </configuration>
                 <executions>
-                    <execution>
-                        <id>deploy-to-sonatype</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
+                  <execution>
+                    <id>publish-to-central</id>
+                    <phase>deploy</phase>
+                    <goals>
+                      <goal>publish</goal>
+                    </goals>
+                  </execution>
                 </executions>
             </plugin>
             <plugin>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2014-2025 JKOOL, LLC.
   ~
@@ -14,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -33,14 +35,14 @@
         </license>
     </licenses>
     <organization>
-        <name>${project.organization.name}</name>
-        <url>${project.organization.url}</url>
+        <name>jKool, LLC</name>
+        <url>https://www.meshiq.com</url>
     </organization>
     <developers>
         <developer>
             <name>jKool Team</name>
             <email>support@jkoolcloud.com</email>
-            <organization>jKool</organization>
+            <organization>${project.organization.name}</organization>
             <organizationUrl>${project.organization.url}</organizationUrl>
         </developer>
     </developers>
@@ -53,6 +55,13 @@
         <snapshotRepository>
             <id>central</id>
             <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </snapshotRepository>
     </distributionManagement>
 
@@ -61,9 +70,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.resources.encoding>UTF-8</project.resources.encoding>
-        <project.organization.name>jKool, LLC</project.organization.name>
-        <project.organization.url>https://www.meshiq.com/</project.organization.url>
         <product.vendor>${project.organization.name}</product.vendor>
+        <product.name>${project.name}</product.name>
+        <product.name.hr>${project.description}</product.name.hr>
+        <product.copyright.html>
+            <![CDATA[<font size="-1">Copyright &#169; 2015-2025 ${project.organization.name}. All Rights Reserved.</font>]]>
+        </product.copyright.html>
 
         <project.java.version>11</project.java.version>
         <maven.compiler.release>${project.java.version}</maven.compiler.release>
@@ -71,18 +83,16 @@
         <maven.compiler.verbose>false</maven.compiler.verbose>
         <maven.compiler.fork>false</maven.compiler.fork>
 
+        <jpms.module.name>com.jkoolcloud.client.api</jpms.module.name>
+
         <release.deploy.name>${project.artifactId}</release.deploy.name>
         <release.deploy.dir>build/</release.deploy.dir>
         <release.deploy.finalName>${release.deploy.name}-${project.version}</release.deploy.finalName>
         <release.deploy.zip.assembly>src/assembly/zipDeployAssembly.xml</release.deploy.zip.assembly>
         <release.deploy.gz.assembly>src/assembly/gzDeployAssembly.xml</release.deploy.gz.assembly>
-        <release.deploy.dir.assembly>src/assembly/dirDeployAssembly.xml</release.deploy.dir.assembly>
-
-        <assembly.line.endings>unix</assembly.line.endings>
 
         <maven.source.skip>true</maven.source.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <assembly.skipAssembly>true</assembly.skipAssembly>
         <gpg.skip>true</gpg.skip>
 
         <build.assemblies.attach>false</build.assemblies.attach>
@@ -95,19 +105,16 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-joda -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
             <version>${resteasy.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -127,32 +134,6 @@
 
     <profiles>
         <profile>
-            <id>win-ln</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <assembly.line.endings>crlf</assembly.line.endings>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>pack-assembly</id>
-            <properties>
-                <assembly.skipAssembly>false</assembly.skipAssembly>
-            </properties>
-        </profile>
-        <profile>
-            <id>pack-assembly-src_doc</id>
-            <properties>
-                <maven.source.skip>false</maven.source.skip>
-                <maven.javadoc.skip>false</maven.javadoc.skip>
-                <assembly.skipAssembly>false</assembly.skipAssembly>
-            </properties>
-        </profile>
-        <profile>
             <id>pack-sources-and-javadocs</id>
             <properties>
                 <maven.source.skip>false</maven.source.skip>
@@ -166,6 +147,90 @@
                 <maven.javadoc.skip>false</maven.javadoc.skip>
                 <gpg.skip>false</gpg.skip>
             </properties>
+        </profile>
+
+        <profile>
+            <id>pack-assembly</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>clean-build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                                <configuration>
+                                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${release.deploy.dir}</directory>
+                                            <includes>
+                                                <include>${release.deploy.finalName}/</include>
+                                                <include>${release.deploy.finalName}.*</include>
+                                            </includes>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>3.6.2</version>
+                        <executions>
+                            <execution>
+                                <id>dependency-convergence</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <dependencyConvergence/>
+                                        <banDuplicatePomDependencyVersions/>
+                                        <requireSameVersions/>
+                                        <requireUpperBoundDeps/>
+                                        <!-- <banDynamicVersions/>-->
+                                        <!-- <requireReleaseDeps/>-->
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.7.1</version>
+                        <executions>
+                            <execution>
+                                <id>make-deploy-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <appendAssemblyId>false</appendAssemblyId>
+                                    <descriptors>
+                                        <descriptor>${release.deploy.zip.assembly}</descriptor>
+                                        <descriptor>${release.deploy.gz.assembly}</descriptor>
+                                    </descriptors>
+                                    <outputDirectory>${release.deploy.dir}</outputDirectory>
+                                    <attach>${build.assemblies.attach}</attach>
+                                    <finalName>${release.deploy.finalName}</finalName>
+                                    <tarLongFileMode>gnu</tarLongFileMode>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
@@ -206,6 +271,26 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <!--<index>true</index>-->
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Vendor>${product.vendor}</Implementation-Vendor>
+                            <Implementation-Title>${product.name}</Implementation-Title>
+                            <Implementation-Version>${project.version}-${maven.build.timestamp}</Implementation-Version>
+                            <Automatic-Module-Name>${jpms.module.name}</Automatic-Module-Name>
+                            <Main-Class>com.jkoolcloud.client.api.utils.JKQLCmd</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.1</version>
                 <executions>
@@ -237,103 +322,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>clean-build</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <skip>${assembly.skipAssembly}</skip>
-                            <filesets>
-                                <fileset>
-                                    <directory>${release.deploy.dir}</directory>
-                                    <includes>
-                                        <include>${release.deploy.finalName}/</include>
-                                        <include>${release.deploy.finalName}.*</include>
-                                    </includes>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.6.2</version>
-                <executions>
-                    <execution>
-                        <id>dependency-convergence</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <dependencyConvergence/>
-                                <banDuplicatePomDependencyVersions/>
-                                <requireSameVersions/>
-                                <requireUpperBoundDeps/>
-                                <!-- <banDynamicVersions/>-->
-                                <!-- <requireReleaseDeps/>-->
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.7.1</version>
-                <executions>
-                    <execution>
-                        <id>deploy-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <descriptors>
-                                <!--<descriptor>${release.deploy.dir.assembly}</descriptor>-->
-                                <descriptor>${release.deploy.zip.assembly}</descriptor>
-                                <descriptor>${release.deploy.gz.assembly}</descriptor>
-                            </descriptors>
-                            <attach>${build.assemblies.attach}</attach>
-                            <outputDirectory>${release.deploy.dir}</outputDirectory>
-                            <finalName>${release.deploy.finalName}</finalName>
-                            <tarLongFileMode>gnu</tarLongFileMode>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <archive>
-                        <!--<index>true</index>-->
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Vendor>${product.vendor}</Implementation-Vendor>
-                            <Implementation-Title>${project.name}</Implementation-Title>
-                            <Implementation-Version>${project.version}-${maven.build.timestamp}</Implementation-Version>
-                            <Main-Class>com.jkoolcloud.client.api.utils.JKQLCmd</Main-Class>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>3.2.8</version>
                 <configuration>
@@ -360,6 +348,7 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.1.4</version>
                 <configuration>
+                    <deployAtEnd>true</deployAtEnd>
                     <skip>true</skip>
                 </configuration>
             </plugin>
@@ -369,18 +358,18 @@
                 <version>0.9.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                  <publishingServerId>central</publishingServerId>
-                  <autoPublish>true</autoPublish>
-                  <!-- <verbose>true</verbose> -->
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <!-- <verbose>true</verbose> -->
                 </configuration>
                 <executions>
-                  <execution>
-                    <id>publish-to-central</id>
-                    <phase>deploy</phase>
-                    <goals>
-                      <goal>publish</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <id>publish-to-central</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>publish</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

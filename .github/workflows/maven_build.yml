@@ -58,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up settings.xml for OSS
+      - name: Set up settings.xml for Central
         uses: actions/setup-java@v5
         with:
           java-version: 11
@@ -69,7 +69,7 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Publish SNAPSHOT version to OSS
+      - name: Publish SNAPSHOT version to Central
         run: mvn -B clean deploy --no-transfer-progress -DskipTests=true --file pom.xml
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USER }}

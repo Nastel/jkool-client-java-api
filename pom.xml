@@ -99,7 +99,7 @@
 
         <jackson.version>2.22.2</jackson.version>
         <resteasy.version>6.2.17.Final</resteasy.version>
-        <swagger.version>2.2.54</swagger.version>
+        <swagger.version>2.2.55</swagger.version>
         <tyrus.version>2.2.2</tyrus.version>
         <jakarta.json.version>2.1.3</jakarta.json.version>
     </properties>

@@ -9,11 +9,11 @@ on:
     paths:
       - '**/src/**'
       - '**/pom.xml'
-  pull_request:
-    branches: [ master ]
-    paths:
-      - '**/src/**'
-      - '**/pom.xml'
+#   pull_request:  # Pull request have no access to secrets
+#     branches: [ master ]
+#     paths:
+#       - '**/src/**'
+#       - '**/pom.xml'
 
   workflow_dispatch:
     inputs:
@@ -28,14 +28,15 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ 11, 17, 21 ]
+        java-version: [ 17, 21, 25 ]
 
     outputs:
       pom-version: ${{ steps.get-pom-version.outputs.pom-version }}
 
     steps:
       - uses: actions/checkout@v7
-      - name: Set up JDK
+
+      - name: Set up JDK and Maven
         uses: actions/setup-java@v6
         with:
           java-version: ${{ matrix.java-version }}
@@ -61,7 +62,7 @@ jobs:
       - name: Set up settings.xml for Central
         uses: actions/setup-java@v6
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'zulu'
           server-id: central
           server-username: MAVEN_USERNAME

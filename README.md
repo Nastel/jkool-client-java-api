@@ -391,7 +391,6 @@ Below is a list of supported query parameters:
 |`jk_token`|Yes|None|API access token|
 |`jk_repo`|No|None|Repository to fetch data from (Required if token references none or multiple repositories)|
 |`jk_query`|Yes|None|query statement to run|
-|`jk_subid`|No|Auto|query request correlator (GUID)|
 |`jk_tz`|No|Server TZ|timezone to be used for timestamps|
 |`jk_locale`|No|Server Locale|locale to be used for date/time and number formats|
 |`jk_date`|No|today|date range for the query|
@@ -409,7 +408,6 @@ Below are common JSON response fields:
 |`jk_query`|query associated with the response|
 |`jk_ccode`|query response completion code|
 |`jk_error`|query error message if fails|
-|`jk_subid`|query correlator associated with the request|
 |`jk_elapsed_ms`|elapsed time to execute the query (ms)|
 
 Example of a failed response:
@@ -419,7 +417,6 @@ Example of a failed response:
     "jk_call": "get",
     "jk_ccode": "ERROR",
     "jk_elapsed_ms": 8,
-    "jk_subid": "f41194b0-5b09-4464-890b-36fd66c01738",
     "jk_error": "com.nastel.jkool.jkql.admin.JKQLSecurityException: Undefined access token 'X', stmt: get number of logs"
 }
 ```

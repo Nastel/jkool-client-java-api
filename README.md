@@ -286,31 +286,6 @@ Connection handlers can be associated with a JKQL connection handle `JKQueryAsyn
     jkQueryAsync.connect();
 ```
 
-### Subscribing to Real-time Event Streams
-
-Developers can also subscribe to live data streams using `JKQueryAsync` class. Subscriptions are based continuous queries submitted by the
-client and run on the jKool servers. The results of the query are emitted as data becomes available and streamed back to the client call
-back handler instance of `JKQueryCallback`. See example below:
-
-```java
-    // setup WebSocket connection and connect
-    JKQueryAsync jkQuery = new JKQueryAsync("yourtoken");
-    jkQuery.addConnectionHandler(new JKRetryConnectionHandler(5000, TimeUnit.MILLISECONDS));
-    jkQuery.addConnectionHandler(new MyConnectionHandler());
-
-    // setup a default response handler for responses not associated with any specific query
-    jkQuery.addDefaultCallbackHandler(new MyJKQueryCallback());
-    jkQuery.connect(); // connect stream with WebSocket interface
-
-    // run subscription query in async mode with a callback
-    JKStatementAsync qhandle = jkQuery.subAsync("events where severity > 'INFO'", new MyJKQueryCallback());
-    ...
-```
-
-The code above is equivalent to the JKQL statement `subscribe to events where severity > 'INFO'`. `MyJKQueryCallback()` gets called as the
-query matches incoming streams. All pattern stream matching is done on the jKool server side. `subscribe` query runs on real-time streams
-only and never on past data. Use `get` queries to get past data.
-
 ### Running JKQL Searches on Message Content
 
 `JKQueryAsync` class provides a helper method to run pattern matches against event message content. See below:
